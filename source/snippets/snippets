@@ -1,0 +1,40 @@
+/*
+ *combine this whith the make obj 
+ * 
+ * 
+// create tri mesh from object mesh
+int mesh = object_id;
+dbMakeMeshFromObject( mesh, object_id );
+dbLockVertexDataForMesh( mesh );
+
+int vertexcount = dbGetVertexDataVertexCount(),
+    indexcount = dbGetVertexDataIndexCount();
+
+// build structure for ode trimesh geom
+dVector3 * vertices = new dVector3[vertexcount];
+dTriIndex * indices = new dTriIndex[indexcount];
+
+for ( int n = 0; n < indexcount; n++ )
+{
+    indices[n] = dbGetIndexData( n );
+}
+
+for ( int n = 0; n < vertexcount; n++ )
+{
+    vertices[n][0] = dbGetVertexDataPositionX( n );
+    vertices[n][1] = dbGetVertexDataPositionY( n );
+    vertices[n][2] = dbGetVertexDataPositionZ( n );
+}
+
+dbUnlockVertexData();
+dbDeleteMesh( mesh );
+
+// build the trimesh data
+dTriMeshDataID data = dGeomTriMeshDataCreate();
+dGeomTriMeshDataBuildSimple( data, (dReal*)vertices, vertexcount, indices, indexcount);
+
+// create the geom
+geom = dCreateTriMesh( space, data, 0, 0, 0 );
+ * 
+ * 
+ */
