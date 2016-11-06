@@ -1,8 +1,8 @@
 # Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+#*.slo
+#*.lo
+#*.o
+#*.obj
 
 # Precompiled Headers
 *.gch
@@ -27,3 +27,13 @@
 *.exe
 *.out
 *.app
+
+# AngelScrit Files
+*.halo
+*.angel
+*.wings
+
+# Cube Script
+*.cube
+*.cfg
+*.tex
