@@ -1,6 +1,6 @@
 [submodule "source/extralib/bullet3"]
-	path = source/extralib/bullet3
+	path = source/extralib/bullet3-master
 	url = https://github.com/bulletphysics/bullet3
 [submodule "source/extralib/--force"]
-	path = source/extralib/--force
-	url = https://github.com/IngwiePhoenix/angelscript
+	path = source/extralib/angelscript/sdk/
+	url = https://github.com/IngwiePhoenix/AngelScript/tree/master/sdk
