@@ -157,7 +157,7 @@ public:
 			}
 			else{
 				nd.add(g);
-				g->restart();
+				//g->restart();
 			}
 
 		}
