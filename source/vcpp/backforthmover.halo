@@ -1,0 +1,46 @@
+class BackForthMover : IController
+{
+	private node @self;
+	vec newo;
+	vec originalo;
+	int dir;
+	int speed;
+	int distance; 
+	void Create()
+	{
+		speed = 10;
+		dir = 1;
+		distance = 100;
+	}
+
+	void Awake()
+	{
+		originalo = self.o;
+		reset();
+	}
+	void reset()
+	{
+		newo = originalo;
+		newo.x = originalo.x + (( randomint(distance) + (distance)) * dir );
+	}
+	void Update()
+	{
+		self.o.x += dir * speed;
+		if( dir > 0 ){
+			if(self.o.x >= newo.x)
+			{ // now lets reset
+				dir = -1;
+				reset();
+				return;
+			}
+		} else { 
+			if(self.o.x <= newo.x)
+			{ //ok move back;
+				dir = 1;
+				reset();
+				return;
+			}
+		}
+			
+	}
+}
