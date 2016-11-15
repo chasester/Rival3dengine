@@ -143,7 +143,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>..\extralib\--force\sdk\angelscript\include;..\extralib\bullet3\src;..\enet\include;..\include;..\engine;..\game;..\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\extralib\bullet3\src;..\enet\include;..\include;..\engine;..\game;..\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
@@ -171,7 +171,7 @@
       <AdditionalDependencies>angelscript.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;
 enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib;winmm.lib;dbghelp.lib;kernel32.lib;user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\extralib\angel\sdk\angelscript\lib;..\extralib\bullet3-master\lib\release;..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\extralib\angel\sdk\angelscript\lib;..\extralib\bullet3\build_cmake\lib\Release;..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
@@ -404,6 +404,7 @@ enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\engine\AJMPhys.h" />
+    <ClInclude Include="..\engine\angelscript.h" />
     <ClInclude Include="..\engine\engine.h" />
     <ClInclude Include="..\engine\halo.h" />
     <ClInclude Include="..\engine\light.h" />
@@ -429,13 +430,6 @@ enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib
     <ClInclude Include="..\engine\textedit.h" />
     <ClInclude Include="..\engine\texture.h" />
     <ClInclude Include="..\engine\vertmodel.h" />
-    <ClInclude Include="..\extralib\angel\source\scriptarray.h" />
-    <ClInclude Include="..\extralib\angel\source\scriptbuilder.h" />
-    <ClInclude Include="..\extralib\angel\source\scripthandle.h" />
-    <ClInclude Include="..\extralib\angel\source\scripthelper.h" />
-    <ClInclude Include="..\extralib\angel\source\scriptstdstring.h" />
-    <ClInclude Include="..\extralib\angel\source\serializer.h" />
-    <ClInclude Include="..\extralib\angel\source\weakref.h" />
     <ClInclude Include="..\game\node.h" />
     <ClInclude Include="..\shared\command.h" />
     <ClInclude Include="..\shared\cube.h" />
@@ -445,12 +439,19 @@ enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib
     <ClInclude Include="..\shared\glexts.h" />
     <ClInclude Include="..\shared\iengine.h" />
     <ClInclude Include="..\shared\igame.h" />
+    <ClInclude Include="..\shared\scriptarray.h" />
+    <ClInclude Include="..\shared\scriptbuilder.h" />
+    <ClInclude Include="..\shared\scripthandle.h" />
+    <ClInclude Include="..\shared\scripthelper.h" />
+    <ClInclude Include="..\shared\scriptstdstring.h" />
+    <ClInclude Include="..\shared\serializer.h" />
     <ClInclude Include="..\shared\tools.h" />
     <ClInclude Include="..\game\ai.h" />
     <ClInclude Include="..\game\aiman.h" />
     <ClInclude Include="..\game\ctf.h" />
     <ClInclude Include="..\game\extinfo.h" />
     <ClInclude Include="..\game\game.h" />
+    <ClInclude Include="..\shared\weakref.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\engine\AJMPhys.cpp" />
@@ -998,14 +999,6 @@ enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)engine.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)engine.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
-    <ClCompile Include="..\extralib\angel\source\scriptarray.cpp" />
-    <ClCompile Include="..\extralib\angel\source\scriptbuilder.cpp" />
-    <ClCompile Include="..\extralib\angel\source\scripthandle.cpp" />
-    <ClCompile Include="..\extralib\angel\source\scripthelper.cpp" />
-    <ClCompile Include="..\extralib\angel\source\serializer.cpp" />
-    <ClCompile Include="..\extralib\angel\source\weakref.cpp" />
-    <ClCompile Include="..\extralib\angel\source\wings.cpp" />
-    <ClCompile Include="..\extralib\angel\source\scriptstdstring.cpp" />
     <ClCompile Include="..\game\AJMmovable.cpp" />
     <ClCompile Include="..\game\movable.cpp" />
     <ClCompile Include="..\game\node.cpp" />
@@ -1020,8 +1013,16 @@ enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\shared\scriptarray.cpp" />
+    <ClCompile Include="..\shared\scriptbuilder.cpp" />
+    <ClCompile Include="..\shared\scripthandle.cpp" />
+    <ClCompile Include="..\shared\scripthelper.cpp" />
+    <ClCompile Include="..\shared\scriptstdstring.cpp" />
+    <ClCompile Include="..\shared\serializer.cpp" />
     <ClCompile Include="..\shared\stream.cpp" />
     <ClCompile Include="..\shared\tools.cpp" />
+    <ClCompile Include="..\shared\weakref.cpp" />
+    <ClCompile Include="..\shared\wings.cpp" />
     <ClCompile Include="..\shared\zip.cpp" />
     <ClCompile Include="..\game\ai.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">game.h</PrecompiledHeaderFile>
@@ -1187,9 +1188,6 @@ enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)game.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)game.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="tesseract.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="backforthmover.halo" />

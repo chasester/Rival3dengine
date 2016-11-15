@@ -2,9 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tesseract", "tesseract.vcxproj", "{06594C6D-6DA9-49DC-9A91-8F47221DDCFD}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "angelscript", "..\extralib\angel_code\sdk\angelscript\projects\msvc2015\angelscript.vcxproj", "{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rival", "tesseract.vcxproj", "{06594C6D-6DA9-49DC-9A91-8F47221DDCFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,48 +67,6 @@ Global
 		{06594C6D-6DA9-49DC-9A91-8F47221DDCFD}.Template|Win32.Build.0 = Template|Win32
 		{06594C6D-6DA9-49DC-9A91-8F47221DDCFD}.Template|x64.ActiveCfg = Template|x64
 		{06594C6D-6DA9-49DC-9A91-8F47221DDCFD}.Template|x64.Build.0 = Template|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.clang_debug|ARM.ActiveCfg = clang_debug|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.clang_debug|ARM.Build.0 = clang_debug|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.clang_debug|Win32.ActiveCfg = clang_debug|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.clang_debug|Win32.Build.0 = clang_debug|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.clang_debug|x64.ActiveCfg = clang_debug|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.clang_debug|x64.Build.0 = clang_debug|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Debug|ARM.ActiveCfg = Debug|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Debug|ARM.Build.0 = Debug|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Debug|Win32.ActiveCfg = Debug|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Debug|Win32.Build.0 = Debug|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Debug|x64.ActiveCfg = Debug|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Debug|x64.Build.0 = Debug|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.MinSizeRel|ARM.ActiveCfg = clang_debug|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.MinSizeRel|ARM.Build.0 = clang_debug|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.MinSizeRel|Win32.ActiveCfg = Release|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.MinSizeRel|Win32.Build.0 = Release|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.MinSizeRel|x64.ActiveCfg = clang_debug|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.MinSizeRel|x64.Build.0 = clang_debug|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Profile|ARM.ActiveCfg = clang_debug|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Profile|ARM.Build.0 = clang_debug|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Profile|Win32.ActiveCfg = Release|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Profile|Win32.Build.0 = Release|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Profile|x64.ActiveCfg = clang_debug|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Profile|x64.Build.0 = clang_debug|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Release|ARM.ActiveCfg = Release|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Release|ARM.Build.0 = Release|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Release|Win32.ActiveCfg = Release|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Release|Win32.Build.0 = Release|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Release|x64.ActiveCfg = Release|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Release|x64.Build.0 = Release|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.RelWithDebInfo|ARM.ActiveCfg = Release|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.RelWithDebInfo|ARM.Build.0 = Release|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.RelWithDebInfo|Win32.Build.0 = Release|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.RelWithDebInfo|x64.ActiveCfg = Release|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.RelWithDebInfo|x64.Build.0 = Release|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Template|ARM.ActiveCfg = clang_debug|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Template|ARM.Build.0 = clang_debug|ARM
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Template|Win32.ActiveCfg = Release|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Template|Win32.Build.0 = Release|Win32
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Template|x64.ActiveCfg = clang_debug|x64
-		{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}.Template|x64.Build.0 = clang_debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

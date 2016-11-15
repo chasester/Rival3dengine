@@ -178,28 +178,28 @@
     <ClCompile Include="..\game\node.cpp">
       <Filter>shared</Filter>
     </ClCompile>
-    <ClCompile Include="..\extralib\angel\source\scriptbuilder.cpp">
+    <ClCompile Include="..\shared\scriptarray.cpp">
       <Filter>as</Filter>
     </ClCompile>
-    <ClCompile Include="..\extralib\angel\source\scripthandle.cpp">
+    <ClCompile Include="..\shared\scriptbuilder.cpp">
       <Filter>as</Filter>
     </ClCompile>
-    <ClCompile Include="..\extralib\angel\source\scripthelper.cpp">
+    <ClCompile Include="..\shared\scripthandle.cpp">
       <Filter>as</Filter>
     </ClCompile>
-    <ClCompile Include="..\extralib\angel\source\scriptstdstring.cpp">
+    <ClCompile Include="..\shared\scripthelper.cpp">
       <Filter>as</Filter>
     </ClCompile>
-    <ClCompile Include="..\extralib\angel\source\serializer.cpp">
+    <ClCompile Include="..\shared\scriptstdstring.cpp">
       <Filter>as</Filter>
     </ClCompile>
-    <ClCompile Include="..\extralib\angel\source\weakref.cpp">
+    <ClCompile Include="..\shared\serializer.cpp">
       <Filter>as</Filter>
     </ClCompile>
-    <ClCompile Include="..\extralib\angel\source\wings.cpp">
+    <ClCompile Include="..\shared\weakref.cpp">
       <Filter>as</Filter>
     </ClCompile>
-    <ClCompile Include="..\extralib\angel\source\scriptarray.cpp">
+    <ClCompile Include="..\shared\wings.cpp">
       <Filter>as</Filter>
     </ClCompile>
   </ItemGroup>
@@ -324,28 +324,31 @@
     <ClInclude Include="..\engine\texture.h">
       <Filter>engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\engine\angelscript.h">
+      <Filter>as</Filter>
+    </ClInclude>
     <ClInclude Include="..\engine\halo.h">
       <Filter>as</Filter>
     </ClInclude>
-    <ClInclude Include="..\extralib\angel\source\scriptbuilder.h">
+    <ClInclude Include="..\shared\scriptarray.h">
       <Filter>as</Filter>
     </ClInclude>
-    <ClInclude Include="..\extralib\angel\source\scripthandle.h">
+    <ClInclude Include="..\shared\scriptbuilder.h">
       <Filter>as</Filter>
     </ClInclude>
-    <ClInclude Include="..\extralib\angel\source\scripthelper.h">
+    <ClInclude Include="..\shared\scripthandle.h">
       <Filter>as</Filter>
     </ClInclude>
-    <ClInclude Include="..\extralib\angel\source\scriptstdstring.h">
+    <ClInclude Include="..\shared\scripthelper.h">
       <Filter>as</Filter>
     </ClInclude>
-    <ClInclude Include="..\extralib\angel\source\serializer.h">
+    <ClInclude Include="..\shared\scriptstdstring.h">
       <Filter>as</Filter>
     </ClInclude>
-    <ClInclude Include="..\extralib\angel\source\weakref.h">
+    <ClInclude Include="..\shared\serializer.h">
       <Filter>as</Filter>
     </ClInclude>
-    <ClInclude Include="..\extralib\angel\source\scriptarray.h">
+    <ClInclude Include="..\shared\weakref.h">
       <Filter>as</Filter>
     </ClInclude>
   </ItemGroup>
@@ -388,10 +391,5 @@
     <Filter Include="as\script">
       <UniqueIdentifier>{b4974164-ab79-451d-baf3-39eb254c345a}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="tesseract.rc">
-      <Filter>as</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

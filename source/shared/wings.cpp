@@ -334,7 +334,7 @@ void config(asIScriptEngine *asEngine){
 	asEngine->SetMessageCallback(asFUNCTION(MessageCallback), 0, asCALL_CDECL); 
 	asScript->setupserializer(new CSerializer());
 	RegisterStdString(asEngine);
-	RegisterScriptArray(asEngine, true);
+	//RegisterScriptArray(asEngine, true);
 	RegisterScriptHandle(asEngine);
 	RegisterScriptWeakRef(asEngine);
 	loopv(functions)

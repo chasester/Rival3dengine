@@ -6,7 +6,7 @@
 //#include <stdio.h> // sprintf
 //#include <string>
 
-//#include "scriptarray.h"
+#include "scriptarray.h"
 
 using namespace std;
 
@@ -268,7 +268,7 @@ static void RegisterScriptArray_Native(asIScriptEngine *engine)
 
 	// Register the array type as a template
 	r = engine->RegisterObjectType("array<class T>", 0, asOBJ_REF | asOBJ_GC | asOBJ_TEMPLATE); assert( r >= 0 );
-	asScript->serializer->AddUserType(new CSerialvector(r), "array");
+	//asScript->serializer->AddUserType(new CSerialvector(r), "array");
 	// Register a callback for validating the subtype before it is used
 	r = engine->RegisterObjectBehaviour("array<T>", asBEHAVE_TEMPLATE_CALLBACK, "bool f(int&in, bool&out)", asFUNCTION(ScriptArrayTemplateCallback), asCALL_CDECL); assert( r >= 0 );
 
@@ -2007,7 +2007,7 @@ static void RegisterScriptArray_Generic(asIScriptEngine *engine)
 	engine->SetTypeInfoUserDataCleanupCallback(CleanupTypeInfoArrayCache, ARRAY_CACHE);
 
 	r = engine->RegisterObjectType("array<class T>", 0, asOBJ_REF | asOBJ_GC | asOBJ_TEMPLATE); assert( r >= 0 );
-	asScript->serializer->AddUserType(new CSerialvector(r), "array");
+	//asScript->serializer->AddUserType(new CSerialvector(r), "array");
 	r = engine->RegisterObjectBehaviour("array<T>", asBEHAVE_TEMPLATE_CALLBACK, "bool f(int&in, bool&out)", asFUNCTION(ScriptArrayTemplateCallback_Generic), asCALL_GENERIC); assert( r >= 0 );
 
 	r = engine->RegisterObjectBehaviour("array<T>", asBEHAVE_FACTORY, "array<T>@ f(int&in)", asFUNCTION(ScriptArrayFactory_Generic), asCALL_GENERIC); assert( r >= 0 );

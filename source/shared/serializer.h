@@ -47,7 +47,6 @@ struct CUserType
 CSERIALDeclare(node);
 CSERIALDeclare(vec);
 CSERIALDeclare(string);
-CSERIALDeclare(vector);
 
 
 
