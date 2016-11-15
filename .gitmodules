@@ -2,5 +2,5 @@
 	path = source/extralib/bullet3-master
 	url = https://github.com/bulletphysics/bullet3
 [submodule "source/extralib/--force"]
-	path = source/extralib/angelscript/sdk/
-	url = https://github.com/IngwiePhoenix/AngelScript/tree/master/sdk
+	path = source/extralib/angelscript/
+	url = https://github.com/IngwiePhoenix/AngelScript/
