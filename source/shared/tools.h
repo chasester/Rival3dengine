@@ -15,6 +15,11 @@ typedef unsigned long ulong;
 typedef signed long long int llong;
 typedef unsigned long long int ullong;
 
+//fix for double concatination on gcc compilers
+#define GCC_DOUBLECONCATINATION_FIX2(fun,suffix,under) fun ## suffix ## under
+#define GCC_DOUBLECONCATINATION_FIX1(fun,suffix,under)  GCC_DOUBLECONCATINATION_FIX2(fun,suffix,under)
+#define GCC_DOUBLECONCATINATION_FIX(fun,suffix,under) GCC_DOUBLECONCATINATION_FIX1(fun,suffix,under)
+
 #ifdef _DEBUG
 #define ASSERT(c) assert(c)
 #else
