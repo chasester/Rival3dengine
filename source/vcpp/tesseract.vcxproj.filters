@@ -392,4 +392,7 @@
       <UniqueIdentifier>{b4974164-ab79-451d-baf3-39eb254c345a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="rival.rc" />
+  </ItemGroup>
 </Project>

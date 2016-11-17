@@ -1198,6 +1198,9 @@ enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib
     <None Include="spawner.halo" />
     <None Include="timespawner.halo" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="rival.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

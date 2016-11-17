@@ -45,8 +45,9 @@ namespace gle
         static inline void name(const vec &v, float w) { glVertexAttrib4f_(index, v.x, v.y, v.z, w); } \
         static inline void name(const vec2 &v) { glVertexAttrib2fv_(index, v.v); } \
         static inline void name(const vec4 &v) { glVertexAttrib4fv_(index, v.v); }
+		//#define GLE_INITATTRIB_UNDERSCORE 
     #define GLE_INITATTRIBN(name, index, suffix, type, defaultw) \
-        static inline void name##suffix(type x, type y, type z, type w = defaultw) { glVertexAttrib4N##suffix##_(index, x, y, z, w); }
+        static inline void name##suffix(type x, type y, type z, type w = defaultw) { GCC_DOUBLECONCATINATION_FIX(glVertexAttrib4N,suffix,_) (index, x, y, z, w); }
 
     GLE_INITATTRIBF(vertex, ATTRIB_VERTEX)
     GLE_INITATTRIBF(color, ATTRIB_COLOR)

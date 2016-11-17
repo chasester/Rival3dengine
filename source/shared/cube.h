@@ -82,12 +82,7 @@
 #include "glexts.h"
 #include "glemu.h"
 #endif
-//angelo phys bullet
 
-
-
-
-//angelo phys bullet
 #include "iengine.h"
 #include "igame.h"
 
