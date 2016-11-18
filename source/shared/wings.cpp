@@ -337,6 +337,7 @@ void config(asIScriptEngine *asEngine){
 	//RegisterScriptArray(asEngine, true);
 	RegisterScriptHandle(asEngine);
 	RegisterScriptWeakRef(asEngine);
+	RegisterScriptArray(asEngine, true);
 	loopv(functions)
 	{ 
 		if (!asEngine->GetGlobalFunctionByDecl(functions[i]->decl.c_str())) //check to make sure some one didnt use this function twice with the same declaration

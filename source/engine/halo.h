@@ -19,8 +19,8 @@ struct node;
 #include "scripthandle.h" //handles
 #include "scriptbuilder.h" //compiling functionality
 #include "weakref.h" //weak ref<>
+#include "scriptarray.h" //template style arrays<>
 #include "serializer.h" //serializer
-//#include "serializerC.h"
 
 
 extern int addfunction(const char *declaration, const asSFuncPtr &funcPointer, asDWORD callConv, void *objForThiscall = 0);

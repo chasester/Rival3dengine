@@ -4,6 +4,7 @@ class Object : IController
 	private node @self;
 	int index;
 	array<int> cool;
+	string hello;
 	void Create()
 	{
 		self.rot = 0;
@@ -14,6 +15,7 @@ class Object : IController
 		
 		for(int i=0; i < cool.length(); i++) cool[i] = randomint(12);
 		print(cool.length());
+		hello = "im cool";
 		
 	}
 
@@ -28,6 +30,7 @@ class Object : IController
 		self.seteditbox(index);
 		print(int(cool.length()));
 		for(int i=0; i < cool.length(); i++) print(cool[i]);
+		print(hello);
 
 	}
 	void Update()
