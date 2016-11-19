@@ -76,24 +76,14 @@ struct vec2
     vec2 &rotate_around_z(float angle) { return rotate_around_z(cosf(angle), sinf(angle)); }
     vec2 &rotate_around_z(const vec2 &sc) { return rotate_around_z(sc.x, sc.y); }
 
-	TEMPOPERATOR(vec2, (*this), += , add);
-	TEMPOPERATOR(vec2, (*this), -= , sub);
-	TEMPOPERATOR(vec2, (*this), *= , mul);
-	TEMPOPERATOR(vec2, (*this), /= , div);
-	TEMPOPERATOR(vec2, (vec2(*this)), +, add);
-	TEMPOPERATOR(vec2, (vec2(*this)), -, sub);
-	TEMPOPERATOR(vec2, (vec2(*this)), *, mul);
-	TEMPOPERATOR(vec2, (vec2(*this)), / , div);
-
-	//if macros throw error use the function code
-	/*template<class T> vec2 operator+= (T a){ return *this.add(a); }
-	template<class T> vec2 operator-= (T a){ return *this.sub(a); }
-	template<class T> vec2 operator*= (T a){ return *this.mul(a); }
-	template<class T> vec2 operator/= (T a){ return *this.div(a); }
+    template<class T> vec2 operator+= (T a){ return *this->add(a); }
+    template<class T> vec2 operator-= (T a){ return *this->sub(a); }
+    template<class T> vec2 operator*= (T a){ return *this->mul(a); }
+    template<class T> vec2 operator/= (T a){ return *this->div(a); }
 	template<class T> vec2 operator+ (T a){ return vec2(*this).add(a); }
 	template<class T> vec2 operator- (T a){ return vec2(*this).sub(a); }
 	template<class T> vec2 operator* (T a){ return vec2(*this).mul(a); }
-	template<class T> vec2 operator/ (T a){ return vec2(*this).div(a); }*/
+    template<class T> vec2 operator/ (T a){ return vec2(*this).div(a); }
 };
 
 
