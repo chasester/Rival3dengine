@@ -295,14 +295,14 @@ struct vec
 	int tohexcolor() const { return (int(::clamp(r, 0.0f, 1.0f) * 255) << 16) | (int(::clamp(g, 0.0f, 1.0f) * 255) << 8) | int(::clamp(b, 0.0f, 1.0f) * 255); }
 	
 	////arithmitic opperators
-	TEMPOPERATOR(vec, (*this), += , add);
+    /*TEMPOPERATOR(vec, (*this), += , add);
 	TEMPOPERATOR(vec, (*this), -= , sub);
 	TEMPOPERATOR(vec, (*this), *= , mul);
 	TEMPOPERATOR(vec, (*this), /= , div);
 	TEMPOPERATOR(vec, (vec(*this)), +, add);
 	TEMPOPERATOR(vec, (vec(*this)), -, sub);
 	TEMPOPERATOR(vec, (vec(*this)), *, mul);
-	TEMPOPERATOR(vec, (vec(*this)), / , div);
+    TEMPOPERATOR(vec, (vec(*this)), / , div);*/
 	const char *c_str(){ defformatstring(chr, "%f, %f, %f", x, y, z); return chr;}
 	//std::string to_str(){ defformatstring(chr, "%f, %f, %f", x, y, z); return std::string( chr); }
 
@@ -416,14 +416,14 @@ struct vec4
     vec4 &rotate_around_y(const vec2 &sc) { return rotate_around_y(sc.x, sc.y); }
 
 	////arithmitic opperators
-	TEMPOPERATOR(vec4, (*this), += , add);
+    /*TEMPOPERATOR(vec4, (*this), += , add);
 	TEMPOPERATOR(vec4, (*this), -= , sub);
 	TEMPOPERATOR(vec4, (*this), *= , mul);
 	TEMPOPERATOR(vec4, (*this), /= , div);
 	TEMPOPERATOR(vec4, (vec4(*this)), +, add);
 	TEMPOPERATOR(vec4, (vec4(*this)), -, sub);
 	TEMPOPERATOR(vec4, (vec4(*this)), *, mul);
-	TEMPOPERATOR(vec4, (vec4(*this)), / , div);
+    TEMPOPERATOR(vec4, (vec4(*this)), / , div);*/
 
 	
 };
