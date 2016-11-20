@@ -1,3 +1,4 @@
+//#define STANDALONE FALSE
 #ifndef __CUBE_H__
 #define __CUBE_H__
 
@@ -82,7 +83,12 @@
 #include "glexts.h"
 #include "glemu.h"
 #endif
+//angelo phys bullet
 
+
+
+
+//angelo phys bullet
 #include "iengine.h"
 #include "igame.h"
 
