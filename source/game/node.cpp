@@ -120,7 +120,6 @@ bool node::restore()
 	if (!c) {
 		conoutf("No C not restored");
 		return false;
-		
 	}
 	c->Restore(this, CSerialnode::getID());
 	this->store();

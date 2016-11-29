@@ -175,7 +175,7 @@ if (name == v[i])\
 	conoutf(strv.c_str());\
 }
 
-int gettypeid(str name) { GETID(types, asTYPEID_STRING+1); }
+int gettypeid(str name) { GETID(types, asTYPEID_STRING); }
 
 int getnameid(str name){ GETID(names, 0); }
 
@@ -242,7 +242,7 @@ void CSerializer::load(stream *f)
 	PULLLILVECTOR(namespaces);
 	PULLLILVECTOR(types);
 	PULLLILVECTOR(names);
-	PRINT_VECTOR(names);
+	PRINT_VECTOR(types);
 	uint size = f->getlil<uint>();
 	loopi(size)saveddata.put(DataHold::read(f));
 	loopv(saveddata)
@@ -256,7 +256,9 @@ void CSerializer::load(stream *f)
 	if (!m_root.m_serializer) { conoutf("failed to init serializer, map will not load nodes."); return; }
 	index = -1; //this is to avoid a compile time error that causes the function to add extra number to index
 	m_root.load();
-	curworld->serializedworld();
+	m_root.print(0);
+	curworld->curscene->resetworld();
+	//curworld->serializedworld();
 	return;
 }
 #define CALLCONSTRUCTOR(n) new n();
@@ -278,7 +280,8 @@ void CSerializedValue::load()
 	//now we have our tree skeloton so now we take the data from savedata and add it to the objects starting with the childen and working up the tree
 	m_isInit = true;
 	m_name = names[VECTOROVERLOADCHECK(names, sd.nameID)];
-	m_typeName = types[VECTOROVERLOADCHECK(types, sd.typeID - (asTYPEID_STRING + 1))];
+	conoutf("%d hello there", sd.typeID - (asTYPEID_STRING));
+	m_typeName = sd.typeID < asTYPEID_STRING ? asScript->getprimitivename(sd.typeID) : types[ VECTOROVERLOADCHECK(types , sd.typeID - asTYPEID_STRING)];
 	m_nameSpace = namespaces[VECTOROVERLOADCHECK(namespaces, sd.namespaceID)];
 
 	if (sd.typeID == asTYPEID_VOID || sd.typeID == asTYPEID_STRING + 1)  return;
@@ -310,26 +313,28 @@ void CSerializedValue::load()
 			m_typeId = ot->GetTypeId();
 			if (m_typeId & asTYPEID_SCRIPTOBJECT )
 			{
-				m_restorePtr = asScript->asEngine->CreateUninitializedScriptObject(ot);
-				asIScriptObject *a = static_cast<asIScriptObject *> (m_restorePtr);
-
+				m_originalPtr = asScript->asEngine->CreateUninitializedScriptObject(ot);
+				if (m_originalPtr) SetUserData(m_originalPtr);
+	/*			asIScriptObject *a = static_cast<asIScriptObject *> (m_restorePtr);
+				if(a)
 				loopi(min(m_children.size(), a->GetPropertyCount()))
 				{
-					try
-					{
-						//if (!m_children[i]) { conoutf("noooo"); continue; }
-						if (m_children[i]->GetTypeId() <= asTYPEID_DOUBLE && m_children[i]->GetTypeId() != asTYPEID_VOID)
-						{
-							if ( m_children[i]->m_name == str(a->GetPropertyName(i)) && m_children[i]->GetTypeId() == a->GetPropertyTypeId(i))
-							asScript->assigntoptrfromtypeid(a->GetAddressOfProperty(i), m_children[i]->m_restorePtr, m_children[i]->m_typeId);
-							//*reinterpret_cast<int*>(a->GetAddressOfProperty(i)) = *(int *) m_children[i]->m_restorePtr; //change this so that it cast based on the primitive type
-							//conoutf("the number is: %d %d", 0, *(int *) a->GetAddressOfProperty(i));
-						}
-					}
-					catch (...) {
-						conoutf("name here %s %s", m_children[i]->m_name.c_str(), a->GetPropertyName(i));
-					}
-				}
+					return;*/
+				//	try
+				//	{
+				//		//if (!m_children[i]) { conoutf("noooo"); continue; }
+				//		if (m_children[i]->GetTypeId() <= asTYPEID_DOUBLE && m_children[i]->GetTypeId() != asTYPEID_VOID)
+				//		{
+				//			if ( m_children[i]->m_name == str(a->GetPropertyName(i)) && m_children[i]->GetTypeId() == a->GetPropertyTypeId(i))
+				//			asScript->assigntoptrfromtypeid(a->GetAddressOfProperty(i), m_children[i]->m_restorePtr, m_children[i]->m_typeId);
+				//			//*reinterpret_cast<int*>(a->GetAddressOfProperty(i)) = *(int *) m_children[i]->m_restorePtr; //change this so that it cast based on the primitive type
+				//			//conoutf("the number is: %d %d", 0, *(int *) a->GetAddressOfProperty(i));
+				//		}
+				//	}
+				//	catch (...) {
+				//		conoutf("name here %s %s", m_children[i]->m_name.c_str(), a->GetPropertyName(i));
+				//	}
+				//}
 
 			}
 			else
@@ -345,8 +350,10 @@ void CSerializedValue::load()
 	else //ok it must be a preimitive
 	{
 		m_typeId = sd.typeID;
-		m_restorePtr = asScript->createprivitiveptr(m_typeId);
-		memcpy(m_restorePtr, &sd.data[0], sd.data.size());
+		m_typeName = asScript->getprimitivename(m_typeId);
+		m_mem.resize(sd.data.size());
+		memcpy(&m_mem[0], &sd.data[0], sd.data.size());
+		
 	}
 
 	return ;
@@ -744,11 +751,10 @@ void CSerializedValue::Restore(void *ref, int typeId)
 	}
 
 	// Verify that the stored type matched the new type of the value being restored
-	if( typeId <= asTYPEID_DOUBLE && typeId != m_typeId ) return; // TODO: We may try to do a type conversion for primitives
-	if( (typeId & ~asTYPEID_MASK_SEQNBR) ^ (m_typeId & ~asTYPEID_MASK_SEQNBR) ) return;
+	if (typeId <= asTYPEID_DOUBLE && typeId != m_typeId) {	conoutf("miss matched typeID");  return;} // TODO: We may try to do a type conversion for primitives
+//if ((typeId & ~asTYPEID_MASK_SEQNBR) ^ (m_typeId & ~asTYPEID_MASK_SEQNBR)) { conoutf("mask error"); return; }
 	asITypeInfo *type = m_serializer->m_engine->GetTypeInfoById(typeId);
-	if( type && m_typeName != type->GetName() ) return;
-
+	if (type && m_typeName != type->GetName()) { conoutf("name error %s, %s", m_typeName.c_str(), type->GetName()); return; }
 	// Set the new pointer and type
 	m_restorePtr = ref;
 	SetType(typeId);
@@ -779,7 +785,7 @@ void CSerializedValue::Restore(void *ref, int typeId)
 	{
 		asIScriptObject *obj = (asIScriptObject *)ref;
 		asITypeInfo *type = GetType();
-		if (!type) return ;
+		if (!type) { conoutf("non type error"); return;	}
 		// Retrieve children
 		for( asUINT i = 0; i < type->GetPropertyCount() ; i++ )
 		{	
@@ -790,6 +796,7 @@ void CSerializedValue::Restore(void *ref, int typeId)
 			CSerializedValue *var = FindByName(nameProperty, "");
 			if( var )
 				var->Restore(obj->GetAddressOfProperty(i), typeId);
+			else conoutf("no val to add");
 		}
 	}
 	else
@@ -929,9 +936,9 @@ void CSerializedValue::SetUserData(void *data)
 
 void CSerializedValue::print(int depth)
 {
-	std::string a = "";
-	loop(depth) a += ">";
-	a += m_typeName + m_name;
+	std::string a = "", b = "";
+	loop(depth) b = "\>";
+	a += b + m_typeName + " " + m_name;
 	conoutf("%s", a.c_str());
 	for (uint i = 0; i < m_children.size(); i++)
 	{
@@ -949,6 +956,39 @@ uint CSerializedValue::GetTypeId() { return m_typeId; }
 //////////////////////////////////////////////////////
 void CSerialnode::Create(CSerializedValue *val)
 {
+	node *n = new node(vec(0));
+	val->m_restorePtr = n;
+	curworld->addnodetoscene(n);
+	n->c = val;
+	//attach ctrls to the object
+	if (val->m_children.size() > 3)
+	{
+		loopk(val->m_children.size() - 3)
+		{
+			bool flag = false;
+			asIScriptObject *c = (asIScriptObject *) val->m_children[k + 3]->GetUserData();
+			if (c) {
+				for (int i = 0; i < c->GetPropertyCount(); i++)
+				{
+					if (str(c->GetPropertyName(i)) == str("self"))
+					{
+						// Set the property to point to the node
+						//*reinterpret_cast<node**>(n->ctrl->GetAddressOfProperty(i)) = (node *) n;
+						asScript->assigntoptr<node>(c->GetAddressOfProperty(i), n, true);
+						// Increment the refcount of node since the asobject now holds a reference
+						n->ctrl.add(c);
+						n->addref();
+						flag = true;
+					}
+				}
+				if (!flag)  conoutf("error assigning Self %s", typeidtoname(c->GetTypeId())); //class had no declared self @node we need to remove this object from the node;
+			}
+			else conoutf("error null data, object not added correctly, may be due to error in module");
+		}
+	}
+
+	return;
+
 	loopi(val->m_children.size()) {
 		if (!val->m_children[i]->m_restorePtr)
 		{ //ok something is screwed up we have null pointer so lets do what we can
@@ -973,7 +1013,7 @@ void CSerialnode::Create(CSerializedValue *val)
 				val->m_children[i]->m_restorePtr = 0;
 	}
 	//now lets create the object
-	node *n;
+	//node *n;
 	if (val->m_children.size() < 2)
 		n = new node(vec(), vec());
 	else {
@@ -984,28 +1024,7 @@ void CSerialnode::Create(CSerializedValue *val)
 		n->name = *(std::string*)val->m_children[2]->GetUserData();
 		
 	}
-	if (val->m_children.size() > 3)
-	{
-		loopk(val->m_children.size() - 3) 
-		{
-			bool flag = false;
-			asIScriptObject *c = (asIScriptObject *) val->m_children[k+3]->m_restorePtr;
-			if(c) for (int i = 0; i < c->GetPropertyCount(); i++)
-			{
-				if (str(c->GetPropertyName(i)) == str("self"))
-				{
-					// Set the property to point to the node
-					//*reinterpret_cast<node**>(n->ctrl->GetAddressOfProperty(i)) = (node *) n;
-					asScript->assigntoptr<node>(c->GetAddressOfProperty(i), n, true);
-					// Increment the refcount of node since the asobject now holds a reference
-					n->ctrl.add(c);
-					n->addref();
-					flag = true;
-				}
-			}
-			if(!flag)  conoutf("error assigning Self %s", typeidtoname(c->GetTypeId())); //class had no declared self @node we need to remove this object from the node;
-		}
-	}
+	
 	curworld->addnodetoscene(n);
 }
 void CSerialnode::Store(CSerializedValue *val, void *ptr)
@@ -1041,14 +1060,15 @@ int CSerialnode::serialID = -1;
 void CSerialvec::Create(CSerializedValue *val)
 {
 	vec v(0);
-	
+	val->m_restorePtr = new vec();
+	return;
 	loopi(val->m_children.size())
 	{
 		if (i >= 3) break;
 		if (!val->m_children[i] || !val->m_children[i]->m_restorePtr) continue;
 		v[i] = *(float *) val->m_children[i]->m_restorePtr;
 	}
-	val->m_restorePtr = new vec(v);
+	
 }
 
 void CSerialvec::Store(CSerializedValue *val, void *ptr)
@@ -1074,26 +1094,39 @@ void CSerialvec::CleanupUserData(CSerializedValue *val)
 }
 int CSerialvec::serialID = -1;
 
+////////////////////////////////////////////////////////
+
 void CSerialstring::Create(CSerializedValue *val)
 {
-	str buffer = str();
+	str buffer =  str();
 	buffer.resize(val->m_mem.size());
+	conoutf("CREATE: my length is %d", buffer.size());
 	memcpy(&buffer[0], &val->m_mem[0], val->m_mem.size());
-	val->m_restorePtr = new str(buffer);
+	//val->m_restorePtr = new str(buffer);
+	//conoutf("CREATE: my value is %s", buffer.c_str());
 	//std::string *buffer = (std::string*)val->m_restorePtr;
-	val->SetUserData(val->m_restorePtr);
+	val->SetUserData(&buffer);
 }
 
 void CSerialstring::Store(CSerializedValue *val, void *ptr)
 {
-	val->m_restorePtr = new str(*(str *) ptr);
+	val->SetUserData( new str(*(str *) ptr));
+	str *buffer = new str(*(str *) ptr);
+	val->m_mem.resize(buffer->size());
+	memcpy(&val->m_mem[0], &buffer[0], buffer->size());
 }
 
 void CSerialstring::Restore(CSerializedValue *val, void *ptr)
 {
-	std::string *buffer = (std::string*)val->m_restorePtr;
-	*(std::string*)ptr = *buffer;
+	str buffer = str();
+	buffer.resize(val->m_mem.size());
+	memcpy(&buffer[0], &val->m_mem[0], val->m_mem.size());
+	conoutf("Restore: my length is %d", buffer.size());
+	conoutf("Restore: my value is %s", buffer.c_str());
 }
+//	std::string *buffer = (std::string*)val->GetUserData();
+	//*(std::string*)ptr = *buffer;
+	
 
 void CSerialstring::CleanupUserData(CSerializedValue *val) 
 {
@@ -1105,8 +1138,8 @@ void CSerialvector::Create(CSerializedValue *val)
 	CScriptArray *buffer = CScriptArray::Create(val->m_children[0]->GetType(), val->m_children.size());
 	val->m_restorePtr = buffer;
 	val->SetUserData(buffer);
-	for (size_t i = 0; i < val->m_children.size(); ++i)
-		val->m_children[i]->Restore(buffer->At(asUINT(i)), buffer->GetElementTypeId());
+	//for (size_t i = 0; i < val->m_children.size(); ++i)
+		//val->m_children[i]->Restore(buffer->At(asUINT(i)), buffer->GetElementTypeId());
 }
 
 void CSerialvector::Store(CSerializedValue *val, void *ptr)

@@ -152,12 +152,12 @@ public:
 
 template<typename T> void assigntoptr(void *a, void *b, bool handle = false)
 {
-	try
+	//try
 	{
 		if (handle) *reinterpret_cast<T**>(a) = (T *) (b);
 		else *reinterpret_cast<T*>(a) = *(T *) (b);
 	}
-	catch (...)
+	//catch (...)
 	{
 		conoutf("Not a script object of primitive " );
 	}
