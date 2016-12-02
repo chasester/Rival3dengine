@@ -2,7 +2,7 @@
 *.slo
 *.lo
 *.o
-*.obj
+#*.obj needs to be here for models
 
 # Precompiled Headers
 *.gch
@@ -27,5 +27,11 @@
 #*.exe
 *.out
 *.app
-
+#VS build files
 bin/tesseract.lib
+*.pdb
+*.map
+*.exp
+source/vcpp/Release
+source/vcpp/Debug
+source/vcpp/ipch
