@@ -746,9 +746,8 @@ void CSerializedValue::Store(void *ref, int typeId)
 
 void CSerializedValue::Restore(void *ref, int typeId)
 {
-	if (!this || !m_isInit || !ref) {
-		conoutf("not init"); return;
-	}
+	if( !this || !m_isInit || !ref )
+		return;
 
 	// Verify that the stored type matched the new type of the value being restored
 	if (typeId <= asTYPEID_DOUBLE && typeId != m_typeId) {	conoutf("miss matched typeID");  return;} // TODO: We may try to do a type conversion for primitives
