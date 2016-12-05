@@ -1,4 +1,3 @@
-//#define STANDALONE FALSE
 #ifndef __CUBE_H__
 #define __CUBE_H__
 
@@ -56,10 +55,25 @@
   #define ZLIB_DLL
 #endif
 
-#ifndef STANDALONE
+// original
+/*#ifndef STANDALONE
   #ifdef __APPLE__
     #include "SDL2/SDL.h"
     #include "SDL2/SDL_opengl.h"
+    #define main SDL_main
+  #else
+    #include <SDL.h>
+    #include <SDL_opengl.h>
+  #endif
+#endif
+*/
+
+#ifndef STANDALONE
+  #ifdef __APPLE__
+    #include "SDL2/SDL.h"
+    #define GL_GLEXT_LEGACY
+    #define __glext_h_
+    #include <OpenGL/gl.h>
     #define main SDL_main
   #else
     #include <SDL.h>
@@ -83,12 +97,7 @@
 #include "glexts.h"
 #include "glemu.h"
 #endif
-//angelo phys bullet
 
-
-
-
-//angelo phys bullet
 #include "iengine.h"
 #include "igame.h"
 

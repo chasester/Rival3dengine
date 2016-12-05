@@ -326,7 +326,10 @@ void addplayertobullet(){
 inline btVector3 convert2bt(vec vt){ vec v(vt); v.mul(SCALING); return btVector3(v.x, v.z, v.y); }
 inline vec convertfrombt(btVector3 &v){ return vec(v.getX(), v.getZ(), v.getY()).mul(SAUER_FACTOR); }
 
-bool rayTest(vec &start, vec &end, vec &normal = vec(0)){
+//bool rayTest(vec &start, vec &end, vec &normal = vec(0)){
+
+
+bool rayTest(vec &start, vec &end, vec &normal){
 	btCollisionWorld::ClosestRayResultCallback RayCallback(convert2bt(start), convert2bt(end));
 	m_dynamicsWorld->rayTest(convert2bt(start), convert2bt(end), RayCallback);
 	if (RayCallback.hasHit()){

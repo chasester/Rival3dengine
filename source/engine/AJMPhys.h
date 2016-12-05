@@ -1,5 +1,5 @@
-#include "btBulletDynamicsCommon.h"
-#include "btBulletCollisionCommon.h"
+#include "../extralib/bullet3/src/btBulletDynamicsCommon.h"
+#include "../extralib/bullet3/src/btBulletCollisionCommon.h"
 
 //#include "LinearMath/btQuickprof.h"
 //#include "LinearMath/btIDebugDraw.h"
