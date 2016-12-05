@@ -1,5 +1,5 @@
 CXXFLAGS= -g -O3 -fomit-frame-pointer -ffast-math
-override CXXFLAGS+= -Wall -fsigned-char -fno-rtti -std=c++11
+override CXXFLAGS+= -Wall -fsigned-char -fno-exceptions -fno-rtti -std=c++11
 
 PLATFORM= $(shell uname -s)
 PLATFORM_ARCH= $(shell uname -m)
@@ -50,18 +50,47 @@ else
 CLIENT_INCLUDES= $(INCLUDES) -I/usr/X11R6/include `sdl2-config --cflags`
 CLIENT_LIBS= -Lenet -lenet -L/usr/X11R6/lib -lX11 `sdl2-config --libs` -lSDL2_image -lSDL2_mixer -lz -lGL
 endif
+#angelo bullet
+#Note that many compilers the link order matters, so make sure to use the following order of libraries:
+#BulletMultiThreaded (optional)
+#MiniCL (optional)
+#BulletWorldImporter (optional)
+#BulletSoftBody (optional)
+#BulletDynamics
+#BulletCollision
+#LinearMath
+
+
+BULLET_LIBS= \
+	$(BULLET_LIB_PATH)/BulletDynamics/libBulletDynamics.a \
+	$(BULLET_LIB_PATH)/BulletCollision/libBulletCollision.a \
+	$(BULLET_LIB_PATH)/LinearMath/libLinearMath.a 
+
+#	$(BULLET_LIB_PATH)/BulletSoftBody/libBulletSoftBody.a \ 
+
+
+#	$(BULLET_LIB_PATH)/Bullet3Common/libBullet3Common.a \
+#	$(BULLET_LIB_PATH)/Bullet3Geometry/libBullet3Geometry.a \
+#	$(BULLET_LIB_PATH)/Bullet3Serialize/Bullet2FileLoader/libBullet2FileLoader.a \
+#	$(BULLET_LIB_PATH)/Bullet3Dynamics/libBullet3Dynamics.a \
+#	$(BULLET_LIB_PATH)/Bullet3Collision/libBullet3Collision.a \
+#	$(BULLET_LIB_PATH)/Bullet3OpenCL/libBullet3OpenCL_clew.a	
+#angelo bullet
 ifeq ($(PLATFORM),Linux)
 CLIENT_LIBS+= -lrt
+	ifneq (,$(OVR))
+		CLIENT_INCLUDES+= -ILibOVR/Include -DHAS_OVR=1
+		ifneq (,$(findstring 64,$(PLATFORM_ARCH)))
+			CLIENT_LIBS+= -LLibOVR/Lib/Linux/Release/x86_64 -lovr -ludev -lXinerama
+		else
+			CLIENT_LIBS+= -LLibOVR/Lib/Linux/Release/i386 -lovr -ludev -lXinerama
+		endif
+	endif
 else
 ifneq (,$(findstring GNU,$(PLATFORM))) 
 CLIENT_LIBS+= -lrt 
 endif 
 endif
-
-BULLET_LIBS= \
-        $(BULLET_LIB_PATH)/BulletDynamics/libBulletDynamics.a \
-        $(BULLET_LIB_PATH)/BulletCollision/libBulletCollision.a \
-        $(BULLET_LIB_PATH)/LinearMath/libLinearMath.a 
 
 CLIENT_OBJS= \
 	shared/crypto.o \
@@ -87,8 +116,9 @@ CLIENT_OBJS= \
 	engine/octa.o \
 	engine/octaedit.o \
 	engine/octarender.o \
+	engine/ovr.o \
 	engine/physics.o \
-        engine/AJMPhys.o \
+	engine/AJMPhys.o \
 	engine/pvs.o \
 	engine/rendergl.o \
 	engine/renderlights.o \
@@ -116,8 +146,8 @@ CLIENT_OBJS= \
 	game/server.o \
 	game/waypoint.o \
 	game/weapon.o \
-        game/movable.o \
-        game/AJMmovable.o
+	game/movable.o\
+	game/AJMmovable.o
 
 CLIENT_PCH= shared/cube.h.gch engine/engine.h.gch game/game.h.gch
 
@@ -203,7 +233,7 @@ client:	libenet $(CLIENT_OBJS)
 	$(CXX) $(CXXFLAGS) -o tess_client $(CLIENT_OBJS) $(CLIENT_LIBS) $(BULLET_LIBS)
 
 server:	libenet $(SERVER_OBJS)
-	$(CXX) $(CXXFLAGS) -o tess_server $(SERVER_OBJS) $(SERVER_LIBS) $(BULLET_LIBS)
+	$(CXX) $(CXXFLAGS) -o tess_server $(SERVER_OBJS) $(SERVER_LIBS) $(BULLET_LIBS)  
 	
 master: libenet $(MASTER_OBJS)
 	$(CXX) $(CXXFLAGS) -o tess_master $(MASTER_OBJS) $(MASTER_LIBS) $(BULLET_LIBS)  
@@ -330,6 +360,10 @@ engine/octarender.o: shared/glexts.h shared/glemu.h shared/iengine.h
 engine/octarender.o: shared/igame.h engine/world.h engine/octa.h
 engine/octarender.o: engine/light.h engine/texture.h engine/bih.h
 engine/octarender.o: engine/model.h
+engine/ovr.o: engine/engine.h shared/cube.h shared/tools.h shared/geom.h
+engine/ovr.o: shared/ents.h shared/command.h shared/glexts.h shared/glemu.h
+engine/ovr.o: shared/iengine.h shared/igame.h engine/world.h engine/octa.h
+engine/ovr.o: engine/light.h engine/texture.h engine/bih.h engine/model.h
 engine/physics.o: engine/engine.h shared/cube.h shared/tools.h shared/geom.h
 engine/physics.o: shared/ents.h shared/command.h shared/glexts.h
 engine/physics.o: shared/glemu.h shared/iengine.h shared/igame.h
