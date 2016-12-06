@@ -193,6 +193,7 @@ void CSerializer::save(stream *f)
 	types.put("string");
 	types.put("VOID");
 	m_root.save();
+	types.put("OVERREAD");
 	//save namespaces
 	PUTLILVECTOR(namespaces);
 	//save types
@@ -256,9 +257,9 @@ void CSerializer::load(stream *f)
 	if (!m_root.m_serializer) { conoutf("failed to init serializer, map will not load nodes."); return; }
 	index = -1; //this is to avoid a compile time error that causes the function to add extra number to index
 	m_root.load();
-	m_root.print(0);
 	curworld->curscene->resetworld();
-	//curworld->serializedworld();
+	m_root.print(0);
+	curworld->serializedworld();
 	return;
 }
 #define CALLCONSTRUCTOR(n) new n();
@@ -278,24 +279,22 @@ void CSerializedValue::load()
 		if (child->m_isInit) m_children.push_back(child);
 	}
 	//now we have our tree skeloton so now we take the data from savedata and add it to the objects starting with the childen and working up the tree
+	asITypeInfo *ot;
 	m_isInit = true;
 	m_name = names[VECTOROVERLOADCHECK(names, sd.nameID)];
-	conoutf("%d hello there", sd.typeID - (asTYPEID_STRING));
 	m_typeName = sd.typeID < asTYPEID_STRING ? asScript->getprimitivename(sd.typeID) : types[ VECTOROVERLOADCHECK(types , sd.typeID - asTYPEID_STRING)];
 	m_nameSpace = namespaces[VECTOROVERLOADCHECK(namespaces, sd.namespaceID)];
-
+	
 	if (sd.typeID == asTYPEID_VOID || sd.typeID == asTYPEID_STRING + 1)  return;
 	
 	if (sd.typeID == asTYPEID_STRING) 
 	{
+		SetType(CSerialstring::getID());
 		m_mem.resize(sd.data.size()); m_mem = sd.data;
-		m_typeId = CSerialstring::getID();
 		m_serializer->m_userTypes["string"]->Create(this);
 		return;
-	}
-
+	}	
 	
-	asITypeInfo *ot;
 	if (sd.typeID > asTYPEID_STRING) // is object a non perimitive
 	{
 		if (m_typeName == str("__ERROR__")) return;
@@ -307,7 +306,7 @@ void CSerializedValue::load()
 			if (!mod) { conoutf("ERROR!!! no mod"); return ; }
 			ot = mod->GetTypeInfoByName(m_typeName.c_str());
 		}
-		
+		SetType(ot->GetTypeId());
 		if (ot)
 		{
 			m_typeId = ot->GetTypeId();
@@ -617,11 +616,14 @@ CSerializedValue::~CSerializedValue()
 
 CSerializedValue *CSerializedValue::FindByName(const std::string &name, const std::string &nameSpace)
 {
-	for( size_t i = 0; i < m_children.size(); i++ )
-		if( m_children[i]->m_name      == name &&
-			m_children[i]->m_nameSpace == nameSpace )
+	conoutf("%d", m_children.size());
+	for (size_t i = 0; i < m_children.size(); i++) 
+	{
+		conoutf("%s %s hello2", name.c_str(), m_children[i]->m_name );
+		if (m_children[i]->m_name == name &&
+			m_children[i]->m_nameSpace == nameSpace)
 			return m_children[i];
-
+	}
 	return 0;
 }
 
@@ -753,11 +755,11 @@ void CSerializedValue::Restore(void *ref, int typeId)
 	if (typeId <= asTYPEID_DOUBLE && typeId != m_typeId) {	conoutf("miss matched typeID");  return;} // TODO: We may try to do a type conversion for primitives
 //if ((typeId & ~asTYPEID_MASK_SEQNBR) ^ (m_typeId & ~asTYPEID_MASK_SEQNBR)) { conoutf("mask error"); return; }
 	asITypeInfo *type = m_serializer->m_engine->GetTypeInfoById(typeId);
-	if (type && m_typeName != type->GetName()) { conoutf("name error %s, %s", m_typeName.c_str(), type->GetName()); return; }
+	
 	// Set the new pointer and type
 	m_restorePtr = ref;
 	SetType(typeId);
-
+	if (type && m_typeName != type->GetName()) { conoutf("name error %s, %s", m_typeName.c_str(), type->GetName()); }
 	// Restore the value
 	if( m_typeId & asTYPEID_OBJHANDLE )
 	{
@@ -791,7 +793,7 @@ void CSerializedValue::Restore(void *ref, int typeId)
 			const char *nameProperty;
 			int typeId;
 			type->GetProperty(i, &nameProperty, &typeId);
-			
+			conoutf("%s here", nameProperty);
 			CSerializedValue *var = FindByName(nameProperty, "");
 			if( var )
 				var->Restore(obj->GetAddressOfProperty(i), typeId);
@@ -936,9 +938,8 @@ void CSerializedValue::SetUserData(void *data)
 void CSerializedValue::print(int depth)
 {
 	std::string a = "", b = "";
-	loop(depth) b = "\>";
-	a += b + m_typeName + " " + m_name;
-	conoutf("%s", a.c_str());
+	loop(depth) b = ">";
+	conoutf("%s%s::%s %s %d", b.c_str(), m_name.c_str(), m_typeName.c_str(), a.c_str(), m_children.size());
 	for (uint i = 0; i < m_children.size(); i++)
 	{
 		m_children[i]->print(depth+1);

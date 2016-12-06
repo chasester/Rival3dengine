@@ -148,6 +148,7 @@ public:
 	{
 		int a = nodes.length();
 		vector<node*> nd;
+		print(str("helo world"));
 		loopi(a)
 		{
 			node *g = nodes[i];
