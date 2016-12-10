@@ -64,7 +64,7 @@ void hello();
 //errorhandling for inline functions and vars
 bool FATALERROR(int r, int line, const char *file);
 #define asFATAL if (r<0)FATALERROR(r, __LINE__,  __FILE__);
- 
+
 //exection functions
 #define asCOMMAND(ret,name, args) static bool _dummy_##name = addfunction( (str(#ret) + " " + str(#name) + str(#args)).c_str() , asFUNCTIONPR(name, args, ret), asCALL_CDECL, 0) < 0 ? !FATALERROR(0, __LINE__,  __FILE__)  : true;
 //#define asVAR(type, name) asEngine->RegisterGlobalProperty((str(#type) + " " + str(#name)).c_str(), name);
@@ -77,109 +77,108 @@ void asEngineShutdown();
 
 struct IController
 {
-	int a;
-	node *self;
+    int a;
+    node *self;
 };
-
-
 
 struct node;
 struct ScriptManager 
 {
 private:
-	struct ScriptControler 
-	{
+    struct ScriptControler
+    {
 
-		str module;
-		asITypeInfo     *type;
-		//store a link to the action functions
-		asIScriptFunction *onMessageMethod;
-		asIScriptFunction *onCreate;
-		asIScriptFunction *onAwake;
-		asIScriptFunction *onUpdate;
-		asIScriptFunction *onRender;
-		asIScriptFunction *onGui;
-		asIScriptFunction *onDestroy;
+        str module;
+        asITypeInfo     *type;
+        //store a link to the action functions
+        asIScriptFunction *onMessageMethod;
+        asIScriptFunction *onCreate;
+        asIScriptFunction *onAwake;
+        asIScriptFunction *onUpdate;
+        asIScriptFunction *onRender;
+        asIScriptFunction *onGui;
+        asIScriptFunction *onDestroy;
 
-		void reload();
-		void copy(ScriptControler *ctrl);
-	};
-	struct prefab
-	{
-		str name;
-		//vector<asITypeInfo *> types;
-		vector<ScriptControler *> objects;
-		//vector<const char *> paths;
-		prefab(str n, vector<str> paths);
-	};
-	
+        void reload();
+        void copy(ScriptControler *ctrl);
+    };
+    struct prefab
+    {
+        str name;
+        //vector<asITypeInfo *> types;
+        vector<ScriptControler *> objects;
+        //vector<const char *> paths;
+        prefab(str n, vector<str> paths);
+    };
+
 public:
-	int r;
-	bool hasCompileErrors;
-	asIScriptEngine *asEngine;
-	vector<asIScriptContext *> contexts;
-	vector<ScriptControler *> ctrls;
-	vector<prefab *> prefabs;
-	CSerializer *serializer;
+    int r;
+    bool hasCompileErrors;
+    asIScriptEngine *asEngine;
+    vector<asIScriptContext *> contexts;
+    vector<ScriptControler *> ctrls;
+    vector<prefab *> prefabs;
+    CSerializer *serializer;
 
-	ScriptManager();
+    ScriptManager();
 
-	//prefabs
-	//serializer
-	void setupserializer(CSerializer *s);
-	void setupdatatypeasserializedtype();
-	void createSerialized(asIScriptModule * mod);
-	void createSerialized(str mod);
-	void restoreSerialized(asIScriptModule *mod);
-	void restoreSerialized(str mod);
-	void resetserializer();
+    //prefabs
+    //serializer
+    void setupserializer(CSerializer *s);
+    void setupdatatypeasserializedtype();
+    void createSerialized(asIScriptModule * mod);
+    void createSerialized(str mod);
+    void restoreSerialized(asIScriptModule *mod);
+    void restoreSerialized(str mod);
+    void resetserializer();
 
-	int ExecuteCall(asIScriptContext *ctx);
-	void recompilemodule(str script);
-	str getprimitivename(int id);
-	asIScriptObject *CreateController(const str &script, node *gameObj);
+    int ExecuteCall(asIScriptContext *ctx);
+    void recompilemodule(str script);
+    str getprimitivename(int id);
+    asIScriptObject *CreateController(const str &script, node *gameObj);
 
-	//setup action functions
+    //setup action functions
 #define CREATEACTIONTYPESDEF(call) void do##call(asIScriptObject *object);
-	CREATEACTIONTYPESDEF(Awake);
-	CREATEACTIONTYPESDEF(Create);
-	CREATEACTIONTYPESDEF(Update);
-	CREATEACTIONTYPESDEF(Render);
-	CREATEACTIONTYPESDEF(Gui);
-	CREATEACTIONTYPESDEF(Destroy);
-	
-	#define CODE_TO_STRING(C) #C
+    CREATEACTIONTYPESDEF(Awake);
+    CREATEACTIONTYPESDEF(Create);
+    CREATEACTIONTYPESDEF(Update);
+    CREATEACTIONTYPESDEF(Render);
+    CREATEACTIONTYPESDEF(Gui);
+    CREATEACTIONTYPESDEF(Destroy);
 
-template<typename T> void assigntoptr(void *a, void *b, bool handle = false)
-{
-    //try
-    //{
-        if (handle) *reinterpret_cast<T**>(a) = (T *) (b);
-        else *reinterpret_cast<T*>(a) = *(T *) (b);
-    //}
-    //catch (...)
-    //{
-        //conoutf("Not a script object of primitive " );
-    //}
-}
-template<typename T> void changerefptr(void *b, void *v)
-{
-	//*reinterpret_cast<T *>(b) = (T (*v));
-	
-}
-void assigntoptrfromtypeid(void *a, void *b, int id);
-void *createprivitiveptr(int id);
-void *convertPrimitive(void * v, int type);
+#define CODE_TO_STRING(C) #C
+
+    template<typename T> void assigntoptr(void *a, void *b, bool handle = false)
+    {
+        try
+        {
+            if (handle) *reinterpret_cast<T**>(a) = (T *) (b);
+            else *reinterpret_cast<T*>(a) = *(T *) (b);
+        }
+        catch (...)
+        {
+            //conoutf("Not a script object of primitive " );
+        }
+    }
+
+    template<typename T> void changerefptr(void *b, void *v)
+    {
+        //*reinterpret_cast<T *>(b) = (T (*v));
+
+    }
+    void assigntoptrfromtypeid(void *a, void *b, int id);
+    void *createprivitiveptr(int id);
+    void *convertPrimitive(void * v, int type);
 
 private:
-	//setup context and context pool
-	ScriptControler *getctrlscript(const str &script, bool checkctrl = true);
-	asIScriptContext *PrepareContextFromPool(asIScriptFunction *func);
-	void ReturnContextToPool(asIScriptContext *ctx);
+    //setup context and context pool
+    ScriptControler *getctrlscript(const str &script, bool checkctrl = true);
+    asIScriptContext *PrepareContextFromPool(asIScriptFunction *func);
+    void ReturnContextToPool(asIScriptContext *ctx);
 
-	//debug print data so that we can see what kind of data is being held here
-	void printinstancedata(asITypeInfo *typ, int level);
-	
+    //debug print data so that we can see what kind of data is being held here
+    void printinstancedata(asITypeInfo *typ, int level);
+
 };
 extern ScriptManager *asScript;
 
