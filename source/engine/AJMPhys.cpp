@@ -327,8 +327,6 @@ inline btVector3 convert2bt(vec vt){ vec v(vt); v.mul(SCALING); return btVector3
 inline vec convertfrombt(btVector3 &v){ return vec(v.getX(), v.getZ(), v.getY()).mul(SAUER_FACTOR); }
 
 //bool rayTest(vec &start, vec &end, vec &normal = vec(0)){
-
-
 bool rayTest(vec &start, vec &end, vec &normal){
 	btCollisionWorld::ClosestRayResultCallback RayCallback(convert2bt(start), convert2bt(end));
 	m_dynamicsWorld->rayTest(convert2bt(start), convert2bt(end), RayCallback);
@@ -343,15 +341,15 @@ bool rayTest(vec &start, vec &end, vec &normal){
 bool canjump(physent *pl){
 	if (pl->type != ENT_PLAYER && (pl->state != CS_ALIVE)) return false;
 	vec v(pl->feetpos());
-	vec n(0);
-	if (rayTest(vec(v), vec(v).addz(-1.0), n)){ n.normalize(); pl->physstate = n.absdot(vec(0, 0, 1.f)) == 1.0f ? PHYS_FLOOR : PHYS_SLOPE; pl->floor = n;   return true; }
-	loopi(3)loopk(3)if (rayTest(vec(v), vec(v).add(vec(i - 1, k - 1, -1.5)), n)){ pl->physstate = PHYS_SLOPE; pl->floor = n; return true; }
+    vec n(0);
+    if (rayTest(v, vec(v).addz(-1.0), n)){ n.normalize(); pl->physstate = n.absdot(vec(0, 0, 1.f)) == 1.0f ? PHYS_FLOOR : PHYS_SLOPE; pl->floor = n;   return true; }
+    loopi(3)loopk(3)if (rayTest(v, vec(v).add(vec(i - 1, k - 1, -1.5)), n)){ pl->physstate = PHYS_SLOPE; pl->floor = n; return true; }
 	//	m_dynamicsWorld->rayTest(convert2bt(pl->feetpos()), convert2bt(vec(pl->feetpos()).add(0,-0.5)), RayCallback);
 	pl->physstate = PHYS_FALL;
 	return false;
 }
 VAR(floatspeed, 1, 100, 10000);
-VARF(Gravity, -1000.f, 32, 100.f);
+VAR(Gravity, -1000, 32, 100);
 VAR(timeinair, 0, 10, 1000);
 VAR(pspeed, 0, 350, 5000);
 VAR(pjump, 0, 550, 70000);
@@ -369,11 +367,11 @@ void btmoveplayer(physent *pl, int curenttime){
 	maxspeed.z = 8000;
 	pl->jumping = pl->jumping && !inair;
 	//floating = true;
-	vec d (0, 0, 0);
+    vec d (0, 0, 0);
 	//if (!floating && water) d.mul(0.5f);
 	//pl->vel = vec(0);
-	vecfromyawpitch(pl->yaw, floating || water || pl->type == ENT_CAMERA ? pl->pitch : 0, pl->move, pl->strafe, d);
-	d.mul((pl->vel*0.1).add(speed));
+    vecfromyawpitch(pl->yaw, floating || water || pl->type == ENT_CAMERA ? pl->pitch : 0, pl->move, pl->strafe, d);
+    d.mul((pl->vel*0.1).add(speed));
 	if (pl->state == CS_EDITING){
 		bodypl->forceActivationState(DISABLE_SIMULATION);
 		bodypl->setFriction(0.f);
