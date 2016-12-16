@@ -116,7 +116,7 @@ namespace game
         //if(!m_dmsp && !m_classicsp) return;
         loopv(entities::ents) 
         {
-            const entity &e = *entities::ents[i];
+            entity &e = *entities::ents[i];
             if (e.type==MAPMODEL){
 				const char *mdlname = mapmodelname(e.attr1);
                 setcbfrommodel(e.o, mdlname, vec(e.attr2 + 90.f, e.attr3, e.attr4), 0.f);
