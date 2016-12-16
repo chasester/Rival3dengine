@@ -354,11 +354,11 @@ VAR(timeinair, 0, 10, 1000);
 VAR(pspeed, 0, 350, 5000);
 VAR(pjump, 0, 550, 70000);
 VAR(pweight, 1, 100, 100000);
-void btmoveplayer(physent *pl, int curenttime){
+void btmoveplayer(physent *pl, int currenttime){
 	int material = lookupmaterial(vec(pl->o.x, pl->o.y, pl->o.z + (3 * pl->aboveeye - pl->eyeheight) / 4));
 	bool water = isliquid(material&MATF_VOLUME);
 	bool floating = pl->type == ENT_PLAYER && (pl->state == CS_EDITING || pl->state == CS_SPECTATOR);
-	float secs = curenttime / 1000.f;
+    float secs = currenttime / 1000.f;
 	bool inair = !canjump(pl);
 	float speed = pspeed;
 	float jumpheight = pjump;
@@ -393,11 +393,11 @@ void btmoveplayer(physent *pl, int curenttime){
 		//bodypl->setFriction(pl->physstate == PHYS_FALL ? 0.1 : pl->physstate == PHYS_SLOPE ? 0.2f : 0.2f);
 		gravity = vec(0, 0, -pow(Gravity, timeinair*0.001) - Gravity);
 		if (pl->physstate == PHYS_FALL){
-			bodypl->setDamping(0.0, 0.0);
-			d = (pl->vel *0.9) + d*0.1f;
+            bodypl->setDamping(0.0, 0.0);
+            d = (pl->vel *0.9) + d*0.1f;
 			if (pl->timeinair > 5000)pl->timeinair = 5000;
 			//if (pl->timeinair > timeinair) 
-			pl->timeinair += curenttime;
+            pl->timeinair += currenttime;
 		}
 		else{ pl->timeinair = 0; }
 		if (pl->physstate == PHYS_SLOPE){
@@ -414,9 +414,9 @@ void btmoveplayer(physent *pl, int curenttime){
 		}
 		//bodypl->setLinearVelocity(convert2bt(pl->vel*secs*floatspeed*0.1));
 		//conoutf("%d", pl->physstate);
-		d = (pl->vel *0.7f) + (d*0.3f);
-		d += gravity;
-		d.clamp(vec(maxspeed).neg(), maxspeed);
+        d = (pl->vel *0.7f) + (d*0.3f);
+        d = d+gravity;
+        d.clamp(maxspeed.neg(), maxspeed);
 		bodypl->setLinearVelocity(btVector3(d.x, d.z, d.y)*secs);
 		bodypl->applyGravity();
 		pl->vel = (pl->vel * 0.8) + (d *0.2);
@@ -425,7 +425,7 @@ void btmoveplayer(physent *pl, int curenttime){
 }
 void PHYSInit(){
 	m_collisionConfiguration = new btDefaultCollisionConfiguration();
-	m_dispatcher = new	btCollisionDispatcher(m_collisionConfiguration);
+    m_dispatcher = new btCollisionDispatcher(m_collisionConfiguration);
 
 
 	//btVector3 worldMin(-1000,-1000,-1000);
@@ -436,7 +436,7 @@ void PHYSInit(){
 	m_solver = new btSequentialImpulseConstraintSolver();
 
 	
-	m_dynamicsWorld = new btDiscreteDynamicsWorld(m_dispatcher,m_broadphase,m_solver,m_collisionConfiguration);
+    m_dynamicsWorld = new btDiscreteDynamicsWorld(m_dispatcher, m_broadphase, m_solver, m_collisionConfiguration);
 
 	
 	

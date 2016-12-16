@@ -29,7 +29,7 @@ extern int lastphysicframe;
 
 extern int PHYSDebugDraw;
 
-btRigidBody *setcbfrommodel(vec &o, const char *mdl, vec dir, int weight);//attatch collision box to model
+btRigidBody *setcbfrommodel(vec &o, const char *mdl, vec dir, int weight);//attach collision box to model
 
 extern void buildLevelTriCol();// build level collision mesh
 
