@@ -1252,7 +1252,7 @@ void nearestent()
 
 ICOMMAND(enthavesel, "", (), addimplicitnode(curworld->nodeselect.length());); //addimplicit(intret(curworld->nodeselect.length())));
 ICOMMAND(entselect, "e", (uint *body), if (!nonodeedit()) addgroupnodes(e && curworld->nodeselect.find(n)<0 && executebool(body)));
-ICOMMAND(entloop, "e", (uint *body), if (!nonodeedit()) addimplicitnode(groupnodeloop(((void)e, execute(body)))););
+//ICOMMAND(entloop, "e", (uint *body), if (!nonodeedit()) addimplicitnode(groupnodeloop(((void)e, execute(body)))););
 ICOMMAND(insel, "", (), entfocus(efocus, intret(pointinsel(sel, e.o))));
 ICOMMAND(entget, "", (), entfocus(efocus, cubestr s; printent(e, s, sizeof(s)); result(s)));
 ICOMMAND(entindex, "", (), intret(curworld->nfocus));
@@ -1624,7 +1624,7 @@ int getmapversion() { return mapversion; }
 			gle::colorub(0, 40, 0);
 			 // also ensures enthover is back in focus
 			eo = vec(n->o); es = (n->radius*2);
-			eo -= es; es.mul(2);
+            eo = eo-es; es.mul(2);
 			boxs3D(eo, es, 1);
 			if (nodemoving && entmovingshadow == 1)
 			{
