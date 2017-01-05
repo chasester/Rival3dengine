@@ -6,7 +6,7 @@ PLATFORM_ARCH= $(shell uname -m)
 PLATFORM_PREFIX= native
 
 INCLUDES= -Ishared -Iengine -Igame -Ienet/include -Iextralib/bullet3/src/
-BULLET_LIB_PATH = extralib/bullet3/build/src
+BULLET_LIB_PATH = extralib/bullet3/bin/
 STRIP=
 ifeq (,$(findstring -g,$(CXXFLAGS)))
 ifeq (,$(findstring -pg,$(CXXFLAGS)))
@@ -59,9 +59,9 @@ endif
 endif
 
 BULLET_LIBS= \
-        $(BULLET_LIB_PATH)/BulletDynamics/libBulletDynamics.a \
-        $(BULLET_LIB_PATH)/BulletCollision/libBulletCollision.a \
-        $(BULLET_LIB_PATH)/LinearMath/libLinearMath.a 
+        $(BULLET_LIB_PATH)/libBullet3Dynamics_gmake_x64_release.a \
+        $(BULLET_LIB_PATH)/libBullet3Collision_gmake_x64_release.a \
+        $(BULLET_LIB_PATH)/libLinearMath_gmake_x64_release.a
 
 CLIENT_OBJS= \
 	shared/crypto.o \
