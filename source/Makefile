@@ -5,7 +5,7 @@ PLATFORM= $(shell uname -s)
 PLATFORM_ARCH= $(shell uname -m)
 PLATFORM_PREFIX= native
 
-INCLUDES= -Ishared -Iengine -Igame -Ienet/include -Iextralib/bullet3/src/
+INCLUDES= -Ishared -Iengine -Igame -Ienet/include -Iextralib/bullet3/src/ -I/Library/Frameworks/SDL2.framework/Headers 
 BULLET_LIB_PATH = extralib/bullet3/bin/
 STRIP=
 ifeq (,$(findstring -g,$(CXXFLAGS)))
