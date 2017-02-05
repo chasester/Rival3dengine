@@ -1,13 +1,13 @@
-// main.cpp: initialisation & main loop
+// main.cpp: initialization & main loop
 
 #include "engine.h"
+#include "halo.h"
 
 extern void cleargamma();
 
 void cleanup()
 {
-	
-	asEngineShutdown();
+    asEngineShutdown();
     recorder::stop();
     cleanupserver();
     PHYSKill();//angelo phys bullet
@@ -22,7 +22,7 @@ void cleanup()
     extern void clear_models();  clear_models();
     extern void clear_sound();   clear_sound();
     closelogfile();
-    ovr::destroy();
+    //ovr::destroy();
     #ifdef __APPLE__
         if(screen) SDL_SetWindowFullscreen(screen, 0);
     #endif
@@ -269,7 +269,7 @@ void renderbackground(const char *caption, Texture *mapshot, const char *mapname
 
     loopi(3)
     {
-        if(ovr::enabled)
+        /*if(ovr::enabled)
         {
             aspect = forceaspect ? forceaspect : hudw/float(hudh);
             for(viewidx = 0; viewidx < 2; viewidx++, hudx += hudw)
@@ -282,12 +282,13 @@ void renderbackground(const char *caption, Texture *mapshot, const char *mapname
                     glClear(GL_COLOR_BUFFER_BIT);
                     renderbackgroundview(w, h, caption, mapshot, mapname, mapinfo);
                 }
-                ovr::warp();
+                //ovr::warp();
             }
             viewidx = 0;
             hudx = 0;
         }
-        else renderbackgroundview(w, h, caption, mapshot, mapname, mapinfo);
+        else */
+        renderbackgroundview(w, h, caption, mapshot, mapname, mapinfo);
         swapbuffers(false);
     }
 
@@ -375,7 +376,7 @@ void renderprogress(float bar, const char *text, bool background)   // also used
     getbackgroundres(w, h);
     gettextres(w, h);
 
-    if(ovr::enabled)
+    /*if(ovr::enabled)
     {
         aspect = forceaspect ? forceaspect : hudw/float(hudh);
         for(viewidx = 0; viewidx < 2; viewidx++, hudx += hudw)
@@ -389,12 +390,12 @@ void renderprogress(float bar, const char *text, bool background)   // also used
                 restorebackground(w, h);
             }
             renderprogressview(w, h, bar, text);
-            ovr::warp();
+            //ovr::warp();
         }
         viewidx = 0;
         hudx = 0;
     }
-    else
+    else*/
     {
         if(background) restorebackground(w, h);
         renderprogressview(w, h, bar, text);
@@ -473,7 +474,7 @@ void setfullscreen(bool enable)
         if(initwindowpos)
         {
             int winx = SDL_WINDOWPOS_CENTERED, winy = SDL_WINDOWPOS_CENTERED;
-            if(ovr::enabled) winx = winy = 0;
+            //if(ovr::enabled) winx = winy = 0;
             SDL_SetWindowPosition(screen, winx, winy);
             initwindowpos = false;
         }
@@ -572,7 +573,7 @@ void setupscreen()
         flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
         initwindowpos = true;
     }
-    if(ovr::enabled) winx = winy = 0;
+    //if(ovr::enabled) winx = winy = 0;
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
@@ -1215,7 +1216,7 @@ int main(int argc, char **argv)
         updatetime();
 
         checkinput();
-        ovr::update();
+        //ovr::update();
         UI::update();
         menuprocess();
         tryedit();

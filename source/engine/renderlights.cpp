@@ -4776,7 +4776,7 @@ void shademodelpreview(int x, int y, int w, int h, bool background, bool scissor
 {
     GLERROR;
 
-    glBindFramebuffer_(GL_FRAMEBUFFER, ovr::lensfbo[viewidx]);
+    //glBindFramebuffer_(GL_FRAMEBUFFER, ovr::lensfbo[viewidx]);
     glViewport(0, 0, hudw, hudh);
 
     if(msaasamples) glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, mscolortex);
