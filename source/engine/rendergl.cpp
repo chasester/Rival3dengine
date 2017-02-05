@@ -1233,13 +1233,14 @@ void setcammatrix(camera *cm)
 {
     // move from RH to Z-up LH quake style worldspace
     cammatrix = viewmatrix;
-    cammatrix.rotate_around_y((!drawtex ? ovr::modifyroll(cm->roll) : cm->roll)*RAD);
+    //cammatrix.rotate_around_y((!drawtex ? ovr::modifyroll(cm->roll) : cm->roll)*RAD);
+    cammatrix.rotate_around_y((cm->roll)*RAD);
     cammatrix.rotate_around_x(cm->pitch*-RAD);
     cammatrix.rotate_around_z(cm->yaw*-RAD);
     cammatrix.translate(vec(cm->o).neg());
 
-    if(!drawtex && ovr::enabled)
-        cammatrix.jitter((viewidx ? -1 : 1) * ovr::viewoffset, 0);
+    //if(!drawtex && ovr::enabled)
+    //    cammatrix.jitter((viewidx ? -1 : 1) * ovr::viewoffset, 0);
 
     cammatrix.transposedtransformnormal(vec(viewmatrix.b), camdir);
     cammatrix.transposedtransformnormal(vec(viewmatrix.a).neg(), camright);
@@ -1258,8 +1259,8 @@ void setcamprojmatrix(camera *cm, bool init = true, bool flush = false)
     {
         setcammatrix(cm);
 
-        if(ovr::enabled && !drawtex)
-            projmatrix.jitter((viewidx ? -1 : 1) * ovr::distortoffset, 0);
+        //if(ovr::enabled && !drawtex)
+        //    projmatrix.jitter((viewidx ? -1 : 1) * ovr::distortoffset, 0);
     }
 
     jitteraa();
@@ -1285,7 +1286,7 @@ int hudmatrixpos = 0;
 void resethudmatrix()
 {
     hudmatrixpos = 0;
-    if(ovr::enabled) ovr::ortho(hudmatrix);
+    //if(ovr::enabled) ovr::ortho(hudmatrix);
     GLOBALPARAM(hudmatrix, hudmatrix);
 }
 
@@ -1528,7 +1529,7 @@ void renderavatar()
 
     matrix4 oldprojmatrix = nojittermatrix;
     float avatarfovy = curavatarfov;
-    if(ovr::enabled && ovr::fov) avatarfovy *= ovr::fov/fov;
+    //if(ovr::enabled && ovr::fov) avatarfovy *= ovr::fov/fov;
     projmatrix.perspective(avatarfovy, aspect, nearplane, farplane);
     projmatrix.scalez(avatardepth);
     setcamprojmatrix(camera1, false);
@@ -1615,12 +1616,12 @@ bool calcspherescissor(const vec &center, float size, float &sx1, float &sy1, fl
         float cz = e.x/e.z, drt = sqrtf(dx)/size;
         CHECKPLANE(x, -, focaldist/aspect, sx1, sx2);
         CHECKPLANE(x, +, focaldist/aspect, sx1, sx2);
-        if(ovr::enabled)
+        /*if(ovr::enabled)
         {
             float offset = (viewidx ? -1 : 1) * ovr::distortoffset;
             if(sx1 > -1) sx1 += offset;
             if(sx2 < 1) sx2 += offset;
-        }
+        }*/
     }
     if(dy > 0)
     {
@@ -2475,20 +2476,20 @@ void gl_drawview()
 
     if(fogoverlay && fogmat != MAT_AIR) drawfogoverlay(fogmat, fogbelow, clamp(fogbelow, 0.0f, 1.0f), abovemat);
 
-    GLuint outfbo = scalefbo ? scalefbo : ovr::lensfbo[viewidx];
+    GLuint outfbo = scalefbo;
     doaa(setuppostfx(vieww, viewh, outfbo), processhdr);
     renderpostfx(outfbo);
-    if(scalefbo) doscale(ovr::lensfbo[viewidx]);
+    //if(scalefbo) doscale(ovr::lensfbo[viewidx]);
 }
 
 void gl_drawmainmenu()
 {
-    if(ovr::enabled)
+    /*if(ovr::enabled)
     {
         glBindFramebuffer_(GL_FRAMEBUFFER, ovr::lensfbo[viewidx]);
         glViewport(0, 0, hudw, hudh);
         glClear(GL_COLOR_BUFFER_BIT);
-    }
+    }*/
     renderbackground(NULL, NULL, NULL, NULL, true);
 }
 
@@ -2819,7 +2820,7 @@ void gl_setupframe(bool force)
     renderh = min(scr_h, screenh);
     hudw = screenw;
     hudh = screenh;
-    ovr::setup();
+    //ovr::setup();
     if(!force) return;
     setuplights();
 }
@@ -2831,7 +2832,6 @@ void gl_drawframe()
     flipqueries();
     aspect = forceaspect ? forceaspect : hudw/float(hudh);
     float fovx = curfov;
-    if(ovr::enabled && ovr::fov) fovx *= ovr::fov/fov;
     fovy = 2*atan2(tan(fovx/2*RAD), aspect)/RAD;
     vieww = hudw;
     viewh = hudh;
@@ -2841,10 +2841,7 @@ void gl_drawframe()
         else gl_drawview();
         UI::render();
         gl_drawhud();
-        if(!ovr::enabled) break;
-        ovr::warp();
-        ++viewidx;
-        hudx += hudw;
+        break;
     }
     viewidx = 0;
     hudx = 0;
@@ -2856,7 +2853,7 @@ void cleanupgl()
     cleanuptimers();
     cleanupscreenquad();
     gle::cleanup();
-    ovr::cleanup();
+    //ovr::cleanup();
 }
 //angelo ODE dbug stuff
 

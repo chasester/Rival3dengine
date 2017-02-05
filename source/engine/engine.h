@@ -211,7 +211,8 @@ namespace ovr
     extern void warp();
     extern void ortho(matrix4 &m, float dist = 0, float fov = 0);
 
-    static inline float modifyroll(float r) { return ovr::enabled ? r + roll : r; }
+    //static inline float modifyroll(float r) { return ovr::enabled ? r + roll : r; }
+    static inline float modifyroll(float r) { return r; }
 }
 
 

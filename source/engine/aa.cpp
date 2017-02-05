@@ -107,7 +107,7 @@ void loadtqaashaders()
 
 void setuptqaa(int w, int h)
 {
-    loopi(ovr::enabled ? 2 : 1) tqaaviews[i].setup(w, h);
+    loopi(1) tqaaviews[i].setup(w, h);
 
     loadtqaashaders();
 }
