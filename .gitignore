@@ -2,7 +2,6 @@
 *.slo
 *.lo
 *.o
-*.obj
 
 # Precompiled Headers
 *.gch
@@ -29,3 +28,7 @@
 *.app
 
 bin/tesseract.lib
+bin/tesseract.exp
+*.map
+bin/tesseract.pdb
+*.BAK

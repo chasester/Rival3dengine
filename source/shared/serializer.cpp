@@ -306,9 +306,10 @@ void CSerializedValue::load()
 			if (!mod) { conoutf("ERROR!!! no mod"); return ; }
 			ot = mod->GetTypeInfoByName(m_typeName.c_str());
 		}
-		SetType(ot->GetTypeId());
+		
 		if (ot)
 		{
+			SetType(ot->GetTypeId());
 			m_typeId = ot->GetTypeId();
 			if (m_typeId & asTYPEID_SCRIPTOBJECT )
 			{
@@ -345,6 +346,7 @@ void CSerializedValue::load()
 			}
 			
 		}
+		else SetType(asTYPEID_STRING+1);
 	}
 	else //ok it must be a preimitive
 	{
