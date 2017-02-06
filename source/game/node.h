@@ -63,6 +63,7 @@ struct node
 	asILockableSharedBool *weakRefFlag;
 	str name, tags; //instance name, tag to classify data, set on a per object basis, allows it to search by these break tags up by space
 	int refcount; //for weak reference
+	uint id;
 	vector<asIScriptObject *> ctrl; //link to the script functions on* funcitons
 	// position or start origin of the object
 	bulletobj *b;
@@ -86,6 +87,7 @@ struct node
 	void doawake();
 	void dorender();
 	void restart();
+	uint getid() { return id; }
 	void move(vec impulse);
 	void moveto(vec _o);
 	void rotate(vec impulse, bool degrees = true);

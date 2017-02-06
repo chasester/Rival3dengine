@@ -42,12 +42,37 @@ struct mapheader
 
 enum
 {
-    MATSURF_NOT_VISIBLE = 0,
-    MATSURF_VISIBLE,
-    MATSURF_EDIT_ONLY
+	MATSURF_NOT_VISIBLE = 0,
+	MATSURF_VISIBLE,
+	MATSURF_EDIT_ONLY
 };
 
 #define TEX_SCALE 16.0f
 
 struct vertex { vec pos; bvec4 norm; vec tc; bvec4 tangent; };
 
+#define MAX_ALLOWED_NODES std::numeric_limits<float>::digits
+static class NodeMgr
+{
+public:
+	uint addnode(node *n);
+	bool addlistener(uint id, node callback, int cbType = 0);
+
+	node *lookup(uint id);
+	bool cleanup(bool killall = true);
+	
+	uint setmaxnodes(uint maxnodes);
+	uint getmaxnodes();
+private:
+	uint maxnodes = MAX_ALLOWED_NODES;
+	uint getnextempty();
+	uint valuetoindex(uint val);
+	uint indextovalue(uint val);
+};
+
+static inline float heapscore(node* n) { return n->getid(); } //allows use of heap calls in the vector::node for binary heap;
+
+uint NodeMgr::addnode(node *n)
+{
+	
+}
