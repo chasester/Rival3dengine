@@ -1,0 +1,80 @@
+\hypertarget{structplane}{}\section{plane Struct Reference}
+\label{structplane}\index{plane@{plane}}
+Inheritance diagram for plane\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structplane}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structplane_a4bc5b416116e61307c593a1ee5d73281}\label{structplane_a4bc5b416116e61307c593a1ee5d73281}} 
+float {\bfseries dist} (const \hyperlink{structvec}{vec} \&p) const
+\item 
+\mbox{\Hypertarget{structplane_a38be6e4f456711a7dece43fdf12ed703}\label{structplane_a38be6e4f456711a7dece43fdf12ed703}} 
+float {\bfseries dist} (const \hyperlink{structvec4}{vec4} \&p) const
+\item 
+\mbox{\Hypertarget{structplane_a0882121066bc5f4f34f965b3e18d60ce}\label{structplane_a0882121066bc5f4f34f965b3e18d60ce}} 
+bool {\bfseries operator==} (const \hyperlink{structplane}{plane} \&p) const
+\item 
+\mbox{\Hypertarget{structplane_a682741d8ee503378936ae20907d0a323}\label{structplane_a682741d8ee503378936ae20907d0a323}} 
+bool {\bfseries operator!=} (const \hyperlink{structplane}{plane} \&p) const
+\item 
+\mbox{\Hypertarget{structplane_acf3a0b8d771bc929ed36d2b87a10eeb1}\label{structplane_acf3a0b8d771bc929ed36d2b87a10eeb1}} 
+{\bfseries plane} (const \hyperlink{structvec}{vec} \&c, float off)
+\item 
+\mbox{\Hypertarget{structplane_adadc9df9c0775fa85ce8d1028b046d18}\label{structplane_adadc9df9c0775fa85ce8d1028b046d18}} 
+{\bfseries plane} (const \hyperlink{structvec4}{vec4} \&p)
+\item 
+\mbox{\Hypertarget{structplane_af833df5f838bfa4f6a6379d9d5434766}\label{structplane_af833df5f838bfa4f6a6379d9d5434766}} 
+{\bfseries plane} (int d, float off)
+\item 
+\mbox{\Hypertarget{structplane_adbf234bb1d3aca2d226e32cb6dea9199}\label{structplane_adbf234bb1d3aca2d226e32cb6dea9199}} 
+{\bfseries plane} (float a, float b, float c, float d)
+\item 
+\mbox{\Hypertarget{structplane_a57ec4c0e7e18d9bc83977d5fa27862aa}\label{structplane_a57ec4c0e7e18d9bc83977d5fa27862aa}} 
+void {\bfseries toplane} (const \hyperlink{structvec}{vec} \&n, const \hyperlink{structvec}{vec} \&p)
+\item 
+\mbox{\Hypertarget{structplane_a76cdb75954a0c957833ef6135b2356af}\label{structplane_a76cdb75954a0c957833ef6135b2356af}} 
+bool {\bfseries toplane} (const \hyperlink{structvec}{vec} \&a, const \hyperlink{structvec}{vec} \&b, const \hyperlink{structvec}{vec} \&c)
+\item 
+\mbox{\Hypertarget{structplane_a4b7f932968c3e872973be3ebcd53f00f}\label{structplane_a4b7f932968c3e872973be3ebcd53f00f}} 
+bool {\bfseries rayintersect} (const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray, float \&dist)
+\item 
+\mbox{\Hypertarget{structplane_a7aa2cac71754dc2737430c776587032d}\label{structplane_a7aa2cac71754dc2737430c776587032d}} 
+\hyperlink{structplane}{plane} \& {\bfseries reflectz} (float rz)
+\item 
+\mbox{\Hypertarget{structplane_adf20fe31050529a50ec5f11e9c23a5f3}\label{structplane_adf20fe31050529a50ec5f11e9c23a5f3}} 
+\hyperlink{structplane}{plane} \& {\bfseries invert} ()
+\item 
+\mbox{\Hypertarget{structplane_a19dfc7030ca271621884fdb4e99fab0b}\label{structplane_a19dfc7030ca271621884fdb4e99fab0b}} 
+\hyperlink{structplane}{plane} \& {\bfseries scale} (float k)
+\item 
+\mbox{\Hypertarget{structplane_a1fb95f5474a931ccdf3161815581fb30}\label{structplane_a1fb95f5474a931ccdf3161815581fb30}} 
+\hyperlink{structplane}{plane} \& {\bfseries translate} (const \hyperlink{structvec}{vec} \&p)
+\item 
+\mbox{\Hypertarget{structplane_af2f1296cf9c1f31a4d3db61a114f1232}\label{structplane_af2f1296cf9c1f31a4d3db61a114f1232}} 
+\hyperlink{structplane}{plane} \& {\bfseries normalize} ()
+\item 
+\mbox{\Hypertarget{structplane_a59ec06051b869ccbd4c8f31d9a8348c4}\label{structplane_a59ec06051b869ccbd4c8f31d9a8348c4}} 
+float {\bfseries zintersect} (const \hyperlink{structvec}{vec} \&p) const
+\item 
+\mbox{\Hypertarget{structplane_a6cee3946cd90619b58163f05940c929d}\label{structplane_a6cee3946cd90619b58163f05940c929d}} 
+float {\bfseries zdelta} (const \hyperlink{structvec}{vec} \&p) const
+\item 
+\mbox{\Hypertarget{structplane_a972351cd9246c258d7355827f9ccfe85}\label{structplane_a972351cd9246c258d7355827f9ccfe85}} 
+float {\bfseries zdist} (const \hyperlink{structvec}{vec} \&p) const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structplane_a6ca659f7c8d2f62114b57bc99bf66639}\label{structplane_a6ca659f7c8d2f62114b57bc99bf66639}} 
+float {\bfseries offset}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/geom.\+h\end{DoxyCompactItemize}

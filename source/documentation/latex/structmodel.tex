@@ -1,0 +1,196 @@
+\hypertarget{structmodel}{}\section{model Struct Reference}
+\label{structmodel}\index{model@{model}}
+Inheritance diagram for model\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{structmodel}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structmodel_a213aa611c23fbb156466ab49e890e0e8}\label{structmodel_a213aa611c23fbb156466ab49e890e0e8}} 
+{\bfseries model} (const char $\ast$name)
+\item 
+\mbox{\Hypertarget{structmodel_a0cbf1b5e57d238a4bdada7df7be80704}\label{structmodel_a0cbf1b5e57d238a4bdada7df7be80704}} 
+virtual void {\bfseries calcbb} (\hyperlink{structvec}{vec} \&center, \hyperlink{structvec}{vec} \&radius)=0
+\item 
+\mbox{\Hypertarget{structmodel_a95ce78930636de4108b92596a869b819}\label{structmodel_a95ce78930636de4108b92596a869b819}} 
+virtual void {\bfseries calctransform} (\hyperlink{structmatrix4x3}{matrix4x3} \&m)=0
+\item 
+\mbox{\Hypertarget{structmodel_ade9a780ef34e0fcb9f7417371c22825f}\label{structmodel_ade9a780ef34e0fcb9f7417371c22825f}} 
+virtual int {\bfseries intersect} (int anim, int basetime, int basetime2, const \hyperlink{structvec}{vec} \&pos, float yaw, float pitch, float roll, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structmodelattach}{modelattach} $\ast$a, float size, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray, float \&dist, int mode)=0
+\item 
+\mbox{\Hypertarget{structmodel_a991dc94831e2d188a00e4b01a83f4ff8}\label{structmodel_a991dc94831e2d188a00e4b01a83f4ff8}} 
+virtual void {\bfseries render} (int anim, int basetime, int basetime2, const \hyperlink{structvec}{vec} \&o, float yaw, float pitch, float roll, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structmodelattach}{modelattach} $\ast$a=N\+U\+LL, float size=1, const \hyperlink{structvec4}{vec4} \&color=\hyperlink{structvec4}{vec4}(1, 1, 1, 1))=0
+\item 
+\mbox{\Hypertarget{structmodel_afc74ab3213555894a4a07781b2acbd3c}\label{structmodel_afc74ab3213555894a4a07781b2acbd3c}} 
+virtual bool {\bfseries load} ()=0
+\item 
+\mbox{\Hypertarget{structmodel_a657fa2ac2b8e7beaa51d1a53a78fd665}\label{structmodel_a657fa2ac2b8e7beaa51d1a53a78fd665}} 
+virtual int {\bfseries type} () const =0
+\item 
+\mbox{\Hypertarget{structmodel_a6e7d72b8a2e09ef0a0756dea12141d6e}\label{structmodel_a6e7d72b8a2e09ef0a0756dea12141d6e}} 
+virtual \hyperlink{struct_b_i_h}{B\+IH} $\ast$ {\bfseries set\+B\+IH} ()
+\item 
+\mbox{\Hypertarget{structmodel_a9d49529c481f7c1b71fa3b4cf85c7e5b}\label{structmodel_a9d49529c481f7c1b71fa3b4cf85c7e5b}} 
+virtual bool {\bfseries envmapped} () const
+\item 
+\mbox{\Hypertarget{structmodel_a5393e41753b1b6aa172e99a8edaf85e3}\label{structmodel_a5393e41753b1b6aa172e99a8edaf85e3}} 
+virtual bool {\bfseries skeletal} () const
+\item 
+\mbox{\Hypertarget{structmodel_a7b9f0e66ad0d7fc8b3372c9e8992b11b}\label{structmodel_a7b9f0e66ad0d7fc8b3372c9e8992b11b}} 
+virtual bool {\bfseries animated} () const
+\item 
+\mbox{\Hypertarget{structmodel_a537f58848b3120c5dfec710c6f81b124}\label{structmodel_a537f58848b3120c5dfec710c6f81b124}} 
+virtual bool {\bfseries pitched} () const
+\item 
+\mbox{\Hypertarget{structmodel_a4d33f3c4bfb6cf8376c400654755d793}\label{structmodel_a4d33f3c4bfb6cf8376c400654755d793}} 
+virtual bool {\bfseries alphatested} () const
+\item 
+\mbox{\Hypertarget{structmodel_a335924808b6065ec748fcbc23664ac0e}\label{structmodel_a335924808b6065ec748fcbc23664ac0e}} 
+virtual void {\bfseries setshader} (\hyperlink{struct_shader}{Shader} $\ast$shader)
+\item 
+\mbox{\Hypertarget{structmodel_a9e555488507c6084644de6def1c1c563}\label{structmodel_a9e555488507c6084644de6def1c1c563}} 
+virtual void {\bfseries setenvmap} (float envmapmin, float envmapmax, \hyperlink{struct_texture}{Texture} $\ast$\hyperlink{structenvmap}{envmap})
+\item 
+\mbox{\Hypertarget{structmodel_a030dcd266c898b22827e2a60880ad644}\label{structmodel_a030dcd266c898b22827e2a60880ad644}} 
+virtual void {\bfseries setspec} (float spec)
+\item 
+\mbox{\Hypertarget{structmodel_ad1ebc6953d954c8935664faf0f437276}\label{structmodel_ad1ebc6953d954c8935664faf0f437276}} 
+virtual void {\bfseries setgloss} (int gloss)
+\item 
+\mbox{\Hypertarget{structmodel_a89eab0505e74c54bd37253bbe4c45e26}\label{structmodel_a89eab0505e74c54bd37253bbe4c45e26}} 
+virtual void {\bfseries setglow} (float glow, float glowdelta, float glowpulse)
+\item 
+\mbox{\Hypertarget{structmodel_a62b2baa83f383527e900b606f501b110}\label{structmodel_a62b2baa83f383527e900b606f501b110}} 
+virtual void {\bfseries setalphatest} (float alpha)
+\item 
+\mbox{\Hypertarget{structmodel_a6346797a5ce104c494c3fd9af2dfa132}\label{structmodel_a6346797a5ce104c494c3fd9af2dfa132}} 
+virtual void {\bfseries setfullbright} (float fullbright)
+\item 
+\mbox{\Hypertarget{structmodel_a768210ace939f49078c7fac116390682}\label{structmodel_a768210ace939f49078c7fac116390682}} 
+virtual void {\bfseries setcullface} (bool cullface)
+\item 
+\mbox{\Hypertarget{structmodel_a1b3bfac5baa427b0aae55a0c1f56d0a7}\label{structmodel_a1b3bfac5baa427b0aae55a0c1f56d0a7}} 
+virtual void {\bfseries setcolor} (const \hyperlink{structvec}{vec} \&color)
+\item 
+\mbox{\Hypertarget{structmodel_adaef62e1b13a4a550c6a9d361f5e3081}\label{structmodel_adaef62e1b13a4a550c6a9d361f5e3081}} 
+virtual void {\bfseries setparascale} (const \hyperlink{structvec}{vec} \&parascale)
+\item 
+\mbox{\Hypertarget{structmodel_ac1940fa91b03e6b0c0e5a379a46b1511}\label{structmodel_ac1940fa91b03e6b0c0e5a379a46b1511}} 
+virtual void {\bfseries genshadowmesh} (\hyperlink{structvector}{vector}$<$ \hyperlink{structtriangle}{triangle} $>$ \&tris, const \hyperlink{structmatrix4x3}{matrix4x3} \&orient)
+\item 
+\mbox{\Hypertarget{structmodel_af0af710b67e06f6aa7ff0270099c7b42}\label{structmodel_af0af710b67e06f6aa7ff0270099c7b42}} 
+virtual void {\bfseries preload\+B\+IH} ()
+\item 
+\mbox{\Hypertarget{structmodel_ad89f90897f7431c23ba238dbe8fb9116}\label{structmodel_ad89f90897f7431c23ba238dbe8fb9116}} 
+virtual void {\bfseries preloadshaders} ()
+\item 
+\mbox{\Hypertarget{structmodel_a367a7a446b3e00475f3320125980cd55}\label{structmodel_a367a7a446b3e00475f3320125980cd55}} 
+virtual void {\bfseries preloadmeshes} ()
+\item 
+\mbox{\Hypertarget{structmodel_a797c1d6c97ce4ff039805cbda153ab9d}\label{structmodel_a797c1d6c97ce4ff039805cbda153ab9d}} 
+virtual void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structmodel_a8eb6511477814d4797aaae68a7585132}\label{structmodel_a8eb6511477814d4797aaae68a7585132}} 
+virtual void {\bfseries startrender} ()
+\item 
+\mbox{\Hypertarget{structmodel_a8071edbee170b63dfd640cd0c9e64341}\label{structmodel_a8071edbee170b63dfd640cd0c9e64341}} 
+virtual void {\bfseries endrender} ()
+\item 
+\mbox{\Hypertarget{structmodel_abb8c32990048aad7d7091024264b24b5}\label{structmodel_abb8c32990048aad7d7091024264b24b5}} 
+void {\bfseries boundbox} (\hyperlink{structvec}{vec} \&center, \hyperlink{structvec}{vec} \&radius)
+\item 
+\mbox{\Hypertarget{structmodel_a2f7ce1c820b3eb97e8fe9c07972c5332}\label{structmodel_a2f7ce1c820b3eb97e8fe9c07972c5332}} 
+float {\bfseries collisionbox} (\hyperlink{structvec}{vec} \&center, \hyperlink{structvec}{vec} \&radius)
+\item 
+\mbox{\Hypertarget{structmodel_af60e0134a1153a6bc412434598203370}\label{structmodel_af60e0134a1153a6bc412434598203370}} 
+float {\bfseries boundsphere} (\hyperlink{structvec}{vec} \&center)
+\item 
+\mbox{\Hypertarget{structmodel_ae5e5123ea6a1c97e6c0354a66dc92eb7}\label{structmodel_ae5e5123ea6a1c97e6c0354a66dc92eb7}} 
+float {\bfseries above} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structmodel_a5fa6480b7be9de28e5af5bcd19e24d3d}\label{structmodel_a5fa6480b7be9de28e5af5bcd19e24d3d}} 
+char $\ast$ {\bfseries name}
+\item 
+\mbox{\Hypertarget{structmodel_a601591cf7d55a46acff02ae92ed49582}\label{structmodel_a601591cf7d55a46acff02ae92ed49582}} 
+float {\bfseries spinyaw}
+\item 
+\mbox{\Hypertarget{structmodel_a3d26908c1e9130e4ed3bee2fe9165d51}\label{structmodel_a3d26908c1e9130e4ed3bee2fe9165d51}} 
+float {\bfseries spinpitch}
+\item 
+\mbox{\Hypertarget{structmodel_a5742bc83b44a81d6b928b08ddebe24de}\label{structmodel_a5742bc83b44a81d6b928b08ddebe24de}} 
+float {\bfseries spinroll}
+\item 
+\mbox{\Hypertarget{structmodel_a2b1758014bf5e4ec71453b95c8d2df4f}\label{structmodel_a2b1758014bf5e4ec71453b95c8d2df4f}} 
+float {\bfseries offsetyaw}
+\item 
+\mbox{\Hypertarget{structmodel_a2dea509515ffac62cbf4ab3faaa13063}\label{structmodel_a2dea509515ffac62cbf4ab3faaa13063}} 
+float {\bfseries offsetpitch}
+\item 
+\mbox{\Hypertarget{structmodel_a94c6d887527c1c3e0555357765bc8039}\label{structmodel_a94c6d887527c1c3e0555357765bc8039}} 
+float {\bfseries offsetroll}
+\item 
+\mbox{\Hypertarget{structmodel_a86df472278573c964cec619cd9ed08e5}\label{structmodel_a86df472278573c964cec619cd9ed08e5}} 
+bool {\bfseries shadow}
+\item 
+\mbox{\Hypertarget{structmodel_a0e2632259651a619444b98cf060fa1e4}\label{structmodel_a0e2632259651a619444b98cf060fa1e4}} 
+bool {\bfseries alphashadow}
+\item 
+\mbox{\Hypertarget{structmodel_aaad64b907a04bdefbc94a582f52c86d3}\label{structmodel_aaad64b907a04bdefbc94a582f52c86d3}} 
+bool {\bfseries depthoffset}
+\item 
+\mbox{\Hypertarget{structmodel_a8ddcc2295f85d82f7d46c3b12cc5a40b}\label{structmodel_a8ddcc2295f85d82f7d46c3b12cc5a40b}} 
+float {\bfseries scale}
+\item 
+\mbox{\Hypertarget{structmodel_a4c2951a3196fd4e578b6824c94d7f536}\label{structmodel_a4c2951a3196fd4e578b6824c94d7f536}} 
+\hyperlink{structvec}{vec} {\bfseries translate}
+\item 
+\mbox{\Hypertarget{structmodel_a2d78059e03077ecd7a320f8d31cc4bdc}\label{structmodel_a2d78059e03077ecd7a320f8d31cc4bdc}} 
+\hyperlink{struct_b_i_h}{B\+IH} $\ast$ {\bfseries bih}
+\item 
+\mbox{\Hypertarget{structmodel_ab0bae27088fc6684dd3ee4cd928d4763}\label{structmodel_ab0bae27088fc6684dd3ee4cd928d4763}} 
+\hyperlink{structvec}{vec} {\bfseries bbcenter}
+\item 
+\mbox{\Hypertarget{structmodel_aa6917f64b7ef84a1fde04d3da1560a75}\label{structmodel_aa6917f64b7ef84a1fde04d3da1560a75}} 
+\hyperlink{structvec}{vec} {\bfseries bbradius}
+\item 
+\mbox{\Hypertarget{structmodel_a4d3dc5274e4fd15526e71cf8c361aa80}\label{structmodel_a4d3dc5274e4fd15526e71cf8c361aa80}} 
+\hyperlink{structvec}{vec} {\bfseries bbextend}
+\item 
+\mbox{\Hypertarget{structmodel_a2e02a47a8ea671ea191a7bd1fbe2acc8}\label{structmodel_a2e02a47a8ea671ea191a7bd1fbe2acc8}} 
+\hyperlink{structvec}{vec} {\bfseries collidecenter}
+\item 
+\mbox{\Hypertarget{structmodel_a8dffe5ed3634fdd3a1e5d448390e41d7}\label{structmodel_a8dffe5ed3634fdd3a1e5d448390e41d7}} 
+\hyperlink{structvec}{vec} {\bfseries collideradius}
+\item 
+\mbox{\Hypertarget{structmodel_aeaa3a487fadedda117b9865452feb1bb}\label{structmodel_aeaa3a487fadedda117b9865452feb1bb}} 
+float {\bfseries rejectradius}
+\item 
+\mbox{\Hypertarget{structmodel_a191b294c19531d85f80e208eb5704e64}\label{structmodel_a191b294c19531d85f80e208eb5704e64}} 
+float {\bfseries eyeheight}
+\item 
+\mbox{\Hypertarget{structmodel_aebd34301bd70916ad32ad96c34110eee}\label{structmodel_aebd34301bd70916ad32ad96c34110eee}} 
+float {\bfseries collidexyradius}
+\item 
+\mbox{\Hypertarget{structmodel_aa43a7a6e0c8b8671612730319c97a1f0}\label{structmodel_aa43a7a6e0c8b8671612730319c97a1f0}} 
+float {\bfseries collideheight}
+\item 
+\mbox{\Hypertarget{structmodel_af3e4b40f4189980ba6ae307cc2e8ba0f}\label{structmodel_af3e4b40f4189980ba6ae307cc2e8ba0f}} 
+char $\ast$ {\bfseries collidemodel}
+\item 
+\mbox{\Hypertarget{structmodel_a41f8266c19b7cb8148223f77bf3de484}\label{structmodel_a41f8266c19b7cb8148223f77bf3de484}} 
+int {\bfseries collide}
+\item 
+\mbox{\Hypertarget{structmodel_abe09fa8a06323d129d78661318f43ff3}\label{structmodel_abe09fa8a06323d129d78661318f43ff3}} 
+int {\bfseries batch}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/model.\+h\end{DoxyCompactItemize}

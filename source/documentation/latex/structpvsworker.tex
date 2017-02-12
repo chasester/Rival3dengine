@@ -1,0 +1,90 @@
+\hypertarget{structpvsworker}{}\section{pvsworker Struct Reference}
+\label{structpvsworker}\index{pvsworker@{pvsworker}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structpvsworker_1_1cullorder}{cullorder}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structpvsworker_afee4a76f12314aab22bf1c8624c12ac5}\label{structpvsworker_afee4a76f12314aab22bf1c8624c12ac5}} 
+void {\bfseries resetlevels} ()
+\item 
+\mbox{\Hypertarget{structpvsworker_a4fadb048197fd058f9ecfd1c7835e0d7}\label{structpvsworker_a4fadb048197fd058f9ecfd1c7835e0d7}} 
+int {\bfseries hasvoxel} (const \hyperlink{structivec}{ivec} \&p, int coord, int dir, int ocoord=0, int odir=0, int $\ast$omin=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{structpvsworker_a4a0c56bf1bf3e29c19ca3ecbde1c6887}\label{structpvsworker_a4a0c56bf1bf3e29c19ca3ecbde1c6887}} 
+void {\bfseries hidepvs} (\hyperlink{structpvsnode}{pvsnode} \&p)
+\item 
+\mbox{\Hypertarget{structpvsworker_a5c4b5eda21cf9bf5aeafdbe4d56521a6}\label{structpvsworker_a5c4b5eda21cf9bf5aeafdbe4d56521a6}} 
+void {\bfseries shaftcullpvs} (\hyperlink{structshaft}{shaft} \&s, \hyperlink{structpvsnode}{pvsnode} \&p, const \hyperlink{structivec}{ivec} \&co=\hyperlink{structivec}{ivec}(0, 0, 0), int size=worldsize)
+\item 
+\mbox{\Hypertarget{structpvsworker_ae2c24a805853f1024668dcc140a522f3}\label{structpvsworker_ae2c24a805853f1024668dcc140a522f3}} 
+void {\bfseries cullpvs} (\hyperlink{structpvsnode}{pvsnode} \&p, const \hyperlink{structivec}{ivec} \&co=\hyperlink{structivec}{ivec}(0, 0, 0), int size=worldsize)
+\item 
+\mbox{\Hypertarget{structpvsworker_a5c3cf458a0492defaa1844928f76f49a}\label{structpvsworker_a5c3cf458a0492defaa1844928f76f49a}} 
+bool {\bfseries compresspvs} (\hyperlink{structpvsnode}{pvsnode} \&p, int size, int threshold)
+\item 
+\mbox{\Hypertarget{structpvsworker_ad5317d04a183441d5cbb690996ca7dd8}\label{structpvsworker_ad5317d04a183441d5cbb690996ca7dd8}} 
+bool {\bfseries serializepvs} (\hyperlink{structpvsnode}{pvsnode} \&p, int storage=-\/1)
+\item 
+\mbox{\Hypertarget{structpvsworker_afa9415995053b7161a62f5c639cb8562}\label{structpvsworker_afa9415995053b7161a62f5c639cb8562}} 
+bool {\bfseries materialoccluded} (\hyperlink{structpvsnode}{pvsnode} \&p, const \hyperlink{structivec}{ivec} \&co, int size, const \hyperlink{structivec}{ivec} \&bbmin, const \hyperlink{structivec}{ivec} \&bbmax)
+\item 
+\mbox{\Hypertarget{structpvsworker_a52c05e646dc9c9f5e40ed528db7ee211}\label{structpvsworker_a52c05e646dc9c9f5e40ed528db7ee211}} 
+bool {\bfseries materialoccluded} (\hyperlink{structvector}{vector}$<$ \hyperlink{structmaterialsurface}{materialsurface} $\ast$$>$ \&matsurfs)
+\item 
+\mbox{\Hypertarget{structpvsworker_abf3053dafe349d6b77f3a67f3757ec66}\label{structpvsworker_abf3053dafe349d6b77f3a67f3757ec66}} 
+void {\bfseries calcpvs} (const \hyperlink{structivec}{ivec} \&co, int size)
+\item 
+\mbox{\Hypertarget{structpvsworker_ad8d14d50790f2f640300ee0a01e1667f}\label{structpvsworker_ad8d14d50790f2f640300ee0a01e1667f}} 
+uchar $\ast$ {\bfseries testviewcell} (const \hyperlink{structivec}{ivec} \&co, int size, int $\ast$waterpvs=N\+U\+LL, int $\ast$len=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{structpvsworker_aba83dfd92f1932034d241e44e4fd5d6d}\label{structpvsworker_aba83dfd92f1932034d241e44e4fd5d6d}} 
+int {\bfseries genviewcell} (const \hyperlink{structivec}{ivec} \&co, int size)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structpvsworker_a54d7629e110196e76f51956906b4a6e0}\label{structpvsworker_a54d7629e110196e76f51956906b4a6e0}} 
+static int {\bfseries run} (void $\ast$data)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structpvsworker_a2398c2adcfd4ee7be83d4ac9d1861426}\label{structpvsworker_a2398c2adcfd4ee7be83d4ac9d1861426}} 
+S\+D\+L\+\_\+\+Thread $\ast$ {\bfseries thread}
+\item 
+\mbox{\Hypertarget{structpvsworker_a9ffadfd487be7ea693e2be5961de1983}\label{structpvsworker_a9ffadfd487be7ea693e2be5961de1983}} 
+\hyperlink{structpvsnode}{pvsnode} $\ast$ {\bfseries pvsnodes}
+\item 
+\mbox{\Hypertarget{structpvsworker_aa6b6bfdb8a9dcbdf3ac49f9bb673b50e}\label{structpvsworker_aa6b6bfdb8a9dcbdf3ac49f9bb673b50e}} 
+\hyperlink{structshaftbb}{shaftbb} {\bfseries viewcellbb}
+\item 
+\mbox{\Hypertarget{structpvsworker_a746f20e03ead52c4de9c2516e777632e}\label{structpvsworker_a746f20e03ead52c4de9c2516e777632e}} 
+\hyperlink{structpvsnode}{pvsnode} $\ast$ {\bfseries levels} \mbox{[}32\mbox{]}
+\item 
+\mbox{\Hypertarget{structpvsworker_a6b27bef841c401493c88e6553b9e7e26}\label{structpvsworker_a6b27bef841c401493c88e6553b9e7e26}} 
+int {\bfseries curlevel}
+\item 
+\mbox{\Hypertarget{structpvsworker_ae39af1c2421743ef109197f5af5a5568}\label{structpvsworker_ae39af1c2421743ef109197f5af5a5568}} 
+\hyperlink{structivec}{ivec} {\bfseries origin}
+\item 
+\mbox{\Hypertarget{structpvsworker_a1f72299a86f04be022d2bd9c9470f92a}\label{structpvsworker_a1f72299a86f04be022d2bd9c9470f92a}} 
+\hyperlink{structqueue}{queue}$<$ \hyperlink{structshaftbb}{shaftbb}, 32 $>$ {\bfseries prevblockers}
+\item 
+\mbox{\Hypertarget{structpvsworker_a72c398474391751292e51f58b2a9c4b5}\label{structpvsworker_a72c398474391751292e51f58b2a9c4b5}} 
+\hyperlink{structvector}{vector}$<$ uchar $>$ {\bfseries outbuf}
+\item 
+\mbox{\Hypertarget{structpvsworker_af838d8898da28edd8a4065a3a3a868f7}\label{structpvsworker_af838d8898da28edd8a4065a3a3a868f7}} 
+int {\bfseries wateroccluded}
+\item 
+\mbox{\Hypertarget{structpvsworker_a3244f6e038c600e154d936df2ba238b6}\label{structpvsworker_a3244f6e038c600e154d936df2ba238b6}} 
+int {\bfseries waterbytes}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/pvs.\+cpp\end{DoxyCompactItemize}

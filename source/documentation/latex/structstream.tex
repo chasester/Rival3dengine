@@ -1,0 +1,101 @@
+\hypertarget{structstream}{}\section{stream Struct Reference}
+\label{structstream}\index{stream@{stream}}
+Inheritance diagram for stream\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structstream}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structstream_a8920d8eee5deb13782ffb3fdb5f80a88}\label{structstream_a8920d8eee5deb13782ffb3fdb5f80a88}} 
+typedef off\+\_\+t {\bfseries offset}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structstream_a7d1d5df9653558cd98ef59bd0ff17c82}\label{structstream_a7d1d5df9653558cd98ef59bd0ff17c82}} 
+virtual void {\bfseries close} ()=0
+\item 
+\mbox{\Hypertarget{structstream_af55605f68f3d1990f7b33d17b0967937}\label{structstream_af55605f68f3d1990f7b33d17b0967937}} 
+virtual bool {\bfseries end} ()=0
+\item 
+\mbox{\Hypertarget{structstream_a513344035d86eecb5ea0c79569066b27}\label{structstream_a513344035d86eecb5ea0c79569066b27}} 
+virtual offset {\bfseries tell} ()
+\item 
+\mbox{\Hypertarget{structstream_ae3741db3344f31d3b9e9d2251a697d3c}\label{structstream_ae3741db3344f31d3b9e9d2251a697d3c}} 
+virtual offset {\bfseries rawtell} ()
+\item 
+\mbox{\Hypertarget{structstream_abf4750ed1c7263e9059332d0751e2009}\label{structstream_abf4750ed1c7263e9059332d0751e2009}} 
+virtual bool {\bfseries seek} (offset pos, int whence=S\+E\+E\+K\+\_\+\+S\+ET)
+\item 
+\mbox{\Hypertarget{structstream_ac701c107b4671eb9855492d44886f249}\label{structstream_ac701c107b4671eb9855492d44886f249}} 
+virtual offset {\bfseries size} ()
+\item 
+\mbox{\Hypertarget{structstream_a7648d7c347c72d7dc41fe3312e36825f}\label{structstream_a7648d7c347c72d7dc41fe3312e36825f}} 
+virtual offset {\bfseries rawsize} ()
+\item 
+\mbox{\Hypertarget{structstream_adcd2510b35b11b7f78dd75207bf43d48}\label{structstream_adcd2510b35b11b7f78dd75207bf43d48}} 
+virtual size\+\_\+t {\bfseries read} (void $\ast$buf, size\+\_\+t len)
+\item 
+\mbox{\Hypertarget{structstream_adca468bcd576f0fc896df0fa43ab377f}\label{structstream_adca468bcd576f0fc896df0fa43ab377f}} 
+virtual size\+\_\+t {\bfseries write} (const void $\ast$buf, size\+\_\+t len)
+\item 
+\mbox{\Hypertarget{structstream_a9d50f49eeb2b0a15b7c3f91e3d15eef3}\label{structstream_a9d50f49eeb2b0a15b7c3f91e3d15eef3}} 
+virtual bool {\bfseries flush} ()
+\item 
+\mbox{\Hypertarget{structstream_a603db65c392bfe44f108a0d7cefdff98}\label{structstream_a603db65c392bfe44f108a0d7cefdff98}} 
+virtual int {\bfseries getchar} ()
+\item 
+\mbox{\Hypertarget{structstream_a41a4d74c57bebc7e69f9c04f8e6f13c1}\label{structstream_a41a4d74c57bebc7e69f9c04f8e6f13c1}} 
+virtual bool {\bfseries putchar} (int n)
+\item 
+\mbox{\Hypertarget{structstream_a699f7addf5113e0b63219869443d784c}\label{structstream_a699f7addf5113e0b63219869443d784c}} 
+virtual bool {\bfseries getline} (char $\ast$str, size\+\_\+t len)
+\item 
+\mbox{\Hypertarget{structstream_ad98a69b7c1f7d6d388b1020c5dcd452a}\label{structstream_ad98a69b7c1f7d6d388b1020c5dcd452a}} 
+virtual bool {\bfseries putstring} (const char $\ast$str)
+\item 
+\mbox{\Hypertarget{structstream_aabdf3786ae1a58bd8d92f9d4da78e80d}\label{structstream_aabdf3786ae1a58bd8d92f9d4da78e80d}} 
+virtual bool {\bfseries putline} (const char $\ast$str)
+\item 
+\mbox{\Hypertarget{structstream_abc5967119b7f84b828ff6e0829f3b1b3}\label{structstream_abc5967119b7f84b828ff6e0829f3b1b3}} 
+virtual size\+\_\+t {\bfseries printf} (const char $\ast$fmt,...) P\+R\+I\+N\+T\+F\+A\+R\+GS(2
+\item 
+\mbox{\Hypertarget{structstream_ac80efd5644d173b8f9a4d4233dd81875}\label{structstream_ac80efd5644d173b8f9a4d4233dd81875}} 
+virtual size\+\_\+t virtual uint {\bfseries getcrc} ()
+\item 
+\mbox{\Hypertarget{structstream_afceda21166198ae324a48abc0e1d9aeb}\label{structstream_afceda21166198ae324a48abc0e1d9aeb}} 
+{\footnotesize template$<$class T $>$ }\\size\+\_\+t {\bfseries put} (const T $\ast$v, size\+\_\+t n)
+\item 
+\mbox{\Hypertarget{structstream_a2756fb1f35a01a67048a97965d0b5d69}\label{structstream_a2756fb1f35a01a67048a97965d0b5d69}} 
+{\footnotesize template$<$class T $>$ }\\bool {\bfseries put} (T n)
+\item 
+\mbox{\Hypertarget{structstream_a70a8d946550e0c2f892a1b9d775d6833}\label{structstream_a70a8d946550e0c2f892a1b9d775d6833}} 
+{\footnotesize template$<$class T $>$ }\\bool {\bfseries putlil} (T n)
+\item 
+\mbox{\Hypertarget{structstream_a005490189482361b6af45fe06eb32c49}\label{structstream_a005490189482361b6af45fe06eb32c49}} 
+{\footnotesize template$<$class T $>$ }\\bool {\bfseries putbig} (T n)
+\item 
+\mbox{\Hypertarget{structstream_a13084a9ab7661e5c6eecb37603257ab8}\label{structstream_a13084a9ab7661e5c6eecb37603257ab8}} 
+{\footnotesize template$<$class T $>$ }\\size\+\_\+t {\bfseries get} (T $\ast$v, size\+\_\+t n)
+\item 
+\mbox{\Hypertarget{structstream_a10765761d17fe060910b97a6e9e7927a}\label{structstream_a10765761d17fe060910b97a6e9e7927a}} 
+{\footnotesize template$<$class T $>$ }\\T {\bfseries get} ()
+\item 
+\mbox{\Hypertarget{structstream_a95de535e323fc3616d8062b922a30f4b}\label{structstream_a95de535e323fc3616d8062b922a30f4b}} 
+{\footnotesize template$<$class T $>$ }\\T {\bfseries getlil} ()
+\item 
+\mbox{\Hypertarget{structstream_a20499abc6ce3d99b6302321a786604a3}\label{structstream_a20499abc6ce3d99b6302321a786604a3}} 
+{\footnotesize template$<$class T $>$ }\\T {\bfseries getbig} ()
+\item 
+\mbox{\Hypertarget{structstream_aae3c2d8b736350f8b1c136c276c5a633}\label{structstream_aae3c2d8b736350f8b1c136c276c5a633}} 
+S\+D\+L\+\_\+\+R\+Wops $\ast$ {\bfseries rwops} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/tools.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/stream.\+cpp\end{DoxyCompactItemize}

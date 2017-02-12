@@ -1,0 +1,43 @@
+\hypertarget{struct_global_shader_param_state}{}\section{Global\+Shader\+Param\+State Struct Reference}
+\label{struct_global_shader_param_state}\index{Global\+Shader\+Param\+State@{Global\+Shader\+Param\+State}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_global_shader_param_state_ae241e9036d2ac52dc020baaab581c1eb}\label{struct_global_shader_param_state_ae241e9036d2ac52dc020baaab581c1eb}} 
+void {\bfseries resetversions} ()
+\item 
+\mbox{\Hypertarget{struct_global_shader_param_state_a1e33048f7eabf12de9d221d7fc432ebf}\label{struct_global_shader_param_state_a1e33048f7eabf12de9d221d7fc432ebf}} 
+void {\bfseries changed} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_global_shader_param_state_a1a7f8e388002839da26481e52d7fcc9d}\label{struct_global_shader_param_state_a1a7f8e388002839da26481e52d7fcc9d}} 
+const char $\ast$ {\bfseries name}
+\item 
+\mbox{\Hypertarget{struct_global_shader_param_state_a3f8e306a7e12a40be73cf5d804fdc01a}\label{struct_global_shader_param_state_a3f8e306a7e12a40be73cf5d804fdc01a}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>float {\bfseries fval} \mbox{[}32\mbox{]}\\
+\>int {\bfseries ival} \mbox{[}32\mbox{]}\\
+\>uint {\bfseries uval} \mbox{[}32\mbox{]}\\
+\>uchar {\bfseries buf} \mbox{[}32 $\ast$sizeof(float)\mbox{]}\\
+\}; \\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{struct_global_shader_param_state_a1959e93d0a40b9a39ef1ca20de52f115}\label{struct_global_shader_param_state_a1959e93d0a40b9a39ef1ca20de52f115}} 
+int {\bfseries version}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_global_shader_param_state_ae860579748fdf561bb34a49d3ec99a90}\label{struct_global_shader_param_state_ae860579748fdf561bb34a49d3ec99a90}} 
+static int {\bfseries nextversion} = 0
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/texture.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/shader.\+cpp\end{DoxyCompactItemize}

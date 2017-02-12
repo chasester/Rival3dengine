@@ -1,0 +1,258 @@
+\hypertarget{structanimmodel}{}\section{animmodel Struct Reference}
+\label{structanimmodel}\index{animmodel@{animmodel}}
+Inheritance diagram for animmodel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{structanimmodel}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structanimmodel_1_1animpos}{animpos}
+\item 
+struct \hyperlink{structanimmodel_1_1animspec}{animspec}
+\item 
+struct \hyperlink{structanimmodel_1_1animstate}{animstate}
+\item 
+struct \hyperlink{structanimmodel_1_1linkedpart}{linkedpart}
+\item 
+struct \hyperlink{structanimmodel_1_1mesh}{mesh}
+\item 
+struct \hyperlink{structanimmodel_1_1meshgroup}{meshgroup}
+\item 
+struct \hyperlink{structanimmodel_1_1part}{part}
+\item 
+struct \hyperlink{structanimmodel_1_1shaderparams}{shaderparams}
+\item 
+struct \hyperlink{structanimmodel_1_1shaderparamskey}{shaderparamskey}
+\item 
+struct \hyperlink{structanimmodel_1_1skin}{skin}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structanimmodel_a3e4f076dbd12d38a1823dc852ebd4014}\label{structanimmodel_a3e4f076dbd12d38a1823dc852ebd4014}} 
+enum \{ {\bfseries L\+I\+N\+K\+\_\+\+T\+AG} = 0, 
+{\bfseries L\+I\+N\+K\+\_\+\+C\+O\+OP}, 
+{\bfseries L\+I\+N\+K\+\_\+\+R\+E\+U\+SE}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structanimmodel_a56b13dd7ec45bc5c07cd28e614a81982}\label{structanimmodel_a56b13dd7ec45bc5c07cd28e614a81982}} 
+virtual int {\bfseries linktype} (\hyperlink{structanimmodel}{animmodel} $\ast$m, \hyperlink{structanimmodel_1_1part}{part} $\ast$p) const
+\item 
+\mbox{\Hypertarget{structanimmodel_ae3359d512c6c6c34e32ed98e9b8a51e7}\label{structanimmodel_ae3359d512c6c6c34e32ed98e9b8a51e7}} 
+void {\bfseries intersect} (int anim, int basetime, int basetime2, float pitch, const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structmodelattach}{modelattach} $\ast$a, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray)
+\item 
+\mbox{\Hypertarget{structanimmodel_a5bc10518c48616f2e1ee6eec4f2264a3}\label{structanimmodel_a5bc10518c48616f2e1ee6eec4f2264a3}} 
+int {\bfseries intersect} (int anim, int basetime, int basetime2, const \hyperlink{structvec}{vec} \&pos, float yaw, float pitch, float roll, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structmodelattach}{modelattach} $\ast$a, float size, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray, float \&dist, int mode)
+\item 
+\mbox{\Hypertarget{structanimmodel_ac675f25eaaabe3c885dc56662b178036}\label{structanimmodel_ac675f25eaaabe3c885dc56662b178036}} 
+void {\bfseries render} (int anim, int basetime, int basetime2, float pitch, const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structmodelattach}{modelattach} $\ast$a)
+\item 
+\mbox{\Hypertarget{structanimmodel_a5e69cc0a64526b6b1abdcf1c14dfd3da}\label{structanimmodel_a5e69cc0a64526b6b1abdcf1c14dfd3da}} 
+void {\bfseries render} (int anim, int basetime, int basetime2, const \hyperlink{structvec}{vec} \&o, float yaw, float pitch, float roll, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structmodelattach}{modelattach} $\ast$a, float size, const \hyperlink{structvec4}{vec4} \&color)
+\item 
+\mbox{\Hypertarget{structanimmodel_a4d6616ea5b740c69e9334aa87275753b}\label{structanimmodel_a4d6616ea5b740c69e9334aa87275753b}} 
+{\bfseries animmodel} (const char $\ast$name)
+\item 
+\mbox{\Hypertarget{structanimmodel_a6d8d202b0542cb7474dd042158be618d}\label{structanimmodel_a6d8d202b0542cb7474dd042158be618d}} 
+void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_af2c48bdb2cbbea0aef806093a0ea07fa}\label{structanimmodel_af2c48bdb2cbbea0aef806093a0ea07fa}} 
+\hyperlink{structanimmodel_1_1part}{part} \& {\bfseries addpart} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_ac65e188f24f9a408803e7173ddc07d16}\label{structanimmodel_ac65e188f24f9a408803e7173ddc07d16}} 
+void {\bfseries initmatrix} (\hyperlink{structmatrix4x3}{matrix4x3} \&m)
+\item 
+\mbox{\Hypertarget{structanimmodel_acb1de49e303bdabbbf368f007f3d789f}\label{structanimmodel_acb1de49e303bdabbbf368f007f3d789f}} 
+void {\bfseries gen\+B\+IH} (\hyperlink{structvector}{vector}$<$ \hyperlink{struct_b_i_h_1_1mesh}{B\+I\+H\+::mesh} $>$ \&bih)
+\item 
+\mbox{\Hypertarget{structanimmodel_a92fa053090b19aae9ad1b3cdf0745357}\label{structanimmodel_a92fa053090b19aae9ad1b3cdf0745357}} 
+void {\bfseries genshadowmesh} (\hyperlink{structvector}{vector}$<$ \hyperlink{structtriangle}{triangle} $>$ \&tris, const \hyperlink{structmatrix4x3}{matrix4x3} \&orient)
+\item 
+\mbox{\Hypertarget{structanimmodel_ad493436cb56e10676a3d6f236fdb0e9c}\label{structanimmodel_ad493436cb56e10676a3d6f236fdb0e9c}} 
+void {\bfseries preload\+B\+IH} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_a1a7cb08383b1c5feefc728589561727a}\label{structanimmodel_a1a7cb08383b1c5feefc728589561727a}} 
+\hyperlink{struct_b_i_h}{B\+IH} $\ast$ {\bfseries set\+B\+IH} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_abb2471c627f61b3f1fb8ae67b116b3a5}\label{structanimmodel_abb2471c627f61b3f1fb8ae67b116b3a5}} 
+bool {\bfseries link} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p, const char $\ast$tag, const \hyperlink{structvec}{vec} \&translate=\hyperlink{structvec}{vec}(0, 0, 0), int anim=-\/1, int basetime=0, \hyperlink{structvec}{vec} $\ast$pos=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{structanimmodel_a295c5ddbe03acab89bf0d887ba1474a8}\label{structanimmodel_a295c5ddbe03acab89bf0d887ba1474a8}} 
+bool {\bfseries unlink} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p)
+\item 
+\mbox{\Hypertarget{structanimmodel_a38a471f7e4559b46b906d6aa2c8c9adc}\label{structanimmodel_a38a471f7e4559b46b906d6aa2c8c9adc}} 
+bool {\bfseries envmapped} () const
+\item 
+\mbox{\Hypertarget{structanimmodel_ad99da445d72fe4fd3410b0f43dd1b320}\label{structanimmodel_ad99da445d72fe4fd3410b0f43dd1b320}} 
+bool {\bfseries animated} () const
+\item 
+\mbox{\Hypertarget{structanimmodel_af4a1ee0f2c2538adcfabaa661e985a8e}\label{structanimmodel_af4a1ee0f2c2538adcfabaa661e985a8e}} 
+bool {\bfseries pitched} () const
+\item 
+\mbox{\Hypertarget{structanimmodel_a0a2b25cfbe1b7f6428eb2154c121a213}\label{structanimmodel_a0a2b25cfbe1b7f6428eb2154c121a213}} 
+bool {\bfseries alphatested} () const
+\item 
+\mbox{\Hypertarget{structanimmodel_a1e5da2a8ebbdb7df6bc046b335be532b}\label{structanimmodel_a1e5da2a8ebbdb7df6bc046b335be532b}} 
+virtual bool {\bfseries loaddefaultparts} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_aaeb99e417a2a13f7fd6314ea8ddee580}\label{structanimmodel_aaeb99e417a2a13f7fd6314ea8ddee580}} 
+void {\bfseries preloadshaders} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_a56469b961b6615fb54302057a8822d12}\label{structanimmodel_a56469b961b6615fb54302057a8822d12}} 
+void {\bfseries preloadmeshes} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_a16f1da27ad68b0abef99b59099642b39}\label{structanimmodel_a16f1da27ad68b0abef99b59099642b39}} 
+void {\bfseries setshader} (\hyperlink{struct_shader}{Shader} $\ast$shader)
+\item 
+\mbox{\Hypertarget{structanimmodel_ad5bd262a068d21a9c062707709d5c000}\label{structanimmodel_ad5bd262a068d21a9c062707709d5c000}} 
+void {\bfseries setenvmap} (float envmapmin, float envmapmax, \hyperlink{struct_texture}{Texture} $\ast$\hyperlink{structenvmap}{envmap})
+\item 
+\mbox{\Hypertarget{structanimmodel_a38d13767831a8a38197b66bab3385bbd}\label{structanimmodel_a38d13767831a8a38197b66bab3385bbd}} 
+void {\bfseries setspec} (float spec)
+\item 
+\mbox{\Hypertarget{structanimmodel_a97731333f3a91102f4e3a1719050ce19}\label{structanimmodel_a97731333f3a91102f4e3a1719050ce19}} 
+void {\bfseries setgloss} (int gloss)
+\item 
+\mbox{\Hypertarget{structanimmodel_aba40170504ff95a3fcfd5376bec1f4cf}\label{structanimmodel_aba40170504ff95a3fcfd5376bec1f4cf}} 
+void {\bfseries setglow} (float glow, float delta, float pulse)
+\item 
+\mbox{\Hypertarget{structanimmodel_a0bc1ea2c24f576e241060c33595db43f}\label{structanimmodel_a0bc1ea2c24f576e241060c33595db43f}} 
+void {\bfseries setalphatest} (float alphatest)
+\item 
+\mbox{\Hypertarget{structanimmodel_acaca8dba6909d0ed2cf02095baac0fa4}\label{structanimmodel_acaca8dba6909d0ed2cf02095baac0fa4}} 
+void {\bfseries setfullbright} (float fullbright)
+\item 
+\mbox{\Hypertarget{structanimmodel_a4e172eba82417aefa5765edb2503c2be}\label{structanimmodel_a4e172eba82417aefa5765edb2503c2be}} 
+void {\bfseries setcullface} (bool cullface)
+\item 
+\mbox{\Hypertarget{structanimmodel_ada194ea26cf44d12c873db81da8e7c57}\label{structanimmodel_ada194ea26cf44d12c873db81da8e7c57}} 
+void {\bfseries setcolor} (const \hyperlink{structvec}{vec} \&color)
+\item 
+\mbox{\Hypertarget{structanimmodel_a7b0919a98d2e2c78f8c8afd67fdd3fc2}\label{structanimmodel_a7b0919a98d2e2c78f8c8afd67fdd3fc2}} 
+void {\bfseries setparascale} (const \hyperlink{structvec}{vec} \&parascale)
+\item 
+\mbox{\Hypertarget{structanimmodel_a1f5ff7713f5429521fa935962947e7fb}\label{structanimmodel_a1f5ff7713f5429521fa935962947e7fb}} 
+void {\bfseries calcbb} (\hyperlink{structvec}{vec} \&center, \hyperlink{structvec}{vec} \&radius)
+\item 
+\mbox{\Hypertarget{structanimmodel_a135985486337c45bdb24c4e71ef704a4}\label{structanimmodel_a135985486337c45bdb24c4e71ef704a4}} 
+void {\bfseries calctransform} (\hyperlink{structmatrix4x3}{matrix4x3} \&m)
+\item 
+\mbox{\Hypertarget{structanimmodel_a2286209e8ac8023894deabc008e851c6}\label{structanimmodel_a2286209e8ac8023894deabc008e851c6}} 
+virtual void {\bfseries loaded} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_aa31164f6d65fa63b2a648218b027692e}\label{structanimmodel_aa31164f6d65fa63b2a648218b027692e}} 
+void {\bfseries startrender} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_abb05af72648b8abd5fd7d8683751bb82}\label{structanimmodel_abb05af72648b8abd5fd7d8683751bb82}} 
+void {\bfseries endrender} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structanimmodel_a292961d8709679a14340cf3c3068ef6a}\label{structanimmodel_a292961d8709679a14340cf3c3068ef6a}} 
+static void {\bfseries disablebones} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_a943cf15df5f77f3eb757c4b8034fe51f}\label{structanimmodel_a943cf15df5f77f3eb757c4b8034fe51f}} 
+static void {\bfseries disabletangents} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_a6f54e99a87cbdf411e425f25bd9e7335}\label{structanimmodel_a6f54e99a87cbdf411e425f25bd9e7335}} 
+static void {\bfseries disabletc} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_a4534bf9318c152d8d9c41c6be15e3a87}\label{structanimmodel_a4534bf9318c152d8d9c41c6be15e3a87}} 
+static void {\bfseries disablevbo} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structanimmodel_a41c52c3feba8bec721c71ff93db11c4a}\label{structanimmodel_a41c52c3feba8bec721c71ff93db11c4a}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structanimmodel_1_1part}{part} $\ast$ $>$ {\bfseries parts}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structanimmodel_a181da0ce12df773f0de1a1d898273f37}\label{structanimmodel_a181da0ce12df773f0de1a1d898273f37}} 
+static \hyperlink{structhashnameset}{hashnameset}$<$ \hyperlink{structanimmodel_1_1meshgroup}{meshgroup} $\ast$ $>$ {\bfseries meshgroups}
+\item 
+\mbox{\Hypertarget{structanimmodel_ac74538f269270334cf403c697624f3fb}\label{structanimmodel_ac74538f269270334cf403c697624f3fb}} 
+static int {\bfseries intersectresult} = -\/1
+\item 
+\mbox{\Hypertarget{structanimmodel_ac094dcd7721756ef3c3091c278896327}\label{structanimmodel_ac094dcd7721756ef3c3091c278896327}} 
+static int {\bfseries intersectmode} = 0
+\item 
+\mbox{\Hypertarget{structanimmodel_a4065ef765537c60c20811d2d42bad0c7}\label{structanimmodel_a4065ef765537c60c20811d2d42bad0c7}} 
+static float {\bfseries intersectdist} = 0
+\item 
+\mbox{\Hypertarget{structanimmodel_a74c1c90c044a25d6d343ef00f24932b7}\label{structanimmodel_a74c1c90c044a25d6d343ef00f24932b7}} 
+static float {\bfseries intersectscale} = 1
+\item 
+\mbox{\Hypertarget{structanimmodel_a9b4ab567a3f007b99d8088360f68d625}\label{structanimmodel_a9b4ab567a3f007b99d8088360f68d625}} 
+static bool {\bfseries enabletc} = false
+\item 
+\mbox{\Hypertarget{structanimmodel_a867aef2be2160bdef6e4c43ea5852a98}\label{structanimmodel_a867aef2be2160bdef6e4c43ea5852a98}} 
+static bool {\bfseries enablecullface} = true
+\item 
+\mbox{\Hypertarget{structanimmodel_a914a36c32c8243c35e638082cc144f2f}\label{structanimmodel_a914a36c32c8243c35e638082cc144f2f}} 
+static bool {\bfseries enabletangents} = false
+\item 
+\mbox{\Hypertarget{structanimmodel_abdbbd486c1faab279c4f9e9e3180402a}\label{structanimmodel_abdbbd486c1faab279c4f9e9e3180402a}} 
+static bool {\bfseries enablebones} = false
+\item 
+\mbox{\Hypertarget{structanimmodel_a0f5336b1cdf6c0cad6847711aa5871dc}\label{structanimmodel_a0f5336b1cdf6c0cad6847711aa5871dc}} 
+static bool {\bfseries enabledepthoffset} = false
+\item 
+\mbox{\Hypertarget{structanimmodel_a1fdc449ca9c5be2ebcfe8554c4152afa}\label{structanimmodel_a1fdc449ca9c5be2ebcfe8554c4152afa}} 
+static float {\bfseries sizescale} = 1
+\item 
+\mbox{\Hypertarget{structanimmodel_a73568f03b8a48a7faaab4d3fadcbb6b4}\label{structanimmodel_a73568f03b8a48a7faaab4d3fadcbb6b4}} 
+static \hyperlink{structvec4}{vec4} {\bfseries colorscale}
+\item 
+\mbox{\Hypertarget{structanimmodel_af46c4e0f235fb107c285312aabfeaece}\label{structanimmodel_af46c4e0f235fb107c285312aabfeaece}} 
+static G\+Luint {\bfseries lastvbuf} = 0
+\item 
+\mbox{\Hypertarget{structanimmodel_a6dc60ef2f0d3f5425c2ffe343560cce4}\label{structanimmodel_a6dc60ef2f0d3f5425c2ffe343560cce4}} 
+static G\+Luint {\bfseries lasttcbuf} = 0
+\item 
+\mbox{\Hypertarget{structanimmodel_aca71419af31202d59f3fce515a97746b}\label{structanimmodel_aca71419af31202d59f3fce515a97746b}} 
+static G\+Luint {\bfseries lastxbuf} = 0
+\item 
+\mbox{\Hypertarget{structanimmodel_a7d16f7d6f815765f39a74b55cce84fb9}\label{structanimmodel_a7d16f7d6f815765f39a74b55cce84fb9}} 
+static G\+Luint {\bfseries lastbbuf} = 0
+\item 
+\mbox{\Hypertarget{structanimmodel_a5141f8f6a6f5e0ee4aacf7fdd8628c11}\label{structanimmodel_a5141f8f6a6f5e0ee4aacf7fdd8628c11}} 
+static G\+Luint {\bfseries lastebuf} = 0
+\item 
+\mbox{\Hypertarget{structanimmodel_ada80e5372157f77eb623159cf3b2ee50}\label{structanimmodel_ada80e5372157f77eb623159cf3b2ee50}} 
+static G\+Luint {\bfseries lastenvmaptex} = 0
+\item 
+\mbox{\Hypertarget{structanimmodel_aac2c4f2debeb7d03a0f646a6745c1f1e}\label{structanimmodel_aac2c4f2debeb7d03a0f646a6745c1f1e}} 
+static G\+Luint {\bfseries closestenvmaptex} = 0
+\item 
+\mbox{\Hypertarget{structanimmodel_a4e253188a6d69f01bc0c309880513639}\label{structanimmodel_a4e253188a6d69f01bc0c309880513639}} 
+static \hyperlink{struct_texture}{Texture} $\ast$ {\bfseries lasttex} = N\+U\+LL
+\item 
+\mbox{\Hypertarget{structanimmodel_a0c3d40b3c61542906e091885cc9a52f0}\label{structanimmodel_a0c3d40b3c61542906e091885cc9a52f0}} 
+static \hyperlink{struct_texture}{Texture} $\ast$ {\bfseries lastdecal} = N\+U\+LL
+\item 
+\mbox{\Hypertarget{structanimmodel_ac72ea00d8fb6f05bed6b9a8e7c888c5a}\label{structanimmodel_ac72ea00d8fb6f05bed6b9a8e7c888c5a}} 
+static \hyperlink{struct_texture}{Texture} $\ast$ {\bfseries lastmasks} = N\+U\+LL
+\item 
+\mbox{\Hypertarget{structanimmodel_a4aa5b2a84482b23846f662351eac7a54}\label{structanimmodel_a4aa5b2a84482b23846f662351eac7a54}} 
+static \hyperlink{struct_texture}{Texture} $\ast$ {\bfseries lastnormalmap} = N\+U\+LL
+\item 
+\mbox{\Hypertarget{structanimmodel_ac496317c2c1b464951b9a28dac25e31b}\label{structanimmodel_ac496317c2c1b464951b9a28dac25e31b}} 
+static int {\bfseries matrixpos} = 0
+\item 
+\mbox{\Hypertarget{structanimmodel_abdb8d4166cedcdba6e6be96b3b29022f}\label{structanimmodel_abdb8d4166cedcdba6e6be96b3b29022f}} 
+static \hyperlink{structmatrix4}{matrix4} {\bfseries matrixstack} \mbox{[}64\mbox{]}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/animmodel.\+h\end{DoxyCompactItemize}

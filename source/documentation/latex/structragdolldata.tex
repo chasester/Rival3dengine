@@ -1,0 +1,111 @@
+\hypertarget{structragdolldata}{}\section{ragdolldata Struct Reference}
+\label{structragdolldata}\index{ragdolldata@{ragdolldata}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structragdolldata_1_1vert}{vert}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structragdolldata_a48f7a4382a7ffed33e3708e937b00351}\label{structragdolldata_a48f7a4382a7ffed33e3708e937b00351}} 
+{\bfseries ragdolldata} (\hyperlink{structragdollskel}{ragdollskel} $\ast$skel, float scale=1)
+\item 
+\mbox{\Hypertarget{structragdolldata_a39710eeb3331be2f6247c41f1bb0e2a5}\label{structragdolldata_a39710eeb3331be2f6247c41f1bb0e2a5}} 
+void {\bfseries calcanimjoint} (int i, const \hyperlink{structmatrix4x3}{matrix4x3} \&anim)
+\item 
+\mbox{\Hypertarget{structragdolldata_ae31738741b9d032c45141c87ba51df5c}\label{structragdolldata_ae31738741b9d032c45141c87ba51df5c}} 
+void {\bfseries calctris} ()
+\item 
+\mbox{\Hypertarget{structragdolldata_a4641c34c3e8875897a5ed7729b57e9cb}\label{structragdolldata_a4641c34c3e8875897a5ed7729b57e9cb}} 
+void {\bfseries calcboundsphere} ()
+\item 
+\mbox{\Hypertarget{structragdolldata_af3b53f990a9384c2dd61f86b1b82fa25}\label{structragdolldata_af3b53f990a9384c2dd61f86b1b82fa25}} 
+void {\bfseries init} (\hyperlink{structdynent}{dynent} $\ast$d)
+\item 
+\mbox{\Hypertarget{structragdolldata_aa45fbba884f3740c0d200d9146bcd27a}\label{structragdolldata_aa45fbba884f3740c0d200d9146bcd27a}} 
+void {\bfseries move} (\hyperlink{structdynent}{dynent} $\ast$pl, float ts)
+\item 
+\mbox{\Hypertarget{structragdolldata_af7c6bbce772c9167c0c964c694aa77ca}\label{structragdolldata_af7c6bbce772c9167c0c964c694aa77ca}} 
+void {\bfseries constrain} ()
+\item 
+\mbox{\Hypertarget{structragdolldata_ac078dec09b79c4da24de60cea48a72ca}\label{structragdolldata_ac078dec09b79c4da24de60cea48a72ca}} 
+void {\bfseries constraindist} ()
+\item 
+\mbox{\Hypertarget{structragdolldata_a4681967e1a1137d1297c20518fedc46d}\label{structragdolldata_a4681967e1a1137d1297c20518fedc46d}} 
+void {\bfseries applyrotlimit} (\hyperlink{structragdollskel_1_1tri}{ragdollskel\+::tri} \&t1, \hyperlink{structragdollskel_1_1tri}{ragdollskel\+::tri} \&t2, float angle, const \hyperlink{structvec}{vec} \&axis)
+\item 
+\mbox{\Hypertarget{structragdolldata_a5ffae5c77676b2be60f9dcf686a7fd7f}\label{structragdolldata_a5ffae5c77676b2be60f9dcf686a7fd7f}} 
+void {\bfseries constrainrot} ()
+\item 
+\mbox{\Hypertarget{structragdolldata_a0770b9babfe9ef764188899bd52b88e5}\label{structragdolldata_a0770b9babfe9ef764188899bd52b88e5}} 
+void {\bfseries calcrotfriction} ()
+\item 
+\mbox{\Hypertarget{structragdolldata_a66098bc6578d4b0ae0c1ba8b2a1152e5}\label{structragdolldata_a66098bc6578d4b0ae0c1ba8b2a1152e5}} 
+void {\bfseries applyrotfriction} (float ts)
+\item 
+\mbox{\Hypertarget{structragdolldata_aa4db4c50d2ad726ba88f4aa7f962b508}\label{structragdolldata_aa4db4c50d2ad726ba88f4aa7f962b508}} 
+void {\bfseries tryunstick} (float speed)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structragdolldata_a2c7ec8e6cffa5b4eb8691e1dd1e421a2}\label{structragdolldata_a2c7ec8e6cffa5b4eb8691e1dd1e421a2}} 
+static bool {\bfseries collidevert} (const \hyperlink{structvec}{vec} \&pos, const \hyperlink{structvec}{vec} \&dir, float radius)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structragdolldata_a04877378324bd8179b3c0a07368107b0}\label{structragdolldata_a04877378324bd8179b3c0a07368107b0}} 
+\hyperlink{structragdollskel}{ragdollskel} $\ast$ {\bfseries skel}
+\item 
+\mbox{\Hypertarget{structragdolldata_abf6ad5e25d340404727908e39d793a62}\label{structragdolldata_abf6ad5e25d340404727908e39d793a62}} 
+int {\bfseries millis}
+\item 
+\mbox{\Hypertarget{structragdolldata_a8355fed812785f7650f407acb5b76803}\label{structragdolldata_a8355fed812785f7650f407acb5b76803}} 
+int {\bfseries collidemillis}
+\item 
+\mbox{\Hypertarget{structragdolldata_a234eee5c54b2471288098553988f8af3}\label{structragdolldata_a234eee5c54b2471288098553988f8af3}} 
+int {\bfseries collisions}
+\item 
+\mbox{\Hypertarget{structragdolldata_a0bdcb9a59dcbe6302265c149e2c52f96}\label{structragdolldata_a0bdcb9a59dcbe6302265c149e2c52f96}} 
+int {\bfseries floating}
+\item 
+\mbox{\Hypertarget{structragdolldata_a2ba53b60bb93300212e474564dec8610}\label{structragdolldata_a2ba53b60bb93300212e474564dec8610}} 
+int {\bfseries lastmove}
+\item 
+\mbox{\Hypertarget{structragdolldata_add6b5784cb08419e8f7bd86e245f63d4}\label{structragdolldata_add6b5784cb08419e8f7bd86e245f63d4}} 
+int {\bfseries unsticks}
+\item 
+\mbox{\Hypertarget{structragdolldata_ad1221a12285ca11c4ffd90db0e78ddc3}\label{structragdolldata_ad1221a12285ca11c4ffd90db0e78ddc3}} 
+\hyperlink{structvec}{vec} {\bfseries offset}
+\item 
+\mbox{\Hypertarget{structragdolldata_a6b455a49525060232c2a6edc43474804}\label{structragdolldata_a6b455a49525060232c2a6edc43474804}} 
+\hyperlink{structvec}{vec} {\bfseries center}
+\item 
+\mbox{\Hypertarget{structragdolldata_a6ef8eafbf47dadc31983ce9a0148b21f}\label{structragdolldata_a6ef8eafbf47dadc31983ce9a0148b21f}} 
+float {\bfseries radius}
+\item 
+\mbox{\Hypertarget{structragdolldata_ac67ce22076b0d8ce63c3c4ea84e4c869}\label{structragdolldata_ac67ce22076b0d8ce63c3c4ea84e4c869}} 
+float {\bfseries timestep}
+\item 
+\mbox{\Hypertarget{structragdolldata_aa2b16b255f7d83c9ec6b83160d8a0462}\label{structragdolldata_aa2b16b255f7d83c9ec6b83160d8a0462}} 
+float {\bfseries scale}
+\item 
+\mbox{\Hypertarget{structragdolldata_ad16774594fa00b1d03fb2b42cf85be90}\label{structragdolldata_ad16774594fa00b1d03fb2b42cf85be90}} 
+\hyperlink{structragdolldata_1_1vert}{vert} $\ast$ {\bfseries verts}
+\item 
+\mbox{\Hypertarget{structragdolldata_a1d56479fb58be82685d0b0599e281372}\label{structragdolldata_a1d56479fb58be82685d0b0599e281372}} 
+\hyperlink{structmatrix3}{matrix3} $\ast$ {\bfseries tris}
+\item 
+\mbox{\Hypertarget{structragdolldata_ad5988c82faac1825101fa0d959017188}\label{structragdolldata_ad5988c82faac1825101fa0d959017188}} 
+\hyperlink{structmatrix4x3}{matrix4x3} $\ast$ {\bfseries animjoints}
+\item 
+\mbox{\Hypertarget{structragdolldata_a992d2d92bfa5570d9c43ef0d8c696073}\label{structragdolldata_a992d2d92bfa5570d9c43ef0d8c696073}} 
+\hyperlink{structdualquat}{dualquat} $\ast$ {\bfseries reljoints}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/ragdoll.\+h\end{DoxyCompactItemize}

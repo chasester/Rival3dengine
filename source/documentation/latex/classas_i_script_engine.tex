@@ -1,0 +1,265 @@
+\hypertarget{classas_i_script_engine}{}\section{as\+I\+Script\+Engine Class Reference}
+\label{classas_i_script_engine}\index{as\+I\+Script\+Engine@{as\+I\+Script\+Engine}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_aa95a5d9b5d9e7e6a230fedf056eaf8ce}\label{classas_i_script_engine_aa95a5d9b5d9e7e6a230fedf056eaf8ce}} 
+virtual int {\bfseries Add\+Ref} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_aae91a45da75af9234b87e825b5c08b81}\label{classas_i_script_engine_aae91a45da75af9234b87e825b5c08b81}} 
+virtual int {\bfseries Release} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a28c3800620d4aeaca75d084391eb758e}\label{classas_i_script_engine_a28c3800620d4aeaca75d084391eb758e}} 
+virtual int {\bfseries Shut\+Down\+And\+Release} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a1bce4e5f573a2ca0ff55163e28f761dd}\label{classas_i_script_engine_a1bce4e5f573a2ca0ff55163e28f761dd}} 
+virtual int {\bfseries Set\+Engine\+Property} (as\+E\+Engine\+Prop property, as\+P\+W\+O\+RD value)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a5531bf5310a0c933aa698725a6828e5f}\label{classas_i_script_engine_a5531bf5310a0c933aa698725a6828e5f}} 
+virtual as\+P\+W\+O\+RD {\bfseries Get\+Engine\+Property} (as\+E\+Engine\+Prop property) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a74192fe950808eb72a64e3e371f0ea02}\label{classas_i_script_engine_a74192fe950808eb72a64e3e371f0ea02}} 
+virtual int {\bfseries Set\+Message\+Callback} (const \hyperlink{structas_s_func_ptr}{as\+S\+Func\+Ptr} \&callback, void $\ast$\hyperlink{structobj}{obj}, as\+D\+W\+O\+RD call\+Conv)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ada64567fc9621e5e98160c7f03efa064}\label{classas_i_script_engine_ada64567fc9621e5e98160c7f03efa064}} 
+virtual int {\bfseries Clear\+Message\+Callback} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a936ce6566af958bb75ba1c0945d8b03a}\label{classas_i_script_engine_a936ce6566af958bb75ba1c0945d8b03a}} 
+virtual int {\bfseries Write\+Message} (const char $\ast$section, int row, int col, as\+E\+Msg\+Type type, const char $\ast$message)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_aee4f910163604203a27db1ffea3b1c9c}\label{classas_i_script_engine_aee4f910163604203a27db1ffea3b1c9c}} 
+virtual int {\bfseries Set\+J\+I\+T\+Compiler} (\hyperlink{classas_i_j_i_t_compiler}{as\+I\+J\+I\+T\+Compiler} $\ast$compiler)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a2fb6db9085df3c7d487c0d58de76bb83}\label{classas_i_script_engine_a2fb6db9085df3c7d487c0d58de76bb83}} 
+virtual \hyperlink{classas_i_j_i_t_compiler}{as\+I\+J\+I\+T\+Compiler} $\ast$ {\bfseries Get\+J\+I\+T\+Compiler} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a2f84b9b51733f22c68b8448b02c2f1c7}\label{classas_i_script_engine_a2f84b9b51733f22c68b8448b02c2f1c7}} 
+virtual int {\bfseries Register\+Global\+Function} (const char $\ast$declaration, const \hyperlink{structas_s_func_ptr}{as\+S\+Func\+Ptr} \&func\+Pointer, as\+D\+W\+O\+RD call\+Conv, void $\ast$auxiliary=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a72aa1a3a5ac88a5a1dba4fa3655141d6}\label{classas_i_script_engine_a72aa1a3a5ac88a5a1dba4fa3655141d6}} 
+virtual as\+U\+I\+NT {\bfseries Get\+Global\+Function\+Count} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_aaf2b79cef75adb4099a24e3412e4ea79}\label{classas_i_script_engine_aaf2b79cef75adb4099a24e3412e4ea79}} 
+virtual \hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$ {\bfseries Get\+Global\+Function\+By\+Index} (as\+U\+I\+NT index) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a42edd02e95731c795e13706400e8665a}\label{classas_i_script_engine_a42edd02e95731c795e13706400e8665a}} 
+virtual \hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$ {\bfseries Get\+Global\+Function\+By\+Decl} (const char $\ast$declaration) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_aacd32f32b2922b8ffaed204812013169}\label{classas_i_script_engine_aacd32f32b2922b8ffaed204812013169}} 
+virtual int {\bfseries Register\+Global\+Property} (const char $\ast$declaration, void $\ast$pointer)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_aa69f6b37f9c7bdf9b52b9c1692daf048}\label{classas_i_script_engine_aa69f6b37f9c7bdf9b52b9c1692daf048}} 
+virtual as\+U\+I\+NT {\bfseries Get\+Global\+Property\+Count} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a93bd686853a48647d2136792e27380fb}\label{classas_i_script_engine_a93bd686853a48647d2136792e27380fb}} 
+virtual int {\bfseries Get\+Global\+Property\+By\+Index} (as\+U\+I\+NT index, const char $\ast$$\ast$name, const char $\ast$$\ast$name\+Space=0, int $\ast$type\+Id=0, bool $\ast$is\+Const=0, const char $\ast$$\ast$config\+Group=0, void $\ast$$\ast$pointer=0, as\+D\+W\+O\+RD $\ast$access\+Mask=0) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a07e85878869e4d0597c1177d767dc717}\label{classas_i_script_engine_a07e85878869e4d0597c1177d767dc717}} 
+virtual int {\bfseries Get\+Global\+Property\+Index\+By\+Name} (const char $\ast$name) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a91a4cc8af51ca439ca82b9b6630439b3}\label{classas_i_script_engine_a91a4cc8af51ca439ca82b9b6630439b3}} 
+virtual int {\bfseries Get\+Global\+Property\+Index\+By\+Decl} (const char $\ast$decl) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a29c6c087c8c5b5cdb6271cfd161cc5a6}\label{classas_i_script_engine_a29c6c087c8c5b5cdb6271cfd161cc5a6}} 
+virtual int {\bfseries Register\+Object\+Type} (const char $\ast$\hyperlink{structobj}{obj}, int byte\+Size, as\+D\+W\+O\+RD flags)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a33f3cd249307f5f11120a395579410f6}\label{classas_i_script_engine_a33f3cd249307f5f11120a395579410f6}} 
+virtual int {\bfseries Register\+Object\+Property} (const char $\ast$\hyperlink{structobj}{obj}, const char $\ast$declaration, int byte\+Offset)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a1d42c5d9fd06a07da279f491f8901317}\label{classas_i_script_engine_a1d42c5d9fd06a07da279f491f8901317}} 
+virtual int {\bfseries Register\+Object\+Method} (const char $\ast$\hyperlink{structobj}{obj}, const char $\ast$declaration, const \hyperlink{structas_s_func_ptr}{as\+S\+Func\+Ptr} \&func\+Pointer, as\+D\+W\+O\+RD call\+Conv, void $\ast$auxiliary=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ad69bc821a7f1120369c1bd9526f41b9c}\label{classas_i_script_engine_ad69bc821a7f1120369c1bd9526f41b9c}} 
+virtual int {\bfseries Register\+Object\+Behaviour} (const char $\ast$\hyperlink{structobj}{obj}, as\+E\+Behaviours behaviour, const char $\ast$declaration, const \hyperlink{structas_s_func_ptr}{as\+S\+Func\+Ptr} \&func\+Pointer, as\+D\+W\+O\+RD call\+Conv, void $\ast$auxiliary=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ae2d89b82561b7f9843f35693c664589f}\label{classas_i_script_engine_ae2d89b82561b7f9843f35693c664589f}} 
+virtual int {\bfseries Register\+Interface} (const char $\ast$name)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a43bd2c12c94a55c22be76d209de93f1a}\label{classas_i_script_engine_a43bd2c12c94a55c22be76d209de93f1a}} 
+virtual int {\bfseries Register\+Interface\+Method} (const char $\ast$intf, const char $\ast$declaration)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ac2667fbe30dd00ed14bc14e6ef7fc725}\label{classas_i_script_engine_ac2667fbe30dd00ed14bc14e6ef7fc725}} 
+virtual as\+U\+I\+NT {\bfseries Get\+Object\+Type\+Count} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_afac08d4f81e587031c7863574c6783ba}\label{classas_i_script_engine_afac08d4f81e587031c7863574c6783ba}} 
+virtual \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$ {\bfseries Get\+Object\+Type\+By\+Index} (as\+U\+I\+NT index) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ac238aa44f91bad0b9025d956c5555575}\label{classas_i_script_engine_ac238aa44f91bad0b9025d956c5555575}} 
+virtual int {\bfseries Register\+String\+Factory} (const char $\ast$datatype, const \hyperlink{structas_s_func_ptr}{as\+S\+Func\+Ptr} \&factory\+Func, as\+D\+W\+O\+RD call\+Conv, void $\ast$auxiliary=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_afb3935d85494231e2f02af5816ba9830}\label{classas_i_script_engine_afb3935d85494231e2f02af5816ba9830}} 
+virtual int {\bfseries Get\+String\+Factory\+Return\+Type\+Id} (as\+D\+W\+O\+RD $\ast$flags=0) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ac9451feece1297eba8d1649036039e82}\label{classas_i_script_engine_ac9451feece1297eba8d1649036039e82}} 
+virtual int {\bfseries Register\+Default\+Array\+Type} (const char $\ast$type)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ae86e5444979b0abd92777be83c53fc80}\label{classas_i_script_engine_ae86e5444979b0abd92777be83c53fc80}} 
+virtual int {\bfseries Get\+Default\+Array\+Type\+Id} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_abed6e77f2a532c8a4f528650fa137d37}\label{classas_i_script_engine_abed6e77f2a532c8a4f528650fa137d37}} 
+virtual int {\bfseries Register\+Enum} (const char $\ast$type)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a4d331153596dd39838f3bed2a861af18}\label{classas_i_script_engine_a4d331153596dd39838f3bed2a861af18}} 
+virtual int {\bfseries Register\+Enum\+Value} (const char $\ast$type, const char $\ast$name, int value)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a4b4307dab64061be43db84ffb97e3782}\label{classas_i_script_engine_a4b4307dab64061be43db84ffb97e3782}} 
+virtual as\+U\+I\+NT {\bfseries Get\+Enum\+Count} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_adedc8b2ad11a84ec12aef4f98e27a4c4}\label{classas_i_script_engine_adedc8b2ad11a84ec12aef4f98e27a4c4}} 
+virtual \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$ {\bfseries Get\+Enum\+By\+Index} (as\+U\+I\+NT index) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a03c1a2cc23ae4b742c927f3472a1a4f7}\label{classas_i_script_engine_a03c1a2cc23ae4b742c927f3472a1a4f7}} 
+virtual int {\bfseries Register\+Funcdef} (const char $\ast$decl)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a48aceb1556f88ce3bec3e0f84abe127f}\label{classas_i_script_engine_a48aceb1556f88ce3bec3e0f84abe127f}} 
+virtual as\+U\+I\+NT {\bfseries Get\+Funcdef\+Count} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ad4228220347347384c0aa0e0dd8308c6}\label{classas_i_script_engine_ad4228220347347384c0aa0e0dd8308c6}} 
+virtual \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$ {\bfseries Get\+Funcdef\+By\+Index} (as\+U\+I\+NT index) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_addb24466769dc52be96c7e37d5305245}\label{classas_i_script_engine_addb24466769dc52be96c7e37d5305245}} 
+virtual int {\bfseries Register\+Typedef} (const char $\ast$type, const char $\ast$decl)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a0ebbbb86ea0e314cc2695f6276ebe507}\label{classas_i_script_engine_a0ebbbb86ea0e314cc2695f6276ebe507}} 
+virtual as\+U\+I\+NT {\bfseries Get\+Typedef\+Count} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a635cd008ea123b510c66fbddcea735f5}\label{classas_i_script_engine_a635cd008ea123b510c66fbddcea735f5}} 
+virtual \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$ {\bfseries Get\+Typedef\+By\+Index} (as\+U\+I\+NT index) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ac81014e50dd7efc1920adcb3fd2d1e5d}\label{classas_i_script_engine_ac81014e50dd7efc1920adcb3fd2d1e5d}} 
+virtual int {\bfseries Begin\+Config\+Group} (const char $\ast$group\+Name)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a4cc5ed7ea71811655f7910d298bb5a02}\label{classas_i_script_engine_a4cc5ed7ea71811655f7910d298bb5a02}} 
+virtual int {\bfseries End\+Config\+Group} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ab607be7fe727cdcce502d2beedbf4c0a}\label{classas_i_script_engine_ab607be7fe727cdcce502d2beedbf4c0a}} 
+virtual int {\bfseries Remove\+Config\+Group} (const char $\ast$group\+Name)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a570df3e676f2d9e03e87d97b8cede1c7}\label{classas_i_script_engine_a570df3e676f2d9e03e87d97b8cede1c7}} 
+virtual as\+D\+W\+O\+RD {\bfseries Set\+Default\+Access\+Mask} (as\+D\+W\+O\+RD default\+Mask)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a605f114814f1f64804c04391816d948b}\label{classas_i_script_engine_a605f114814f1f64804c04391816d948b}} 
+virtual int {\bfseries Set\+Default\+Namespace} (const char $\ast$name\+Space)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a257a25e285faa25e8cf08e455528def7}\label{classas_i_script_engine_a257a25e285faa25e8cf08e455528def7}} 
+virtual const char $\ast$ {\bfseries Get\+Default\+Namespace} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a9f7cdc52b59034e6e55eb8a56b427aa4}\label{classas_i_script_engine_a9f7cdc52b59034e6e55eb8a56b427aa4}} 
+virtual \hyperlink{classas_i_script_module}{as\+I\+Script\+Module} $\ast$ {\bfseries Get\+Module} (const char $\ast$module, as\+E\+G\+M\+Flags flag=as\+G\+M\+\_\+\+O\+N\+L\+Y\+\_\+\+I\+F\+\_\+\+E\+X\+I\+S\+TS)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_afb0ce55e5846eb18afdcf906aeb67cf7}\label{classas_i_script_engine_afb0ce55e5846eb18afdcf906aeb67cf7}} 
+virtual int {\bfseries Discard\+Module} (const char $\ast$module)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a457cf6202cc64ce8ee242dcc97d3422f}\label{classas_i_script_engine_a457cf6202cc64ce8ee242dcc97d3422f}} 
+virtual as\+U\+I\+NT {\bfseries Get\+Module\+Count} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a31b95df21e6f1990cf84b3b286067675}\label{classas_i_script_engine_a31b95df21e6f1990cf84b3b286067675}} 
+virtual \hyperlink{classas_i_script_module}{as\+I\+Script\+Module} $\ast$ {\bfseries Get\+Module\+By\+Index} (as\+U\+I\+NT index) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_aaf67dc0b1f26be437ccbcc0ac5f330c9}\label{classas_i_script_engine_aaf67dc0b1f26be437ccbcc0ac5f330c9}} 
+virtual \hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$ {\bfseries Get\+Function\+By\+Id} (int func\+Id) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ad1f6fecb0f53fd7966736b01f65c3dcb}\label{classas_i_script_engine_ad1f6fecb0f53fd7966736b01f65c3dcb}} 
+virtual int {\bfseries Get\+Type\+Id\+By\+Decl} (const char $\ast$decl) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a3ae23fcde6af0d816ff97097cd443281}\label{classas_i_script_engine_a3ae23fcde6af0d816ff97097cd443281}} 
+virtual const char $\ast$ {\bfseries Get\+Type\+Declaration} (int type\+Id, bool include\+Namespace=false) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a39b7207a6c4c55a5cbf10eab2ccfb8e6}\label{classas_i_script_engine_a39b7207a6c4c55a5cbf10eab2ccfb8e6}} 
+virtual int {\bfseries Get\+Size\+Of\+Primitive\+Type} (int type\+Id) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a55cc2d9592651538efcf79eb8106a867}\label{classas_i_script_engine_a55cc2d9592651538efcf79eb8106a867}} 
+virtual \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$ {\bfseries Get\+Type\+Info\+By\+Id} (int type\+Id) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_aea2583b8aa724779b7c37df8b7fa437b}\label{classas_i_script_engine_aea2583b8aa724779b7c37df8b7fa437b}} 
+virtual \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$ {\bfseries Get\+Type\+Info\+By\+Name} (const char $\ast$name) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ab00808f9b762c4badf508ed511789d1b}\label{classas_i_script_engine_ab00808f9b762c4badf508ed511789d1b}} 
+virtual \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$ {\bfseries Get\+Type\+Info\+By\+Decl} (const char $\ast$decl) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a2630e1cd03ffab0fee9b820bf0afe42a}\label{classas_i_script_engine_a2630e1cd03ffab0fee9b820bf0afe42a}} 
+virtual \hyperlink{classas_i_script_context}{as\+I\+Script\+Context} $\ast$ {\bfseries Create\+Context} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a3101479b4340bc16bb9acb8e8d554266}\label{classas_i_script_engine_a3101479b4340bc16bb9acb8e8d554266}} 
+virtual void $\ast$ {\bfseries Create\+Script\+Object} (const \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$type)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ab2b1543ea6d24b912aebeb77e6764269}\label{classas_i_script_engine_ab2b1543ea6d24b912aebeb77e6764269}} 
+virtual void $\ast$ {\bfseries Create\+Script\+Object\+Copy} (void $\ast$\hyperlink{structobj}{obj}, const \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$type)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a9de3c5e4465f699ad698740d6037e1a6}\label{classas_i_script_engine_a9de3c5e4465f699ad698740d6037e1a6}} 
+virtual void $\ast$ {\bfseries Create\+Uninitialized\+Script\+Object} (const \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$type)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ab4a4cea1cfeea361b8a44d80f3d928e3}\label{classas_i_script_engine_ab4a4cea1cfeea361b8a44d80f3d928e3}} 
+virtual \hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$ {\bfseries Create\+Delegate} (\hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$func, void $\ast$\hyperlink{structobj}{obj})=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a9180da5fd475f52916be6b39e522fabb}\label{classas_i_script_engine_a9180da5fd475f52916be6b39e522fabb}} 
+virtual int {\bfseries Assign\+Script\+Object} (void $\ast$dst\+Obj, void $\ast$src\+Obj, const \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$type)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a82873d3769ded547894a7c3d52c220fd}\label{classas_i_script_engine_a82873d3769ded547894a7c3d52c220fd}} 
+virtual void {\bfseries Release\+Script\+Object} (void $\ast$\hyperlink{structobj}{obj}, const \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$type)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ade1d309876c876c733d437a53e708c28}\label{classas_i_script_engine_ade1d309876c876c733d437a53e708c28}} 
+virtual void {\bfseries Add\+Ref\+Script\+Object} (void $\ast$\hyperlink{structobj}{obj}, const \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$type)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a32c9d9aac77a67eeb046fc67d7473fa2}\label{classas_i_script_engine_a32c9d9aac77a67eeb046fc67d7473fa2}} 
+virtual int {\bfseries Ref\+Cast\+Object} (void $\ast$\hyperlink{structobj}{obj}, \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$from\+Type, \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$to\+Type, void $\ast$$\ast$new\+Ptr, bool use\+Only\+Implicit\+Cast=false)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ab31103bef62096445fe03632de691827}\label{classas_i_script_engine_ab31103bef62096445fe03632de691827}} 
+virtual \hyperlink{classas_i_lockable_shared_bool}{as\+I\+Lockable\+Shared\+Bool} $\ast$ {\bfseries Get\+Weak\+Ref\+Flag\+Of\+Script\+Object} (void $\ast$\hyperlink{structobj}{obj}, const \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$type) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a32391ee83e58083b406ba068ab2ee049}\label{classas_i_script_engine_a32391ee83e58083b406ba068ab2ee049}} 
+virtual \hyperlink{classas_i_script_context}{as\+I\+Script\+Context} $\ast$ {\bfseries Request\+Context} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a22e42bf32902cbd6885731a6beeaca20}\label{classas_i_script_engine_a22e42bf32902cbd6885731a6beeaca20}} 
+virtual void {\bfseries Return\+Context} (\hyperlink{classas_i_script_context}{as\+I\+Script\+Context} $\ast$ctx)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ae5ba9fe99b72c60392cdaeef164f2c65}\label{classas_i_script_engine_ae5ba9fe99b72c60392cdaeef164f2c65}} 
+virtual int {\bfseries Set\+Context\+Callbacks} (as\+R\+E\+Q\+U\+E\+S\+T\+C\+O\+N\+T\+E\+X\+T\+F\+U\+N\+C\+\_\+t request\+Ctx, as\+R\+E\+T\+U\+R\+N\+C\+O\+N\+T\+E\+X\+T\+F\+U\+N\+C\+\_\+t return\+Ctx, void $\ast$param=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a57ecbd86ae9370684877c755e83cef0d}\label{classas_i_script_engine_a57ecbd86ae9370684877c755e83cef0d}} 
+virtual as\+E\+Token\+Class {\bfseries Parse\+Token} (const char $\ast$string, size\+\_\+t string\+Length=0, as\+U\+I\+NT $\ast$token\+Length=0) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a17511a1de72ecdb836b974768f2ec422}\label{classas_i_script_engine_a17511a1de72ecdb836b974768f2ec422}} 
+virtual int {\bfseries Garbage\+Collect} (as\+D\+W\+O\+RD flags=as\+G\+C\+\_\+\+F\+U\+L\+L\+\_\+\+C\+Y\+C\+LE, as\+U\+I\+NT num\+Iterations=1)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a166e6cdd0cb35bcfd942824d8e882783}\label{classas_i_script_engine_a166e6cdd0cb35bcfd942824d8e882783}} 
+virtual void {\bfseries Get\+G\+C\+Statistics} (as\+U\+I\+NT $\ast$current\+Size, as\+U\+I\+NT $\ast$total\+Destroyed=0, as\+U\+I\+NT $\ast$total\+Detected=0, as\+U\+I\+NT $\ast$new\+Objects=0, as\+U\+I\+NT $\ast$total\+New\+Destroyed=0) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a52a7644b48cbc771e33db5070814f6df}\label{classas_i_script_engine_a52a7644b48cbc771e33db5070814f6df}} 
+virtual int {\bfseries Notify\+Garbage\+Collector\+Of\+New\+Object} (void $\ast$\hyperlink{structobj}{obj}, \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$type)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a39a5f221baa01d43e7471c0e9f5378e4}\label{classas_i_script_engine_a39a5f221baa01d43e7471c0e9f5378e4}} 
+virtual int {\bfseries Get\+Object\+In\+GC} (as\+U\+I\+NT idx, as\+U\+I\+NT $\ast$seq\+Nbr=0, void $\ast$$\ast$\hyperlink{structobj}{obj}=0, \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$$\ast$type=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a58ceeafd780dea3543e0ede4106199fd}\label{classas_i_script_engine_a58ceeafd780dea3543e0ede4106199fd}} 
+virtual void {\bfseries G\+C\+Enum\+Callback} (void $\ast$reference)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_aabee8d6ef426c434adee85ec6d57f940}\label{classas_i_script_engine_aabee8d6ef426c434adee85ec6d57f940}} 
+virtual void $\ast$ {\bfseries Set\+User\+Data} (void $\ast$data, as\+P\+W\+O\+RD type=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a701aa6a7ddf51a22c62281f3dec9a772}\label{classas_i_script_engine_a701aa6a7ddf51a22c62281f3dec9a772}} 
+virtual void $\ast$ {\bfseries Get\+User\+Data} (as\+P\+W\+O\+RD type=0) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a8fa4fc9aacb99db6d4be0a5542b85e35}\label{classas_i_script_engine_a8fa4fc9aacb99db6d4be0a5542b85e35}} 
+virtual void {\bfseries Set\+Engine\+User\+Data\+Cleanup\+Callback} (as\+C\+L\+E\+A\+N\+E\+N\+G\+I\+N\+E\+F\+U\+N\+C\+\_\+t callback, as\+P\+W\+O\+RD type=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a7523853b9a9bf7dab603fa6a06393d51}\label{classas_i_script_engine_a7523853b9a9bf7dab603fa6a06393d51}} 
+virtual void {\bfseries Set\+Module\+User\+Data\+Cleanup\+Callback} (as\+C\+L\+E\+A\+N\+M\+O\+D\+U\+L\+E\+F\+U\+N\+C\+\_\+t callback, as\+P\+W\+O\+RD type=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_acaced7eb9ebe013ede23f7593daf58e3}\label{classas_i_script_engine_acaced7eb9ebe013ede23f7593daf58e3}} 
+virtual void {\bfseries Set\+Context\+User\+Data\+Cleanup\+Callback} (as\+C\+L\+E\+A\+N\+C\+O\+N\+T\+E\+X\+T\+F\+U\+N\+C\+\_\+t callback, as\+P\+W\+O\+RD type=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_ae75ee087fe6608cf0af1c24794ca73c7}\label{classas_i_script_engine_ae75ee087fe6608cf0af1c24794ca73c7}} 
+virtual void {\bfseries Set\+Function\+User\+Data\+Cleanup\+Callback} (as\+C\+L\+E\+A\+N\+F\+U\+N\+C\+T\+I\+O\+N\+F\+U\+N\+C\+\_\+t callback, as\+P\+W\+O\+RD type=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_afa31e7c28c63a2c876d8e08305cf5d75}\label{classas_i_script_engine_afa31e7c28c63a2c876d8e08305cf5d75}} 
+virtual void {\bfseries Set\+Type\+Info\+User\+Data\+Cleanup\+Callback} (as\+C\+L\+E\+A\+N\+T\+Y\+P\+E\+I\+N\+F\+O\+F\+U\+N\+C\+\_\+t callback, as\+P\+W\+O\+RD type=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_engine_a4654e2cae0690c50e19b177f1ec54592}\label{classas_i_script_engine_a4654e2cae0690c50e19b177f1ec54592}} 
+virtual void {\bfseries Set\+Script\+Object\+User\+Data\+Cleanup\+Callback} (as\+C\+L\+E\+A\+N\+S\+C\+R\+I\+P\+T\+O\+B\+J\+E\+C\+T\+F\+U\+N\+C\+\_\+t callback, as\+P\+W\+O\+RD type=0)=0
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/angelscript.\+h\end{DoxyCompactItemize}

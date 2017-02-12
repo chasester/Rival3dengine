@@ -1,0 +1,77 @@
+\hypertarget{class_c_script_handle}{}\section{C\+Script\+Handle Class Reference}
+\label{class_c_script_handle}\index{C\+Script\+Handle@{C\+Script\+Handle}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a4d68105d3c549d3624305ace595a68bb}\label{class_c_script_handle_a4d68105d3c549d3624305ace595a68bb}} 
+{\bfseries C\+Script\+Handle} (const \hyperlink{class_c_script_handle}{C\+Script\+Handle} \&other)
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a5b1d6da74fceee0b6dc85a912dc777af}\label{class_c_script_handle_a5b1d6da74fceee0b6dc85a912dc777af}} 
+{\bfseries C\+Script\+Handle} (void $\ast$ref, \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$type)
+\item 
+\mbox{\Hypertarget{class_c_script_handle_ab0defc7df0816262bee364b85afeb630}\label{class_c_script_handle_ab0defc7df0816262bee364b85afeb630}} 
+\hyperlink{class_c_script_handle}{C\+Script\+Handle} \& {\bfseries operator=} (const \hyperlink{class_c_script_handle}{C\+Script\+Handle} \&other)
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a267343c8ec222b714de6deb47a2d39e7}\label{class_c_script_handle_a267343c8ec222b714de6deb47a2d39e7}} 
+void {\bfseries Set} (void $\ast$ref, \hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$type)
+\item 
+\mbox{\Hypertarget{class_c_script_handle_aad57127ae09cb3a8b1be8338c6fff921}\label{class_c_script_handle_aad57127ae09cb3a8b1be8338c6fff921}} 
+bool {\bfseries operator==} (const \hyperlink{class_c_script_handle}{C\+Script\+Handle} \&o) const
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a30fac50a9d6c638e9ef4da7802b11146}\label{class_c_script_handle_a30fac50a9d6c638e9ef4da7802b11146}} 
+bool {\bfseries operator!=} (const \hyperlink{class_c_script_handle}{C\+Script\+Handle} \&o) const
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a3751c165f56d4ddb64fc6f3bb19aec6d}\label{class_c_script_handle_a3751c165f56d4ddb64fc6f3bb19aec6d}} 
+bool {\bfseries Equals} (void $\ast$ref, int type\+Id) const
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a7b233adf9ca41ac1bd1d7e1a550ec247}\label{class_c_script_handle_a7b233adf9ca41ac1bd1d7e1a550ec247}} 
+void {\bfseries Cast} (void $\ast$$\ast$out\+Ref, int type\+Id)
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a2cd3503ab8df39d800cc3d31d6572995}\label{class_c_script_handle_a2cd3503ab8df39d800cc3d31d6572995}} 
+\hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$ {\bfseries Get\+Type} () const
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a8add0ff15fabf3280b73d675d9e2f69d}\label{class_c_script_handle_a8add0ff15fabf3280b73d675d9e2f69d}} 
+int {\bfseries Get\+Type\+Id} () const
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_script_handle_adc970bede7a56d5375ef9c984259cd69}\label{class_c_script_handle_adc970bede7a56d5375ef9c984259cd69}} 
+void {\bfseries Release\+Handle} ()
+\item 
+\mbox{\Hypertarget{class_c_script_handle_abf6ba97d329f49ce21cfffcd194a496a}\label{class_c_script_handle_abf6ba97d329f49ce21cfffcd194a496a}} 
+void {\bfseries Add\+Ref\+Handle} ()
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a896b317b74d595bee6b790f9ae03283d}\label{class_c_script_handle_a896b317b74d595bee6b790f9ae03283d}} 
+{\bfseries C\+Script\+Handle} (void $\ast$ref, int type\+Id)
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a28086975d4fdc54bf489c528aad5b25e}\label{class_c_script_handle_a28086975d4fdc54bf489c528aad5b25e}} 
+\hyperlink{class_c_script_handle}{C\+Script\+Handle} \& {\bfseries Assign} (void $\ast$ref, int type\+Id)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_script_handle_ae7b95718bf935d5e91aaf7d65607c7be}\label{class_c_script_handle_ae7b95718bf935d5e91aaf7d65607c7be}} 
+void $\ast$ {\bfseries m\+\_\+ref}
+\item 
+\mbox{\Hypertarget{class_c_script_handle_af0a9c74e3f724b0721275c80816af3ba}\label{class_c_script_handle_af0a9c74e3f724b0721275c80816af3ba}} 
+\hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$ {\bfseries m\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a3fd241a2dfddeb98fe97625aa25b4d61}\label{class_c_script_handle_a3fd241a2dfddeb98fe97625aa25b4d61}} 
+void {\bfseries Construct} (\hyperlink{class_c_script_handle}{C\+Script\+Handle} $\ast$self, void $\ast$ref, int type\+Id)
+\item 
+\mbox{\Hypertarget{class_c_script_handle_abf65d893951791abc272e367eb035c67}\label{class_c_script_handle_abf65d893951791abc272e367eb035c67}} 
+void {\bfseries Register\+Script\+Handle\+\_\+\+Native} (\hyperlink{classas_i_script_engine}{as\+I\+Script\+Engine} $\ast$engine)
+\item 
+\mbox{\Hypertarget{class_c_script_handle_a0be436efbb15a98a376520aa00583deb}\label{class_c_script_handle_a0be436efbb15a98a376520aa00583deb}} 
+void {\bfseries C\+Script\+Handle\+\_\+\+Assign\+Var\+\_\+\+Generic} (\hyperlink{classas_i_script_generic}{as\+I\+Script\+Generic} $\ast$gen)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/scripthandle.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/scripthandle.\+cpp\end{DoxyCompactItemize}

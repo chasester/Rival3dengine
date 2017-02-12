@@ -1,0 +1,224 @@
+\hypertarget{structmatrix4}{}\section{matrix4 Struct Reference}
+\label{structmatrix4}\index{matrix4@{matrix4}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structmatrix4_aac83aa77b21e5413585222618284960b}\label{structmatrix4_aac83aa77b21e5413585222618284960b}} 
+{\bfseries matrix4} (const float $\ast$m)
+\item 
+\mbox{\Hypertarget{structmatrix4_a7fcdea385e1f7fb0c5014c82c4cb3eab}\label{structmatrix4_a7fcdea385e1f7fb0c5014c82c4cb3eab}} 
+{\bfseries matrix4} (const \hyperlink{structvec}{vec} \&a, const \hyperlink{structvec}{vec} \&b, const \hyperlink{structvec}{vec} \&c=\hyperlink{structvec}{vec}(0, 0, 1))
+\item 
+\mbox{\Hypertarget{structmatrix4_a0520da34ee2b7259a8703368ad354706}\label{structmatrix4_a0520da34ee2b7259a8703368ad354706}} 
+{\bfseries matrix4} (const \hyperlink{structvec4}{vec4} \&a, const \hyperlink{structvec4}{vec4} \&b, const \hyperlink{structvec4}{vec4} \&c, const \hyperlink{structvec4}{vec4} \&d=\hyperlink{structvec4}{vec4}(0, 0, 0, 1))
+\item 
+\mbox{\Hypertarget{structmatrix4_a42400454f0e98c1096f494f8a4e33b54}\label{structmatrix4_a42400454f0e98c1096f494f8a4e33b54}} 
+{\bfseries matrix4} (const \hyperlink{structmatrix4x3}{matrix4x3} \&m)
+\item 
+\mbox{\Hypertarget{structmatrix4_abb214a82c05afdfc96703954b212f28b}\label{structmatrix4_abb214a82c05afdfc96703954b212f28b}} 
+{\bfseries matrix4} (const \hyperlink{structmatrix3}{matrix3} \&rot, const \hyperlink{structvec}{vec} \&trans)
+\item 
+\mbox{\Hypertarget{structmatrix4_ad5a0c75960aa283c6f1ee2cc86119a5f}\label{structmatrix4_ad5a0c75960aa283c6f1ee2cc86119a5f}} 
+void {\bfseries mul} (const \hyperlink{structmatrix4}{matrix4} \&x, const \hyperlink{structmatrix3}{matrix3} \&y)
+\item 
+\mbox{\Hypertarget{structmatrix4_afd601cafab64fcbdac5ef3dbb4147fa0}\label{structmatrix4_afd601cafab64fcbdac5ef3dbb4147fa0}} 
+void {\bfseries mul} (const \hyperlink{structmatrix3}{matrix3} \&y)
+\item 
+\mbox{\Hypertarget{structmatrix4_ad863697403586b33bcd1fcb60158b77a}\label{structmatrix4_ad863697403586b33bcd1fcb60158b77a}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries mult} (const \hyperlink{structmatrix4}{matrix4} \&x, const \hyperlink{structmatrix4}{matrix4} \&y)
+\item 
+\mbox{\Hypertarget{structmatrix4_a4f86bb677c991ef15f7d39fef36c07ac}\label{structmatrix4_a4f86bb677c991ef15f7d39fef36c07ac}} 
+void {\bfseries mul} (const \hyperlink{structmatrix4}{matrix4} \&x, const \hyperlink{structmatrix4}{matrix4} \&y)
+\item 
+\mbox{\Hypertarget{structmatrix4_aeadd68ae4c8178d96c203c2116ac5c7c}\label{structmatrix4_aeadd68ae4c8178d96c203c2116ac5c7c}} 
+void {\bfseries mul} (const \hyperlink{structmatrix4}{matrix4} \&y)
+\item 
+\mbox{\Hypertarget{structmatrix4_ac4b2c706990e4faa991415103e2412f7}\label{structmatrix4_ac4b2c706990e4faa991415103e2412f7}} 
+void {\bfseries muld} (const \hyperlink{structmatrix4}{matrix4} \&x, const \hyperlink{structmatrix4}{matrix4} \&y)
+\item 
+\mbox{\Hypertarget{structmatrix4_a7bd0ee7015949b148a82475d776c8361}\label{structmatrix4_a7bd0ee7015949b148a82475d776c8361}} 
+void {\bfseries muld} (const \hyperlink{structmatrix4}{matrix4} \&y)
+\item 
+\mbox{\Hypertarget{structmatrix4_a83d8b85db7acebb41462a555e72d60cb}\label{structmatrix4_a83d8b85db7acebb41462a555e72d60cb}} 
+void {\bfseries rotate\+\_\+around\+\_\+x} (float ck, float sk)
+\item 
+\mbox{\Hypertarget{structmatrix4_abd3f0eb598f3befe9eade86597c7d37a}\label{structmatrix4_abd3f0eb598f3befe9eade86597c7d37a}} 
+void {\bfseries rotate\+\_\+around\+\_\+x} (float angle)
+\item 
+\mbox{\Hypertarget{structmatrix4_a7b3dfa1026739304c93270066d18c07f}\label{structmatrix4_a7b3dfa1026739304c93270066d18c07f}} 
+void {\bfseries rotate\+\_\+around\+\_\+x} (const \hyperlink{structvec2}{vec2} \&sc)
+\item 
+\mbox{\Hypertarget{structmatrix4_a9f4ba9941945158caa7b148e6edfe6e8}\label{structmatrix4_a9f4ba9941945158caa7b148e6edfe6e8}} 
+void {\bfseries rotate\+\_\+around\+\_\+y} (float ck, float sk)
+\item 
+\mbox{\Hypertarget{structmatrix4_af83fff93e08c00416c644648583144ea}\label{structmatrix4_af83fff93e08c00416c644648583144ea}} 
+void {\bfseries rotate\+\_\+around\+\_\+y} (float angle)
+\item 
+\mbox{\Hypertarget{structmatrix4_a60f2e3a8f0e9966881e1f6bcf23052b2}\label{structmatrix4_a60f2e3a8f0e9966881e1f6bcf23052b2}} 
+void {\bfseries rotate\+\_\+around\+\_\+y} (const \hyperlink{structvec2}{vec2} \&sc)
+\item 
+\mbox{\Hypertarget{structmatrix4_ab662c4f6da239fafd7135997c2a8a09d}\label{structmatrix4_ab662c4f6da239fafd7135997c2a8a09d}} 
+void {\bfseries rotate\+\_\+around\+\_\+z} (float ck, float sk)
+\item 
+\mbox{\Hypertarget{structmatrix4_a6be99c0b44bfe9a31dc3d0c1bf9c235e}\label{structmatrix4_a6be99c0b44bfe9a31dc3d0c1bf9c235e}} 
+void {\bfseries rotate\+\_\+around\+\_\+z} (float angle)
+\item 
+\mbox{\Hypertarget{structmatrix4_adec854dfc8b9a07e45c32d92e0dbd53f}\label{structmatrix4_adec854dfc8b9a07e45c32d92e0dbd53f}} 
+void {\bfseries rotate\+\_\+around\+\_\+z} (const \hyperlink{structvec2}{vec2} \&sc)
+\item 
+\mbox{\Hypertarget{structmatrix4_a4120353de8e90a0f232950cb07875ce4}\label{structmatrix4_a4120353de8e90a0f232950cb07875ce4}} 
+void {\bfseries rotate} (float ck, float sk, const \hyperlink{structvec}{vec} \&axis)
+\item 
+\mbox{\Hypertarget{structmatrix4_a6999368d9025c62537fc4bd01ec2e1df}\label{structmatrix4_a6999368d9025c62537fc4bd01ec2e1df}} 
+void {\bfseries rotate} (float angle, const \hyperlink{structvec}{vec} \&dir)
+\item 
+\mbox{\Hypertarget{structmatrix4_a22d5a0214198eb1812bb0fe6a37bdaef}\label{structmatrix4_a22d5a0214198eb1812bb0fe6a37bdaef}} 
+void {\bfseries rotate} (const \hyperlink{structvec2}{vec2} \&sc, const \hyperlink{structvec}{vec} \&dir)
+\item 
+\mbox{\Hypertarget{structmatrix4_ad86fb87f9059e56b804f3fa912bc87be}\label{structmatrix4_ad86fb87f9059e56b804f3fa912bc87be}} 
+void {\bfseries identity} ()
+\item 
+\mbox{\Hypertarget{structmatrix4_aaff4514aadc3646f56733ef585e2e390}\label{structmatrix4_aaff4514aadc3646f56733ef585e2e390}} 
+void {\bfseries settranslation} (const \hyperlink{structvec}{vec} \&v)
+\item 
+\mbox{\Hypertarget{structmatrix4_a3c0cc361ad77dd6a4716a633f43d7b1f}\label{structmatrix4_a3c0cc361ad77dd6a4716a633f43d7b1f}} 
+void {\bfseries settranslation} (float x, float y, float z)
+\item 
+\mbox{\Hypertarget{structmatrix4_a6366f352d4d557ab8a4d547cde20f35d}\label{structmatrix4_a6366f352d4d557ab8a4d547cde20f35d}} 
+void {\bfseries translate} (const \hyperlink{structvec}{vec} \&p)
+\item 
+\mbox{\Hypertarget{structmatrix4_a84021cb2ca5a6675a5223ffe84b51a0d}\label{structmatrix4_a84021cb2ca5a6675a5223ffe84b51a0d}} 
+void {\bfseries translate} (float x, float y, float z)
+\item 
+\mbox{\Hypertarget{structmatrix4_a28947cc9b90aff5b4eb6915e1a49a98f}\label{structmatrix4_a28947cc9b90aff5b4eb6915e1a49a98f}} 
+void {\bfseries translate} (const \hyperlink{structvec}{vec} \&p, float scale)
+\item 
+\mbox{\Hypertarget{structmatrix4_a49e912ec31f21d4417d43ad9594ae091}\label{structmatrix4_a49e912ec31f21d4417d43ad9594ae091}} 
+void {\bfseries setscale} (float x, float y, float z)
+\item 
+\mbox{\Hypertarget{structmatrix4_a1185144bde1f3a49d650f8af9b12bfe4}\label{structmatrix4_a1185144bde1f3a49d650f8af9b12bfe4}} 
+void {\bfseries setscale} (const \hyperlink{structvec}{vec} \&v)
+\item 
+\mbox{\Hypertarget{structmatrix4_a62223ae35fcbeba5eb6c9665a17fac70}\label{structmatrix4_a62223ae35fcbeba5eb6c9665a17fac70}} 
+void {\bfseries setscale} (float n)
+\item 
+\mbox{\Hypertarget{structmatrix4_a39e95260b516528a702f34d7f5d0cd55}\label{structmatrix4_a39e95260b516528a702f34d7f5d0cd55}} 
+void {\bfseries scale} (float x, float y, float z)
+\item 
+\mbox{\Hypertarget{structmatrix4_afe442107cf120751b2387fd3d98a0632}\label{structmatrix4_afe442107cf120751b2387fd3d98a0632}} 
+void {\bfseries scale} (const \hyperlink{structvec}{vec} \&v)
+\item 
+\mbox{\Hypertarget{structmatrix4_a2e10df0dd557fc1c29c856feb5261ba3}\label{structmatrix4_a2e10df0dd557fc1c29c856feb5261ba3}} 
+void {\bfseries scale} (float n)
+\item 
+\mbox{\Hypertarget{structmatrix4_a404ed5a5f9f751067cf68c2809fa87ba}\label{structmatrix4_a404ed5a5f9f751067cf68c2809fa87ba}} 
+void {\bfseries scalexy} (float x, float y)
+\item 
+\mbox{\Hypertarget{structmatrix4_a08a8effdc4abc198e1558b6c1440446a}\label{structmatrix4_a08a8effdc4abc198e1558b6c1440446a}} 
+void {\bfseries scalez} (float k)
+\item 
+\mbox{\Hypertarget{structmatrix4_aa88aea9c56d82a452557d974128395ba}\label{structmatrix4_aa88aea9c56d82a452557d974128395ba}} 
+void {\bfseries reflectz} (float z)
+\item 
+\mbox{\Hypertarget{structmatrix4_a217e84021d46952ee22c7ab3388e824e}\label{structmatrix4_a217e84021d46952ee22c7ab3388e824e}} 
+void {\bfseries jitter} (float x, float y)
+\item 
+\mbox{\Hypertarget{structmatrix4_a3149cea5649dabf36554b2dacf3c502f}\label{structmatrix4_a3149cea5649dabf36554b2dacf3c502f}} 
+void {\bfseries transpose} ()
+\item 
+\mbox{\Hypertarget{structmatrix4_ae286bd9aec8651a3e8da22b7e7d78c43}\label{structmatrix4_ae286bd9aec8651a3e8da22b7e7d78c43}} 
+void {\bfseries transpose} (const \hyperlink{structmatrix4}{matrix4} \&m)
+\item 
+\mbox{\Hypertarget{structmatrix4_a7f8e95c3b0543f0264784a8b5e069b1b}\label{structmatrix4_a7f8e95c3b0543f0264784a8b5e069b1b}} 
+void {\bfseries frustum} (float left, float right, float bottom, float top, float znear, float zfar)
+\item 
+\mbox{\Hypertarget{structmatrix4_af85b8e46304de2dafdb5f32896681bda}\label{structmatrix4_af85b8e46304de2dafdb5f32896681bda}} 
+void {\bfseries perspective} (float fovy, float aspect, float znear, float zfar)
+\item 
+\mbox{\Hypertarget{structmatrix4_a47fa9685bb6131fd246e8f23632f2819}\label{structmatrix4_a47fa9685bb6131fd246e8f23632f2819}} 
+void {\bfseries ortho} (float left, float right, float bottom, float top, float znear, float zfar)
+\item 
+\mbox{\Hypertarget{structmatrix4_af3f18132714a3c3acd7055f7bdfcff96}\label{structmatrix4_af3f18132714a3c3acd7055f7bdfcff96}} 
+void {\bfseries clip} (const \hyperlink{structplane}{plane} \&p, const \hyperlink{structmatrix4}{matrix4} \&m)
+\item 
+\mbox{\Hypertarget{structmatrix4_a2ab2ad75cbbedc7635111bf0a5740461}\label{structmatrix4_a2ab2ad75cbbedc7635111bf0a5740461}} 
+void {\bfseries transform} (const \hyperlink{structvec}{vec} \&in, \hyperlink{structvec}{vec} \&out) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a72a0cbea88a5f5289489462f1652b3de}\label{structmatrix4_a72a0cbea88a5f5289489462f1652b3de}} 
+void {\bfseries transform} (const \hyperlink{structvec4}{vec4} \&in, \hyperlink{structvec}{vec} \&out) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a906328610653c1ff26aabe820820bcef}\label{structmatrix4_a906328610653c1ff26aabe820820bcef}} 
+void {\bfseries transform} (const \hyperlink{structvec}{vec} \&in, \hyperlink{structvec4}{vec4} \&out) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a188a3b1f16040b1f5d9006822f5682db}\label{structmatrix4_a188a3b1f16040b1f5d9006822f5682db}} 
+void {\bfseries transform} (const \hyperlink{structvec4}{vec4} \&in, \hyperlink{structvec4}{vec4} \&out) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a3cf2f2de763b5da5fa999e797af00a5e}\label{structmatrix4_a3cf2f2de763b5da5fa999e797af00a5e}} 
+{\footnotesize template$<$class T , class U $>$ }\\T {\bfseries transform} (const U \&in) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a6e233a27c52922cbd684d95864fc151e}\label{structmatrix4_a6e233a27c52922cbd684d95864fc151e}} 
+{\footnotesize template$<$class T $>$ }\\\hyperlink{structvec}{vec} {\bfseries perspectivetransform} (const T \&in) const
+\item 
+\mbox{\Hypertarget{structmatrix4_ab7480b7527edfdcdaaacd65f1017844c}\label{structmatrix4_ab7480b7527edfdcdaaacd65f1017844c}} 
+void {\bfseries transformnormal} (const \hyperlink{structvec}{vec} \&in, \hyperlink{structvec}{vec} \&out) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a75e9092d4e89298da48aa074f23cf49a}\label{structmatrix4_a75e9092d4e89298da48aa074f23cf49a}} 
+void {\bfseries transformnormal} (const \hyperlink{structvec}{vec} \&in, \hyperlink{structvec4}{vec4} \&out) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a107f01892a62fc4c4c33ab994dd5846c}\label{structmatrix4_a107f01892a62fc4c4c33ab994dd5846c}} 
+{\footnotesize template$<$class T , class U $>$ }\\T {\bfseries transformnormal} (const U \&in) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a55f147946a1c28154af6fe1c819f8e4e}\label{structmatrix4_a55f147946a1c28154af6fe1c819f8e4e}} 
+void {\bfseries transposedtransform} (const \hyperlink{structvec}{vec} \&in, \hyperlink{structvec}{vec} \&out) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a8c9304ee33d2835c12eb0b2d806134fe}\label{structmatrix4_a8c9304ee33d2835c12eb0b2d806134fe}} 
+void {\bfseries transposedtransformnormal} (const \hyperlink{structvec}{vec} \&in, \hyperlink{structvec}{vec} \&out) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a18f61913b3faf3598431068abe512a99}\label{structmatrix4_a18f61913b3faf3598431068abe512a99}} 
+void {\bfseries transposedtransform} (const \hyperlink{structplane}{plane} \&in, \hyperlink{structplane}{plane} \&out) const
+\item 
+\mbox{\Hypertarget{structmatrix4_a75cbcdef7ba0d76f7c9dfcbc262230c6}\label{structmatrix4_a75cbcdef7ba0d76f7c9dfcbc262230c6}} 
+float {\bfseries getscale} () const
+\item 
+\mbox{\Hypertarget{structmatrix4_ad3b8cee87df355e6d0232787b00b69c5}\label{structmatrix4_ad3b8cee87df355e6d0232787b00b69c5}} 
+\hyperlink{structvec}{vec} {\bfseries gettranslation} () const
+\item 
+\mbox{\Hypertarget{structmatrix4_a6505672ab5d56a923cbdc3b6cea3f167}\label{structmatrix4_a6505672ab5d56a923cbdc3b6cea3f167}} 
+\hyperlink{structvec4}{vec4} {\bfseries rowx} () const
+\item 
+\mbox{\Hypertarget{structmatrix4_a3642552b75c9d0c152127d30922933d7}\label{structmatrix4_a3642552b75c9d0c152127d30922933d7}} 
+\hyperlink{structvec4}{vec4} {\bfseries rowy} () const
+\item 
+\mbox{\Hypertarget{structmatrix4_aed389738cf122672da3b00628ecf4e2f}\label{structmatrix4_aed389738cf122672da3b00628ecf4e2f}} 
+\hyperlink{structvec4}{vec4} {\bfseries rowz} () const
+\item 
+\mbox{\Hypertarget{structmatrix4_a2602e2d92f8bacc8d103a7f83738e230}\label{structmatrix4_a2602e2d92f8bacc8d103a7f83738e230}} 
+\hyperlink{structvec4}{vec4} {\bfseries roww} () const
+\item 
+\mbox{\Hypertarget{structmatrix4_a8c2b2259f2ba5c6866a9b26291446dab}\label{structmatrix4_a8c2b2259f2ba5c6866a9b26291446dab}} 
+bool {\bfseries invert} (const \hyperlink{structmatrix4}{matrix4} \&m, double mindet=1.\+0e-\/12)
+\item 
+\mbox{\Hypertarget{structmatrix4_afa48da8f2888731c4efbc1f9f9dc586d}\label{structmatrix4_afa48da8f2888731c4efbc1f9f9dc586d}} 
+\hyperlink{structvec2}{vec2} {\bfseries lineardepthscale} () const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structmatrix4_a3bae8b63556427e0ead792253eb75fb2}\label{structmatrix4_a3bae8b63556427e0ead792253eb75fb2}} 
+\hyperlink{structvec4}{vec4} {\bfseries a}
+\item 
+\mbox{\Hypertarget{structmatrix4_a3924742529729659bb515f3858886ca9}\label{structmatrix4_a3924742529729659bb515f3858886ca9}} 
+\hyperlink{structvec4}{vec4} {\bfseries b}
+\item 
+\mbox{\Hypertarget{structmatrix4_a0caa067d08364a4f27696c9b8a71f86c}\label{structmatrix4_a0caa067d08364a4f27696c9b8a71f86c}} 
+\hyperlink{structvec4}{vec4} {\bfseries c}
+\item 
+\mbox{\Hypertarget{structmatrix4_af80f95786cc362f9aef963ecb3a7ab96}\label{structmatrix4_af80f95786cc362f9aef963ecb3a7ab96}} 
+\hyperlink{structvec4}{vec4} {\bfseries d}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/geom.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/geom.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,67 @@
+\hypertarget{structlistrenderer}{}\section{listrenderer Struct Reference}
+\label{structlistrenderer}\index{listrenderer@{listrenderer}}
+Inheritance diagram for listrenderer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{structlistrenderer}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structlistrenderer_a15a3e7471ffc508143c57f9c1be5f54b}\label{structlistrenderer_a15a3e7471ffc508143c57f9c1be5f54b}} 
+{\bfseries listrenderer} (const char $\ast$texname, int texclamp, int type, int stain=-\/1)
+\item 
+\mbox{\Hypertarget{structlistrenderer_abf4292767ecff924466177aa3a7449f8}\label{structlistrenderer_abf4292767ecff924466177aa3a7449f8}} 
+{\bfseries listrenderer} (int type, int stain=-\/1)
+\item 
+\mbox{\Hypertarget{structlistrenderer_a61fb68c938016c6ad914abb34b09931c}\label{structlistrenderer_a61fb68c938016c6ad914abb34b09931c}} 
+virtual void {\bfseries killpart} (\hyperlink{structlistparticle}{listparticle} $\ast$p)
+\item 
+\mbox{\Hypertarget{structlistrenderer_a90668f026e251abdb473dd19ad896211}\label{structlistrenderer_a90668f026e251abdb473dd19ad896211}} 
+void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{structlistrenderer_a6bd0b93a715ff5bddeb19710cc0f6e1b}\label{structlistrenderer_a6bd0b93a715ff5bddeb19710cc0f6e1b}} 
+void {\bfseries resettracked} (\hyperlink{structphysent}{physent} $\ast$owner)
+\item 
+\mbox{\Hypertarget{structlistrenderer_a181631d9404294032fd5fac7e108dcd6}\label{structlistrenderer_a181631d9404294032fd5fac7e108dcd6}} 
+\hyperlink{structparticle}{particle} $\ast$ {\bfseries addpart} (const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&d, int fade, int color, float size, int gravity)
+\item 
+\mbox{\Hypertarget{structlistrenderer_a4b48ed65c6e4e716e3d17fe0ea25e50d}\label{structlistrenderer_a4b48ed65c6e4e716e3d17fe0ea25e50d}} 
+int {\bfseries count} ()
+\item 
+\mbox{\Hypertarget{structlistrenderer_ac59425138eaf467aadb06ac4beafbf9e}\label{structlistrenderer_ac59425138eaf467aadb06ac4beafbf9e}} 
+bool {\bfseries haswork} ()
+\item 
+\mbox{\Hypertarget{structlistrenderer_afea3803b4e867a66a4bdb5c268be8e0d}\label{structlistrenderer_afea3803b4e867a66a4bdb5c268be8e0d}} 
+virtual void {\bfseries startrender} ()=0
+\item 
+\mbox{\Hypertarget{structlistrenderer_a05b8adaf68ac7736a4490e72925f3c43}\label{structlistrenderer_a05b8adaf68ac7736a4490e72925f3c43}} 
+virtual void {\bfseries endrender} ()=0
+\item 
+\mbox{\Hypertarget{structlistrenderer_a7f2c3d2a9d27fb363408f57694cde384}\label{structlistrenderer_a7f2c3d2a9d27fb363408f57694cde384}} 
+virtual void {\bfseries renderpart} (\hyperlink{structlistparticle}{listparticle} $\ast$p, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&d, int blend, int ts)=0
+\item 
+\mbox{\Hypertarget{structlistrenderer_ab4608a76401d8a84b2d03cbeb6b1bab5}\label{structlistrenderer_ab4608a76401d8a84b2d03cbeb6b1bab5}} 
+bool {\bfseries renderpart} (\hyperlink{structlistparticle}{listparticle} $\ast$p)
+\item 
+\mbox{\Hypertarget{structlistrenderer_a795596dac54aa6629c8a55ec38a46510}\label{structlistrenderer_a795596dac54aa6629c8a55ec38a46510}} 
+void {\bfseries render} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structlistrenderer_a67f9c81ebaefd76a1e23f17de8369798}\label{structlistrenderer_a67f9c81ebaefd76a1e23f17de8369798}} 
+\hyperlink{structlistparticle}{listparticle} $\ast$ {\bfseries list}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structlistrenderer_a3089dad9548680965c1bcb838805908a}\label{structlistrenderer_a3089dad9548680965c1bcb838805908a}} 
+static \hyperlink{structlistparticle}{listparticle} $\ast$ {\bfseries parempty} = N\+U\+LL
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/renderparticles.\+cpp\end{DoxyCompactItemize}

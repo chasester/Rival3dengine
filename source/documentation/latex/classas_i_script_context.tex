@@ -1,0 +1,172 @@
+\hypertarget{classas_i_script_context}{}\section{as\+I\+Script\+Context Class Reference}
+\label{classas_i_script_context}\index{as\+I\+Script\+Context@{as\+I\+Script\+Context}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a5e24f4cb5773f732a1d46b818d963a1d}\label{classas_i_script_context_a5e24f4cb5773f732a1d46b818d963a1d}} 
+virtual int {\bfseries Add\+Ref} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a1b13a5f3e58627e9ff4300c0c6f0f3cf}\label{classas_i_script_context_a1b13a5f3e58627e9ff4300c0c6f0f3cf}} 
+virtual int {\bfseries Release} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a07f12016c5435aec5b63449abb6e4d8d}\label{classas_i_script_context_a07f12016c5435aec5b63449abb6e4d8d}} 
+virtual \hyperlink{classas_i_script_engine}{as\+I\+Script\+Engine} $\ast$ {\bfseries Get\+Engine} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a43976f42dfc6c1af23e132d36265173a}\label{classas_i_script_context_a43976f42dfc6c1af23e132d36265173a}} 
+virtual int {\bfseries Prepare} (\hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$func)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_ae3c18a2cc66c56f840e6ee4310287f65}\label{classas_i_script_context_ae3c18a2cc66c56f840e6ee4310287f65}} 
+virtual int {\bfseries Unprepare} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a8e52894432737acac2e1a422e496bf84}\label{classas_i_script_context_a8e52894432737acac2e1a422e496bf84}} 
+virtual int {\bfseries Execute} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a374befd21b8c14de81ef0ed9d2dea334}\label{classas_i_script_context_a374befd21b8c14de81ef0ed9d2dea334}} 
+virtual int {\bfseries Abort} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_ad4ac8be3586c46069b5870e40c86544a}\label{classas_i_script_context_ad4ac8be3586c46069b5870e40c86544a}} 
+virtual int {\bfseries Suspend} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a17024a9e1648f66711a3182b21676aa7}\label{classas_i_script_context_a17024a9e1648f66711a3182b21676aa7}} 
+virtual as\+E\+Context\+State {\bfseries Get\+State} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_ad8f7637a23d67e227d07f65621b6cdd6}\label{classas_i_script_context_ad8f7637a23d67e227d07f65621b6cdd6}} 
+virtual int {\bfseries Push\+State} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a5d963974625e582799b5d911d182d9be}\label{classas_i_script_context_a5d963974625e582799b5d911d182d9be}} 
+virtual int {\bfseries Pop\+State} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a378f3bbfa04ef7b806300c5d4f1a0d65}\label{classas_i_script_context_a378f3bbfa04ef7b806300c5d4f1a0d65}} 
+virtual bool {\bfseries Is\+Nested} (as\+U\+I\+NT $\ast$nest\+Count=0) const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a10d3c152b25d07584999f4d9fe5ce8b1}\label{classas_i_script_context_a10d3c152b25d07584999f4d9fe5ce8b1}} 
+virtual int {\bfseries Set\+Object} (void $\ast$\hyperlink{structobj}{obj})=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_ac5ac8ce5bb209f43d4da620db5d271da}\label{classas_i_script_context_ac5ac8ce5bb209f43d4da620db5d271da}} 
+virtual int {\bfseries Set\+Arg\+Byte} (as\+U\+I\+NT arg, as\+B\+Y\+TE value)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_ac882e19b922c681052a0a88d69289a47}\label{classas_i_script_context_ac882e19b922c681052a0a88d69289a47}} 
+virtual int {\bfseries Set\+Arg\+Word} (as\+U\+I\+NT arg, as\+W\+O\+RD value)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a14cac831c1b419f552ca62a239dfcf45}\label{classas_i_script_context_a14cac831c1b419f552ca62a239dfcf45}} 
+virtual int {\bfseries Set\+Arg\+D\+Word} (as\+U\+I\+NT arg, as\+D\+W\+O\+RD value)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a742c870360588e99528f09bae6156482}\label{classas_i_script_context_a742c870360588e99528f09bae6156482}} 
+virtual int {\bfseries Set\+Arg\+Q\+Word} (as\+U\+I\+NT arg, as\+Q\+W\+O\+RD value)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a702a40cfe539e4e655a84e15161f8db8}\label{classas_i_script_context_a702a40cfe539e4e655a84e15161f8db8}} 
+virtual int {\bfseries Set\+Arg\+Float} (as\+U\+I\+NT arg, float value)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_acbdddda3b80c37b70b8fd35c8e7383b9}\label{classas_i_script_context_acbdddda3b80c37b70b8fd35c8e7383b9}} 
+virtual int {\bfseries Set\+Arg\+Double} (as\+U\+I\+NT arg, double value)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_aa8de8f21dfbb2cdf0becbabaa3e883ed}\label{classas_i_script_context_aa8de8f21dfbb2cdf0becbabaa3e883ed}} 
+virtual int {\bfseries Set\+Arg\+Address} (as\+U\+I\+NT arg, void $\ast$addr)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a09044a12dfb2d44d19bd8a4025cb814d}\label{classas_i_script_context_a09044a12dfb2d44d19bd8a4025cb814d}} 
+virtual int {\bfseries Set\+Arg\+Object} (as\+U\+I\+NT arg, void $\ast$\hyperlink{structobj}{obj})=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a626d97ec564c92120e2abaf69f6e3698}\label{classas_i_script_context_a626d97ec564c92120e2abaf69f6e3698}} 
+virtual int {\bfseries Set\+Arg\+Var\+Type} (as\+U\+I\+NT arg, void $\ast$ptr, int type\+Id)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a0fbab94982862b30cd55996d4a24949c}\label{classas_i_script_context_a0fbab94982862b30cd55996d4a24949c}} 
+virtual void $\ast$ {\bfseries Get\+Address\+Of\+Arg} (as\+U\+I\+NT arg)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a4c92259c03f1394310d3ea7d0774b3cb}\label{classas_i_script_context_a4c92259c03f1394310d3ea7d0774b3cb}} 
+virtual as\+B\+Y\+TE {\bfseries Get\+Return\+Byte} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a5a3e054d35a6a361af67448d0a4930f9}\label{classas_i_script_context_a5a3e054d35a6a361af67448d0a4930f9}} 
+virtual as\+W\+O\+RD {\bfseries Get\+Return\+Word} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a43cd2fb72685aef96e8ddc622c9621bf}\label{classas_i_script_context_a43cd2fb72685aef96e8ddc622c9621bf}} 
+virtual as\+D\+W\+O\+RD {\bfseries Get\+Return\+D\+Word} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a22bdd3b67dee3b1dbcb3f9f9a1f21fa4}\label{classas_i_script_context_a22bdd3b67dee3b1dbcb3f9f9a1f21fa4}} 
+virtual as\+Q\+W\+O\+RD {\bfseries Get\+Return\+Q\+Word} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a4ad325995e43fe6a929bcbd8fa592500}\label{classas_i_script_context_a4ad325995e43fe6a929bcbd8fa592500}} 
+virtual float {\bfseries Get\+Return\+Float} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a7e1ce03637cd5dd48ea652fdf7913bd7}\label{classas_i_script_context_a7e1ce03637cd5dd48ea652fdf7913bd7}} 
+virtual double {\bfseries Get\+Return\+Double} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a2438a7fcf46faa2267bdb94057cd1f2e}\label{classas_i_script_context_a2438a7fcf46faa2267bdb94057cd1f2e}} 
+virtual void $\ast$ {\bfseries Get\+Return\+Address} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a6d5739fac9c90bcd0fea55d01841d43a}\label{classas_i_script_context_a6d5739fac9c90bcd0fea55d01841d43a}} 
+virtual void $\ast$ {\bfseries Get\+Return\+Object} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a889bf11123beba669637849c8e9b2b86}\label{classas_i_script_context_a889bf11123beba669637849c8e9b2b86}} 
+virtual void $\ast$ {\bfseries Get\+Address\+Of\+Return\+Value} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a4ed608208cafdebe5676df079e27d392}\label{classas_i_script_context_a4ed608208cafdebe5676df079e27d392}} 
+virtual int {\bfseries Set\+Exception} (const char $\ast$string)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a22e3c351fe6b13ba0a62010dfc305080}\label{classas_i_script_context_a22e3c351fe6b13ba0a62010dfc305080}} 
+virtual int {\bfseries Get\+Exception\+Line\+Number} (int $\ast$column=0, const char $\ast$$\ast$section\+Name=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a8e59aceec42080d29e08b44460ceb8b3}\label{classas_i_script_context_a8e59aceec42080d29e08b44460ceb8b3}} 
+virtual \hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$ {\bfseries Get\+Exception\+Function} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a46e2411bc84e99f57e7d9fe2374bb479}\label{classas_i_script_context_a46e2411bc84e99f57e7d9fe2374bb479}} 
+virtual const char $\ast$ {\bfseries Get\+Exception\+String} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a4d1f481473df3f7aefccc5bb6904e405}\label{classas_i_script_context_a4d1f481473df3f7aefccc5bb6904e405}} 
+virtual int {\bfseries Set\+Exception\+Callback} (\hyperlink{structas_s_func_ptr}{as\+S\+Func\+Ptr} callback, void $\ast$\hyperlink{structobj}{obj}, int call\+Conv)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_acb5cfe5703031fd76672a57d8afae547}\label{classas_i_script_context_acb5cfe5703031fd76672a57d8afae547}} 
+virtual void {\bfseries Clear\+Exception\+Callback} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_ae2747f643bf9a07364f922c460ef57dd}\label{classas_i_script_context_ae2747f643bf9a07364f922c460ef57dd}} 
+virtual int {\bfseries Set\+Line\+Callback} (\hyperlink{structas_s_func_ptr}{as\+S\+Func\+Ptr} callback, void $\ast$\hyperlink{structobj}{obj}, int call\+Conv)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a3771cf314de339fa5d70edfbfcd88370}\label{classas_i_script_context_a3771cf314de339fa5d70edfbfcd88370}} 
+virtual void {\bfseries Clear\+Line\+Callback} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_aab359abc4563a8439338bfd655824bd7}\label{classas_i_script_context_aab359abc4563a8439338bfd655824bd7}} 
+virtual as\+U\+I\+NT {\bfseries Get\+Callstack\+Size} () const =0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a1c101300447f2909e5d188409a7180f6}\label{classas_i_script_context_a1c101300447f2909e5d188409a7180f6}} 
+virtual \hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$ {\bfseries Get\+Function} (as\+U\+I\+NT stack\+Level=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_adf82981def59c6ec5dd9f74f034be2af}\label{classas_i_script_context_adf82981def59c6ec5dd9f74f034be2af}} 
+virtual int {\bfseries Get\+Line\+Number} (as\+U\+I\+NT stack\+Level=0, int $\ast$column=0, const char $\ast$$\ast$section\+Name=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a3d735c6c7c5a166302cc4ba8ea38e3e8}\label{classas_i_script_context_a3d735c6c7c5a166302cc4ba8ea38e3e8}} 
+virtual int {\bfseries Get\+Var\+Count} (as\+U\+I\+NT stack\+Level=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_aac398eb23d9f17fcbeaa3f3809f8923d}\label{classas_i_script_context_aac398eb23d9f17fcbeaa3f3809f8923d}} 
+virtual const char $\ast$ {\bfseries Get\+Var\+Name} (as\+U\+I\+NT var\+Index, as\+U\+I\+NT stack\+Level=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_ae3419d239a51d702870b1ab8ee1b7140}\label{classas_i_script_context_ae3419d239a51d702870b1ab8ee1b7140}} 
+virtual const char $\ast$ {\bfseries Get\+Var\+Declaration} (as\+U\+I\+NT var\+Index, as\+U\+I\+NT stack\+Level=0, bool include\+Namespace=false)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a8684e1931e54dbfe53da763fc334413d}\label{classas_i_script_context_a8684e1931e54dbfe53da763fc334413d}} 
+virtual int {\bfseries Get\+Var\+Type\+Id} (as\+U\+I\+NT var\+Index, as\+U\+I\+NT stack\+Level=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_acc916505d79de321a2ab2b46b1c61fb7}\label{classas_i_script_context_acc916505d79de321a2ab2b46b1c61fb7}} 
+virtual void $\ast$ {\bfseries Get\+Address\+Of\+Var} (as\+U\+I\+NT var\+Index, as\+U\+I\+NT stack\+Level=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a45fcf7d8d711d5ec5cb9927e7839387a}\label{classas_i_script_context_a45fcf7d8d711d5ec5cb9927e7839387a}} 
+virtual bool {\bfseries Is\+Var\+In\+Scope} (as\+U\+I\+NT var\+Index, as\+U\+I\+NT stack\+Level=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a404681f8950c1ebd9382d30ef1ed3b89}\label{classas_i_script_context_a404681f8950c1ebd9382d30ef1ed3b89}} 
+virtual int {\bfseries Get\+This\+Type\+Id} (as\+U\+I\+NT stack\+Level=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a4f6761a7a0c872dda681d8e180830ff9}\label{classas_i_script_context_a4f6761a7a0c872dda681d8e180830ff9}} 
+virtual void $\ast$ {\bfseries Get\+This\+Pointer} (as\+U\+I\+NT stack\+Level=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a214cc16c4dd889072c1c24c089223a6a}\label{classas_i_script_context_a214cc16c4dd889072c1c24c089223a6a}} 
+virtual \hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$ {\bfseries Get\+System\+Function} ()=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a263dc70abb2a8c77adcea7c9ede0a479}\label{classas_i_script_context_a263dc70abb2a8c77adcea7c9ede0a479}} 
+virtual void $\ast$ {\bfseries Set\+User\+Data} (void $\ast$data, as\+P\+W\+O\+RD type=0)=0
+\item 
+\mbox{\Hypertarget{classas_i_script_context_a0f8503675abfd473915d66a92c6e6df7}\label{classas_i_script_context_a0f8503675abfd473915d66a92c6e6df7}} 
+virtual void $\ast$ {\bfseries Get\+User\+Data} (as\+P\+W\+O\+RD type=0) const =0
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/angelscript.\+h\end{DoxyCompactItemize}

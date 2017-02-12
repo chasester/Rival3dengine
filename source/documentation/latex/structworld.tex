@@ -1,0 +1,145 @@
+\hypertarget{structworld}{}\section{world Struct Reference}
+\label{structworld}\index{world@{world}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structworld_1_1nodemgr}{nodemgr}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structworld_a0067ea2385cc8b7fa424760850a99baf}\label{structworld_a0067ea2385cc8b7fa424760850a99baf}} 
+{\bfseries world} (\hyperlink{structscenegraph}{scenegraph} $\ast$s)
+\item 
+\mbox{\Hypertarget{structworld_af48f0014e3c178b06d150b451a7fb831}\label{structworld_af48f0014e3c178b06d150b451a7fb831}} 
+bool {\bfseries nonodeedit} ()
+\item 
+\mbox{\Hypertarget{structworld_a15220743525066b1a8de6f60ef3e111b}\label{structworld_a15220743525066b1a8de6f60ef3e111b}} 
+void {\bfseries addlight} (\hyperlink{structvec}{vec} o, \hyperlink{structvec}{vec} color, int radius, char type)
+\item 
+\mbox{\Hypertarget{structworld_ad9b1207042f207e5020ca1a25aac9327}\label{structworld_ad9b1207042f207e5020ca1a25aac9327}} 
+bool {\bfseries haveselnode} ()
+\item 
+\mbox{\Hypertarget{structworld_a9d8285d626805ee049a53bbc3b99f21f}\label{structworld_a9d8285d626805ee049a53bbc3b99f21f}} 
+void {\bfseries nodeselcancel} ()
+\item 
+\mbox{\Hypertarget{structworld_afa533c4dcd0bcc983a382379c1962fa8}\label{structworld_afa533c4dcd0bcc983a382379c1962fa8}} 
+void {\bfseries nodeseladd} (int id)
+\item 
+\mbox{\Hypertarget{structworld_a31414fc6208dc12b3b60360a60c9a809}\label{structworld_a31414fc6208dc12b3b60360a60c9a809}} 
+\hyperlink{structvec}{vec} {\bfseries getselpos} ()
+\item 
+\mbox{\Hypertarget{structworld_a9fa53341f3bb74a227c21e7c2c36f9fa}\label{structworld_a9fa53341f3bb74a227c21e7c2c36f9fa}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structnode}{node} $\ast$ $>$ {\bfseries getselnodes} ()
+\item 
+\mbox{\Hypertarget{structworld_ae4c07cabcad368377cb389963ec786ff}\label{structworld_ae4c07cabcad368377cb389963ec786ff}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structlight}{light} $\ast$ $>$ {\bfseries getlights} ()
+\item 
+\mbox{\Hypertarget{structworld_a179ecc106525b94c8008fda9168dfbf7}\label{structworld_a179ecc106525b94c8008fda9168dfbf7}} 
+void {\bfseries serializedworld} ()
+\item 
+\mbox{\Hypertarget{structworld_a8e392ff705f48a3d062afe3a8dff2a6a}\label{structworld_a8e392ff705f48a3d062afe3a8dff2a6a}} 
+void {\bfseries updateworld} ()
+\item 
+\mbox{\Hypertarget{structworld_a9f3b7025c48694f57e756a3c8293a396}\label{structworld_a9f3b7025c48694f57e756a3c8293a396}} 
+void {\bfseries clearworld} (bool force=false)
+\item 
+\mbox{\Hypertarget{structworld_a37ed87933ab6e6ee3bf3325c70caabb8}\label{structworld_a37ed87933ab6e6ee3bf3325c70caabb8}} 
+void {\bfseries rendernodeselection} (const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray, bool nodemoving)
+\item 
+\mbox{\Hypertarget{structworld_a6472face5c089ac24894badeeb75e360}\label{structworld_a6472face5c089ac24894badeeb75e360}} 
+uint {\bfseries getnumnodes} ()
+\item 
+\mbox{\Hypertarget{structworld_a534f195f9371b4be2b10f1d673b14044}\label{structworld_a534f195f9371b4be2b10f1d673b14044}} 
+void {\bfseries addnodetoscene} (\hyperlink{structnode}{node} $\ast$g)
+\item 
+\mbox{\Hypertarget{structworld_a06b4b9b97ec3a583d329838ed51f32a4}\label{structworld_a06b4b9b97ec3a583d329838ed51f32a4}} 
+void {\bfseries rendernodes} ()
+\item 
+\mbox{\Hypertarget{structworld_a248d05ed2c1406b2877f67c0b35b92bb}\label{structworld_a248d05ed2c1406b2877f67c0b35b92bb}} 
+bool {\bfseries ispaused} ()
+\item 
+\mbox{\Hypertarget{structworld_aada8b74280e0132d203c3121699d9eba}\label{structworld_aada8b74280e0132d203c3121699d9eba}} 
+bool {\bfseries hoveringonnode} (int \hyperlink{structnode}{node}, int orient)
+\item 
+\mbox{\Hypertarget{structworld_a9f0325c0963d3093ec9c456e2d4aba42}\label{structworld_a9f0325c0963d3093ec9c456e2d4aba42}} 
+float {\bfseries getnearestent} (const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray, float radius, int mode, int \&hitnode)
+\item 
+\mbox{\Hypertarget{structworld_aa533c4c2441c97f38967fde3ec088e33}\label{structworld_aa533c4c2441c97f38967fde3ec088e33}} 
+void {\bfseries saveworld} (\hyperlink{structstream}{stream} $\ast$f)
+\item 
+\mbox{\Hypertarget{structworld_a6405a56deb7e1122e3092a752830e2b0}\label{structworld_a6405a56deb7e1122e3092a752830e2b0}} 
+void {\bfseries loadworld} (\hyperlink{structstream}{stream} $\ast$f)
+\item 
+\mbox{\Hypertarget{structworld_af5e70ab43ba8fd3b6836a9910427b397}\label{structworld_af5e70ab43ba8fd3b6836a9910427b397}} 
+void {\bfseries do\+Awake} ()
+\item 
+\mbox{\Hypertarget{structworld_ae69154444456dbd42d475c4dc46a6d9e}\label{structworld_ae69154444456dbd42d475c4dc46a6d9e}} 
+void {\bfseries addctrltonode} (str name, bool first)
+\item 
+\mbox{\Hypertarget{structworld_ab1f926ffd5d56692c138d2d0d15ad826}\label{structworld_ab1f926ffd5d56692c138d2d0d15ad826}} 
+void {\bfseries nodedrag} (const \hyperlink{structvec}{vec} \&ray)
+\item 
+\mbox{\Hypertarget{structworld_a8a7d798655142b2500ceeca1e8f43d33}\label{structworld_a8a7d798655142b2500ceeca1e8f43d33}} 
+void {\bfseries delnode} ()
+\item 
+\mbox{\Hypertarget{structworld_afb9bc78f7d083c71760595e8e863d1ce}\label{structworld_afb9bc78f7d083c71760595e8e863d1ce}} 
+void {\bfseries resetmap} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structworld_afe31e818cdfbf1c0b07d3448ad1dd1df}\label{structworld_afe31e818cdfbf1c0b07d3448ad1dd1df}} 
+int {\bfseries nodehover}
+\item 
+\mbox{\Hypertarget{structworld_a4d7a966893f93fcd4ce69e2fa3194082}\label{structworld_a4d7a966893f93fcd4ce69e2fa3194082}} 
+int {\bfseries oldhover}
+\item 
+\mbox{\Hypertarget{structworld_a1b9c73243f27ae99f9075eec70deaf76}\label{structworld_a1b9c73243f27ae99f9075eec70deaf76}} 
+int {\bfseries nodeorient}
+\item 
+\mbox{\Hypertarget{structworld_a4bc7f06f8de961ad3e009c8075bd5a45}\label{structworld_a4bc7f06f8de961ad3e009c8075bd5a45}} 
+int {\bfseries nfocus}
+\item 
+\mbox{\Hypertarget{structworld_a57719e5b664bde3fee2bba696552152f}\label{structworld_a57719e5b664bde3fee2bba696552152f}} 
+int {\bfseries nodemoving} = 0
+\item 
+\mbox{\Hypertarget{structworld_a0f6ff46448b9931a31121e2b6f303dac}\label{structworld_a0f6ff46448b9931a31121e2b6f303dac}} 
+\hyperlink{structvector}{vector}$<$ uint $>$ {\bfseries physicbodies}
+\item 
+\mbox{\Hypertarget{structworld_aadf8855f9cf7f735c49cc9dc3e2046ad}\label{structworld_aadf8855f9cf7f735c49cc9dc3e2046ad}} 
+\hyperlink{structvector}{vector}$<$ int $>$ {\bfseries nodeselect}
+\item 
+\mbox{\Hypertarget{structworld_a347b885ea7e2360c8047cf574bf68d12}\label{structworld_a347b885ea7e2360c8047cf574bf68d12}} 
+\hyperlink{structscenegraph}{scenegraph} $\ast$ {\bfseries curscene}
+\item 
+\mbox{\Hypertarget{structworld_a8536bdc730516e9a64f3e853ded92ab9}\label{structworld_a8536bdc730516e9a64f3e853ded92ab9}} 
+bool {\bfseries nodeselsnap} = false
+\item 
+\mbox{\Hypertarget{structworld_a1d1f645c414460fc5d702c5b0de13e5a}\label{structworld_a1d1f645c414460fc5d702c5b0de13e5a}} 
+bool {\bfseries nodeediting} = true
+\item 
+\mbox{\Hypertarget{structworld_ac82904feb931cdda6f4b2890afdc959f}\label{structworld_ac82904feb931cdda6f4b2890afdc959f}} 
+int {\bfseries spotlights}
+\item 
+\mbox{\Hypertarget{structworld_a115af226a45acaf93ff3046a0d3ffd2a}\label{structworld_a115af226a45acaf93ff3046a0d3ffd2a}} 
+int {\bfseries volumetriclights}
+\item 
+\mbox{\Hypertarget{structworld_a6a8e593e475e056b408abd61e70677a5}\label{structworld_a6a8e593e475e056b408abd61e70677a5}} 
+int {\bfseries nodelooplevel}
+\item 
+\mbox{\Hypertarget{structworld_a44a87158fd4933a1ec60b5c4e3d8e213}\label{structworld_a44a87158fd4933a1ec60b5c4e3d8e213}} 
+bool {\bfseries paused} = false
+\item 
+\mbox{\Hypertarget{structworld_ad59f469693bdf72473ef48786ccbebaa}\label{structworld_ad59f469693bdf72473ef48786ccbebaa}} 
+bool {\bfseries touched} = false
+\item 
+\mbox{\Hypertarget{structworld_a0224d3b53291b69cf1c97b49146a44bd}\label{structworld_a0224d3b53291b69cf1c97b49146a44bd}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structlight}{light} $\ast$ $>$ {\bfseries lights}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/game/node.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/world.\+cpp\end{DoxyCompactItemize}

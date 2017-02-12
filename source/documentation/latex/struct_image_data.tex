@@ -1,0 +1,73 @@
+\hypertarget{struct_image_data}{}\section{Image\+Data Struct Reference}
+\label{struct_image_data}\index{Image\+Data@{Image\+Data}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_image_data_a27a81ca3395aa53aeee3628a5bbb73bf}\label{struct_image_data_a27a81ca3395aa53aeee3628a5bbb73bf}} 
+{\bfseries Image\+Data} (int nw, int nh, int nbpp, int nlevels=1, int nalign=0, G\+Lenum ncompressed=G\+L\+\_\+\+F\+A\+L\+SE)
+\item 
+\mbox{\Hypertarget{struct_image_data_ab30a5e4f9839faecceb2b026d7d37edf}\label{struct_image_data_ab30a5e4f9839faecceb2b026d7d37edf}} 
+{\bfseries Image\+Data} (int nw, int nh, int nbpp, uchar $\ast$data)
+\item 
+\mbox{\Hypertarget{struct_image_data_a77e53767fe36d4f4e72d835529b8b2fb}\label{struct_image_data_a77e53767fe36d4f4e72d835529b8b2fb}} 
+{\bfseries Image\+Data} (S\+D\+L\+\_\+\+Surface $\ast$s)
+\item 
+\mbox{\Hypertarget{struct_image_data_a087fbda44d0ae206d9c7d237e4ea09a3}\label{struct_image_data_a087fbda44d0ae206d9c7d237e4ea09a3}} 
+void {\bfseries setdata} (uchar $\ast$ndata, int nw, int nh, int nbpp, int nlevels=1, int nalign=0, G\+Lenum ncompressed=G\+L\+\_\+\+F\+A\+L\+SE)
+\item 
+\mbox{\Hypertarget{struct_image_data_a14590ad377a02b7784c9586f803c1ff2}\label{struct_image_data_a14590ad377a02b7784c9586f803c1ff2}} 
+int {\bfseries calclevelsize} (int level) const
+\item 
+\mbox{\Hypertarget{struct_image_data_afe3ac787b0bbd7d0a6e06d79f09fde2e}\label{struct_image_data_afe3ac787b0bbd7d0a6e06d79f09fde2e}} 
+int {\bfseries calcsize} () const
+\item 
+\mbox{\Hypertarget{struct_image_data_a3c2e4ae2c52ed932c2c09fe21ef63924}\label{struct_image_data_a3c2e4ae2c52ed932c2c09fe21ef63924}} 
+void {\bfseries disown} ()
+\item 
+\mbox{\Hypertarget{struct_image_data_a2caebc9cb33554c5a17bedcf65eb3f70}\label{struct_image_data_a2caebc9cb33554c5a17bedcf65eb3f70}} 
+void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{struct_image_data_a72468c5642580929203d001d83f2bc5d}\label{struct_image_data_a72468c5642580929203d001d83f2bc5d}} 
+void {\bfseries replace} (\hyperlink{struct_image_data}{Image\+Data} \&d)
+\item 
+\mbox{\Hypertarget{struct_image_data_ad4a0d4eccc93077ff261692116d08de7}\label{struct_image_data_ad4a0d4eccc93077ff261692116d08de7}} 
+void {\bfseries wrap} (S\+D\+L\+\_\+\+Surface $\ast$s)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_image_data_a66b309c69bee4ce43e8c9235613fbb7a}\label{struct_image_data_a66b309c69bee4ce43e8c9235613fbb7a}} 
+int {\bfseries w}
+\item 
+\mbox{\Hypertarget{struct_image_data_a5f69888506bd3957c885913ddc19fd6b}\label{struct_image_data_a5f69888506bd3957c885913ddc19fd6b}} 
+int {\bfseries h}
+\item 
+\mbox{\Hypertarget{struct_image_data_a5233968997e788343a6e87434a82b5e8}\label{struct_image_data_a5233968997e788343a6e87434a82b5e8}} 
+int {\bfseries bpp}
+\item 
+\mbox{\Hypertarget{struct_image_data_ab46c6cb4039df60be1ffb5e50c01b3c1}\label{struct_image_data_ab46c6cb4039df60be1ffb5e50c01b3c1}} 
+int {\bfseries levels}
+\item 
+\mbox{\Hypertarget{struct_image_data_a0983fca58758b02e90d48f90d08af2b6}\label{struct_image_data_a0983fca58758b02e90d48f90d08af2b6}} 
+int {\bfseries align}
+\item 
+\mbox{\Hypertarget{struct_image_data_a22d891065745d4602f4b688a0dc7d3e8}\label{struct_image_data_a22d891065745d4602f4b688a0dc7d3e8}} 
+int {\bfseries pitch}
+\item 
+\mbox{\Hypertarget{struct_image_data_a1cc31e49de877cfac81dd5aa0f7f8ff4}\label{struct_image_data_a1cc31e49de877cfac81dd5aa0f7f8ff4}} 
+G\+Lenum {\bfseries compressed}
+\item 
+\mbox{\Hypertarget{struct_image_data_ad419767f541b51593924ad5268cb65d4}\label{struct_image_data_ad419767f541b51593924ad5268cb65d4}} 
+uchar $\ast$ {\bfseries data}
+\item 
+\mbox{\Hypertarget{struct_image_data_a0b59b1340cd6e0e44d389f870a354401}\label{struct_image_data_a0b59b1340cd6e0e44d389f870a354401}} 
+void $\ast$ {\bfseries owner}
+\item 
+\mbox{\Hypertarget{struct_image_data_aac1bdbc490ae646383ff981d4b4e7a7c}\label{struct_image_data_aac1bdbc490ae646383ff981d4b4e7a7c}} 
+void($\ast$ {\bfseries freefunc} )(void $\ast$)
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/texture.\+h\end{DoxyCompactItemize}

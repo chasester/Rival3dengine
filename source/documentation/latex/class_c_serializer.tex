@@ -1,0 +1,79 @@
+\hypertarget{class_c_serializer}{}\section{C\+Serializer Class Reference}
+\label{class_c_serializer}\index{C\+Serializer@{C\+Serializer}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_c_serializer_1_1_s_extra_object}{S\+Extra\+Object}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_serializer_ac620599decdaa3b922f04b3538c08531}\label{class_c_serializer_ac620599decdaa3b922f04b3538c08531}} 
+void {\bfseries Add\+User\+Type} (\hyperlink{struct_c_user_type}{C\+User\+Type} $\ast$ref, const std\+::string \&name)
+\item 
+\mbox{\Hypertarget{class_c_serializer_a87bcb1fc2bd5d3b45001af791b0c5ad9}\label{class_c_serializer_a87bcb1fc2bd5d3b45001af791b0c5ad9}} 
+int {\bfseries Store} (\hyperlink{classas_i_script_module}{as\+I\+Script\+Module} $\ast$mod)
+\item 
+\mbox{\Hypertarget{class_c_serializer_a9e4f936137b26ce6a608feeb40555ac0}\label{class_c_serializer_a9e4f936137b26ce6a608feeb40555ac0}} 
+int {\bfseries Store} (\hyperlink{classas_i_script_engine}{as\+I\+Script\+Engine} $\ast$e)
+\item 
+\mbox{\Hypertarget{class_c_serializer_a2ddc4ea0bc7031fbd4f5f652cbb66d1c}\label{class_c_serializer_a2ddc4ea0bc7031fbd4f5f652cbb66d1c}} 
+\hyperlink{class_c_serialized_value}{C\+Serialized\+Value} $\ast$ {\bfseries Store} (\hyperlink{classas_i_script_object}{as\+I\+Script\+Object} $\ast$o)
+\item 
+\mbox{\Hypertarget{class_c_serializer_ab65b7dd83ba4e05b7245e04a722ae37e}\label{class_c_serializer_ab65b7dd83ba4e05b7245e04a722ae37e}} 
+void {\bfseries save} (\hyperlink{structstream}{stream} $\ast$f)
+\item 
+\mbox{\Hypertarget{class_c_serializer_a58ae613fedf2d9159e8181b3008ebddd}\label{class_c_serializer_a58ae613fedf2d9159e8181b3008ebddd}} 
+void {\bfseries load} (\hyperlink{structstream}{stream} $\ast$f)
+\item 
+\mbox{\Hypertarget{class_c_serializer_a65551e8c33595eeeda94437d74177672}\label{class_c_serializer_a65551e8c33595eeeda94437d74177672}} 
+void {\bfseries Set\+Engine} (\hyperlink{classas_i_script_engine}{as\+I\+Script\+Engine} $\ast$e)
+\item 
+\mbox{\Hypertarget{class_c_serializer_a5e8d6804389021c05cf3df968c1e15e5}\label{class_c_serializer_a5e8d6804389021c05cf3df968c1e15e5}} 
+int {\bfseries Restore} (\hyperlink{classas_i_script_module}{as\+I\+Script\+Module} $\ast$mod)
+\item 
+\mbox{\Hypertarget{class_c_serializer_a402c3558201bb7c6a677e4c5d52ec41e}\label{class_c_serializer_a402c3558201bb7c6a677e4c5d52ec41e}} 
+void {\bfseries Add\+Extra\+Object\+To\+Store} (\hyperlink{classas_i_script_object}{as\+I\+Script\+Object} $\ast$object)
+\item 
+\mbox{\Hypertarget{class_c_serializer_af34a154a3afece327db8ae346ba2aa0f}\label{class_c_serializer_af34a154a3afece327db8ae346ba2aa0f}} 
+void $\ast$ {\bfseries Get\+Pointer\+To\+Restored\+Object} (void $\ast$original\+Object)
+\item 
+\mbox{\Hypertarget{class_c_serializer_add6d96e8a3e6c5539c0cd2862176209f}\label{class_c_serializer_add6d96e8a3e6c5539c0cd2862176209f}} 
+\hyperlink{class_c_serialized_value}{C\+Serialized\+Value} $\ast$ {\bfseries storenode} (\hyperlink{structnode}{node} $\ast$n)
+\item 
+\mbox{\Hypertarget{class_c_serializer_a611f269d936c8e8b3479d82e3c0a2282}\label{class_c_serializer_a611f269d936c8e8b3479d82e3c0a2282}} 
+void {\bfseries Clear\+Root} ()
+\item 
+\mbox{\Hypertarget{class_c_serializer_aa1fefef38b7001901a6a60849a14b5a3}\label{class_c_serializer_aa1fefef38b7001901a6a60849a14b5a3}} 
+void {\bfseries print} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_serializer_a81ba3be165acfbfe8aa950c5c02d5a5d}\label{class_c_serializer_a81ba3be165acfbfe8aa950c5c02d5a5d}} 
+\hyperlink{class_c_serialized_value}{C\+Serialized\+Value} {\bfseries m\+\_\+root}
+\item 
+\mbox{\Hypertarget{class_c_serializer_ae89342ebfec2abb602c71775dde0246a}\label{class_c_serializer_ae89342ebfec2abb602c71775dde0246a}} 
+\hyperlink{classas_i_script_engine}{as\+I\+Script\+Engine} $\ast$ {\bfseries m\+\_\+engine}
+\item 
+\mbox{\Hypertarget{class_c_serializer_a9807204d9a6c7ad778bcae60904ee0f5}\label{class_c_serializer_a9807204d9a6c7ad778bcae60904ee0f5}} 
+\hyperlink{classas_i_script_module}{as\+I\+Script\+Module} $\ast$ {\bfseries m\+\_\+mod}
+\item 
+\mbox{\Hypertarget{class_c_serializer_af46461faa7d8a506dc8d4eeb5e993ba5}\label{class_c_serializer_af46461faa7d8a506dc8d4eeb5e993ba5}} 
+std\+::map$<$ std\+::string, \hyperlink{struct_c_user_type}{C\+User\+Type} $\ast$ $>$ {\bfseries m\+\_\+user\+Types}
+\item 
+\mbox{\Hypertarget{class_c_serializer_a3e747b0912879a320e14dba06bed1a84}\label{class_c_serializer_a3e747b0912879a320e14dba06bed1a84}} 
+std\+::vector$<$ \hyperlink{struct_c_serializer_1_1_s_extra_object}{S\+Extra\+Object} $>$ {\bfseries m\+\_\+extra\+Objects}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_serializer_a4ca4672f09c538a3eb58046d8a58bbf8}\label{class_c_serializer_a4ca4672f09c538a3eb58046d8a58bbf8}} 
+class {\bfseries C\+Serialized\+Value}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/serializer.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/serializer.\+cpp\end{DoxyCompactItemize}

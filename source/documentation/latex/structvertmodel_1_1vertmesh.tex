@@ -1,0 +1,91 @@
+\hypertarget{structvertmodel_1_1vertmesh}{}\section{vertmodel\+:\+:vertmesh Struct Reference}
+\label{structvertmodel_1_1vertmesh}\index{vertmodel\+::vertmesh@{vertmodel\+::vertmesh}}
+Inheritance diagram for vertmodel\+:\+:vertmesh\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structvertmodel_1_1vertmesh}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a5adfd42d1ce8aa35a40b05b600e814b8}\label{structvertmodel_1_1vertmesh_a5adfd42d1ce8aa35a40b05b600e814b8}} 
+void {\bfseries smoothnorms} (float limit=0, bool areaweight=true)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_ac8865a176d9daf598727737bbfc1001a}\label{structvertmodel_1_1vertmesh_ac8865a176d9daf598727737bbfc1001a}} 
+void {\bfseries buildnorms} (bool areaweight=true)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a938de2e644e373ce543c6157f6b79cce}\label{structvertmodel_1_1vertmesh_a938de2e644e373ce543c6157f6b79cce}} 
+void {\bfseries calctangents} (bool areaweight=true)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a7a85bd3b8076e65471cfb6e66fa6108e}\label{structvertmodel_1_1vertmesh_a7a85bd3b8076e65471cfb6e66fa6108e}} 
+void {\bfseries calcbb} (\hyperlink{structvec}{vec} \&bbmin, \hyperlink{structvec}{vec} \&bbmax, const \hyperlink{structmatrix4x3}{matrix4x3} \&m)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a8c9a4dc7c75725ca63e01d8846e6f44c}\label{structvertmodel_1_1vertmesh_a8c9a4dc7c75725ca63e01d8846e6f44c}} 
+void {\bfseries gen\+B\+IH} (\hyperlink{struct_b_i_h_1_1mesh}{B\+I\+H\+::mesh} \&m)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_abbeaa0e99108532b8b4b5b5f440716d0}\label{structvertmodel_1_1vertmesh_abbeaa0e99108532b8b4b5b5f440716d0}} 
+void {\bfseries genshadowmesh} (\hyperlink{structvector}{vector}$<$ \hyperlink{structtriangle}{triangle} $>$ \&out, const \hyperlink{structmatrix4x3}{matrix4x3} \&m)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_afe9fb1804bd1bd9a15f5ca7c99a2e731}\label{structvertmodel_1_1vertmesh_afe9fb1804bd1bd9a15f5ca7c99a2e731}} 
+{\footnotesize template$<$class T $>$ }\\int {\bfseries genvbo} (\hyperlink{structvector}{vector}$<$ ushort $>$ \&idxs, int offset, \hyperlink{structvector}{vector}$<$ T $>$ \&vverts, int $\ast$htdata, int htlen)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_ad1fb4fb1f3b196fd38e77054b18ea68f}\label{structvertmodel_1_1vertmesh_ad1fb4fb1f3b196fd38e77054b18ea68f}} 
+int {\bfseries genvbo} (\hyperlink{structvector}{vector}$<$ ushort $>$ \&idxs, int offset)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_ad6ec3aac85d0d2db41498cb479087a9c}\label{structvertmodel_1_1vertmesh_ad6ec3aac85d0d2db41498cb479087a9c}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries fillverts} (T $\ast$vdata)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a7b49e9e2e12a6779f8b427aeb9f0db45}\label{structvertmodel_1_1vertmesh_a7b49e9e2e12a6779f8b427aeb9f0db45}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries interpverts} (const \hyperlink{structanimmodel_1_1animstate}{animstate} \&as, T $\ast$R\+E\+S\+T\+R\+I\+CT vdata, \hyperlink{structanimmodel_1_1skin}{skin} \&s)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_abe070fc364140d6ae382b45c834d89c7}\label{structvertmodel_1_1vertmesh_abe070fc364140d6ae382b45c834d89c7}} 
+void {\bfseries render} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, \hyperlink{structanimmodel_1_1skin}{skin} \&s, \hyperlink{structvertmodel_1_1vbocacheentry}{vbocacheentry} \&vc)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a9888ee796a0d4c5cb3ccbbf4e08dab2b}\label{structvertmodel_1_1vertmesh_a9888ee796a0d4c5cb3ccbbf4e08dab2b}} 
+static void {\bfseries assignvert} (\hyperlink{structvertmodel_1_1vvertg}{vvertg} \&vv, int j, \hyperlink{structvertmodel_1_1tcvert}{tcvert} \&tc, \hyperlink{structvertmodel_1_1vert}{vert} \&v)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_ab241db4fd849c8784d8ef47119002750}\label{structvertmodel_1_1vertmesh_ab241db4fd849c8784d8ef47119002750}} 
+{\footnotesize template$<$class T $>$ }\\static void {\bfseries fillvert} (T \&vv, int j, \hyperlink{structvertmodel_1_1tcvert}{tcvert} \&tc, \hyperlink{structvertmodel_1_1vert}{vert} \&v)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a8e51bff5830beeecefbb931f6ef4167a}\label{structvertmodel_1_1vertmesh_a8e51bff5830beeecefbb931f6ef4167a}} 
+\hyperlink{structvertmodel_1_1vert}{vert} $\ast$ {\bfseries verts}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a2efa91db3b6322cea5174acfb212d79b}\label{structvertmodel_1_1vertmesh_a2efa91db3b6322cea5174acfb212d79b}} 
+\hyperlink{structvertmodel_1_1tcvert}{tcvert} $\ast$ {\bfseries tcverts}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a58bab6e73d5d8ebe6e6719052b17ac24}\label{structvertmodel_1_1vertmesh_a58bab6e73d5d8ebe6e6719052b17ac24}} 
+\hyperlink{structvertmodel_1_1tri}{tri} $\ast$ {\bfseries tris}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a79af03e3db6facb956773310898019e1}\label{structvertmodel_1_1vertmesh_a79af03e3db6facb956773310898019e1}} 
+int {\bfseries numverts}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a537f86d242bfc6991df313cdf10d6588}\label{structvertmodel_1_1vertmesh_a537f86d242bfc6991df313cdf10d6588}} 
+int {\bfseries numtris}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a27206a6a1e5a597d76296ccf2963ce49}\label{structvertmodel_1_1vertmesh_a27206a6a1e5a597d76296ccf2963ce49}} 
+int {\bfseries voffset}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a23a0f086435c3c601f5e1f167a908580}\label{structvertmodel_1_1vertmesh_a23a0f086435c3c601f5e1f167a908580}} 
+int {\bfseries eoffset}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_abab6fa0f66b26126936ff7cc168febd3}\label{structvertmodel_1_1vertmesh_abab6fa0f66b26126936ff7cc168febd3}} 
+int {\bfseries elen}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_af3eafc73f5060f264968590e954285c5}\label{structvertmodel_1_1vertmesh_af3eafc73f5060f264968590e954285c5}} 
+ushort {\bfseries minvert}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmesh_a73434aa837a2d3ced2805138aadd0e40}\label{structvertmodel_1_1vertmesh_a73434aa837a2d3ced2805138aadd0e40}} 
+ushort {\bfseries maxvert}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/vertmodel.\+h\end{DoxyCompactItemize}

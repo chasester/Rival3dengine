@@ -1,0 +1,46 @@
+\hypertarget{structai_1_1avoidset}{}\section{ai\+:\+:avoidset Struct Reference}
+\label{structai_1_1avoidset}\index{ai\+::avoidset@{ai\+::avoidset}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structai_1_1avoidset_1_1obstacle}{obstacle}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structai_1_1avoidset_a4b69381cb42e34987637b2ace3b68bc1}\label{structai_1_1avoidset_a4b69381cb42e34987637b2ace3b68bc1}} 
+void {\bfseries clear} ()
+\item 
+\mbox{\Hypertarget{structai_1_1avoidset_a7ea66f6b47371c329b97edc8258a5d73}\label{structai_1_1avoidset_a7ea66f6b47371c329b97edc8258a5d73}} 
+void {\bfseries add} (void $\ast$owner, float above)
+\item 
+\mbox{\Hypertarget{structai_1_1avoidset_a9c3c99268fdf550b4a4041a88ecd43cd}\label{structai_1_1avoidset_a9c3c99268fdf550b4a4041a88ecd43cd}} 
+void {\bfseries add} (void $\ast$owner, float above, int wp)
+\item 
+\mbox{\Hypertarget{structai_1_1avoidset_ae245f312113d4e1f55dfa661b901e5c8}\label{structai_1_1avoidset_ae245f312113d4e1f55dfa661b901e5c8}} 
+void {\bfseries add} (\hyperlink{structai_1_1avoidset}{avoidset} \&avoid)
+\item 
+\mbox{\Hypertarget{structai_1_1avoidset_a2ff0b9f52e4836ad97ef4662cf8302a0}\label{structai_1_1avoidset_a2ff0b9f52e4836ad97ef4662cf8302a0}} 
+void {\bfseries avoidnear} (void $\ast$owner, float above, const \hyperlink{structvec}{vec} \&pos, float limit)
+\item 
+\mbox{\Hypertarget{structai_1_1avoidset_a7dadaef2be8e4e36f1f91251fee29245}\label{structai_1_1avoidset_a7dadaef2be8e4e36f1f91251fee29245}} 
+bool {\bfseries find} (int n, \hyperlink{structgameent}{gameent} $\ast$d) const
+\item 
+\mbox{\Hypertarget{structai_1_1avoidset_abce9d6126c6485abbe312c2c2c8f4792}\label{structai_1_1avoidset_abce9d6126c6485abbe312c2c2c8f4792}} 
+int {\bfseries remap} (\hyperlink{structgameent}{gameent} $\ast$d, int n, \hyperlink{structvec}{vec} \&pos, bool retry=false)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structai_1_1avoidset_a9b5225a30f36557c4709557046c6f1a1}\label{structai_1_1avoidset_a9b5225a30f36557c4709557046c6f1a1}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structai_1_1avoidset_1_1obstacle}{obstacle} $>$ {\bfseries obstacles}
+\item 
+\mbox{\Hypertarget{structai_1_1avoidset_acff4374fee025b6375ce76a19e3dd9e5}\label{structai_1_1avoidset_acff4374fee025b6375ce76a19e3dd9e5}} 
+\hyperlink{structvector}{vector}$<$ int $>$ {\bfseries waypoints}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/game/ai.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/game/waypoint.\+cpp\end{DoxyCompactItemize}

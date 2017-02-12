@@ -1,0 +1,79 @@
+\hypertarget{structvarenderer}{}\section{varenderer$<$ T $>$ Struct Template Reference}
+\label{structvarenderer}\index{varenderer$<$ T $>$@{varenderer$<$ T $>$}}
+Inheritance diagram for varenderer$<$ T $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{structvarenderer}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvarenderer_a228df59a9ee09cd3d9922ed37369993b}\label{structvarenderer_a228df59a9ee09cd3d9922ed37369993b}} 
+{\bfseries varenderer} (const char $\ast$texname, int type, int stain=-\/1)
+\item 
+\mbox{\Hypertarget{structvarenderer_a7d67f897e9448c73921485c13eef4a9c}\label{structvarenderer_a7d67f897e9448c73921485c13eef4a9c}} 
+void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structvarenderer_a3ba6d5593e241a8fb5d68f20227f5bfc}\label{structvarenderer_a3ba6d5593e241a8fb5d68f20227f5bfc}} 
+void {\bfseries init} (int n)
+\item 
+\mbox{\Hypertarget{structvarenderer_ae41e6ae1abff5067e82fa0d40d04c462}\label{structvarenderer_ae41e6ae1abff5067e82fa0d40d04c462}} 
+void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{structvarenderer_ac9b11173c5a8c1f37f0411bd4c28938b}\label{structvarenderer_ac9b11173c5a8c1f37f0411bd4c28938b}} 
+void {\bfseries resettracked} (\hyperlink{structphysent}{physent} $\ast$owner)
+\item 
+\mbox{\Hypertarget{structvarenderer_aad8bddcb021a0d06d43e0b11c1b085fd}\label{structvarenderer_aad8bddcb021a0d06d43e0b11c1b085fd}} 
+int {\bfseries count} ()
+\item 
+\mbox{\Hypertarget{structvarenderer_a3752cf8fa284ac1ae1765d854cbb4ea3}\label{structvarenderer_a3752cf8fa284ac1ae1765d854cbb4ea3}} 
+bool {\bfseries haswork} ()
+\item 
+\mbox{\Hypertarget{structvarenderer_adaed86fceedbff5b00bc412fbe855ee0}\label{structvarenderer_adaed86fceedbff5b00bc412fbe855ee0}} 
+\hyperlink{structparticle}{particle} $\ast$ {\bfseries addpart} (const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&d, int fade, int color, float size, int gravity)
+\item 
+\mbox{\Hypertarget{structvarenderer_adec28592a450c2d267f614172b85beff}\label{structvarenderer_adec28592a450c2d267f614172b85beff}} 
+void {\bfseries seedemitter} (\hyperlink{structparticleemitter}{particleemitter} \&pe, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&d, int fade, float size, int gravity)
+\item 
+\mbox{\Hypertarget{structvarenderer_aa4774979433cb5c347dd3351146e46de}\label{structvarenderer_aa4774979433cb5c347dd3351146e46de}} 
+void {\bfseries genverts} (\hyperlink{structparticle}{particle} $\ast$p, \hyperlink{structpartvert}{partvert} $\ast$vs, bool regen)
+\item 
+\mbox{\Hypertarget{structvarenderer_a71e52136cd0dc6897fb81eb0e2095c73}\label{structvarenderer_a71e52136cd0dc6897fb81eb0e2095c73}} 
+void {\bfseries genverts} ()
+\item 
+\mbox{\Hypertarget{structvarenderer_ac5b8f5976f75693b969ef751b9c8c4f7}\label{structvarenderer_ac5b8f5976f75693b969ef751b9c8c4f7}} 
+void {\bfseries genvbo} ()
+\item 
+\mbox{\Hypertarget{structvarenderer_a63b27c69dd184ad3c7a00e009df17b9a}\label{structvarenderer_a63b27c69dd184ad3c7a00e009df17b9a}} 
+void {\bfseries render} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvarenderer_ae67c02d9eafe30647b02ffe9d3c8e4f2}\label{structvarenderer_ae67c02d9eafe30647b02ffe9d3c8e4f2}} 
+\hyperlink{structpartvert}{partvert} $\ast$ {\bfseries verts}
+\item 
+\mbox{\Hypertarget{structvarenderer_a64b0ea15189661fce0a2cf9ae52e5239}\label{structvarenderer_a64b0ea15189661fce0a2cf9ae52e5239}} 
+\hyperlink{structparticle}{particle} $\ast$ {\bfseries parts}
+\item 
+\mbox{\Hypertarget{structvarenderer_ae6a14ced86d1208b8651a71b9f1611fe}\label{structvarenderer_ae6a14ced86d1208b8651a71b9f1611fe}} 
+int {\bfseries maxparts}
+\item 
+\mbox{\Hypertarget{structvarenderer_a174b7a7aeb2b1943223f442aa5be8dad}\label{structvarenderer_a174b7a7aeb2b1943223f442aa5be8dad}} 
+int {\bfseries numparts}
+\item 
+\mbox{\Hypertarget{structvarenderer_a59561467d9d586f2c8e684bee04d32e7}\label{structvarenderer_a59561467d9d586f2c8e684bee04d32e7}} 
+int {\bfseries lastupdate}
+\item 
+\mbox{\Hypertarget{structvarenderer_a5270bb98c179350272b82e2fd295b938}\label{structvarenderer_a5270bb98c179350272b82e2fd295b938}} 
+int {\bfseries rndmask}
+\item 
+\mbox{\Hypertarget{structvarenderer_a83bf08bc37b71c3641882ea6a905e357}\label{structvarenderer_a83bf08bc37b71c3641882ea6a905e357}} 
+G\+Luint {\bfseries vbo}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/renderparticles.\+cpp\end{DoxyCompactItemize}

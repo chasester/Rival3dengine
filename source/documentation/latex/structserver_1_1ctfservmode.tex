@@ -1,0 +1,129 @@
+\hypertarget{structserver_1_1ctfservmode}{}\section{server\+:\+:ctfservmode Struct Reference}
+\label{structserver_1_1ctfservmode}\index{server\+::ctfservmode@{server\+::ctfservmode}}
+Inheritance diagram for server\+:\+:ctfservmode\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structserver_1_1ctfservmode}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structserver_1_1ctfservmode_1_1flag}{flag}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_abb48efb6b5dd5e20d487f0828f8ed311}\label{structserver_1_1ctfservmode_abb48efb6b5dd5e20d487f0828f8ed311}} 
+void {\bfseries resetflags} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a1d73a0c7460d2d74788e7867e4a38301}\label{structserver_1_1ctfservmode_a1d73a0c7460d2d74788e7867e4a38301}} 
+bool {\bfseries addflag} (int i, const \hyperlink{structvec}{vec} \&o, int team)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a5bbf56cb81f3727efbdfe59c2d86e971}\label{structserver_1_1ctfservmode_a5bbf56cb81f3727efbdfe59c2d86e971}} 
+void {\bfseries ownflag} (int i, int owner, int owntime)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_adaf6e4bbfa047ae3d83f20377286a03a}\label{structserver_1_1ctfservmode_adaf6e4bbfa047ae3d83f20377286a03a}} 
+void {\bfseries dropflag} (int i, const \hyperlink{structvec}{vec} \&o, int droptime, int dropper=-\/1, bool penalty=false)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a445e1d4be77b7b01bc6535c78a8276ec}\label{structserver_1_1ctfservmode_a445e1d4be77b7b01bc6535c78a8276ec}} 
+void {\bfseries returnflag} (int i)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a39003e9b247deb2b0a26dce9d65717ff}\label{structserver_1_1ctfservmode_a39003e9b247deb2b0a26dce9d65717ff}} 
+int {\bfseries totalscore} (int team)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a77cffdac6b3f78827ebd6e897a29f07b}\label{structserver_1_1ctfservmode_a77cffdac6b3f78827ebd6e897a29f07b}} 
+int {\bfseries setscore} (int team, int score)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a1e70feb67367d6bd4a9f6176e582de32}\label{structserver_1_1ctfservmode_a1e70feb67367d6bd4a9f6176e582de32}} 
+int {\bfseries addscore} (int team, int score)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a638ef439347a831bf057c3f47b6731c1}\label{structserver_1_1ctfservmode_a638ef439347a831bf057c3f47b6731c1}} 
+bool {\bfseries hidefrags} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_aa823a313493bc40e07102a3a6294d604}\label{structserver_1_1ctfservmode_aa823a313493bc40e07102a3a6294d604}} 
+int {\bfseries getteamscore} (int team)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a17479447cf0518ea91edfc4367035c51}\label{structserver_1_1ctfservmode_a17479447cf0518ea91edfc4367035c51}} 
+void {\bfseries getteamscores} (\hyperlink{structvector}{vector}$<$ \hyperlink{structteamscore}{teamscore} $>$ \&tscores)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_af1b49e2f8b12307e915f078e62fd979b}\label{structserver_1_1ctfservmode_af1b49e2f8b12307e915f078e62fd979b}} 
+void {\bfseries reset} (bool empty)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a69ba29c34c11f73a76a7aa372f235cfd}\label{structserver_1_1ctfservmode_a69ba29c34c11f73a76a7aa372f235cfd}} 
+void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a6490922a50b76043f35993350e3c712b}\label{structserver_1_1ctfservmode_a6490922a50b76043f35993350e3c712b}} 
+void {\bfseries setup} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a7239fd7509a43ddcbc05c2264ff898a2}\label{structserver_1_1ctfservmode_a7239fd7509a43ddcbc05c2264ff898a2}} 
+void {\bfseries newmap} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_aa452a428fbae2d8f1182f482f47bd2b4}\label{structserver_1_1ctfservmode_aa452a428fbae2d8f1182f482f47bd2b4}} 
+void {\bfseries dropflag} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, \hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$dropper=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a78edfb53f86a8cb687977a7c5493b6c7}\label{structserver_1_1ctfservmode_a78edfb53f86a8cb687977a7c5493b6c7}} 
+void {\bfseries leavegame} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, bool disconnecting=false)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_ac0cac6be41bd475f7b0235b5329c1411}\label{structserver_1_1ctfservmode_ac0cac6be41bd475f7b0235b5329c1411}} 
+void {\bfseries died} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, \hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$actor)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_aed1a20b5fdab14d664f7c257783ef28d}\label{structserver_1_1ctfservmode_aed1a20b5fdab14d664f7c257783ef28d}} 
+bool {\bfseries canspawn} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, bool connecting)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_ace8ad4b56e8763e7227a58511d19617c}\label{structserver_1_1ctfservmode_ace8ad4b56e8763e7227a58511d19617c}} 
+bool {\bfseries canchangeteam} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, int oldteam, int newteam)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a8c5e5155e6cfb7956c460ffcdf2955b1}\label{structserver_1_1ctfservmode_a8c5e5155e6cfb7956c460ffcdf2955b1}} 
+void {\bfseries changeteam} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, int oldteam, int newteam)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a56f00670fe165ee35413d3a6debe5dd2}\label{structserver_1_1ctfservmode_a56f00670fe165ee35413d3a6debe5dd2}} 
+void {\bfseries scoreflag} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, int goal, int relay=-\/1)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_ab0dfb3594347f3e282d589e53a5b7068}\label{structserver_1_1ctfservmode_ab0dfb3594347f3e282d589e53a5b7068}} 
+void {\bfseries takeflag} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, int i, int version)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a41c651d043609f8633323e698288a820}\label{structserver_1_1ctfservmode_a41c651d043609f8633323e698288a820}} 
+void {\bfseries update} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_af95ad62d23a9b295cfcac8a9ea96ba40}\label{structserver_1_1ctfservmode_af95ad62d23a9b295cfcac8a9ea96ba40}} 
+void {\bfseries initclient} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, \hyperlink{structpacketbuf}{packetbuf} \&p, bool connecting)
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a5b62660b25ef739a6ebbb9f024f9a07a}\label{structserver_1_1ctfservmode_a5b62660b25ef739a6ebbb9f024f9a07a}} 
+void {\bfseries parseflags} (\hyperlink{structdatabuf}{ucharbuf} \&p, bool commit)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a1271874f869c6d33c6d8186c9e26693b}\label{structserver_1_1ctfservmode_a1271874f869c6d33c6d8186c9e26693b}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structserver_1_1ctfservmode_1_1flag}{flag} $>$ {\bfseries flags}
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a99ea10d6fe1fc0f82bb78a546f156ad1}\label{structserver_1_1ctfservmode_a99ea10d6fe1fc0f82bb78a546f156ad1}} 
+int {\bfseries scores} \mbox{[}M\+A\+X\+T\+E\+A\+MS\mbox{]}
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a62bab7c9273c7e72ee4de5d17c6aebdc}\label{structserver_1_1ctfservmode_a62bab7c9273c7e72ee4de5d17c6aebdc}} 
+bool {\bfseries notgotflags}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a7b9a05fd211dc9631c16aae8c3273a7f}\label{structserver_1_1ctfservmode_a7b9a05fd211dc9631c16aae8c3273a7f}} 
+static const int {\bfseries M\+A\+X\+F\+L\+A\+GS} = 20
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a82d87cfdc4f08784c0fe6efe30ce1a9d}\label{structserver_1_1ctfservmode_a82d87cfdc4f08784c0fe6efe30ce1a9d}} 
+static const int {\bfseries F\+L\+A\+G\+R\+A\+D\+I\+US} = 16
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_ac32e856f76d99823ad5ae2ae58f3ba48}\label{structserver_1_1ctfservmode_ac32e856f76d99823ad5ae2ae58f3ba48}} 
+static const int {\bfseries F\+L\+A\+G\+L\+I\+M\+IT} = 10
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_ad8fd3c49f1c8582019b35ca0772f677a}\label{structserver_1_1ctfservmode_ad8fd3c49f1c8582019b35ca0772f677a}} 
+static const int {\bfseries R\+E\+S\+P\+A\+W\+N\+S\+E\+CS} = 5
+\item 
+\mbox{\Hypertarget{structserver_1_1ctfservmode_a9e44b6f1f6712720c78d2cc16f120ee4}\label{structserver_1_1ctfservmode_a9e44b6f1f6712720c78d2cc16f120ee4}} 
+static const int {\bfseries R\+E\+S\+E\+T\+F\+L\+A\+G\+T\+I\+ME} = 10000
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/game/server.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,104 @@
+\hypertarget{structvacollect}{}\section{vacollect Struct Reference}
+\label{structvacollect}\index{vacollect@{vacollect}}
+Inheritance diagram for vacollect\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structvacollect}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvacollect_a3ad850ce9d9e1f7ff3c6582767efa518}\label{structvacollect_a3ad850ce9d9e1f7ff3c6582767efa518}} 
+void {\bfseries clear} ()
+\item 
+\mbox{\Hypertarget{structvacollect_a40d1251c913432b6165ff14123e65d42}\label{structvacollect_a40d1251c913432b6165ff14123e65d42}} 
+void {\bfseries optimize} ()
+\item 
+\mbox{\Hypertarget{structvacollect_a109a860a7eca8546bff074465271fadd}\label{structvacollect_a109a860a7eca8546bff074465271fadd}} 
+void {\bfseries genverts} (void $\ast$buf)
+\item 
+\mbox{\Hypertarget{structvacollect_ac3c4c253b8ebdaf534bb85e495e4503a}\label{structvacollect_ac3c4c253b8ebdaf534bb85e495e4503a}} 
+void {\bfseries gendecal} (const \hyperlink{structextentity}{extentity} \&e, \hyperlink{struct_decal_slot}{Decal\+Slot} \&s, const \hyperlink{structdecalkey}{decalkey} \&key)
+\item 
+\mbox{\Hypertarget{structvacollect_a59f39e70e95b45395c0742bea126f425}\label{structvacollect_a59f39e70e95b45395c0742bea126f425}} 
+void {\bfseries gendecals} ()
+\item 
+\mbox{\Hypertarget{structvacollect_a688cc8e42db54dbb55171dbefb845c7f}\label{structvacollect_a688cc8e42db54dbb55171dbefb845c7f}} 
+void {\bfseries setupdata} (\hyperlink{structvtxarray}{vtxarray} $\ast$va)
+\item 
+\mbox{\Hypertarget{structvacollect_ab10e6f81f32414c6257feb368f440800}\label{structvacollect_ab10e6f81f32414c6257feb368f440800}} 
+bool {\bfseries emptyva} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvacollect_af1b41ad9aa7892e2fe940f6cca891e1c}\label{structvacollect_af1b41ad9aa7892e2fe940f6cca891e1c}} 
+\hyperlink{structivec}{ivec} {\bfseries origin}
+\item 
+\mbox{\Hypertarget{structvacollect_aae0356a756ef2b1b203ac6bee24d6671}\label{structvacollect_aae0356a756ef2b1b203ac6bee24d6671}} 
+int {\bfseries size}
+\item 
+\mbox{\Hypertarget{structvacollect_a672380b77595064e370c79df90d6b566}\label{structvacollect_a672380b77595064e370c79df90d6b566}} 
+\hyperlink{structhashtable}{hashtable}$<$ \hyperlink{structsortkey}{sortkey}, \hyperlink{structsortval}{sortval} $>$ {\bfseries indices}
+\item 
+\mbox{\Hypertarget{structvacollect_a83b3023f04e4b611ab5a158bcad3332e}\label{structvacollect_a83b3023f04e4b611ab5a158bcad3332e}} 
+\hyperlink{structhashtable}{hashtable}$<$ \hyperlink{structdecalkey}{decalkey}, \hyperlink{structsortval}{sortval} $>$ {\bfseries decalindices}
+\item 
+\mbox{\Hypertarget{structvacollect_a5114b54b0216abf282aa0add938bd937}\label{structvacollect_a5114b54b0216abf282aa0add938bd937}} 
+\hyperlink{structvector}{vector}$<$ ushort $>$ {\bfseries skyindices}
+\item 
+\mbox{\Hypertarget{structvacollect_a9655b0c1f4b9b668f8d57c0414ee8e14}\label{structvacollect_a9655b0c1f4b9b668f8d57c0414ee8e14}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structsortkey}{sortkey} $>$ {\bfseries texs}
+\item 
+\mbox{\Hypertarget{structvacollect_a00cf456a8bfe5017f756bce13ad19411}\label{structvacollect_a00cf456a8bfe5017f756bce13ad19411}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structdecalkey}{decalkey} $>$ {\bfseries decaltexs}
+\item 
+\mbox{\Hypertarget{structvacollect_a87aff202b1323c30e885a8a20810d7d7}\label{structvacollect_a87aff202b1323c30e885a8a20810d7d7}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structgrasstri}{grasstri} $>$ {\bfseries grasstris}
+\item 
+\mbox{\Hypertarget{structvacollect_a2a5b7831b6a2d5948601abbf1b03b936}\label{structvacollect_a2a5b7831b6a2d5948601abbf1b03b936}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structmaterialsurface}{materialsurface} $>$ {\bfseries matsurfs}
+\item 
+\mbox{\Hypertarget{structvacollect_a4af51b256a62089535fd901406362e62}\label{structvacollect_a4af51b256a62089535fd901406362e62}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structoctaentities}{octaentities} $\ast$ $>$ {\bfseries mapmodels}
+\item 
+\mbox{\Hypertarget{structvacollect_ae394e786c3c1534781da0bfa147c723e}\label{structvacollect_ae394e786c3c1534781da0bfa147c723e}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structoctaentities}{octaentities} $\ast$ $>$ {\bfseries decals}
+\item 
+\mbox{\Hypertarget{structvacollect_aa40a97211d5fa4f09bf7fe6362cf7072}\label{structvacollect_aa40a97211d5fa4f09bf7fe6362cf7072}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structoctaentities}{octaentities} $\ast$ $>$ {\bfseries extdecals}
+\item 
+\mbox{\Hypertarget{structvacollect_a24204b0a88b33d2127da6a974d4f4f62}\label{structvacollect_a24204b0a88b33d2127da6a974d4f4f62}} 
+int {\bfseries worldtris}
+\item 
+\mbox{\Hypertarget{structvacollect_aa1b699984dde65b33c7e00c27d795d8a}\label{structvacollect_aa1b699984dde65b33c7e00c27d795d8a}} 
+int {\bfseries skytris}
+\item 
+\mbox{\Hypertarget{structvacollect_a30d37e7abe972469a5eedab7feee3a78}\label{structvacollect_a30d37e7abe972469a5eedab7feee3a78}} 
+int {\bfseries decaltris}
+\item 
+\mbox{\Hypertarget{structvacollect_ad453062791fa65669c03be59ab529948}\label{structvacollect_ad453062791fa65669c03be59ab529948}} 
+\hyperlink{structvec}{vec} {\bfseries alphamin}
+\item 
+\mbox{\Hypertarget{structvacollect_a68a3c4c1897ef8c6f53bd02741efe00f}\label{structvacollect_a68a3c4c1897ef8c6f53bd02741efe00f}} 
+\hyperlink{structvec}{vec} {\bfseries alphamax}
+\item 
+\mbox{\Hypertarget{structvacollect_a6f16765350a1eabd91770779b1f2c29b}\label{structvacollect_a6f16765350a1eabd91770779b1f2c29b}} 
+\hyperlink{structvec}{vec} {\bfseries refractmin}
+\item 
+\mbox{\Hypertarget{structvacollect_a9077c0eea0759bbc6a973ce48392fccb}\label{structvacollect_a9077c0eea0759bbc6a973ce48392fccb}} 
+\hyperlink{structvec}{vec} {\bfseries refractmax}
+\item 
+\mbox{\Hypertarget{structvacollect_a9c5e638d7a3637558f1baac54f77a443}\label{structvacollect_a9c5e638d7a3637558f1baac54f77a443}} 
+\hyperlink{structivec}{ivec} {\bfseries nogimin}
+\item 
+\mbox{\Hypertarget{structvacollect_aff0c3d38b2a01cb80a4fe21e0aae023b}\label{structvacollect_aff0c3d38b2a01cb80a4fe21e0aae023b}} 
+\hyperlink{structivec}{ivec} {\bfseries nogimax}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/octarender.\+cpp\end{DoxyCompactItemize}

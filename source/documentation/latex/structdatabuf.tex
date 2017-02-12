@@ -1,0 +1,93 @@
+\hypertarget{structdatabuf}{}\section{databuf$<$ T $>$ Struct Template Reference}
+\label{structdatabuf}\index{databuf$<$ T $>$@{databuf$<$ T $>$}}
+Inheritance diagram for databuf$<$ T $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structdatabuf}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdatabuf_a9f408ad611db258c6fc64595f7174563}\label{structdatabuf_a9f408ad611db258c6fc64595f7174563}} 
+enum \{ {\bfseries O\+V\+E\+R\+R\+E\+AD} = 1$<$$<$0, 
+{\bfseries O\+V\+E\+R\+W\+R\+O\+TE} = 1$<$$<$1
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdatabuf_af4e9590924e4b7d1c4a73a0d8060dfee}\label{structdatabuf_af4e9590924e4b7d1c4a73a0d8060dfee}} 
+{\footnotesize template$<$class U $>$ }\\{\bfseries databuf} (T $\ast$buf, U maxlen)
+\item 
+\mbox{\Hypertarget{structdatabuf_ae8438cb4176e0ef2c7f84a6f891d0928}\label{structdatabuf_ae8438cb4176e0ef2c7f84a6f891d0928}} 
+void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{structdatabuf_a97129b48c69981fc8581dd16eabe6622}\label{structdatabuf_a97129b48c69981fc8581dd16eabe6622}} 
+void {\bfseries reset} (T $\ast$buf\+\_\+, int maxlen\+\_\+)
+\item 
+\mbox{\Hypertarget{structdatabuf_aa7f496dc497379a8ceb61f1d359c4cfe}\label{structdatabuf_aa7f496dc497379a8ceb61f1d359c4cfe}} 
+const T \& {\bfseries get} ()
+\item 
+\mbox{\Hypertarget{structdatabuf_a531caf46f8bf35bb2a16b4e7bc294b6c}\label{structdatabuf_a531caf46f8bf35bb2a16b4e7bc294b6c}} 
+\hyperlink{structdatabuf}{databuf} {\bfseries subbuf} (int sz)
+\item 
+\mbox{\Hypertarget{structdatabuf_a62a0a7a3ec876a9a33d10c9e98cddf82}\label{structdatabuf_a62a0a7a3ec876a9a33d10c9e98cddf82}} 
+T $\ast$ {\bfseries pad} (int numvals)
+\item 
+\mbox{\Hypertarget{structdatabuf_a4ddb1dbc1bcc6e5c589bb248060b2e24}\label{structdatabuf_a4ddb1dbc1bcc6e5c589bb248060b2e24}} 
+void {\bfseries put} (const T \&val)
+\item 
+\mbox{\Hypertarget{structdatabuf_aa22fdfb9de579e0aa2a95b413f7aa9fe}\label{structdatabuf_aa22fdfb9de579e0aa2a95b413f7aa9fe}} 
+void {\bfseries put} (const T $\ast$vals, int numvals)
+\item 
+\mbox{\Hypertarget{structdatabuf_ad1955ab60fbf7b6eb7a778c9361fe77d}\label{structdatabuf_ad1955ab60fbf7b6eb7a778c9361fe77d}} 
+int {\bfseries get} (T $\ast$vals, int numvals)
+\item 
+\mbox{\Hypertarget{structdatabuf_ad5b5187b99d3dab4242ae6305b2d703c}\label{structdatabuf_ad5b5187b99d3dab4242ae6305b2d703c}} 
+void {\bfseries offset} (int n)
+\item 
+\mbox{\Hypertarget{structdatabuf_aabe7049430ef398a4ae0d4dce7902277}\label{structdatabuf_aabe7049430ef398a4ae0d4dce7902277}} 
+T $\ast$ {\bfseries getbuf} () const
+\item 
+\mbox{\Hypertarget{structdatabuf_ac462a5159900a306d67117cabbbf17db}\label{structdatabuf_ac462a5159900a306d67117cabbbf17db}} 
+bool {\bfseries empty} () const
+\item 
+\mbox{\Hypertarget{structdatabuf_a49524245867f8f8b7a7e8d5a6c2e9afa}\label{structdatabuf_a49524245867f8f8b7a7e8d5a6c2e9afa}} 
+int {\bfseries length} () const
+\item 
+\mbox{\Hypertarget{structdatabuf_a9e6bb0d4a4c7e47495c1b33d9856337e}\label{structdatabuf_a9e6bb0d4a4c7e47495c1b33d9856337e}} 
+int {\bfseries remaining} () const
+\item 
+\mbox{\Hypertarget{structdatabuf_a7c8c5031dcedbf681924e5166ea190ae}\label{structdatabuf_a7c8c5031dcedbf681924e5166ea190ae}} 
+bool {\bfseries overread} () const
+\item 
+\mbox{\Hypertarget{structdatabuf_af6060c72019fdeaf82ea0810091800b6}\label{structdatabuf_af6060c72019fdeaf82ea0810091800b6}} 
+bool {\bfseries overwrote} () const
+\item 
+\mbox{\Hypertarget{structdatabuf_a058c8df40617db3950380737db05bc9a}\label{structdatabuf_a058c8df40617db3950380737db05bc9a}} 
+bool {\bfseries check} (int n)
+\item 
+\mbox{\Hypertarget{structdatabuf_a9b2f3053e983a1a13f996d075a2307ac}\label{structdatabuf_a9b2f3053e983a1a13f996d075a2307ac}} 
+void {\bfseries forceoverread} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdatabuf_aef32e06b0075f5a381828441812c1b72}\label{structdatabuf_aef32e06b0075f5a381828441812c1b72}} 
+T $\ast$ {\bfseries buf}
+\item 
+\mbox{\Hypertarget{structdatabuf_a2b4059e109b57415a9b3425364f6529c}\label{structdatabuf_a2b4059e109b57415a9b3425364f6529c}} 
+int {\bfseries len}
+\item 
+\mbox{\Hypertarget{structdatabuf_ade4f8ac2ce53d313a1b1024eafcae9f2}\label{structdatabuf_ade4f8ac2ce53d313a1b1024eafcae9f2}} 
+int {\bfseries maxlen}
+\item 
+\mbox{\Hypertarget{structdatabuf_a90dff9f73f4103c4ff0cc151de2c12b3}\label{structdatabuf_a90dff9f73f4103c4ff0cc151de2c12b3}} 
+uchar {\bfseries flags}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/tools.\+h\end{DoxyCompactItemize}

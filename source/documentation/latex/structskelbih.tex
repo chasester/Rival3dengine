@@ -1,0 +1,56 @@
+\hypertarget{structskelbih}{}\section{skelbih Struct Reference}
+\label{structskelbih}\index{skelbih@{skelbih}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structskelbih_1_1node}{node}
+\item 
+struct \hyperlink{structskelbih_1_1tri}{tri}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelbih_a9e567478b3c57c9055038d817ac4662f}\label{structskelbih_a9e567478b3c57c9055038d817ac4662f}} 
+{\bfseries skelbih} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$m, int numtris, \hyperlink{structskelbih_1_1tri}{tri} $\ast$tris)
+\item 
+\mbox{\Hypertarget{structskelbih_ac0781e0c7ebeb217972006c87ad19039}\label{structskelbih_ac0781e0c7ebeb217972006c87ad19039}} 
+bool {\bfseries triintersect} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$m, \hyperlink{structanimmodel_1_1skin}{skelmodel\+::skin} $\ast$s, int tidx, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray)
+\item 
+\mbox{\Hypertarget{structskelbih_a45f190687cdabb30a0ac46fef4f077a9}\label{structskelbih_a45f190687cdabb30a0ac46fef4f077a9}} 
+void {\bfseries build} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$m, ushort $\ast$indices, int numindices, const \hyperlink{structvec}{vec} \&vmin, const \hyperlink{structvec}{vec} \&vmax)
+\item 
+\mbox{\Hypertarget{structskelbih_a385dd49d0c1d3648b9d0d351621be2b0}\label{structskelbih_a385dd49d0c1d3648b9d0d351621be2b0}} 
+void {\bfseries intersect} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$m, \hyperlink{structanimmodel_1_1skin}{skelmodel\+::skin} $\ast$s, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray, const \hyperlink{structvec}{vec} \&invray, \hyperlink{structskelbih_1_1node}{node} $\ast$curnode, float tmin, float tmax)
+\item 
+\mbox{\Hypertarget{structskelbih_a34889a04b093c958d86b8f568d9e3417}\label{structskelbih_a34889a04b093c958d86b8f568d9e3417}} 
+void {\bfseries intersect} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$m, \hyperlink{structanimmodel_1_1skin}{skelmodel\+::skin} $\ast$s, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray)
+\item 
+\mbox{\Hypertarget{structskelbih_ae127497f76dec42e00ede901605206c4}\label{structskelbih_ae127497f76dec42e00ede901605206c4}} 
+\hyperlink{structvec}{vec} {\bfseries calccenter} () const
+\item 
+\mbox{\Hypertarget{structskelbih_a6b34fc8a4a7bd026d926c044cb6c3eb6}\label{structskelbih_a6b34fc8a4a7bd026d926c044cb6c3eb6}} 
+float {\bfseries calcradius} () const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelbih_a9eb99d4d5c871af4071be5edb207a5fc}\label{structskelbih_a9eb99d4d5c871af4071be5edb207a5fc}} 
+\hyperlink{structskelbih_1_1node}{node} $\ast$ {\bfseries nodes}
+\item 
+\mbox{\Hypertarget{structskelbih_a6b446b17e57b33e1e1c84a49bad7e692}\label{structskelbih_a6b446b17e57b33e1e1c84a49bad7e692}} 
+int {\bfseries numnodes}
+\item 
+\mbox{\Hypertarget{structskelbih_a8e0f514b44d72569f9320c52f66d0f43}\label{structskelbih_a8e0f514b44d72569f9320c52f66d0f43}} 
+\hyperlink{structskelbih_1_1tri}{tri} $\ast$ {\bfseries tris}
+\item 
+\mbox{\Hypertarget{structskelbih_abea7b1a10c9fadc0e7cce490a4f6e379}\label{structskelbih_abea7b1a10c9fadc0e7cce490a4f6e379}} 
+\hyperlink{structvec}{vec} {\bfseries bbmin}
+\item 
+\mbox{\Hypertarget{structskelbih_a7d357546f07e772df295811edc6d4957}\label{structskelbih_a7d357546f07e772df295811edc6d4957}} 
+\hyperlink{structvec}{vec} {\bfseries bbmax}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/hitzone.\+h\end{DoxyCompactItemize}

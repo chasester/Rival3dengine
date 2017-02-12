@@ -1,0 +1,165 @@
+\hypertarget{structgame_1_1ctfclientmode}{}\section{game\+:\+:ctfclientmode Struct Reference}
+\label{structgame_1_1ctfclientmode}\index{game\+::ctfclientmode@{game\+::ctfclientmode}}
+Inheritance diagram for game\+:\+:ctfclientmode\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structgame_1_1ctfclientmode}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structgame_1_1ctfclientmode_1_1flag}{flag}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ae559e772e39b275b8d64d7d321ee6d4d}\label{structgame_1_1ctfclientmode_ae559e772e39b275b8d64d7d321ee6d4d}} 
+void {\bfseries resetflags} ()
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_af12db2eff1c5f931c4204e065e5a140c}\label{structgame_1_1ctfclientmode_af12db2eff1c5f931c4204e065e5a140c}} 
+bool {\bfseries addflag} (int i, const \hyperlink{structvec}{vec} \&o, int team)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_af0fb4e25e321eb1ab12eb73f6d3e5cb5}\label{structgame_1_1ctfclientmode_af0fb4e25e321eb1ab12eb73f6d3e5cb5}} 
+void {\bfseries ownflag} (int i, \hyperlink{structgameent}{gameent} $\ast$owner, int owntime)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_aca4eaf4002e7e9f1b13699773b145dcb}\label{structgame_1_1ctfclientmode_aca4eaf4002e7e9f1b13699773b145dcb}} 
+void {\bfseries dropflag} (int i, const \hyperlink{structvec}{vec} \&o, float yaw, int droptime)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a2427d13dd8670605a77eaae48c7a5075}\label{structgame_1_1ctfclientmode_a2427d13dd8670605a77eaae48c7a5075}} 
+void {\bfseries returnflag} (int i)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a6693acd9b450ac4e6ae4e81eea0a1dec}\label{structgame_1_1ctfclientmode_a6693acd9b450ac4e6ae4e81eea0a1dec}} 
+int {\bfseries totalscore} (int team)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ad81bec17a7730a25f5801b94046dea4b}\label{structgame_1_1ctfclientmode_ad81bec17a7730a25f5801b94046dea4b}} 
+int {\bfseries setscore} (int team, int score)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a4762fbc769b56485a64a53e314f7543f}\label{structgame_1_1ctfclientmode_a4762fbc769b56485a64a53e314f7543f}} 
+int {\bfseries addscore} (int team, int score)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a4c9b796ab4731441883c300a2842219c}\label{structgame_1_1ctfclientmode_a4c9b796ab4731441883c300a2842219c}} 
+bool {\bfseries hidefrags} ()
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ab5dbd2735af415bcb0a597320c790eaa}\label{structgame_1_1ctfclientmode_ab5dbd2735af415bcb0a597320c790eaa}} 
+int {\bfseries getteamscore} (int team)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ab7992a1e6f9fb12772da680805f9475b}\label{structgame_1_1ctfclientmode_ab7992a1e6f9fb12772da680805f9475b}} 
+void {\bfseries getteamscores} (\hyperlink{structvector}{vector}$<$ \hyperlink{structteamscore}{teamscore} $>$ \&tscores)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ad520d9265826fe936033214dc428c7b5}\label{structgame_1_1ctfclientmode_ad520d9265826fe936033214dc428c7b5}} 
+void {\bfseries preload} ()
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a940391bc159c4a12c699d77ef5eb6578}\label{structgame_1_1ctfclientmode_a940391bc159c4a12c699d77ef5eb6578}} 
+void {\bfseries drawblip} (\hyperlink{structgameent}{gameent} $\ast$d, float x, float y, float s, const \hyperlink{structvec}{vec} \&pos, bool flagblip)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a81452c4cb60058ac5dd7ffb4e674ef38}\label{structgame_1_1ctfclientmode_a81452c4cb60058ac5dd7ffb4e674ef38}} 
+void {\bfseries drawblip} (\hyperlink{structgameent}{gameent} $\ast$d, float x, float y, float s, int i, bool flagblip)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a606b98f2a28c915e16024aba15db3f3b}\label{structgame_1_1ctfclientmode_a606b98f2a28c915e16024aba15db3f3b}} 
+float {\bfseries clipconsole} (float w, float h)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a3976554f84e2d260e4da9b3e52567ff2}\label{structgame_1_1ctfclientmode_a3976554f84e2d260e4da9b3e52567ff2}} 
+void {\bfseries drawhud} (\hyperlink{structgameent}{gameent} $\ast$d, int w, int h)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a6b3d77137c0362115886345b98668229}\label{structgame_1_1ctfclientmode_a6b3d77137c0362115886345b98668229}} 
+void {\bfseries removeplayer} (\hyperlink{structgameent}{gameent} $\ast$d)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ad93dc199a60060b4df3df677697d09a6}\label{structgame_1_1ctfclientmode_ad93dc199a60060b4df3df677697d09a6}} 
+\hyperlink{structvec}{vec} {\bfseries interpflagpos} (\hyperlink{structgame_1_1ctfclientmode_1_1flag}{flag} \&f, float \&angle)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_aa9bb0e001cef74a9f674044e3721b8c7}\label{structgame_1_1ctfclientmode_aa9bb0e001cef74a9f674044e3721b8c7}} 
+\hyperlink{structvec}{vec} {\bfseries interpflagpos} (\hyperlink{structgame_1_1ctfclientmode_1_1flag}{flag} \&f)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a158bed55d1473892760d4d3291665540}\label{structgame_1_1ctfclientmode_a158bed55d1473892760d4d3291665540}} 
+void {\bfseries rendergame} ()
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_aa372ee6729a5ff42d537cc874d8a0484}\label{structgame_1_1ctfclientmode_aa372ee6729a5ff42d537cc874d8a0484}} 
+void {\bfseries setup} ()
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ad347924d3b4aa89b1a8b2cfb571e2bdd}\label{structgame_1_1ctfclientmode_ad347924d3b4aa89b1a8b2cfb571e2bdd}} 
+void {\bfseries senditems} (\hyperlink{structpacketbuf}{packetbuf} \&p)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a237724921c8d0a5898d756df83929af7}\label{structgame_1_1ctfclientmode_a237724921c8d0a5898d756df83929af7}} 
+void {\bfseries parseflags} (\hyperlink{structdatabuf}{ucharbuf} \&p, bool commit)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a2b46979f6ef3167fc76612025c340c97}\label{structgame_1_1ctfclientmode_a2b46979f6ef3167fc76612025c340c97}} 
+void {\bfseries trydropflag} ()
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a408b9f33dafea70d68aee715b95989ec}\label{structgame_1_1ctfclientmode_a408b9f33dafea70d68aee715b95989ec}} 
+const char $\ast$ {\bfseries teamcolorflag} (\hyperlink{structgame_1_1ctfclientmode_1_1flag}{flag} \&f)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_aadf112039a6dfe53727a4257626ec891}\label{structgame_1_1ctfclientmode_aadf112039a6dfe53727a4257626ec891}} 
+void {\bfseries dropflag} (\hyperlink{structgameent}{gameent} $\ast$d, int i, int version, const \hyperlink{structvec}{vec} \&droploc)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_abbde5fc6cc2e13b6275a0e35e63e7e7e}\label{structgame_1_1ctfclientmode_abbde5fc6cc2e13b6275a0e35e63e7e7e}} 
+void {\bfseries flagexplosion} (int i, int team, const \hyperlink{structvec}{vec} \&loc)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a8e29e3638b16a47f6dfd51db915867f1}\label{structgame_1_1ctfclientmode_a8e29e3638b16a47f6dfd51db915867f1}} 
+void {\bfseries flageffect} (int i, int team, const \hyperlink{structvec}{vec} \&from, const \hyperlink{structvec}{vec} \&to)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a63ddd1821eea17d153439a90d3f36110}\label{structgame_1_1ctfclientmode_a63ddd1821eea17d153439a90d3f36110}} 
+void {\bfseries returnflag} (\hyperlink{structgameent}{gameent} $\ast$d, int i, int version)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a3a127acaaeedff336c5673460f05a8ad}\label{structgame_1_1ctfclientmode_a3a127acaaeedff336c5673460f05a8ad}} 
+void {\bfseries resetflag} (int i, int version)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_adb206c4fe3ae24830ac81c61b9858fd8}\label{structgame_1_1ctfclientmode_adb206c4fe3ae24830ac81c61b9858fd8}} 
+void {\bfseries scoreflag} (\hyperlink{structgameent}{gameent} $\ast$d, int relay, int relayversion, int goal, int goalversion, int team, int score, int dflags)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a04bcae426ddc60c5fc817eac1c872578}\label{structgame_1_1ctfclientmode_a04bcae426ddc60c5fc817eac1c872578}} 
+void {\bfseries takeflag} (\hyperlink{structgameent}{gameent} $\ast$d, int i, int version)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a90c2ecf1ec35ed4bad13560b1905e979}\label{structgame_1_1ctfclientmode_a90c2ecf1ec35ed4bad13560b1905e979}} 
+void {\bfseries checkitems} (\hyperlink{structgameent}{gameent} $\ast$d)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a2a8b0caba1dc9a195b8738519bb6d2b5}\label{structgame_1_1ctfclientmode_a2a8b0caba1dc9a195b8738519bb6d2b5}} 
+void {\bfseries respawned} (\hyperlink{structgameent}{gameent} $\ast$d)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a05652bb6deff45aaa04232b39d9e430e}\label{structgame_1_1ctfclientmode_a05652bb6deff45aaa04232b39d9e430e}} 
+int {\bfseries respawnwait} (\hyperlink{structgameent}{gameent} $\ast$d)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ae513a1a8863613f18652c983df32a4fe}\label{structgame_1_1ctfclientmode_ae513a1a8863613f18652c983df32a4fe}} 
+bool {\bfseries aihomerun} (\hyperlink{structgameent}{gameent} $\ast$d, \hyperlink{structai_1_1aistate}{ai\+::aistate} \&b)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a0dc486f7e9cb2854b15012ae9e8f09a7}\label{structgame_1_1ctfclientmode_a0dc486f7e9cb2854b15012ae9e8f09a7}} 
+bool {\bfseries aicheck} (\hyperlink{structgameent}{gameent} $\ast$d, \hyperlink{structai_1_1aistate}{ai\+::aistate} \&b)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ad5c6c673e6d916889c076049c6d74b4a}\label{structgame_1_1ctfclientmode_ad5c6c673e6d916889c076049c6d74b4a}} 
+void {\bfseries aifind} (\hyperlink{structgameent}{gameent} $\ast$d, \hyperlink{structai_1_1aistate}{ai\+::aistate} \&b, \hyperlink{structvector}{vector}$<$ \hyperlink{structai_1_1interest}{ai\+::interest} $>$ \&interests)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ac9879571630083b936dff8d16c17365f}\label{structgame_1_1ctfclientmode_ac9879571630083b936dff8d16c17365f}} 
+bool {\bfseries aidefend} (\hyperlink{structgameent}{gameent} $\ast$d, \hyperlink{structai_1_1aistate}{ai\+::aistate} \&b)
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_abd8e5581ec9eb7dbe480e1db06112581}\label{structgame_1_1ctfclientmode_abd8e5581ec9eb7dbe480e1db06112581}} 
+bool {\bfseries aipursue} (\hyperlink{structgameent}{gameent} $\ast$d, \hyperlink{structai_1_1aistate}{ai\+::aistate} \&b)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a37e3b3b1fa51ca28f2eb23b328abe47f}\label{structgame_1_1ctfclientmode_a37e3b3b1fa51ca28f2eb23b328abe47f}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structgame_1_1ctfclientmode_1_1flag}{flag} $>$ {\bfseries flags}
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a9ec552f3ec2abc8cf9bdb57f70d4ccdc}\label{structgame_1_1ctfclientmode_a9ec552f3ec2abc8cf9bdb57f70d4ccdc}} 
+int {\bfseries scores} \mbox{[}M\+A\+X\+T\+E\+A\+MS\mbox{]}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_aa30e5bca0e905efaaafd4c8b22ffb7ef}\label{structgame_1_1ctfclientmode_aa30e5bca0e905efaaafd4c8b22ffb7ef}} 
+static const int {\bfseries M\+A\+X\+F\+L\+A\+GS} = 20
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a8fb6561710abe3b95a1e7837b2be95b5}\label{structgame_1_1ctfclientmode_a8fb6561710abe3b95a1e7837b2be95b5}} 
+static const int {\bfseries F\+L\+A\+G\+R\+A\+D\+I\+US} = 16
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_a7937424bdd8dad980a077b1177a596d5}\label{structgame_1_1ctfclientmode_a7937424bdd8dad980a077b1177a596d5}} 
+static const int {\bfseries F\+L\+A\+G\+L\+I\+M\+IT} = 10
+\item 
+\mbox{\Hypertarget{structgame_1_1ctfclientmode_ab2a85b0a82554ef139149402af7250e7}\label{structgame_1_1ctfclientmode_ab2a85b0a82554ef139149402af7250e7}} 
+static const int {\bfseries R\+E\+S\+P\+A\+W\+N\+S\+E\+CS} = 5
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/game/client.\+cpp\end{DoxyCompactItemize}
