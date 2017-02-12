@@ -2,6 +2,10 @@
 *.slo
 *.lo
 *.o
+<<<<<<< HEAD
+=======
+#*.obj needs to be here for models
+>>>>>>> origin/Serial_rewrite
 
 # Precompiled Headers
 *.gch
@@ -26,10 +30,19 @@
 #*.exe
 *.out
 *.app
-
+#VS build files
 bin/tesseract.lib
+<<<<<<< HEAD
 bin/tesseract.exp
 *.map
 bin/tesseract.pdb
 *.BAK
 *.BAK
+=======
+*.pdb
+*.map
+*.exp
+source/vcpp/Release
+source/vcpp/Debug
+source/vcpp/ipch
+>>>>>>> origin/Serial_rewrite

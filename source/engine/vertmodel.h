@@ -219,6 +219,7 @@ struct vertmodel : animmodel
 
         bool addtag(const char *name, const matrix4x3 &matrix)
         {
+			return false;
             int idx = findtag(name);
             if(idx >= 0)
             {
