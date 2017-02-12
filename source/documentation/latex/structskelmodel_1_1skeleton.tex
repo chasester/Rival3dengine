@@ -1,0 +1,166 @@
+\hypertarget{structskelmodel_1_1skeleton}{}\section{skelmodel\+:\+:skeleton Struct Reference}
+\label{structskelmodel_1_1skeleton}\index{skelmodel\+::skeleton@{skelmodel\+::skeleton}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a36efa2f0a36cd23a09ddd5bd383fb24d}\label{structskelmodel_1_1skeleton_a36efa2f0a36cd23a09ddd5bd383fb24d}} 
+\hyperlink{structskelmodel_1_1skelanimspec}{skelanimspec} $\ast$ {\bfseries findskelanim} (const char $\ast$name, char sep=\textquotesingle{}\textbackslash{}0\textquotesingle{})
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_aa99ea032f925ed9529a1e44b200a4424}\label{structskelmodel_1_1skeleton_aa99ea032f925ed9529a1e44b200a4424}} 
+\hyperlink{structskelmodel_1_1skelanimspec}{skelanimspec} \& {\bfseries addskelanim} (const char $\ast$name)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a8271ab3be86ed850726b5bf733c592f2}\label{structskelmodel_1_1skeleton_a8271ab3be86ed850726b5bf733c592f2}} 
+int {\bfseries findbone} (const char $\ast$name)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a5a8e346d5300717105890e1dd5854e94}\label{structskelmodel_1_1skeleton_a5a8e346d5300717105890e1dd5854e94}} 
+int {\bfseries findtag} (const char $\ast$name)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a373528f3e435847c244881b39248858b}\label{structskelmodel_1_1skeleton_a373528f3e435847c244881b39248858b}} 
+bool {\bfseries addtag} (const char $\ast$name, int bone, const \hyperlink{structmatrix4x3}{matrix4x3} \&matrix)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_add859f7b2522cadf15aab06b7351f7fa}\label{structskelmodel_1_1skeleton_add859f7b2522cadf15aab06b7351f7fa}} 
+void {\bfseries calcantipodes} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_ad38eb738bef2c2a0bb4decb61542ae4f}\label{structskelmodel_1_1skeleton_ad38eb738bef2c2a0bb4decb61542ae4f}} 
+void {\bfseries remapbones} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_ab29ede953e6ff4916cf55ba232463998}\label{structskelmodel_1_1skeleton_ab29ede953e6ff4916cf55ba232463998}} 
+void {\bfseries addpitchdep} (int bone, int frame)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_aaadb3a1e7897d1a0218b69cf9d210118}\label{structskelmodel_1_1skeleton_aaadb3a1e7897d1a0218b69cf9d210118}} 
+int {\bfseries findpitchdep} (int bone)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a717bd0f225f5a0b074f0faec787f9161}\label{structskelmodel_1_1skeleton_a717bd0f225f5a0b074f0faec787f9161}} 
+int {\bfseries findpitchcorrect} (int bone)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a7c8749de850257ce6a4ae2c727652e6e}\label{structskelmodel_1_1skeleton_a7c8749de850257ce6a4ae2c727652e6e}} 
+void {\bfseries initpitchdeps} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_ab6dddf610047f465acbe216f0a80db64}\label{structskelmodel_1_1skeleton_ab6dddf610047f465acbe216f0a80db64}} 
+void {\bfseries optimize} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a3a5be8907604b67324f911ebf6fa175d}\label{structskelmodel_1_1skeleton_a3a5be8907604b67324f911ebf6fa175d}} 
+void {\bfseries expandbonemask} (uchar $\ast$expansion, int bone, int val)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a23090d2506712d31bb95ea27bfd65ec8}\label{structskelmodel_1_1skeleton_a23090d2506712d31bb95ea27bfd65ec8}} 
+void {\bfseries applybonemask} (ushort $\ast$mask, uchar $\ast$partmask, int partindex)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a0d7496dcb73673290663ea4a36b0c0d6}\label{structskelmodel_1_1skeleton_a0d7496dcb73673290663ea4a36b0c0d6}} 
+void {\bfseries linkchildren} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a2e7a61acc3d0d18dd969154920816c65}\label{structskelmodel_1_1skeleton_a2e7a61acc3d0d18dd969154920816c65}} 
+int {\bfseries availgpubones} () const
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a58ef91695ebcd773e49a020814481e35}\label{structskelmodel_1_1skeleton_a58ef91695ebcd773e49a020814481e35}} 
+bool {\bfseries gpuaccelerate} () const
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a40e8f7926e0511a460ab21445bca4c7d}\label{structskelmodel_1_1skeleton_a40e8f7926e0511a460ab21445bca4c7d}} 
+float {\bfseries calcdeviation} (const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward, const \hyperlink{structdualquat}{dualquat} \&pose1, const \hyperlink{structdualquat}{dualquat} \&pose2)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a364a7da06dacb6daa00257fb99ec4f66}\label{structskelmodel_1_1skeleton_a364a7da06dacb6daa00257fb99ec4f66}} 
+void {\bfseries calcpitchcorrects} (float pitch, const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a4e80f288958c2f0d0aebd7fffcff73e7}\label{structskelmodel_1_1skeleton_a4e80f288958c2f0d0aebd7fffcff73e7}} 
+void {\bfseries interpbones} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, float pitch, const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward, int numanimparts, const uchar $\ast$partmask, \hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} \&sc)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a75a88b661862d0f4f26bb15a9ba5f8bd}\label{structskelmodel_1_1skeleton_a75a88b661862d0f4f26bb15a9ba5f8bd}} 
+void {\bfseries initragdoll} (\hyperlink{structragdolldata}{ragdolldata} \&d, \hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} \&sc, \hyperlink{structanimmodel_1_1part}{part} $\ast$p)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a7f9f8be11f1e66bd57942b48740eb298}\label{structskelmodel_1_1skeleton_a7f9f8be11f1e66bd57942b48740eb298}} 
+void {\bfseries genragdollbones} (\hyperlink{structragdolldata}{ragdolldata} \&d, \hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} \&sc, \hyperlink{structanimmodel_1_1part}{part} $\ast$p)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_aab72e1f64d56baa1c3eecacf761678a9}\label{structskelmodel_1_1skeleton_aab72e1f64d56baa1c3eecacf761678a9}} 
+void {\bfseries concattagtransform} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p, int i, const \hyperlink{structmatrix4x3}{matrix4x3} \&m, \hyperlink{structmatrix4x3}{matrix4x3} \&n)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_afc518702ddc3bd50e81512701b984914}\label{structskelmodel_1_1skeleton_afc518702ddc3bd50e81512701b984914}} 
+void {\bfseries calctags} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p, \hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} $\ast$sc=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_ad0f66917b115147b50a8237cfbd41619}\label{structskelmodel_1_1skeleton_ad0f66917b115147b50a8237cfbd41619}} 
+void {\bfseries cleanup} (bool full=true)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a2eaa878045863ea58ae7a0ad6bddb778}\label{structskelmodel_1_1skeleton_a2eaa878045863ea58ae7a0ad6bddb778}} 
+bool {\bfseries canpreload} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a7813160480f5a320ce10fbbcfda770e4}\label{structskelmodel_1_1skeleton_a7813160480f5a320ce10fbbcfda770e4}} 
+void {\bfseries preload} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a0d5c3c19de45079470695f05172a987f}\label{structskelmodel_1_1skeleton_a0d5c3c19de45079470695f05172a987f}} 
+\hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} \& {\bfseries checkskelcache} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p, const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, float pitch, const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward, \hyperlink{structragdolldata}{ragdolldata} $\ast$rdata)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a761145d95787974993ebd03e988ddff8}\label{structskelmodel_1_1skeleton_a761145d95787974993ebd03e988ddff8}} 
+int {\bfseries getblendoffset} (\hyperlink{struct_uniform_loc}{Uniform\+Loc} \&u)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a3db4b7ec7316350cb02ea026e88c775c}\label{structskelmodel_1_1skeleton_a3db4b7ec7316350cb02ea026e88c775c}} 
+void {\bfseries setglslbones} (\hyperlink{struct_uniform_loc}{Uniform\+Loc} \&u, \hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} \&sc, \hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} \&bc, int count)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_ab599ec34d9e13e47114be147e2ad1175}\label{structskelmodel_1_1skeleton_ab599ec34d9e13e47114be147e2ad1175}} 
+void {\bfseries setgpubones} (\hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} \&sc, \hyperlink{structskelmodel_1_1blendcacheentry}{blendcacheentry} $\ast$bc, int count)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a174e0e7662f3d4b2af7e80ab766146d6}\label{structskelmodel_1_1skeleton_a174e0e7662f3d4b2af7e80ab766146d6}} 
+bool {\bfseries shouldcleanup} () const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_abc93513860f3ddd8a3f7d0b57dc46b2d}\label{structskelmodel_1_1skeleton_abc93513860f3ddd8a3f7d0b57dc46b2d}} 
+char $\ast$ {\bfseries name}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_ae8f036c2b6ca5fad35f0144a12f5a755}\label{structskelmodel_1_1skeleton_ae8f036c2b6ca5fad35f0144a12f5a755}} 
+int {\bfseries shared}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a5c07c60612cfa135128c40b16967e8c2}\label{structskelmodel_1_1skeleton_a5c07c60612cfa135128c40b16967e8c2}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structskelmodel_1_1skelmeshgroup}{skelmeshgroup} $\ast$ $>$ {\bfseries users}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_af2162941111dc6e9c1889e164398429d}\label{structskelmodel_1_1skeleton_af2162941111dc6e9c1889e164398429d}} 
+\hyperlink{structskelmodel_1_1boneinfo}{boneinfo} $\ast$ {\bfseries bones}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a7fec4d9ef084e436df53085307d7857a}\label{structskelmodel_1_1skeleton_a7fec4d9ef084e436df53085307d7857a}} 
+int {\bfseries numbones}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_aeac974a56ed9c4c66466ae7dab846ed7}\label{structskelmodel_1_1skeleton_aeac974a56ed9c4c66466ae7dab846ed7}} 
+int {\bfseries numinterpbones}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a9b8196232d55906f93cbc90445ef60cf}\label{structskelmodel_1_1skeleton_a9b8196232d55906f93cbc90445ef60cf}} 
+int {\bfseries numgpubones}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a88b1204231fcd0e59770243bcd44ca6a}\label{structskelmodel_1_1skeleton_a88b1204231fcd0e59770243bcd44ca6a}} 
+int {\bfseries numframes}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_ab1312f4a139f946de1fd19fbdce4d493}\label{structskelmodel_1_1skeleton_ab1312f4a139f946de1fd19fbdce4d493}} 
+\hyperlink{structdualquat}{dualquat} $\ast$ {\bfseries framebones}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a00c49cd40abc6571da1919c54cf8ad91}\label{structskelmodel_1_1skeleton_a00c49cd40abc6571da1919c54cf8ad91}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structskelmodel_1_1skelanimspec}{skelanimspec} $>$ {\bfseries skelanims}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a49295e3a60ce15fe09be8ef618ecf44e}\label{structskelmodel_1_1skeleton_a49295e3a60ce15fe09be8ef618ecf44e}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structskelmodel_1_1tag}{tag} $>$ {\bfseries tags}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a8b6727f2110f85189778ce5f53ddf98b}\label{structskelmodel_1_1skeleton_a8b6727f2110f85189778ce5f53ddf98b}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structskelmodel_1_1antipode}{antipode} $>$ {\bfseries antipodes}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a495e95255c5db26a298cd8e5b2f347f7}\label{structskelmodel_1_1skeleton_a495e95255c5db26a298cd8e5b2f347f7}} 
+\hyperlink{structragdollskel}{ragdollskel} $\ast$ {\bfseries ragdoll}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_afffb80504cf292295fd63483bc89aa4a}\label{structskelmodel_1_1skeleton_afffb80504cf292295fd63483bc89aa4a}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structskelmodel_1_1pitchdep}{pitchdep} $>$ {\bfseries pitchdeps}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a946acbc1bbf8ac490f82df8bb14ccd3f}\label{structskelmodel_1_1skeleton_a946acbc1bbf8ac490f82df8bb14ccd3f}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structskelmodel_1_1pitchtarget}{pitchtarget} $>$ {\bfseries pitchtargets}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a1db03e8c9830e62eec019afa5ed84c4e}\label{structskelmodel_1_1skeleton_a1db03e8c9830e62eec019afa5ed84c4e}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structskelmodel_1_1pitchcorrect}{pitchcorrect} $>$ {\bfseries pitchcorrects}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_ab958f42dfcc59ddfcc4bfc8a1f131e34}\label{structskelmodel_1_1skeleton_ab958f42dfcc59ddfcc4bfc8a1f131e34}} 
+bool {\bfseries usegpuskel}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_aa4fd2fb6b471b4d7268268ed832c9382}\label{structskelmodel_1_1skeleton_aa4fd2fb6b471b4d7268268ed832c9382}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} $>$ {\bfseries skelcache}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skeleton_a44be5efedf462ea0caf024290df232ea}\label{structskelmodel_1_1skeleton_a44be5efedf462ea0caf024290df232ea}} 
+\hyperlink{structhashtable}{hashtable}$<$ G\+Luint, int $>$ {\bfseries blendoffsets}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/skelmodel.\+h\end{DoxyCompactItemize}

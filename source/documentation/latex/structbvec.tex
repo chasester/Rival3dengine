@@ -1,0 +1,99 @@
+\hypertarget{structbvec}{}\section{bvec Struct Reference}
+\label{structbvec}\index{bvec@{bvec}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structbvec_af652c6946e4460607b5ed202f57b71f9}\label{structbvec_af652c6946e4460607b5ed202f57b71f9}} 
+{\bfseries bvec} (uchar x, uchar y, uchar z)
+\item 
+\mbox{\Hypertarget{structbvec_a52bc26cf26698899db453e2cef0a97e3}\label{structbvec_a52bc26cf26698899db453e2cef0a97e3}} 
+{\bfseries bvec} (const \hyperlink{structvec}{vec} \&v)
+\item 
+\mbox{\Hypertarget{structbvec_a43fe1610e4a6536b020649de723e3d52}\label{structbvec_a43fe1610e4a6536b020649de723e3d52}} 
+{\bfseries bvec} (const \hyperlink{structbvec4}{bvec4} \&v)
+\item 
+\mbox{\Hypertarget{structbvec_a1e9cc3a4d332880e47663dd53af3c50b}\label{structbvec_a1e9cc3a4d332880e47663dd53af3c50b}} 
+uchar \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i)
+\item 
+\mbox{\Hypertarget{structbvec_a037d3da0d01a096e8d610fc5345b34b1}\label{structbvec_a037d3da0d01a096e8d610fc5345b34b1}} 
+uchar {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i) const
+\item 
+\mbox{\Hypertarget{structbvec_af6ef4f9d1b42fa1752d5772ce1935d48}\label{structbvec_af6ef4f9d1b42fa1752d5772ce1935d48}} 
+bool {\bfseries operator==} (const \hyperlink{structbvec}{bvec} \&v) const
+\item 
+\mbox{\Hypertarget{structbvec_a4f178f7b4909b31d6e9f55bc65e4bb32}\label{structbvec_a4f178f7b4909b31d6e9f55bc65e4bb32}} 
+bool {\bfseries operator!=} (const \hyperlink{structbvec}{bvec} \&v) const
+\item 
+\mbox{\Hypertarget{structbvec_ab998960d3be480a7c8ce7aa0787ca202}\label{structbvec_ab998960d3be480a7c8ce7aa0787ca202}} 
+bool {\bfseries iszero} () const
+\item 
+\mbox{\Hypertarget{structbvec_a4a50db200b0415ae0a9f5a1897bf5b7b}\label{structbvec_a4a50db200b0415ae0a9f5a1897bf5b7b}} 
+\hyperlink{structvec}{vec} {\bfseries tonormal} () const
+\item 
+\mbox{\Hypertarget{structbvec_a3a66f45d31eb0c97f11626b336fed8d0}\label{structbvec_a3a66f45d31eb0c97f11626b336fed8d0}} 
+\hyperlink{structbvec}{bvec} \& {\bfseries normalize} ()
+\item 
+\mbox{\Hypertarget{structbvec_afdc004ef1d1df53e5ac24211132b235c}\label{structbvec_afdc004ef1d1df53e5ac24211132b235c}} 
+void {\bfseries lerp} (const \hyperlink{structbvec}{bvec} \&a, const \hyperlink{structbvec}{bvec} \&b, float t)
+\item 
+\mbox{\Hypertarget{structbvec_a436a880c85d00936403e39617358008e}\label{structbvec_a436a880c85d00936403e39617358008e}} 
+void {\bfseries lerp} (const \hyperlink{structbvec}{bvec} \&a, const \hyperlink{structbvec}{bvec} \&b, int ka, int kb, int d)
+\item 
+\mbox{\Hypertarget{structbvec_a92584009a5c5034ea7bd1ccf6fd3e938}\label{structbvec_a92584009a5c5034ea7bd1ccf6fd3e938}} 
+void {\bfseries flip} ()
+\item 
+\mbox{\Hypertarget{structbvec_a132581e89e5ec166240e0c8d4b0f24d4}\label{structbvec_a132581e89e5ec166240e0c8d4b0f24d4}} 
+void {\bfseries scale} (int k, int d)
+\item 
+\mbox{\Hypertarget{structbvec_aa3120c65612684472cf80f2da7a04a90}\label{structbvec_aa3120c65612684472cf80f2da7a04a90}} 
+\hyperlink{structbvec}{bvec} \& {\bfseries shl} (int n)
+\item 
+\mbox{\Hypertarget{structbvec_af6ae18991bb078b78ee0c2b2402033cb}\label{structbvec_af6ae18991bb078b78ee0c2b2402033cb}} 
+\hyperlink{structbvec}{bvec} \& {\bfseries shr} (int n)
+\item 
+\mbox{\Hypertarget{structbvec_a4f4e4ca995c3920be10f01e1804f2672}\label{structbvec_a4f4e4ca995c3920be10f01e1804f2672}} 
+\hyperlink{structvec}{vec} {\bfseries tocolor} () const
+\item 
+\mbox{\Hypertarget{structbvec_a0952f03823c2423bd9a00e9d8bbafa93}\label{structbvec_a0952f03823c2423bd9a00e9d8bbafa93}} 
+int {\bfseries tohexcolor} () const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structbvec_a07ee436498b00c4dbdd93ea9ac9fa200}\label{structbvec_a07ee436498b00c4dbdd93ea9ac9fa200}} 
+static \hyperlink{structbvec}{bvec} {\bfseries fromcolor} (const \hyperlink{structvec}{vec} \&v)
+\item 
+\mbox{\Hypertarget{structbvec_a4a4591ae59ac70a2d384f84a2f2381f0}\label{structbvec_a4a4591ae59ac70a2d384f84a2f2381f0}} 
+static \hyperlink{structbvec}{bvec} {\bfseries from565} (ushort c)
+\item 
+\mbox{\Hypertarget{structbvec_a244eb6560992d7fcbd588018fb465e89}\label{structbvec_a244eb6560992d7fcbd588018fb465e89}} 
+static \hyperlink{structbvec}{bvec} {\bfseries hexcolor} (int color)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structbvec_aff91b9b8b9a0729cea2adf3dc6decb51}\label{structbvec_aff91b9b8b9a0729cea2adf3dc6decb51}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\mbox{\Hypertarget{unionbvec_1_1_0D201_a3ea6ed4cba531d45fe5cc72ca902db09}\label{unionbvec_1_1_0D201_a3ea6ed4cba531d45fe5cc72ca902db09}} 
+\>struct \{\\
+\>\>uchar {\bfseries x}\\
+\>\>uchar {\bfseries y}\\
+\>\>uchar {\bfseries z}\\
+\>\} \\
+\mbox{\Hypertarget{unionbvec_1_1_0D201_a9db4c118e300f806dcf5e7b0812b2e09}\label{unionbvec_1_1_0D201_a9db4c118e300f806dcf5e7b0812b2e09}} 
+\>struct \{\\
+\>\>uchar {\bfseries r}\\
+\>\>uchar {\bfseries g}\\
+\>\>uchar {\bfseries b}\\
+\>\} \\
+\>uchar {\bfseries v} \mbox{[}3\mbox{]}\\
+\}; \\
+
+\end{tabbing}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/geom.\+h\end{DoxyCompactItemize}

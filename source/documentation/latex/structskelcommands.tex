@@ -1,0 +1,77 @@
+\hypertarget{structskelcommands}{}\section{skelcommands$<$ M\+DL $>$ Struct Template Reference}
+\label{structskelcommands}\index{skelcommands$<$ M\+D\+L $>$@{skelcommands$<$ M\+D\+L $>$}}
+Inheritance diagram for skelcommands$<$ M\+DL $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structskelcommands}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelcommands_a2c8fc43060ae9fcca33737e301081ddf}\label{structskelcommands_a2c8fc43060ae9fcca33737e301081ddf}} 
+typedef \hyperlink{structmodelcommands}{modelcommands}$<$ M\+DL, struct M\+D\+L\+::skelmesh $>$ {\bfseries commands}
+\item 
+\mbox{\Hypertarget{structskelcommands_ac9ec339b070771d2c95907ed17236fe3}\label{structskelcommands_ac9ec339b070771d2c95907ed17236fe3}} 
+typedef struct M\+D\+L\+::skeleton {\bfseries skeleton}
+\item 
+\mbox{\Hypertarget{structskelcommands_a2cdd396548617a935a63aafff42e80ae}\label{structskelcommands_a2cdd396548617a935a63aafff42e80ae}} 
+typedef struct M\+D\+L\+::skelmeshgroup {\bfseries meshgroup}
+\item 
+\mbox{\Hypertarget{structskelcommands_a02d43d8def1a3caf7952ce91427a4077}\label{structskelcommands_a02d43d8def1a3caf7952ce91427a4077}} 
+typedef struct M\+D\+L\+::skelpart {\bfseries part}
+\item 
+\mbox{\Hypertarget{structskelcommands_aa7536602b6a8f3c32df1f8350f6dfdc8}\label{structskelcommands_aa7536602b6a8f3c32df1f8350f6dfdc8}} 
+typedef struct M\+D\+L\+::skin {\bfseries skin}
+\item 
+\mbox{\Hypertarget{structskelcommands_a475a593a5b9455e1dd020f870b7fd5d2}\label{structskelcommands_a475a593a5b9455e1dd020f870b7fd5d2}} 
+typedef struct M\+D\+L\+::boneinfo {\bfseries boneinfo}
+\item 
+\mbox{\Hypertarget{structskelcommands_a9a00403c1064e56d70f84df62f43ef6c}\label{structskelcommands_a9a00403c1064e56d70f84df62f43ef6c}} 
+typedef struct M\+D\+L\+::skelanimspec {\bfseries animspec}
+\item 
+\mbox{\Hypertarget{structskelcommands_a3007df0b61b2fb007a8d6966758c3c8f}\label{structskelcommands_a3007df0b61b2fb007a8d6966758c3c8f}} 
+typedef struct M\+D\+L\+::pitchdep {\bfseries pitchdep}
+\item 
+\mbox{\Hypertarget{structskelcommands_ad7f4ab6b0c436d313fa119c7edeaf7d4}\label{structskelcommands_ad7f4ab6b0c436d313fa119c7edeaf7d4}} 
+typedef struct M\+D\+L\+::pitchtarget {\bfseries pitchtarget}
+\item 
+\mbox{\Hypertarget{structskelcommands_a04fb29639465ad8712e8b4570298b6f6}\label{structskelcommands_a04fb29639465ad8712e8b4570298b6f6}} 
+typedef struct M\+D\+L\+::pitchcorrect {\bfseries pitchcorrect}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelcommands_a6414e8c7c7413ebf917086869edbe55f}\label{structskelcommands_a6414e8c7c7413ebf917086869edbe55f}} 
+static void {\bfseries loadpart} (char $\ast$meshfile, char $\ast$skelname, float $\ast$smooth)
+\item 
+\mbox{\Hypertarget{structskelcommands_aff09f08d2668c0dce73de84a4a069b48}\label{structskelcommands_aff09f08d2668c0dce73de84a4a069b48}} 
+static void {\bfseries settag} (char $\ast$name, char $\ast$tagname, float $\ast$tx, float $\ast$ty, float $\ast$tz, float $\ast$rx, float $\ast$ry, float $\ast$rz)
+\item 
+\mbox{\Hypertarget{structskelcommands_a56cbd5546a0d6528cc8b2c48a09ad067}\label{structskelcommands_a56cbd5546a0d6528cc8b2c48a09ad067}} 
+static void {\bfseries setpitch} (char $\ast$name, float $\ast$pitchscale, float $\ast$pitchoffset, float $\ast$pitchmin, float $\ast$pitchmax)
+\item 
+\mbox{\Hypertarget{structskelcommands_acf11a6414a5d155760d6d48edecbab5f}\label{structskelcommands_acf11a6414a5d155760d6d48edecbab5f}} 
+static void {\bfseries setpitchtarget} (char $\ast$name, char $\ast$animfile, int $\ast$frameoffset, float $\ast$pitchmin, float $\ast$pitchmax)
+\item 
+\mbox{\Hypertarget{structskelcommands_af599285061bb6c986d4323c244e53d9d}\label{structskelcommands_af599285061bb6c986d4323c244e53d9d}} 
+static void {\bfseries setpitchcorrect} (char $\ast$name, char $\ast$targetname, float $\ast$scale, float $\ast$pitchmin, float $\ast$pitchmax)
+\item 
+\mbox{\Hypertarget{structskelcommands_a72d251f632800125b3f658832995e16a}\label{structskelcommands_a72d251f632800125b3f658832995e16a}} 
+static void {\bfseries setanim} (char $\ast$anim, char $\ast$animfile, float $\ast$speed, int $\ast$priority, int $\ast$startoffset, int $\ast$endoffset)
+\item 
+\mbox{\Hypertarget{structskelcommands_a646221541fe967459983daddab436f44}\label{structskelcommands_a646221541fe967459983daddab436f44}} 
+static void {\bfseries setanimpart} (char $\ast$maskstr)
+\item 
+\mbox{\Hypertarget{structskelcommands_ab4b63a25352b18a989b2b83afea48260}\label{structskelcommands_ab4b63a25352b18a989b2b83afea48260}} 
+static void {\bfseries setadjust} (char $\ast$name, float $\ast$yaw, float $\ast$pitch, float $\ast$roll, float $\ast$tx, float $\ast$ty, float $\ast$tz)
+\item 
+\mbox{\Hypertarget{structskelcommands_a4ef3d62da161936cf3ce1825679155c0}\label{structskelcommands_a4ef3d62da161936cf3ce1825679155c0}} 
+static void {\bfseries sethitzone} (int $\ast$id, char $\ast$maskstr)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/skelmodel.\+h\end{DoxyCompactItemize}

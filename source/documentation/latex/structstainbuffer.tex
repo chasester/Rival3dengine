@@ -1,0 +1,73 @@
+\hypertarget{structstainbuffer}{}\section{stainbuffer Struct Reference}
+\label{structstainbuffer}\index{stainbuffer@{stainbuffer}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structstainbuffer_a5f33c87f6e37b370e3899efbfca63525}\label{structstainbuffer_a5f33c87f6e37b370e3899efbfca63525}} 
+void {\bfseries init} (int tris)
+\item 
+\mbox{\Hypertarget{structstainbuffer_a42a4280dd6e0f048e6dfe40b419fa6e2}\label{structstainbuffer_a42a4280dd6e0f048e6dfe40b419fa6e2}} 
+void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structstainbuffer_a3560d3a4b88207bb305f340f207ccc14}\label{structstainbuffer_a3560d3a4b88207bb305f340f207ccc14}} 
+void {\bfseries clear} ()
+\item 
+\mbox{\Hypertarget{structstainbuffer_a831e03058cdd6f767e651a9cd5eb4661}\label{structstainbuffer_a831e03058cdd6f767e651a9cd5eb4661}} 
+int {\bfseries freestain} (const \hyperlink{structstaininfo}{staininfo} \&d)
+\item 
+\mbox{\Hypertarget{structstainbuffer_a80079447d0a8d7047245d586598795b8}\label{structstainbuffer_a80079447d0a8d7047245d586598795b8}} 
+void {\bfseries clearstains} (const \hyperlink{structstaininfo}{staininfo} \&d)
+\item 
+\mbox{\Hypertarget{structstainbuffer_a99be15d6942c6bc63fa29821f7dd1518}\label{structstainbuffer_a99be15d6942c6bc63fa29821f7dd1518}} 
+bool {\bfseries faded} (const \hyperlink{structstaininfo}{staininfo} \&d) const
+\item 
+\mbox{\Hypertarget{structstainbuffer_a08eb6acd55a580581719ced6c3dc5329}\label{structstainbuffer_a08eb6acd55a580581719ced6c3dc5329}} 
+void {\bfseries fadestain} (const \hyperlink{structstaininfo}{staininfo} \&d, const \hyperlink{structbvec4}{bvec4} \&color)
+\item 
+\mbox{\Hypertarget{structstainbuffer_a96411389732bf3ae62a716ba7c10feef}\label{structstainbuffer_a96411389732bf3ae62a716ba7c10feef}} 
+void {\bfseries render} ()
+\item 
+\mbox{\Hypertarget{structstainbuffer_a3dfeeae7c98cc896cebc7f8c13d4ce3c}\label{structstainbuffer_a3dfeeae7c98cc896cebc7f8c13d4ce3c}} 
+\hyperlink{structstainvert}{stainvert} $\ast$ {\bfseries addtri} ()
+\item 
+\mbox{\Hypertarget{structstainbuffer_a8083537ad792180bcdc7a1b1a7fba3c6}\label{structstainbuffer_a8083537ad792180bcdc7a1b1a7fba3c6}} 
+bool {\bfseries hasverts} () const
+\item 
+\mbox{\Hypertarget{structstainbuffer_a39e735e0e09e946ca221f361985caa9b}\label{structstainbuffer_a39e735e0e09e946ca221f361985caa9b}} 
+int {\bfseries nextverts} () const
+\item 
+\mbox{\Hypertarget{structstainbuffer_a583e96f7993a90f02492d9dd611f62c1}\label{structstainbuffer_a583e96f7993a90f02492d9dd611f62c1}} 
+int {\bfseries totalverts} () const
+\item 
+\mbox{\Hypertarget{structstainbuffer_acc8811c1b7bd93a3bdc90cf876b8a809}\label{structstainbuffer_acc8811c1b7bd93a3bdc90cf876b8a809}} 
+int {\bfseries totaltris} () const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structstainbuffer_a5d15725734915713409ab143f56828f3}\label{structstainbuffer_a5d15725734915713409ab143f56828f3}} 
+\hyperlink{structstainvert}{stainvert} $\ast$ {\bfseries verts}
+\item 
+\mbox{\Hypertarget{structstainbuffer_a04cefd74c8cf45bddebcab1c45107d38}\label{structstainbuffer_a04cefd74c8cf45bddebcab1c45107d38}} 
+int {\bfseries maxverts}
+\item 
+\mbox{\Hypertarget{structstainbuffer_a54b88009319bf65b4ea827ef0a0c12d5}\label{structstainbuffer_a54b88009319bf65b4ea827ef0a0c12d5}} 
+int {\bfseries startvert}
+\item 
+\mbox{\Hypertarget{structstainbuffer_a2f57b969f78c2c769f37c55da511de7b}\label{structstainbuffer_a2f57b969f78c2c769f37c55da511de7b}} 
+int {\bfseries endvert}
+\item 
+\mbox{\Hypertarget{structstainbuffer_ab842dada554fd63f4e86d72b4353a577}\label{structstainbuffer_ab842dada554fd63f4e86d72b4353a577}} 
+int {\bfseries lastvert}
+\item 
+\mbox{\Hypertarget{structstainbuffer_ad4f3048fdab5448d2abbee9e7f5417c2}\label{structstainbuffer_ad4f3048fdab5448d2abbee9e7f5417c2}} 
+int {\bfseries availverts}
+\item 
+\mbox{\Hypertarget{structstainbuffer_ad9303768a0e1c7708d5cc7979c513713}\label{structstainbuffer_ad9303768a0e1c7708d5cc7979c513713}} 
+G\+Luint {\bfseries vbo}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/stain.\+cpp\end{DoxyCompactItemize}

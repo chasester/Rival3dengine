@@ -1,0 +1,58 @@
+\hypertarget{structflarerenderer}{}\section{flarerenderer Struct Reference}
+\label{structflarerenderer}\index{flarerenderer@{flarerenderer}}
+Inheritance diagram for flarerenderer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structflarerenderer}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structflarerenderer_ac97df023d8f71a1c1ec054f553717327}\label{structflarerenderer_ac97df023d8f71a1c1ec054f553717327}} 
+{\bfseries flarerenderer} (const char $\ast$texname, int maxflares, int flags=0)
+\item 
+\mbox{\Hypertarget{structflarerenderer_a507f569a42c4691c36d18a11be02f568}\label{structflarerenderer_a507f569a42c4691c36d18a11be02f568}} 
+void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{structflarerenderer_a619a5cbea2fc100eea3e6719faf20560}\label{structflarerenderer_a619a5cbea2fc100eea3e6719faf20560}} 
+void {\bfseries newflare} (\hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&center, uchar r, uchar g, uchar b, float mod, float size, bool sun, bool sparkle)
+\item 
+\mbox{\Hypertarget{structflarerenderer_a5728a8911a1b72baff700f7ed62bc170}\label{structflarerenderer_a5728a8911a1b72baff700f7ed62bc170}} 
+void {\bfseries addflare} (\hyperlink{structvec}{vec} \&o, uchar r, uchar g, uchar b, bool sun, bool sparkle)
+\item 
+\mbox{\Hypertarget{structflarerenderer_ace67d99d288d22df7474fc6bf29e4a0c}\label{structflarerenderer_ace67d99d288d22df7474fc6bf29e4a0c}} 
+void {\bfseries update} ()
+\item 
+\mbox{\Hypertarget{structflarerenderer_a873860d2dfe149a5dd25507adc8d0be3}\label{structflarerenderer_a873860d2dfe149a5dd25507adc8d0be3}} 
+int {\bfseries count} ()
+\item 
+\mbox{\Hypertarget{structflarerenderer_af4c0e43f0d812d08fe5ace60253d5fff}\label{structflarerenderer_af4c0e43f0d812d08fe5ace60253d5fff}} 
+bool {\bfseries haswork} ()
+\item 
+\mbox{\Hypertarget{structflarerenderer_adaca66769e01a785c13665807578f746}\label{structflarerenderer_adaca66769e01a785c13665807578f746}} 
+void {\bfseries render} ()
+\item 
+\mbox{\Hypertarget{structflarerenderer_a056b5bf69a27848ce80f40e0d0288b76}\label{structflarerenderer_a056b5bf69a27848ce80f40e0d0288b76}} 
+\hyperlink{structparticle}{particle} $\ast$ {\bfseries addpart} (const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&d, int fade, int color, float size, int gravity=0)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structflarerenderer_a6cc2764f704fa0e83256434bd12de3d1}\label{structflarerenderer_a6cc2764f704fa0e83256434bd12de3d1}} 
+int {\bfseries maxflares}
+\item 
+\mbox{\Hypertarget{structflarerenderer_aa3d46257da2cc518f173e95af9c14970}\label{structflarerenderer_aa3d46257da2cc518f173e95af9c14970}} 
+int {\bfseries numflares}
+\item 
+\mbox{\Hypertarget{structflarerenderer_ada2be781832a25529330a75c151f42f3}\label{structflarerenderer_ada2be781832a25529330a75c151f42f3}} 
+unsigned int {\bfseries shinetime}
+\item 
+\mbox{\Hypertarget{structflarerenderer_af19c40c54dfc00415be611c8419d61e4}\label{structflarerenderer_af19c40c54dfc00415be611c8419d61e4}} 
+\hyperlink{structflare}{flare} $\ast$ {\bfseries flares}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/lensflare.\+h\end{DoxyCompactItemize}

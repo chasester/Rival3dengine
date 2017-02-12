@@ -1,0 +1,52 @@
+\hypertarget{structskelhitdata}{}\section{skelhitdata Struct Reference}
+\label{structskelhitdata}\index{skelhitdata@{skelhitdata}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelhitdata_a9aa3cb408c77d93fd09509a57f91bf7a}\label{structskelhitdata_a9aa3cb408c77d93fd09509a57f91bf7a}} 
+uchar {\bfseries chooseid} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$g, \hyperlink{structskelmodel_1_1skelmesh}{skelmodel\+::skelmesh} $\ast$m, const \hyperlink{structskelmodel_1_1tri}{skelmodel\+::tri} \&t, const uchar $\ast$ids)
+\item 
+\mbox{\Hypertarget{structskelhitdata_a8b57ef65bd21a12644f33351f89b36b2}\label{structskelhitdata_a8b57ef65bd21a12644f33351f89b36b2}} 
+void {\bfseries build} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$g, const uchar $\ast$ids)
+\item 
+\mbox{\Hypertarget{structskelhitdata_a49415132d8cea3b1796e9ca8eb55df9a}\label{structskelhitdata_a49415132d8cea3b1796e9ca8eb55df9a}} 
+void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structskelhitdata_a970a7225e0dd8ee8d304f9341f5c2aef}\label{structskelhitdata_a970a7225e0dd8ee8d304f9341f5c2aef}} 
+void {\bfseries propagate} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$m, const \hyperlink{structdualquat}{dualquat} $\ast$bdata1, \hyperlink{structdualquat}{dualquat} $\ast$bdata2)
+\item 
+\mbox{\Hypertarget{structskelhitdata_ae3370dd9c55e6cc4b11c79d77a4eef3d}\label{structskelhitdata_ae3370dd9c55e6cc4b11c79d77a4eef3d}} 
+void {\bfseries intersect} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$m, \hyperlink{structanimmodel_1_1skin}{skelmodel\+::skin} $\ast$s, const \hyperlink{structdualquat}{dualquat} $\ast$bdata1, \hyperlink{structdualquat}{dualquat} $\ast$bdata2, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelhitdata_aab1c7a3648852bd498f587c2d78157bc}\label{structskelhitdata_aab1c7a3648852bd498f587c2d78157bc}} 
+int {\bfseries numzones}
+\item 
+\mbox{\Hypertarget{structskelhitdata_a05fb3fa1da8f1106c6ca03e1140f7243}\label{structskelhitdata_a05fb3fa1da8f1106c6ca03e1140f7243}} 
+int {\bfseries rootzones}
+\item 
+\mbox{\Hypertarget{structskelhitdata_ac0205abfb53e82dad02c759726929828}\label{structskelhitdata_ac0205abfb53e82dad02c759726929828}} 
+int {\bfseries visited}
+\item 
+\mbox{\Hypertarget{structskelhitdata_a4735feee2706953adea90b8dcbb38a23}\label{structskelhitdata_a4735feee2706953adea90b8dcbb38a23}} 
+\hyperlink{structskelhitzone}{skelhitzone} $\ast$ {\bfseries zones}
+\item 
+\mbox{\Hypertarget{structskelhitdata_a7d6a963713808ee647e9325ff8a738f7}\label{structskelhitdata_a7d6a963713808ee647e9325ff8a738f7}} 
+\hyperlink{structskelhitzone}{skelhitzone} $\ast$$\ast$ {\bfseries links}
+\item 
+\mbox{\Hypertarget{structskelhitdata_a20d9adb457fb8e0702db06fa0f4634c6}\label{structskelhitdata_a20d9adb457fb8e0702db06fa0f4634c6}} 
+\hyperlink{structskelbih_1_1tri}{skelhitzone\+::tri} $\ast$ {\bfseries tris}
+\item 
+\mbox{\Hypertarget{structskelhitdata_a5f6df56fcac77dbf67c58f638e28132c}\label{structskelhitdata_a5f6df56fcac77dbf67c58f638e28132c}} 
+int {\bfseries numblends}
+\item 
+\mbox{\Hypertarget{structskelhitdata_ae1168a23a734716242cdb433742fe3a1}\label{structskelhitdata_ae1168a23a734716242cdb433742fe3a1}} 
+\hyperlink{structskelmodel_1_1blendcacheentry}{skelmodel\+::blendcacheentry} {\bfseries blendcache}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/hitzone.\+h\end{DoxyCompactItemize}

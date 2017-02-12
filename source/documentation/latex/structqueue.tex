@@ -1,0 +1,85 @@
+\hypertarget{structqueue}{}\section{queue$<$ T, S\+I\+ZE $>$ Struct Template Reference}
+\label{structqueue}\index{queue$<$ T, S\+I\+Z\+E $>$@{queue$<$ T, S\+I\+Z\+E $>$}}
+Inheritance diagram for queue$<$ T, S\+I\+ZE $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structqueue}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structqueue_aeb2320f9aaeed84b67859eb26aa921af}\label{structqueue_aeb2320f9aaeed84b67859eb26aa921af}} 
+void {\bfseries clear} ()
+\item 
+\mbox{\Hypertarget{structqueue_a69cfdb1d9c91e1b4b9c8c4415ed02fee}\label{structqueue_a69cfdb1d9c91e1b4b9c8c4415ed02fee}} 
+int {\bfseries length} () const
+\item 
+\mbox{\Hypertarget{structqueue_aadda1e91372e05c3016e56f1531b9e34}\label{structqueue_aadda1e91372e05c3016e56f1531b9e34}} 
+bool {\bfseries empty} () const
+\item 
+\mbox{\Hypertarget{structqueue_a626013ae067a5a998afedae22abe8c73}\label{structqueue_a626013ae067a5a998afedae22abe8c73}} 
+bool {\bfseries full} () const
+\item 
+\mbox{\Hypertarget{structqueue_a7a3b2070037f7a6626756d7ce731463b}\label{structqueue_a7a3b2070037f7a6626756d7ce731463b}} 
+bool {\bfseries inrange} (size\+\_\+t i) const
+\item 
+\mbox{\Hypertarget{structqueue_a2229432886e52c4000d643c9930c2e32}\label{structqueue_a2229432886e52c4000d643c9930c2e32}} 
+bool {\bfseries inrange} (int i) const
+\item 
+\mbox{\Hypertarget{structqueue_a5ffa5bf359bd75dccde914a4fede5952}\label{structqueue_a5ffa5bf359bd75dccde914a4fede5952}} 
+T \& {\bfseries added} ()
+\item 
+\mbox{\Hypertarget{structqueue_ab382e3fa84085c94213a2a1649dee209}\label{structqueue_ab382e3fa84085c94213a2a1649dee209}} 
+T \& {\bfseries added} (int offset)
+\item 
+\mbox{\Hypertarget{structqueue_ab6a1afef29b56f20fbdf243ff8129cfd}\label{structqueue_ab6a1afef29b56f20fbdf243ff8129cfd}} 
+T \& {\bfseries adding} ()
+\item 
+\mbox{\Hypertarget{structqueue_a35109a4558cf3829240b77a0a71c8c3a}\label{structqueue_a35109a4558cf3829240b77a0a71c8c3a}} 
+T \& {\bfseries adding} (int offset)
+\item 
+\mbox{\Hypertarget{structqueue_a88ec16bf4f8c057b15e27e99aa71b057}\label{structqueue_a88ec16bf4f8c057b15e27e99aa71b057}} 
+T \& {\bfseries add} ()
+\item 
+\mbox{\Hypertarget{structqueue_a539d478368385e622123c5f36e7cff33}\label{structqueue_a539d478368385e622123c5f36e7cff33}} 
+T \& {\bfseries add} (const T \&e)
+\item 
+\mbox{\Hypertarget{structqueue_a0a5e84ae0781d9ca3894d4390dc206fa}\label{structqueue_a0a5e84ae0781d9ca3894d4390dc206fa}} 
+T \& {\bfseries pop} ()
+\item 
+\mbox{\Hypertarget{structqueue_ad48e56680efac5e80c158c656908cd98}\label{structqueue_ad48e56680efac5e80c158c656908cd98}} 
+T \& {\bfseries removing} ()
+\item 
+\mbox{\Hypertarget{structqueue_a2d2efb1e88635a9bdf3da8d2e9e0dfc0}\label{structqueue_a2d2efb1e88635a9bdf3da8d2e9e0dfc0}} 
+T \& {\bfseries removing} (int offset)
+\item 
+\mbox{\Hypertarget{structqueue_a82cce644180b61ffb5a36934ff10d837}\label{structqueue_a82cce644180b61ffb5a36934ff10d837}} 
+T \& {\bfseries remove} ()
+\item 
+\mbox{\Hypertarget{structqueue_ae755a14dc19d6c1157b3be0375ce024b}\label{structqueue_ae755a14dc19d6c1157b3be0375ce024b}} 
+T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int offset)
+\item 
+\mbox{\Hypertarget{structqueue_ab516540644343a2c399c5ca0058e4199}\label{structqueue_ab516540644343a2c399c5ca0058e4199}} 
+const T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int offset) const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structqueue_a499aa654623fbdf0a1b7e0902295379e}\label{structqueue_a499aa654623fbdf0a1b7e0902295379e}} 
+int {\bfseries head}
+\item 
+\mbox{\Hypertarget{structqueue_a75e862a553edc9dff30c46e5f852806e}\label{structqueue_a75e862a553edc9dff30c46e5f852806e}} 
+int {\bfseries tail}
+\item 
+\mbox{\Hypertarget{structqueue_a81c87f4f4825a08b4596cf7038dfab67}\label{structqueue_a81c87f4f4825a08b4596cf7038dfab67}} 
+int {\bfseries len}
+\item 
+\mbox{\Hypertarget{structqueue_a7ea342bb0fbae9484005f77075eebd93}\label{structqueue_a7ea342bb0fbae9484005f77075eebd93}} 
+T {\bfseries data} \mbox{[}S\+I\+ZE\mbox{]}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/tools.\+h\end{DoxyCompactItemize}

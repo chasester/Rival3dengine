@@ -1,0 +1,113 @@
+\hypertarget{struct_b_i_h}{}\section{B\+IH Struct Reference}
+\label{struct_b_i_h}\index{B\+IH@{B\+IH}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_b_i_h_1_1mesh}{mesh}
+\item 
+struct \hyperlink{struct_b_i_h_1_1node}{node}
+\item 
+struct \hyperlink{struct_b_i_h_1_1tri}{tri}
+\item 
+struct \hyperlink{struct_b_i_h_1_1tribb}{tribb}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_ace901662594827aaf93ac979468a34e3}\label{struct_b_i_h_ace901662594827aaf93ac979468a34e3}} 
+enum \{ {\bfseries M\+E\+S\+H\+\_\+\+R\+E\+N\+D\+ER} = 1$<$$<$1, 
+{\bfseries M\+E\+S\+H\+\_\+\+N\+O\+C\+L\+IP} = 1$<$$<$2, 
+{\bfseries M\+E\+S\+H\+\_\+\+A\+L\+P\+HA} = 1$<$$<$3, 
+{\bfseries M\+E\+S\+H\+\_\+\+C\+O\+L\+L\+I\+DE} = 1$<$$<$4
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a4a1d96504f62de65d81e6c06fad6df95}\label{struct_b_i_h_a4a1d96504f62de65d81e6c06fad6df95}} 
+{\bfseries B\+IH} (\hyperlink{structvector}{vector}$<$ \hyperlink{struct_b_i_h_1_1mesh}{mesh} $>$ \&buildmeshes)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a8d450c6727f42ead5aa3109dc93fb769}\label{struct_b_i_h_a8d450c6727f42ead5aa3109dc93fb769}} 
+void {\bfseries build} (\hyperlink{struct_b_i_h_1_1mesh}{mesh} \&m, ushort $\ast$indices, int numindices, const \hyperlink{structivec}{ivec} \&vmin, const \hyperlink{structivec}{ivec} \&vmax)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_ac662df92c82507c40746c423f47f1cdc}\label{struct_b_i_h_ac662df92c82507c40746c423f47f1cdc}} 
+bool {\bfseries traverse} (const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray, float maxdist, float \&dist, int mode)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_aec96572a18eef6013c9af964bc1a18f6}\label{struct_b_i_h_aec96572a18eef6013c9af964bc1a18f6}} 
+bool {\bfseries traverse} (const \hyperlink{struct_b_i_h_1_1mesh}{mesh} \&m, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray, const \hyperlink{structvec}{vec} \&invray, float maxdist, float \&dist, int mode, \hyperlink{struct_b_i_h_1_1node}{node} $\ast$curnode, float tmin, float tmax)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_ad0e3bb00b361092705b7f88fe7bc762d}\label{struct_b_i_h_ad0e3bb00b361092705b7f88fe7bc762d}} 
+bool {\bfseries triintersect} (const \hyperlink{struct_b_i_h_1_1mesh}{mesh} \&m, int tidx, const \hyperlink{structvec}{vec} \&mo, const \hyperlink{structvec}{vec} \&mray, float maxdist, float \&dist, int mode)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_ace158c17b8c16818edb053f1a673a7ce}\label{struct_b_i_h_ace158c17b8c16818edb053f1a673a7ce}} 
+bool {\bfseries boxcollide} (\hyperlink{structphysent}{physent} $\ast$d, const \hyperlink{structvec}{vec} \&dir, float cutoff, const \hyperlink{structvec}{vec} \&o, int yaw, int pitch, int roll, float scale=1)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a1ebb0933334624cc462e82afbd2d138e}\label{struct_b_i_h_a1ebb0933334624cc462e82afbd2d138e}} 
+bool {\bfseries ellipsecollide} (\hyperlink{structphysent}{physent} $\ast$d, const \hyperlink{structvec}{vec} \&dir, float cutoff, const \hyperlink{structvec}{vec} \&o, int yaw, int pitch, int roll, float scale=1)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a99c9594d69e05f8a3573a68e7beb042b}\label{struct_b_i_h_a99c9594d69e05f8a3573a68e7beb042b}} 
+{\footnotesize template$<$int C$>$ }\\void {\bfseries collide} (const \hyperlink{struct_b_i_h_1_1mesh}{mesh} \&m, \hyperlink{structphysent}{physent} $\ast$d, const \hyperlink{structvec}{vec} \&dir, float cutoff, const \hyperlink{structvec}{vec} \&center, const \hyperlink{structvec}{vec} \&radius, const \hyperlink{structmatrix4x3}{matrix4x3} \&orient, float \&dist, \hyperlink{struct_b_i_h_1_1node}{node} $\ast$curnode, const \hyperlink{structivec}{ivec} \&bo, const \hyperlink{structivec}{ivec} \&br)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a7ece631d54709a1994c72cfa10431a24}\label{struct_b_i_h_a7ece631d54709a1994c72cfa10431a24}} 
+{\footnotesize template$<$int C$>$ }\\void {\bfseries tricollide} (const \hyperlink{struct_b_i_h_1_1mesh}{mesh} \&m, int tidx, \hyperlink{structphysent}{physent} $\ast$d, const \hyperlink{structvec}{vec} \&dir, float cutoff, const \hyperlink{structvec}{vec} \&center, const \hyperlink{structvec}{vec} \&radius, const \hyperlink{structmatrix4x3}{matrix4x3} \&orient, float \&dist, const \hyperlink{structivec}{ivec} \&bo, const \hyperlink{structivec}{ivec} \&br)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a69f1ea447e1bc18744a61e09f270c268}\label{struct_b_i_h_a69f1ea447e1bc18744a61e09f270c268}} 
+void {\bfseries genstaintris} (\hyperlink{structstainrenderer}{stainrenderer} $\ast$s, const \hyperlink{structvec}{vec} \&staincenter, float stainradius, const \hyperlink{structvec}{vec} \&o, int yaw, int pitch, int roll, float scale=1)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a1b1edd7f4c38ea2be0c5ab8135d2284b}\label{struct_b_i_h_a1b1edd7f4c38ea2be0c5ab8135d2284b}} 
+void {\bfseries genstaintris} (\hyperlink{structstainrenderer}{stainrenderer} $\ast$s, const \hyperlink{struct_b_i_h_1_1mesh}{mesh} \&m, const \hyperlink{structvec}{vec} \&center, float radius, const \hyperlink{structmatrix4x3}{matrix4x3} \&orient, \hyperlink{struct_b_i_h_1_1node}{node} $\ast$curnode, const \hyperlink{structivec}{ivec} \&bo, const \hyperlink{structivec}{ivec} \&br)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a2038d591a806f7a5e32975d8707a94ab}\label{struct_b_i_h_a2038d591a806f7a5e32975d8707a94ab}} 
+void {\bfseries genstaintris} (\hyperlink{structstainrenderer}{stainrenderer} $\ast$s, const \hyperlink{struct_b_i_h_1_1mesh}{mesh} \&m, int tidx, const \hyperlink{structvec}{vec} \&center, float radius, const \hyperlink{structmatrix4x3}{matrix4x3} \&orient, const \hyperlink{structivec}{ivec} \&bo, const \hyperlink{structivec}{ivec} \&br)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_ab4509d45d115644cb8377436ba1d6be1}\label{struct_b_i_h_ab4509d45d115644cb8377436ba1d6be1}} 
+void {\bfseries preload} ()
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a7847cf9ec6ac5fc60e5b12024e4a77c9}\label{struct_b_i_h_a7847cf9ec6ac5fc60e5b12024e4a77c9}} 
+{\footnotesize template$<$$>$ }\\void {\bfseries tricollide} (const \hyperlink{struct_b_i_h_1_1mesh}{mesh} \&m, int tidx, \hyperlink{structphysent}{physent} $\ast$d, const \hyperlink{structvec}{vec} \&dir, float cutoff, const \hyperlink{structvec}{vec} \&center, const \hyperlink{structvec}{vec} \&radius, const \hyperlink{structmatrix4x3}{matrix4x3} \&orient, float \&dist, const \hyperlink{structivec}{ivec} \&bo, const \hyperlink{structivec}{ivec} \&br)
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a7847cf9ec6ac5fc60e5b12024e4a77c9}\label{struct_b_i_h_a7847cf9ec6ac5fc60e5b12024e4a77c9}} 
+{\footnotesize template$<$$>$ }\\void {\bfseries tricollide} (const \hyperlink{struct_b_i_h_1_1mesh}{mesh} \&m, int tidx, \hyperlink{structphysent}{physent} $\ast$d, const \hyperlink{structvec}{vec} \&dir, float cutoff, const \hyperlink{structvec}{vec} \&center, const \hyperlink{structvec}{vec} \&radius, const \hyperlink{structmatrix4x3}{matrix4x3} \&orient, float \&dist, const \hyperlink{structivec}{ivec} \&bo, const \hyperlink{structivec}{ivec} \&br)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a596b4f2699831b227c7ef39a507f11f8}\label{struct_b_i_h_a596b4f2699831b227c7ef39a507f11f8}} 
+\hyperlink{struct_b_i_h_1_1mesh}{mesh} $\ast$ {\bfseries meshes}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a7ba639f2f3f4c580390b279a07b8593d}\label{struct_b_i_h_a7ba639f2f3f4c580390b279a07b8593d}} 
+int {\bfseries nummeshes}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a95b4c328b2098e2070e85b120985b528}\label{struct_b_i_h_a95b4c328b2098e2070e85b120985b528}} 
+\hyperlink{struct_b_i_h_1_1node}{node} $\ast$ {\bfseries nodes}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_ae10f080c7fd742588e31fc5d3426cbb4}\label{struct_b_i_h_ae10f080c7fd742588e31fc5d3426cbb4}} 
+int {\bfseries numnodes}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a0c6316bde35c73d4ed0eae5f304f92de}\label{struct_b_i_h_a0c6316bde35c73d4ed0eae5f304f92de}} 
+\hyperlink{struct_b_i_h_1_1tribb}{tribb} $\ast$ {\bfseries tribbs}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_adde0b38c1a8ad466748b56a77b5c85d2}\label{struct_b_i_h_adde0b38c1a8ad466748b56a77b5c85d2}} 
+int {\bfseries numtris}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_afa88ff782bc1d97d9856a2443c6d8c77}\label{struct_b_i_h_afa88ff782bc1d97d9856a2443c6d8c77}} 
+\hyperlink{structvec}{vec} {\bfseries bbmin}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_aacd20a7c1cb09e747f1ee69c622f0985}\label{struct_b_i_h_aacd20a7c1cb09e747f1ee69c622f0985}} 
+\hyperlink{structvec}{vec} {\bfseries bbmax}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a22a3b36b8081d49228fc56a2e6db3ccc}\label{struct_b_i_h_a22a3b36b8081d49228fc56a2e6db3ccc}} 
+\hyperlink{structvec}{vec} {\bfseries center}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_ad7870a81de3301279043cc49268d46cd}\label{struct_b_i_h_ad7870a81de3301279043cc49268d46cd}} 
+float {\bfseries radius}
+\item 
+\mbox{\Hypertarget{struct_b_i_h_a533795f5b43acf8c567a2552447826f6}\label{struct_b_i_h_a533795f5b43acf8c567a2552447826f6}} 
+float {\bfseries entradius}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/bih.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/bih.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,138 @@
+\hypertarget{class_c_script_builder}{}\section{C\+Script\+Builder Class Reference}
+\label{class_c_script_builder}\index{C\+Script\+Builder@{C\+Script\+Builder}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_c_script_builder_1_1_s_class_metadata}{S\+Class\+Metadata}
+\item 
+struct \hyperlink{struct_c_script_builder_1_1_s_metadata_decl}{S\+Metadata\+Decl}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a84e7c2825e0e53b10d758878a3f833c7}\label{class_c_script_builder_a84e7c2825e0e53b10d758878a3f833c7}} 
+int {\bfseries Start\+New\+Module} (\hyperlink{classas_i_script_engine}{as\+I\+Script\+Engine} $\ast$engine, const char $\ast$module\+Name)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a0907f970813155f58dec78f4de43ff0e}\label{class_c_script_builder_a0907f970813155f58dec78f4de43ff0e}} 
+int {\bfseries Add\+Section\+From\+File} (const char $\ast$filename)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_ad7a4e8117dfb095317f386dca05b8f11}\label{class_c_script_builder_ad7a4e8117dfb095317f386dca05b8f11}} 
+int {\bfseries Add\+Section\+From\+Memory} (const char $\ast$section\+Name, const char $\ast$script\+Code, unsigned int script\+Length=0, int line\+Offset=0)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_ae075d9180af198ef0c7a42f1d4297b87}\label{class_c_script_builder_ae075d9180af198ef0c7a42f1d4297b87}} 
+int {\bfseries Build\+Module} ()
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a682f074f5195324b58a418b1a943bb40}\label{class_c_script_builder_a682f074f5195324b58a418b1a943bb40}} 
+\hyperlink{classas_i_script_module}{as\+I\+Script\+Module} $\ast$ {\bfseries Get\+Module} ()
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a9fffee23786ec3e1c1edc038bb3a6d7e}\label{class_c_script_builder_a9fffee23786ec3e1c1edc038bb3a6d7e}} 
+void {\bfseries Set\+Include\+Callback} (I\+N\+C\+L\+U\+D\+E\+C\+A\+L\+L\+B\+A\+C\+K\+\_\+t callback, void $\ast$user\+Param)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_ab2d9ea83814daecc6705495588814c6c}\label{class_c_script_builder_ab2d9ea83814daecc6705495588814c6c}} 
+void {\bfseries Define\+Word} (const char $\ast$word)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a37d580643da4fcc4fa5f15788968149b}\label{class_c_script_builder_a37d580643da4fcc4fa5f15788968149b}} 
+unsigned int {\bfseries Get\+Section\+Count} () const
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a41fa3bfd0923ae6129588d4e9a3a52e8}\label{class_c_script_builder_a41fa3bfd0923ae6129588d4e9a3a52e8}} 
+std\+::string {\bfseries Get\+Section\+Name} (unsigned int idx) const
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a932195b28ef83c8384bb3acb5dec4e75}\label{class_c_script_builder_a932195b28ef83c8384bb3acb5dec4e75}} 
+const char $\ast$ {\bfseries Get\+Metadata\+String\+For\+Type} (int type\+Id)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a1861aa65833fe91dad30b1a4a070848d}\label{class_c_script_builder_a1861aa65833fe91dad30b1a4a070848d}} 
+const char $\ast$ {\bfseries Get\+Metadata\+String\+For\+Func} (\hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$func)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_aa3122c51ed5a704f7dcd8937329d3722}\label{class_c_script_builder_aa3122c51ed5a704f7dcd8937329d3722}} 
+const char $\ast$ {\bfseries Get\+Metadata\+String\+For\+Var} (int var\+Idx)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a7e9823cf67e2ea37f105413978ff101e}\label{class_c_script_builder_a7e9823cf67e2ea37f105413978ff101e}} 
+const char $\ast$ {\bfseries Get\+Metadata\+String\+For\+Type\+Property} (int type\+Id, int var\+Idx)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_ab85394ca1ed9d0331e154dc4ab8f6327}\label{class_c_script_builder_ab85394ca1ed9d0331e154dc4ab8f6327}} 
+const char $\ast$ {\bfseries Get\+Metadata\+String\+For\+Type\+Method} (int type\+Id, \hyperlink{classas_i_script_function}{as\+I\+Script\+Function} $\ast$method)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_ad234fac4f6f2245f0d187d1d8c840e88}\label{class_c_script_builder_ad234fac4f6f2245f0d187d1d8c840e88}} 
+void {\bfseries Clear\+All} ()
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a28c0ece1322c4c30e9bc1f363d01dfc5}\label{class_c_script_builder_a28c0ece1322c4c30e9bc1f363d01dfc5}} 
+int {\bfseries Build} ()
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a55d0a20616ed860dbc449f6bd9612e85}\label{class_c_script_builder_a55d0a20616ed860dbc449f6bd9612e85}} 
+int {\bfseries Process\+Script\+Section} (const char $\ast$script, unsigned int length, const char $\ast$sectionname, int line\+Offset)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a9e9b1be2409e79ad73908422561397a3}\label{class_c_script_builder_a9e9b1be2409e79ad73908422561397a3}} 
+int {\bfseries Load\+Script\+Section} (const char $\ast$filename)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a395b2129be42ee9f8935556babba5782}\label{class_c_script_builder_a395b2129be42ee9f8935556babba5782}} 
+bool {\bfseries Include\+If\+Not\+Already\+Included} (const char $\ast$filename)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a28c1dbb2929fe0848e740354e59ae3c0}\label{class_c_script_builder_a28c1dbb2929fe0848e740354e59ae3c0}} 
+int {\bfseries Skip\+Statement} (int pos)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_ac89afeb792d4dd2a06d0a6eb5eb82aeb}\label{class_c_script_builder_ac89afeb792d4dd2a06d0a6eb5eb82aeb}} 
+int {\bfseries Exclude\+Code} (int start)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_ae744620b788b3bd86671cb60a983a3c8}\label{class_c_script_builder_ae744620b788b3bd86671cb60a983a3c8}} 
+void {\bfseries Overwrite\+Code} (int start, int len)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_aaaa4e5144b6bfbcac593d2eb746d2d46}\label{class_c_script_builder_aaaa4e5144b6bfbcac593d2eb746d2d46}} 
+int {\bfseries Extract\+Metadata\+String} (int pos, std\+::string \&out\+Metadata)
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a786ded143d81b196ac7b9d4d02a4e030}\label{class_c_script_builder_a786ded143d81b196ac7b9d4d02a4e030}} 
+int {\bfseries Extract\+Declaration} (int pos, std\+::string \&out\+Declaration, int \&out\+Type)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a9f2c02d7ac5c8bec9d0687ce09003174}\label{class_c_script_builder_a9f2c02d7ac5c8bec9d0687ce09003174}} 
+\hyperlink{classas_i_script_engine}{as\+I\+Script\+Engine} $\ast$ {\bfseries engine}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a61f9d260f89ea0c64f3c96980d55f0b9}\label{class_c_script_builder_a61f9d260f89ea0c64f3c96980d55f0b9}} 
+\hyperlink{classas_i_script_module}{as\+I\+Script\+Module} $\ast$ {\bfseries module}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_adc1419aac7f291609cfaabbe02839402}\label{class_c_script_builder_adc1419aac7f291609cfaabbe02839402}} 
+std\+::string {\bfseries modified\+Script}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_adb389ba420f1de62fea2aa2816e91344}\label{class_c_script_builder_adb389ba420f1de62fea2aa2816e91344}} 
+I\+N\+C\+L\+U\+D\+E\+C\+A\+L\+L\+B\+A\+C\+K\+\_\+t {\bfseries include\+Callback}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a02f2414a8abe1819c559bdbc09b28155}\label{class_c_script_builder_a02f2414a8abe1819c559bdbc09b28155}} 
+void $\ast$ {\bfseries callback\+Param}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_ad2d5f49aeb1760e90757482d68aa7199}\label{class_c_script_builder_ad2d5f49aeb1760e90757482d68aa7199}} 
+std\+::vector$<$ \hyperlink{struct_c_script_builder_1_1_s_metadata_decl}{S\+Metadata\+Decl} $>$ {\bfseries found\+Declarations}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_adc829390e3b09f726ca0639d4033848b}\label{class_c_script_builder_adc829390e3b09f726ca0639d4033848b}} 
+std\+::string {\bfseries current\+Class}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a8f16fb8258f3186117ea3766de3c65b5}\label{class_c_script_builder_a8f16fb8258f3186117ea3766de3c65b5}} 
+std\+::string {\bfseries current\+Namespace}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a296b3b54550c19f2c73911231eafa097}\label{class_c_script_builder_a296b3b54550c19f2c73911231eafa097}} 
+std\+::map$<$ int, std\+::string $>$ {\bfseries type\+Metadata\+Map}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a158cd8f9e126a39e3de4181b79df9555}\label{class_c_script_builder_a158cd8f9e126a39e3de4181b79df9555}} 
+std\+::map$<$ int, std\+::string $>$ {\bfseries func\+Metadata\+Map}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a7123672fa8a5393d150ca4ad475a95bd}\label{class_c_script_builder_a7123672fa8a5393d150ca4ad475a95bd}} 
+std\+::map$<$ int, std\+::string $>$ {\bfseries var\+Metadata\+Map}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a517e69cbc011e431a6b6a91997cc5d47}\label{class_c_script_builder_a517e69cbc011e431a6b6a91997cc5d47}} 
+std\+::map$<$ int, \hyperlink{struct_c_script_builder_1_1_s_class_metadata}{S\+Class\+Metadata} $>$ {\bfseries class\+Metadata\+Map}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_aafe2cb8509a4cfb96d2e58b352fa0b8b}\label{class_c_script_builder_aafe2cb8509a4cfb96d2e58b352fa0b8b}} 
+std\+::set$<$ std\+::string $>$ {\bfseries included\+Scripts}
+\item 
+\mbox{\Hypertarget{class_c_script_builder_a83c116cb8287d6637741857b9e44e18a}\label{class_c_script_builder_a83c116cb8287d6637741857b9e44e18a}} 
+std\+::set$<$ std\+::string $>$ {\bfseries defined\+Words}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/scriptbuilder.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/scriptbuilder.\+cpp\end{DoxyCompactItemize}

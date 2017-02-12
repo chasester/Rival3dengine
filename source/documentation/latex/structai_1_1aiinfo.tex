@@ -1,0 +1,139 @@
+\hypertarget{structai_1_1aiinfo}{}\section{ai\+:\+:aiinfo Struct Reference}
+\label{structai_1_1aiinfo}\index{ai\+::aiinfo@{ai\+::aiinfo}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a3f83e90e46f40300305fffe9c4183697}\label{structai_1_1aiinfo_a3f83e90e46f40300305fffe9c4183697}} 
+void {\bfseries clearsetup} ()
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a57c697dd93245166fe8e17adde8ee703}\label{structai_1_1aiinfo_a57c697dd93245166fe8e17adde8ee703}} 
+void {\bfseries clear} (bool prev=false)
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a134cc32b873d101228ba2ea37a8ba38f}\label{structai_1_1aiinfo_a134cc32b873d101228ba2ea37a8ba38f}} 
+void {\bfseries wipe} (bool prev=false)
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a32190baba397c45b70e267bd9423b47b}\label{structai_1_1aiinfo_a32190baba397c45b70e267bd9423b47b}} 
+void {\bfseries clean} (bool tryit=false)
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a5755ce8e1e8d968e420e4321073cd895}\label{structai_1_1aiinfo_a5755ce8e1e8d968e420e4321073cd895}} 
+void {\bfseries reset} (bool tryit=false)
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a6011da2736a33f7ad54ad724c22574f3}\label{structai_1_1aiinfo_a6011da2736a33f7ad54ad724c22574f3}} 
+bool {\bfseries hasprevnode} (int n) const
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_ac4ca6d03a4ddcc0fef2e78696b5f6b90}\label{structai_1_1aiinfo_ac4ca6d03a4ddcc0fef2e78696b5f6b90}} 
+void {\bfseries addprevnode} (int n)
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_ac5901826d1d8b9a5e61fbbe1ce4b8955}\label{structai_1_1aiinfo_ac5901826d1d8b9a5e61fbbe1ce4b8955}} 
+\hyperlink{structai_1_1aistate}{aistate} \& {\bfseries addstate} (int t, int r=-\/1, int v=-\/1)
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a847a8c4ef9ac4993f72ca97fff897680}\label{structai_1_1aiinfo_a847a8c4ef9ac4993f72ca97fff897680}} 
+void {\bfseries removestate} (int index=-\/1)
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_aaa36d2ff13d0e548b95bed36315672b1}\label{structai_1_1aiinfo_aaa36d2ff13d0e548b95bed36315672b1}} 
+\hyperlink{structai_1_1aistate}{aistate} \& {\bfseries getstate} (int idx=-\/1)
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a0f41f213b438b8dfe17b1f47d1dcda43}\label{structai_1_1aiinfo_a0f41f213b438b8dfe17b1f47d1dcda43}} 
+\hyperlink{structai_1_1aistate}{aistate} \& {\bfseries switchstate} (\hyperlink{structai_1_1aistate}{aistate} \&b, int t, int r=-\/1, int v=-\/1)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a2959e877022faf4eedaa9b90531aeaf1}\label{structai_1_1aiinfo_a2959e877022faf4eedaa9b90531aeaf1}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structai_1_1aistate}{aistate} $>$ {\bfseries state}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_ae86d9bbae48e157bb6315a407f649492}\label{structai_1_1aiinfo_ae86d9bbae48e157bb6315a407f649492}} 
+\hyperlink{structvector}{vector}$<$ int $>$ {\bfseries route}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a5e9d448c8f8a6d27435b428ee53aacd8}\label{structai_1_1aiinfo_a5e9d448c8f8a6d27435b428ee53aacd8}} 
+\hyperlink{structvec}{vec} {\bfseries target}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a6c41594e18a273bb66cea279dc488f42}\label{structai_1_1aiinfo_a6c41594e18a273bb66cea279dc488f42}} 
+\hyperlink{structvec}{vec} {\bfseries spot}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a895b6080200ae06ec36d402e9604811d}\label{structai_1_1aiinfo_a895b6080200ae06ec36d402e9604811d}} 
+int {\bfseries enemy}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_ad648346a80f9312b7a723131e1e84df4}\label{structai_1_1aiinfo_ad648346a80f9312b7a723131e1e84df4}} 
+int {\bfseries enemyseen}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a2c7716f1756c6cfdc85e469352aa8368}\label{structai_1_1aiinfo_a2c7716f1756c6cfdc85e469352aa8368}} 
+int {\bfseries enemymillis}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_ac725b9d1eae63f0460e1b87d06aecc73}\label{structai_1_1aiinfo_ac725b9d1eae63f0460e1b87d06aecc73}} 
+int {\bfseries weappref}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a094ccad9d2b84d4a2dd7bfb7937ba4c4}\label{structai_1_1aiinfo_a094ccad9d2b84d4a2dd7bfb7937ba4c4}} 
+int {\bfseries prevnodes} \mbox{[}N\+U\+M\+P\+R\+E\+V\+N\+O\+D\+ES\mbox{]}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a4257f8f57c40b823015c312b51396de6}\label{structai_1_1aiinfo_a4257f8f57c40b823015c312b51396de6}} 
+int {\bfseries targnode}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a8258a71ed38cb6ef0aafe2a676a22768}\label{structai_1_1aiinfo_a8258a71ed38cb6ef0aafe2a676a22768}} 
+int {\bfseries targlast}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_aea5d250ce19fbb18c3e12e2b29a9dc8e}\label{structai_1_1aiinfo_aea5d250ce19fbb18c3e12e2b29a9dc8e}} 
+int {\bfseries targtime}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a007ce70acb1bc9fb0fbff550ec5a73ff}\label{structai_1_1aiinfo_a007ce70acb1bc9fb0fbff550ec5a73ff}} 
+int {\bfseries targseq}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_aeee419874f5b0b9a2287cf731866cc2a}\label{structai_1_1aiinfo_aeee419874f5b0b9a2287cf731866cc2a}} 
+int {\bfseries lastrun}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a0107f6a28e5136dde38f25a1611d30ac}\label{structai_1_1aiinfo_a0107f6a28e5136dde38f25a1611d30ac}} 
+int {\bfseries lasthunt}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_afb1e30e58eab8c944b771fcca94de4e9}\label{structai_1_1aiinfo_afb1e30e58eab8c944b771fcca94de4e9}} 
+int {\bfseries lastaction}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_ab1b183b257bfcd90f661cccee51e581e}\label{structai_1_1aiinfo_ab1b183b257bfcd90f661cccee51e581e}} 
+int {\bfseries lastcheck}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_ac92a047223c0a16d07721bdcff24a21b}\label{structai_1_1aiinfo_ac92a047223c0a16d07721bdcff24a21b}} 
+int {\bfseries jumpseed}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a8a91c86e07dff115579b41523da3fd1f}\label{structai_1_1aiinfo_a8a91c86e07dff115579b41523da3fd1f}} 
+int {\bfseries jumprand}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_acbea1d613e0669bb4277369de60de3e3}\label{structai_1_1aiinfo_acbea1d613e0669bb4277369de60de3e3}} 
+int {\bfseries blocktime}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a9a270c9e6c719ddf5ff837f682fffef9}\label{structai_1_1aiinfo_a9a270c9e6c719ddf5ff837f682fffef9}} 
+int {\bfseries huntseq}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_ad477f9737ba1d152bcd1c624178583b1}\label{structai_1_1aiinfo_ad477f9737ba1d152bcd1c624178583b1}} 
+int {\bfseries blockseq}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a5bea27a2451b478dd645d9d2cec64dbc}\label{structai_1_1aiinfo_a5bea27a2451b478dd645d9d2cec64dbc}} 
+int {\bfseries lastaimrnd}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_ae43c8abeb7843583099298bdfbbc3e2a}\label{structai_1_1aiinfo_ae43c8abeb7843583099298bdfbbc3e2a}} 
+float {\bfseries targyaw}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a998f7f65d7344c018658591377228b18}\label{structai_1_1aiinfo_a998f7f65d7344c018658591377228b18}} 
+float {\bfseries targpitch}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a5b90f4746991e22825d1b46f00151331}\label{structai_1_1aiinfo_a5b90f4746991e22825d1b46f00151331}} 
+float {\bfseries views} \mbox{[}3\mbox{]}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a9fb0d6ac06995e2f4b94047dba897476}\label{structai_1_1aiinfo_a9fb0d6ac06995e2f4b94047dba897476}} 
+float {\bfseries aimrnd} \mbox{[}3\mbox{]}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_acfbadd0930b1a4ef3c7699163206ab0b}\label{structai_1_1aiinfo_acfbadd0930b1a4ef3c7699163206ab0b}} 
+bool {\bfseries dontmove}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_ab2369b4acfa1c5c1314f6b2a7c78f8d5}\label{structai_1_1aiinfo_ab2369b4acfa1c5c1314f6b2a7c78f8d5}} 
+bool {\bfseries becareful}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a410950d8337ab633cfc3c0f957e47c29}\label{structai_1_1aiinfo_a410950d8337ab633cfc3c0f957e47c29}} 
+bool {\bfseries tryreset}
+\item 
+\mbox{\Hypertarget{structai_1_1aiinfo_a50ec36010a33c7bf5b0ab9f5b4294493}\label{structai_1_1aiinfo_a50ec36010a33c7bf5b0ab9f5b4294493}} 
+bool {\bfseries trywipe}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/game/ai.\+h\end{DoxyCompactItemize}

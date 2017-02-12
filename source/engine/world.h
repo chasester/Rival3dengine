@@ -51,3 +51,28 @@ enum
 
 struct vertex { vec pos; bvec4 norm; vec tc; bvec4 tangent; };
 
+
+struct abc
+{
+	int number;
+	uint hello, goodbye;
+	struct def
+	{
+		char * coolthing;
+		uint index;
+	};
+	uint adf(uint hey, char a, int blah) 
+	{
+		if (1 > 0)
+			number++;//this always happens 
+		else
+			number = 0;
+	}
+private:
+	def *dosomething(uint dothis)
+	{
+		if (dothis)
+			return  new def();
+	}
+	uint today;
+};

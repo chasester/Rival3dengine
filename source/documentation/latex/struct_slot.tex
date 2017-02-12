@@ -1,0 +1,103 @@
+\hypertarget{struct_slot}{}\section{Slot Struct Reference}
+\label{struct_slot}\index{Slot@{Slot}}
+Inheritance diagram for Slot\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_slot}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_slot_1_1_tex}{Tex}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_slot_a3e65397b85f70651e0eeba7d6e21de46}\label{struct_slot_a3e65397b85f70651e0eeba7d6e21de46}} 
+enum \{ {\bfseries O\+C\+TA}, 
+{\bfseries M\+A\+T\+E\+R\+I\+AL}, 
+{\bfseries D\+E\+C\+AL}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_slot_a20ac8653c8c4536ffca4cea7bee4a039}\label{struct_slot_a20ac8653c8c4536ffca4cea7bee4a039}} 
+{\bfseries Slot} (int index=-\/1)
+\item 
+\mbox{\Hypertarget{struct_slot_a7ca40c8a17b45e88a0e77e266d286239}\label{struct_slot_a7ca40c8a17b45e88a0e77e266d286239}} 
+virtual int {\bfseries type} () const
+\item 
+\mbox{\Hypertarget{struct_slot_a3f5cb98a12ddc0713823733a8027124b}\label{struct_slot_a3f5cb98a12ddc0713823733a8027124b}} 
+virtual const char $\ast$ {\bfseries name} () const
+\item 
+\mbox{\Hypertarget{struct_slot_a7cb2acd16cf8ce7512da86f46097dd06}\label{struct_slot_a7cb2acd16cf8ce7512da86f46097dd06}} 
+virtual const char $\ast$ {\bfseries texturedir} () const
+\item 
+\mbox{\Hypertarget{struct_slot_af4cf238f6a36c3c241941b8c4a28baba}\label{struct_slot_af4cf238f6a36c3c241941b8c4a28baba}} 
+virtual \hyperlink{struct_v_slot}{V\+Slot} \& {\bfseries emptyvslot} ()
+\item 
+\mbox{\Hypertarget{struct_slot_a2defa39db6859e05115d65488fdaaa58}\label{struct_slot_a2defa39db6859e05115d65488fdaaa58}} 
+virtual int {\bfseries cancombine} (int type) const
+\item 
+\mbox{\Hypertarget{struct_slot_a880cae62250a7b71bcb3df0024ba55d5}\label{struct_slot_a880cae62250a7b71bcb3df0024ba55d5}} 
+int {\bfseries findtextype} (int type, int last=-\/1) const
+\item 
+\mbox{\Hypertarget{struct_slot_a29d89cb3dd5dc1027c3b2baaa11818aa}\label{struct_slot_a29d89cb3dd5dc1027c3b2baaa11818aa}} 
+void {\bfseries load} (int index, \hyperlink{struct_slot_1_1_tex}{Slot\+::\+Tex} \&t)
+\item 
+\mbox{\Hypertarget{struct_slot_a9d16183908013bc7ac371d15406eb60e}\label{struct_slot_a9d16183908013bc7ac371d15406eb60e}} 
+void {\bfseries load} ()
+\item 
+\mbox{\Hypertarget{struct_slot_a1c03515604972228df2b940a04ff1309}\label{struct_slot_a1c03515604972228df2b940a04ff1309}} 
+\hyperlink{struct_texture}{Texture} $\ast$ {\bfseries loadthumbnail} ()
+\item 
+\mbox{\Hypertarget{struct_slot_a280788a152c280940fb9e2703a206863}\label{struct_slot_a280788a152c280940fb9e2703a206863}} 
+void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{struct_slot_aa4a08a2de23783c3846553404cf17e73}\label{struct_slot_aa4a08a2de23783c3846553404cf17e73}} 
+void {\bfseries cleanup} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_slot_a7d7ae06da19e3af297d089a009948f23}\label{struct_slot_a7d7ae06da19e3af297d089a009948f23}} 
+int {\bfseries index}
+\item 
+\mbox{\Hypertarget{struct_slot_a759016ba1029f5a99b0d2cf3fe579372}\label{struct_slot_a759016ba1029f5a99b0d2cf3fe579372}} 
+int {\bfseries smooth}
+\item 
+\mbox{\Hypertarget{struct_slot_a99261fe271c3f27730c3ce7a0c6f4923}\label{struct_slot_a99261fe271c3f27730c3ce7a0c6f4923}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{struct_slot_1_1_tex}{Tex} $>$ {\bfseries sts}
+\item 
+\mbox{\Hypertarget{struct_slot_a51e1708dde956eebab0b28de871225d4}\label{struct_slot_a51e1708dde956eebab0b28de871225d4}} 
+\hyperlink{struct_shader}{Shader} $\ast$ {\bfseries shader}
+\item 
+\mbox{\Hypertarget{struct_slot_a41448f24c43e5d8658292c5cbbe60ec8}\label{struct_slot_a41448f24c43e5d8658292c5cbbe60ec8}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{struct_slot_shader_param}{Slot\+Shader\+Param} $>$ {\bfseries params}
+\item 
+\mbox{\Hypertarget{struct_slot_a2f0871c43b998c7034b1663e540d402e}\label{struct_slot_a2f0871c43b998c7034b1663e540d402e}} 
+\hyperlink{struct_v_slot}{V\+Slot} $\ast$ {\bfseries variants}
+\item 
+\mbox{\Hypertarget{struct_slot_a939fa0a64d6fc515a50e4a11b84da23b}\label{struct_slot_a939fa0a64d6fc515a50e4a11b84da23b}} 
+bool {\bfseries loaded}
+\item 
+\mbox{\Hypertarget{struct_slot_aec414f46bd05fe07268dbe0e904bc284}\label{struct_slot_aec414f46bd05fe07268dbe0e904bc284}} 
+uint {\bfseries texmask}
+\item 
+\mbox{\Hypertarget{struct_slot_a2959744e448f26c5ae2102fea32d5fb0}\label{struct_slot_a2959744e448f26c5ae2102fea32d5fb0}} 
+char $\ast$ {\bfseries grass}
+\item 
+\mbox{\Hypertarget{struct_slot_abb9b35b4750ab50206b2b47f2a92a7e5}\label{struct_slot_abb9b35b4750ab50206b2b47f2a92a7e5}} 
+\hyperlink{struct_texture}{Texture} $\ast$ {\bfseries grasstex}
+\item 
+\mbox{\Hypertarget{struct_slot_afb5d669433996bf8ea6569348c2cceeb}\label{struct_slot_afb5d669433996bf8ea6569348c2cceeb}} 
+\hyperlink{struct_texture}{Texture} $\ast$ {\bfseries thumbnail}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/texture.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/texture.\+cpp\end{DoxyCompactItemize}

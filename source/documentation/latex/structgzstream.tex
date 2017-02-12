@@ -1,0 +1,130 @@
+\hypertarget{structgzstream}{}\section{gzstream Struct Reference}
+\label{structgzstream}\index{gzstream@{gzstream}}
+Inheritance diagram for gzstream\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structgzstream}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structgzstream_a140871c2fa96253cb29b76bb58b9c76a}\label{structgzstream_a140871c2fa96253cb29b76bb58b9c76a}} 
+enum \{ {\bfseries M\+A\+G\+I\+C1} = 0x1F, 
+{\bfseries M\+A\+G\+I\+C2} = 0x8B, 
+{\bfseries B\+U\+F\+S\+I\+ZE} = 16384, 
+{\bfseries O\+S\+\_\+\+U\+N\+IX} = 0x03
+ \}
+\item 
+\mbox{\Hypertarget{structgzstream_ac34b61c709a5fb76430cb31b00266a55}\label{structgzstream_ac34b61c709a5fb76430cb31b00266a55}} 
+enum \{ \newline
+{\bfseries F\+\_\+\+A\+S\+C\+II} = 0x01, 
+{\bfseries F\+\_\+\+C\+RC} = 0x02, 
+{\bfseries F\+\_\+\+E\+X\+T\+RA} = 0x04, 
+{\bfseries F\+\_\+\+N\+A\+ME} = 0x08, 
+\newline
+{\bfseries F\+\_\+\+C\+O\+M\+M\+E\+NT} = 0x10, 
+{\bfseries F\+\_\+\+R\+E\+S\+E\+R\+V\+ED} = 0x\+E0
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structgzstream_a6d191853a1c4c8bf6cccbab9c8e0309a}\label{structgzstream_a6d191853a1c4c8bf6cccbab9c8e0309a}} 
+void {\bfseries writeheader} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a8d0344b10ddf5d5f027f845b25a5d7b7}\label{structgzstream_a8d0344b10ddf5d5f027f845b25a5d7b7}} 
+void {\bfseries readbuf} (size\+\_\+t size=B\+U\+F\+S\+I\+ZE)
+\item 
+\mbox{\Hypertarget{structgzstream_a4da22015c7effe15411cec2f24dea196}\label{structgzstream_a4da22015c7effe15411cec2f24dea196}} 
+uchar {\bfseries readbyte} (size\+\_\+t size=B\+U\+F\+S\+I\+ZE)
+\item 
+\mbox{\Hypertarget{structgzstream_a03650110ed9c2b4d0b055347fa2597c9}\label{structgzstream_a03650110ed9c2b4d0b055347fa2597c9}} 
+void {\bfseries skipbytes} (size\+\_\+t n)
+\item 
+\mbox{\Hypertarget{structgzstream_a68b93da33e4709a1fd002542a78fc944}\label{structgzstream_a68b93da33e4709a1fd002542a78fc944}} 
+bool {\bfseries checkheader} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a68ed86a7e5317f5e78ab711792a03d2c}\label{structgzstream_a68ed86a7e5317f5e78ab711792a03d2c}} 
+bool {\bfseries open} (\hyperlink{structstream}{stream} $\ast$f, const char $\ast$mode, bool needclose, int level)
+\item 
+\mbox{\Hypertarget{structgzstream_a1dbc14c5f33576998da060e4deb20d61}\label{structgzstream_a1dbc14c5f33576998da060e4deb20d61}} 
+uint {\bfseries getcrc} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a256c3b94fc42c95c6ee3cc4723e5cb8f}\label{structgzstream_a256c3b94fc42c95c6ee3cc4723e5cb8f}} 
+void {\bfseries finishreading} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a1c6cf7dae9e68e6572b506527d02bac3}\label{structgzstream_a1c6cf7dae9e68e6572b506527d02bac3}} 
+void {\bfseries stopreading} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a38f6ae18fdaa4745809c96fba06e0b33}\label{structgzstream_a38f6ae18fdaa4745809c96fba06e0b33}} 
+void {\bfseries finishwriting} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a51c351b6b6cb48ca2f0df3e116380d92}\label{structgzstream_a51c351b6b6cb48ca2f0df3e116380d92}} 
+void {\bfseries stopwriting} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a6b7351f0159775427d057bf943616586}\label{structgzstream_a6b7351f0159775427d057bf943616586}} 
+void {\bfseries close} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a48d86482e0ce4b9c9366a142bf508bf9}\label{structgzstream_a48d86482e0ce4b9c9366a142bf508bf9}} 
+bool {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a223b6be23775308a71a0b89306ca6699}\label{structgzstream_a223b6be23775308a71a0b89306ca6699}} 
+offset {\bfseries tell} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a6dbe81bda0ed7df67d3f2a7de2f220ec}\label{structgzstream_a6dbe81bda0ed7df67d3f2a7de2f220ec}} 
+offset {\bfseries rawtell} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a4ce93622b9e6f397253e3918f7f6576f}\label{structgzstream_a4ce93622b9e6f397253e3918f7f6576f}} 
+offset {\bfseries size} ()
+\item 
+\mbox{\Hypertarget{structgzstream_accf7a7e788746b542fe5a8d4d4f29156}\label{structgzstream_accf7a7e788746b542fe5a8d4d4f29156}} 
+offset {\bfseries rawsize} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a40cd78f7ee55c7a699f558a97dc8b757}\label{structgzstream_a40cd78f7ee55c7a699f558a97dc8b757}} 
+bool {\bfseries seek} (offset pos, int whence)
+\item 
+\mbox{\Hypertarget{structgzstream_a4181c3543a5af7649e7e07fd7e9c69fe}\label{structgzstream_a4181c3543a5af7649e7e07fd7e9c69fe}} 
+size\+\_\+t {\bfseries read} (void $\ast$buf, size\+\_\+t len)
+\item 
+\mbox{\Hypertarget{structgzstream_aac92c3ac4dbee68231652e59a678daae}\label{structgzstream_aac92c3ac4dbee68231652e59a678daae}} 
+bool {\bfseries flushbuf} (bool full=false)
+\item 
+\mbox{\Hypertarget{structgzstream_a72f08de4d18360defb6341b814f38374}\label{structgzstream_a72f08de4d18360defb6341b814f38374}} 
+bool {\bfseries flush} ()
+\item 
+\mbox{\Hypertarget{structgzstream_a68167b020a7931ad0e840dc46f0b70bb}\label{structgzstream_a68167b020a7931ad0e840dc46f0b70bb}} 
+size\+\_\+t {\bfseries write} (const void $\ast$buf, size\+\_\+t len)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structgzstream_a89047b896f1447130986efd6ba911bfc}\label{structgzstream_a89047b896f1447130986efd6ba911bfc}} 
+\hyperlink{structstream}{stream} $\ast$ {\bfseries file}
+\item 
+\mbox{\Hypertarget{structgzstream_aa0729b97e2ad985fb251b03a97a631b1}\label{structgzstream_aa0729b97e2ad985fb251b03a97a631b1}} 
+z\+\_\+stream {\bfseries zfile}
+\item 
+\mbox{\Hypertarget{structgzstream_a3fa23c603a2059d72fad3ad5624091ae}\label{structgzstream_a3fa23c603a2059d72fad3ad5624091ae}} 
+uchar $\ast$ {\bfseries buf}
+\item 
+\mbox{\Hypertarget{structgzstream_ab7b3fb548a1d64d7ee97239ce450c836}\label{structgzstream_ab7b3fb548a1d64d7ee97239ce450c836}} 
+bool {\bfseries reading}
+\item 
+\mbox{\Hypertarget{structgzstream_a22e23d033e552da74b50baf01a93ddf3}\label{structgzstream_a22e23d033e552da74b50baf01a93ddf3}} 
+bool {\bfseries writing}
+\item 
+\mbox{\Hypertarget{structgzstream_aadb50ea1af1910707fec74525d19dc6e}\label{structgzstream_aadb50ea1af1910707fec74525d19dc6e}} 
+bool {\bfseries autoclose}
+\item 
+\mbox{\Hypertarget{structgzstream_af29aa1e4c730531a7d75a5b755cbeaf1}\label{structgzstream_af29aa1e4c730531a7d75a5b755cbeaf1}} 
+uint {\bfseries crc}
+\item 
+\mbox{\Hypertarget{structgzstream_adfe5d25c1649bd8da86f4e8a7e2fe9b3}\label{structgzstream_adfe5d25c1649bd8da86f4e8a7e2fe9b3}} 
+size\+\_\+t {\bfseries headersize}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/stream.\+cpp\end{DoxyCompactItemize}

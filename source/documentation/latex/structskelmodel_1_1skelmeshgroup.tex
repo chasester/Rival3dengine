@@ -1,0 +1,155 @@
+\hypertarget{structskelmodel_1_1skelmeshgroup}{}\section{skelmodel\+:\+:skelmeshgroup Struct Reference}
+\label{structskelmodel_1_1skelmeshgroup}\index{skelmodel\+::skelmeshgroup@{skelmodel\+::skelmeshgroup}}
+Inheritance diagram for skelmodel\+:\+:skelmeshgroup\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{structskelmodel_1_1skelmeshgroup}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a23bf7ca4d440517e4ad1214cf2955884}\label{structskelmodel_1_1skelmeshgroup_a23bf7ca4d440517e4ad1214cf2955884}} 
+void {\bfseries shareskeleton} (const char $\ast$name)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a76d2cc27e8de20d767cd4fda03e60a69}\label{structskelmodel_1_1skelmeshgroup_a76d2cc27e8de20d767cd4fda03e60a69}} 
+int {\bfseries findtag} (const char $\ast$name)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a1ef964c40eb13c4593a5fc42fca07260}\label{structskelmodel_1_1skelmeshgroup_a1ef964c40eb13c4593a5fc42fca07260}} 
+void $\ast$ {\bfseries animkey} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a220fec6d06c7a4bfb5637face30165d2}\label{structskelmodel_1_1skelmeshgroup_a220fec6d06c7a4bfb5637face30165d2}} 
+int {\bfseries totalframes} () const
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a74c9c4c712fda88792234859c8c775a0}\label{structskelmodel_1_1skelmeshgroup_a74c9c4c712fda88792234859c8c775a0}} 
+virtual \hyperlink{structskelmodel_1_1skelanimspec}{skelanimspec} $\ast$ {\bfseries loadanim} (const char $\ast$filename)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a1e401a7f53f2d13e8d9b0b3593af1485}\label{structskelmodel_1_1skelmeshgroup_a1e401a7f53f2d13e8d9b0b3593af1485}} 
+void {\bfseries genvbo} (\hyperlink{structskelmodel_1_1vbocacheentry}{vbocacheentry} \&vc)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a10676a3495de19ca896a137e0529ee06}\label{structskelmodel_1_1skelmeshgroup_a10676a3495de19ca896a137e0529ee06}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries bindbones} (T $\ast$vverts)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a34844c9677679ad4078ab8063830e672}\label{structskelmodel_1_1skelmeshgroup_a34844c9677679ad4078ab8063830e672}} 
+void {\bfseries bindbones} (\hyperlink{structskelmodel_1_1vvertgw}{vvertgw} $\ast$vverts)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_acb50fec9f282b22f64a4d57a65b66365}\label{structskelmodel_1_1skelmeshgroup_acb50fec9f282b22f64a4d57a65b66365}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries bindvbo} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, \hyperlink{structanimmodel_1_1part}{part} $\ast$p, \hyperlink{structskelmodel_1_1vbocacheentry}{vbocacheentry} \&vc)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a021a19f8fa70d25fb372c6ffe37f8744}\label{structskelmodel_1_1skelmeshgroup_a021a19f8fa70d25fb372c6ffe37f8744}} 
+void {\bfseries bindvbo} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, \hyperlink{structanimmodel_1_1part}{part} $\ast$p, \hyperlink{structskelmodel_1_1vbocacheentry}{vbocacheentry} \&vc, \hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} $\ast$sc=N\+U\+LL, \hyperlink{structskelmodel_1_1blendcacheentry}{blendcacheentry} $\ast$bc=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a52b3c428fdc3f7e76b6bf2a4d4094925}\label{structskelmodel_1_1skelmeshgroup_a52b3c428fdc3f7e76b6bf2a4d4094925}} 
+void {\bfseries concattagtransform} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p, int i, const \hyperlink{structmatrix4x3}{matrix4x3} \&m, \hyperlink{structmatrix4x3}{matrix4x3} \&n)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a207adf23d429e469c34350c212b2b1db}\label{structskelmodel_1_1skelmeshgroup_a207adf23d429e469c34350c212b2b1db}} 
+int {\bfseries addblendcombo} (const \hyperlink{structskelmodel_1_1blendcombo}{blendcombo} \&c)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a13e86e7aed669be2ecec990e9c16c76e}\label{structskelmodel_1_1skelmeshgroup_a13e86e7aed669be2ecec990e9c16c76e}} 
+void {\bfseries sortblendcombos} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a9fb794d87ba074230e2385f8f1213e94}\label{structskelmodel_1_1skelmeshgroup_a9fb794d87ba074230e2385f8f1213e94}} 
+int {\bfseries remapblend} (int blend)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a8e6d91ffcc421c3e20c4a9b3665885d0}\label{structskelmodel_1_1skelmeshgroup_a8e6d91ffcc421c3e20c4a9b3665885d0}} 
+void {\bfseries blendbones} (const \hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} \&sc, \hyperlink{structskelmodel_1_1blendcacheentry}{blendcacheentry} \&bc)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a0f9f7e08f10ca0351098b554337722fb}\label{structskelmodel_1_1skelmeshgroup_a0f9f7e08f10ca0351098b554337722fb}} 
+void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a3cf0cd2090930b2ad96215b031315724}\label{structskelmodel_1_1skelmeshgroup_a3cf0cd2090930b2ad96215b031315724}} 
+\hyperlink{structskelmodel_1_1vbocacheentry}{vbocacheentry} \& {\bfseries checkvbocache} (\hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} \&sc, int owner)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_ae43865ccf9b277a1196565ed3c34152e}\label{structskelmodel_1_1skelmeshgroup_ae43865ccf9b277a1196565ed3c34152e}} 
+\hyperlink{structskelmodel_1_1blendcacheentry}{blendcacheentry} \& {\bfseries checkblendcache} (\hyperlink{structskelmodel_1_1skelcacheentry}{skelcacheentry} \&sc, int owner)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a778cc4ce95938a4149a61462a6b7d5a0}\label{structskelmodel_1_1skelmeshgroup_a778cc4ce95938a4149a61462a6b7d5a0}} 
+void {\bfseries cleanuphitdata} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_aa25b5a2babcfd88ca3235399fb6505e0}\label{structskelmodel_1_1skelmeshgroup_aa25b5a2babcfd88ca3235399fb6505e0}} 
+void {\bfseries deletehitdata} ()
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a0c7a226ad69b57216a3d0744c5132f06}\label{structskelmodel_1_1skelmeshgroup_a0c7a226ad69b57216a3d0744c5132f06}} 
+void {\bfseries buildhitdata} (const uchar $\ast$hitzones)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a89ee055a7bb541b1227664eac364ca00}\label{structskelmodel_1_1skelmeshgroup_a89ee055a7bb541b1227664eac364ca00}} 
+void {\bfseries intersect} (\hyperlink{structskelhitdata}{skelhitdata} $\ast$z, \hyperlink{structanimmodel_1_1part}{part} $\ast$p, const \hyperlink{structskelmodel_1_1skelcacheentry}{skelmodel\+::skelcacheentry} \&sc, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a6765f5abc34d11dc76d3261ef3abbfcc}\label{structskelmodel_1_1skelmeshgroup_a6765f5abc34d11dc76d3261ef3abbfcc}} 
+void {\bfseries intersect} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, float pitch, const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structanimmodel_1_1part}{part} $\ast$p, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_abab073769d58f918cfe31376fac85d9a}\label{structskelmodel_1_1skelmeshgroup_abab073769d58f918cfe31376fac85d9a}} 
+void {\bfseries preload} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_aceafd660fa38f8ec381f77d0296aa587}\label{structskelmodel_1_1skelmeshgroup_aceafd660fa38f8ec381f77d0296aa587}} 
+void {\bfseries render} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, float pitch, const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structanimmodel_1_1part}{part} $\ast$p)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a320ea2624a4a5770895a53b4fdef15af}\label{structskelmodel_1_1skelmeshgroup_a320ea2624a4a5770895a53b4fdef15af}} 
+virtual bool {\bfseries load} (const char $\ast$name, float smooth)=0
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_adb0439b90a91f5d67a575d8292ec688e}\label{structskelmodel_1_1skelmeshgroup_adb0439b90a91f5d67a575d8292ec688e}} 
+static void {\bfseries blendbones} (\hyperlink{structdualquat}{dualquat} \&d, const \hyperlink{structdualquat}{dualquat} $\ast$bdata, const \hyperlink{structskelmodel_1_1blendcombo}{blendcombo} \&c)
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a54a4b7d3c483042c77e8dddb8dfc7568}\label{structskelmodel_1_1skelmeshgroup_a54a4b7d3c483042c77e8dddb8dfc7568}} 
+static void {\bfseries blendbones} (const \hyperlink{structdualquat}{dualquat} $\ast$bdata, \hyperlink{structdualquat}{dualquat} $\ast$dst, const \hyperlink{structskelmodel_1_1blendcombo}{blendcombo} $\ast$c, int numblends)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a580a36b47eb991fcb8a6ba4a5a9665c3}\label{structskelmodel_1_1skelmeshgroup_a580a36b47eb991fcb8a6ba4a5a9665c3}} 
+\hyperlink{structskelmodel_1_1skeleton}{skeleton} $\ast$ {\bfseries skel}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_aff68cb49dc90deec6f0c4df4350b9e74}\label{structskelmodel_1_1skelmeshgroup_aff68cb49dc90deec6f0c4df4350b9e74}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structskelmodel_1_1blendcombo}{blendcombo} $>$ {\bfseries blendcombos}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_aa85aecdc7c5dde22ec890199cfac10af}\label{structskelmodel_1_1skelmeshgroup_aa85aecdc7c5dde22ec890199cfac10af}} 
+int {\bfseries numblends} \mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a2f28b727f1baa5df26921333269a1653}\label{structskelmodel_1_1skelmeshgroup_a2f28b727f1baa5df26921333269a1653}} 
+\hyperlink{structskelmodel_1_1blendcacheentry}{blendcacheentry} {\bfseries blendcache} \mbox{[}M\+A\+X\+B\+L\+E\+N\+D\+C\+A\+C\+HE\mbox{]}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_adda7f6a928b3b896f00c9ef76cc65ff1}\label{structskelmodel_1_1skelmeshgroup_adda7f6a928b3b896f00c9ef76cc65ff1}} 
+\hyperlink{structskelmodel_1_1vbocacheentry}{vbocacheentry} {\bfseries vbocache} \mbox{[}M\+A\+X\+V\+B\+O\+C\+A\+C\+HE\mbox{]}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a942fb80fdb0fb560e19a9939af42a0c9}\label{structskelmodel_1_1skelmeshgroup_a942fb80fdb0fb560e19a9939af42a0c9}} 
+ushort $\ast$ {\bfseries edata}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a7adf76946bd9598c33b0e50af4512451}\label{structskelmodel_1_1skelmeshgroup_a7adf76946bd9598c33b0e50af4512451}} 
+G\+Luint {\bfseries ebuf}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a14622baeded8da0b9ac359581dec7ea9}\label{structskelmodel_1_1skelmeshgroup_a14622baeded8da0b9ac359581dec7ea9}} 
+int {\bfseries vlen}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_aba9a696223825fe43a8c3edd276b8f5a}\label{structskelmodel_1_1skelmeshgroup_aba9a696223825fe43a8c3edd276b8f5a}} 
+int {\bfseries vertsize}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_adb0f6dc25023c966cf7f75c52c015518}\label{structskelmodel_1_1skelmeshgroup_adb0f6dc25023c966cf7f75c52c015518}} 
+int {\bfseries vblends}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a65b79f720aeca283b83984e1fe2a520f}\label{structskelmodel_1_1skelmeshgroup_a65b79f720aeca283b83984e1fe2a520f}} 
+int {\bfseries vweights}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a08bdbaf064a06d8e080ddb37f57e01d8}\label{structskelmodel_1_1skelmeshgroup_a08bdbaf064a06d8e080ddb37f57e01d8}} 
+uchar $\ast$ {\bfseries vdata}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a317cf773f770c977a7d0be57a7f526ff}\label{structskelmodel_1_1skelmeshgroup_a317cf773f770c977a7d0be57a7f526ff}} 
+\hyperlink{structskelhitdata}{skelhitdata} $\ast$ {\bfseries hitdata}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a4abd5fdb404a0d623af1744db29d009c}\label{structskelmodel_1_1skelmeshgroup_a4abd5fdb404a0d623af1744db29d009c}} 
+static const int {\bfseries M\+A\+X\+B\+L\+E\+N\+D\+C\+A\+C\+HE} = 16
+\item 
+\mbox{\Hypertarget{structskelmodel_1_1skelmeshgroup_a9c16679c989abb7c3e685b643719d1fa}\label{structskelmodel_1_1skelmeshgroup_a9c16679c989abb7c3e685b643719d1fa}} 
+static const int {\bfseries M\+A\+X\+V\+B\+O\+C\+A\+C\+HE} = 16
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/skelmodel.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/hitzone.\+h\end{DoxyCompactItemize}

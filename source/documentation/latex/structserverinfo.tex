@@ -1,0 +1,78 @@
+\hypertarget{structserverinfo}{}\section{serverinfo Struct Reference}
+\label{structserverinfo}\index{serverinfo@{serverinfo}}
+Inheritance diagram for serverinfo\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structserverinfo}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserverinfo_a5585931216e80e7b5e23c596291c018e}\label{structserverinfo_a5585931216e80e7b5e23c596291c018e}} 
+enum \{ {\bfseries W\+A\+I\+T\+I\+NG} = I\+N\+T\+\_\+\+M\+AX, 
+{\bfseries M\+A\+X\+P\+I\+N\+GS} = 3
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserverinfo_a8b3f8b9fa5e67d18702c9ac851af157b}\label{structserverinfo_a8b3f8b9fa5e67d18702c9ac851af157b}} 
+void {\bfseries clearpings} ()
+\item 
+\mbox{\Hypertarget{structserverinfo_a22fbbb7b67142e3d392a31d4c6c5e092}\label{structserverinfo_a22fbbb7b67142e3d392a31d4c6c5e092}} 
+void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structserverinfo_a09ba18be77a73c7a5152a4ea2e31ba2e}\label{structserverinfo_a09ba18be77a73c7a5152a4ea2e31ba2e}} 
+void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{structserverinfo_ad1e318815a294883a5de514b5972de8d}\label{structserverinfo_ad1e318815a294883a5de514b5972de8d}} 
+void {\bfseries checkdecay} (int decay)
+\item 
+\mbox{\Hypertarget{structserverinfo_af2ce01f2911250eca58300379071501e}\label{structserverinfo_af2ce01f2911250eca58300379071501e}} 
+void {\bfseries calcping} ()
+\item 
+\mbox{\Hypertarget{structserverinfo_a258f78bc659b228253f2321fe5286d7a}\label{structserverinfo_a258f78bc659b228253f2321fe5286d7a}} 
+void {\bfseries addping} (int rtt, int millis)
+\item 
+\mbox{\Hypertarget{structserverinfo_aa870744206b96341855dfdfc65199427}\label{structserverinfo_aa870744206b96341855dfdfc65199427}} 
+const char $\ast$ {\bfseries status} () const
+\item 
+\mbox{\Hypertarget{structserverinfo_ae1f4a80f19b24f38589f89844417dfc7}\label{structserverinfo_ae1f4a80f19b24f38589f89844417dfc7}} 
+bool {\bfseries valid} () const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserverinfo_a9459d10b7d4a2823c678f56a3fa0474f}\label{structserverinfo_a9459d10b7d4a2823c678f56a3fa0474f}} 
+static bool {\bfseries compare} (\hyperlink{structserverinfo}{serverinfo} $\ast$a, \hyperlink{structserverinfo}{serverinfo} $\ast$b)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserverinfo_a1b0d10d966038762de74e72f14df9cf6}\label{structserverinfo_a1b0d10d966038762de74e72f14df9cf6}} 
+int {\bfseries resolved}
+\item 
+\mbox{\Hypertarget{structserverinfo_a2fef9db659e1c092b3bcc687baf8bea8}\label{structserverinfo_a2fef9db659e1c092b3bcc687baf8bea8}} 
+int {\bfseries lastping}
+\item 
+\mbox{\Hypertarget{structserverinfo_a58cf7b3ae493f880d723f24941529eec}\label{structserverinfo_a58cf7b3ae493f880d723f24941529eec}} 
+int {\bfseries nextping}
+\item 
+\mbox{\Hypertarget{structserverinfo_a139959283b09102afa0bf0a1c752de97}\label{structserverinfo_a139959283b09102afa0bf0a1c752de97}} 
+int {\bfseries pings} \mbox{[}M\+A\+X\+P\+I\+N\+GS\mbox{]}
+\item 
+\mbox{\Hypertarget{structserverinfo_afe2bf4ff531756acdcbe25c8f14adc92}\label{structserverinfo_afe2bf4ff531756acdcbe25c8f14adc92}} 
+E\+Net\+Address {\bfseries address}
+\item 
+\mbox{\Hypertarget{structserverinfo_a539d5648cf3e20fdb70e054cc63bddf7}\label{structserverinfo_a539d5648cf3e20fdb70e054cc63bddf7}} 
+bool {\bfseries keep}
+\item 
+\mbox{\Hypertarget{structserverinfo_a97688d9e74e850154390ae1a466bd945}\label{structserverinfo_a97688d9e74e850154390ae1a466bd945}} 
+const char $\ast$ {\bfseries password}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/serverbrowser.\+cpp\end{DoxyCompactItemize}

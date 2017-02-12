@@ -1,0 +1,106 @@
+\hypertarget{struct_u_i_1_1_text_editor}{}\section{UI\+:\+:Text\+Editor Struct Reference}
+\label{struct_u_i_1_1_text_editor}\index{U\+I\+::\+Text\+Editor@{U\+I\+::\+Text\+Editor}}
+Inheritance diagram for UI\+:\+:Text\+Editor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{struct_u_i_1_1_text_editor}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_aa9f3b7e8c7e5a7e4874b5be25f340ef4}\label{struct_u_i_1_1_text_editor_aa9f3b7e8c7e5a7e4874b5be25f340ef4}} 
+void {\bfseries setup} (const char $\ast$name, int length, int height, float scale\+\_\+=1, const char $\ast$initval=N\+U\+LL, int mode=E\+D\+I\+T\+O\+R\+U\+S\+ED, const char $\ast$keyfilter\+\_\+=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a5c2d22e741949f9b9deea78a12e1bc03}\label{struct_u_i_1_1_text_editor_a5c2d22e741949f9b9deea78a12e1bc03}} 
+void {\bfseries setfocus} ()
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_ab2a96353f81cfc817856607ac9c438dc}\label{struct_u_i_1_1_text_editor_ab2a96353f81cfc817856607ac9c438dc}} 
+void {\bfseries clearfocus} ()
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_ac81f2488ef7950a915b875d19178011e}\label{struct_u_i_1_1_text_editor_ac81f2488ef7950a915b875d19178011e}} 
+bool {\bfseries isfocus} () const
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a616f61faa707998fb2c9fa29b7b3ac20}\label{struct_u_i_1_1_text_editor_a616f61faa707998fb2c9fa29b7b3ac20}} 
+const char $\ast$ {\bfseries gettype} () const
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_aaa41d6594001f42dd42bb0934d150ed0}\label{struct_u_i_1_1_text_editor_aaa41d6594001f42dd42bb0934d150ed0}} 
+bool {\bfseries target} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a1cdcbceeb9dda16b8a8d313e694c9057}\label{struct_u_i_1_1_text_editor_a1cdcbceeb9dda16b8a8d313e694c9057}} 
+float {\bfseries drawscale} () const
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_ab65379c8a3c60b7ba495a0338ea519a5}\label{struct_u_i_1_1_text_editor_ab65379c8a3c60b7ba495a0338ea519a5}} 
+void {\bfseries draw} (float sx, float sy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a9495133023602c5173a5fdcd7ddecd0c}\label{struct_u_i_1_1_text_editor_a9495133023602c5173a5fdcd7ddecd0c}} 
+void {\bfseries layout} ()
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_ab83559027543ac4fc915780e56d7cb95}\label{struct_u_i_1_1_text_editor_ab83559027543ac4fc915780e56d7cb95}} 
+virtual void {\bfseries resetmark} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a3db84fc15498646ad64a537895303acd}\label{struct_u_i_1_1_text_editor_a3db84fc15498646ad64a537895303acd}} 
+void {\bfseries press} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a3845b2b2ea60b7f07d1b95a485e426e5}\label{struct_u_i_1_1_text_editor_a3845b2b2ea60b7f07d1b95a485e426e5}} 
+void {\bfseries hold} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a283dc3ae9c79351d38f83abdd783950f}\label{struct_u_i_1_1_text_editor_a283dc3ae9c79351d38f83abdd783950f}} 
+void {\bfseries scrollup} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a370d03d598adbf77a0a399b2002b7587}\label{struct_u_i_1_1_text_editor_a370d03d598adbf77a0a399b2002b7587}} 
+void {\bfseries scrolldown} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_ad1bd98b516072b8bbb21b9f2f40b35d3}\label{struct_u_i_1_1_text_editor_ad1bd98b516072b8bbb21b9f2f40b35d3}} 
+virtual void {\bfseries cancel} ()
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a6b20751cd6fdb90621f3fe2a2f4cf398}\label{struct_u_i_1_1_text_editor_a6b20751cd6fdb90621f3fe2a2f4cf398}} 
+virtual void {\bfseries commit} ()
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a994cd269023be636fd170488f5dde53d}\label{struct_u_i_1_1_text_editor_a994cd269023be636fd170488f5dde53d}} 
+bool {\bfseries key} (int code, bool isdown)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_ab6076330b8630428bc19716a5766c0d0}\label{struct_u_i_1_1_text_editor_ab6076330b8630428bc19716a5766c0d0}} 
+virtual bool {\bfseries allowtextinput} () const
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a7e152712f9e0841420b8728b5bca3c2f}\label{struct_u_i_1_1_text_editor_a7e152712f9e0841420b8728b5bca3c2f}} 
+bool {\bfseries textinput} (const char $\ast$str, int len)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_acd1ea8fd1c1756f44e3fa7363bbe7b91}\label{struct_u_i_1_1_text_editor_acd1ea8fd1c1756f44e3fa7363bbe7b91}} 
+static void {\bfseries setfocus} (\hyperlink{struct_u_i_1_1_text_editor}{Text\+Editor} $\ast$e)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a579a45d062249565ce07ef47ddd8c02c}\label{struct_u_i_1_1_text_editor_a579a45d062249565ce07ef47ddd8c02c}} 
+static const char $\ast$ {\bfseries typestr} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a1929d731b31619a7f0a878f8a34f6fab}\label{struct_u_i_1_1_text_editor_a1929d731b31619a7f0a878f8a34f6fab}} 
+float {\bfseries scale}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_aae5259f342a52e380ecbada22caadd06}\label{struct_u_i_1_1_text_editor_aae5259f342a52e380ecbada22caadd06}} 
+float {\bfseries offsetx}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_ae3169db4699049c43782719ee7570f0d}\label{struct_u_i_1_1_text_editor_ae3169db4699049c43782719ee7570f0d}} 
+float {\bfseries offsety}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a15361aae39aa663a1f2f5e6367574c69}\label{struct_u_i_1_1_text_editor_a15361aae39aa663a1f2f5e6367574c69}} 
+\hyperlink{structeditor}{editor} $\ast$ {\bfseries edit}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a2cbee99127973c676bbfee69d9bfe1b6}\label{struct_u_i_1_1_text_editor_a2cbee99127973c676bbfee69d9bfe1b6}} 
+char $\ast$ {\bfseries keyfilter}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_text_editor_a6a82bc50446d694ecd13868f4100465f}\label{struct_u_i_1_1_text_editor_a6a82bc50446d694ecd13868f4100465f}} 
+static \hyperlink{struct_u_i_1_1_text_editor}{Text\+Editor} $\ast$ {\bfseries focus} = N\+U\+LL
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/ui.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,151 @@
+\hypertarget{structbigint}{}\section{bigint$<$ B\+I\+\_\+\+D\+I\+G\+I\+TS $>$ Struct Template Reference}
+\label{structbigint}\index{bigint$<$ B\+I\+\_\+\+D\+I\+G\+I\+T\+S $>$@{bigint$<$ B\+I\+\_\+\+D\+I\+G\+I\+T\+S $>$}}
+Inheritance diagram for bigint$<$ B\+I\+\_\+\+D\+I\+G\+I\+TS $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structbigint}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structbigint_a4c2a0c25f7ff43453c16d96efa3d2726}\label{structbigint_a4c2a0c25f7ff43453c16d96efa3d2726}} 
+typedef ushort {\bfseries digit}
+\item 
+\mbox{\Hypertarget{structbigint_a5731355b36cfe9d5292607ff58ba269b}\label{structbigint_a5731355b36cfe9d5292607ff58ba269b}} 
+typedef uint {\bfseries dbldigit}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structbigint_a8e74f28ee62ce0851f3b6d947463344f}\label{structbigint_a8e74f28ee62ce0851f3b6d947463344f}} 
+{\bfseries bigint} (digit n)
+\item 
+\mbox{\Hypertarget{structbigint_a75949f03e408b5d1871a6a7122474442}\label{structbigint_a75949f03e408b5d1871a6a7122474442}} 
+{\bfseries bigint} (const char $\ast$s)
+\item 
+\mbox{\Hypertarget{structbigint_a623f3e31d947e7bbf8dfe9984d0dc953}\label{structbigint_a623f3e31d947e7bbf8dfe9984d0dc953}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\{\bfseries bigint} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y)
+\item 
+\mbox{\Hypertarget{structbigint_a0634f5c2abbcaf7fab7fa4f7eb61f357}\label{structbigint_a0634f5c2abbcaf7fab7fa4f7eb61f357}} 
+void {\bfseries parse} (const char $\ast$s)
+\item 
+\mbox{\Hypertarget{structbigint_af3f89b92f9f022f57deb3ec15908cc88}\label{structbigint_af3f89b92f9f022f57deb3ec15908cc88}} 
+void {\bfseries zero} ()
+\item 
+\mbox{\Hypertarget{structbigint_ad32bde5f57a87ed21fc114d951d302f0}\label{structbigint_ad32bde5f57a87ed21fc114d951d302f0}} 
+void {\bfseries print} (\hyperlink{structstream}{stream} $\ast$out) const
+\item 
+\mbox{\Hypertarget{structbigint_afe7caa5c899dfecf66337e338b109a8b}\label{structbigint_afe7caa5c899dfecf66337e338b109a8b}} 
+void {\bfseries printdigits} (\hyperlink{structvector}{vector}$<$ char $>$ \&buf) const
+\item 
+\mbox{\Hypertarget{structbigint_a0e57759a6513e0b417eba2d14ce6498b}\label{structbigint_a0e57759a6513e0b417eba2d14ce6498b}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\\hyperlink{structbigint}{bigint} \& {\bfseries operator=} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y)
+\item 
+\mbox{\Hypertarget{structbigint_a69dabbaae951785466a48875e08be9af}\label{structbigint_a69dabbaae951785466a48875e08be9af}} 
+bool {\bfseries iszero} () const
+\item 
+\mbox{\Hypertarget{structbigint_a9eab9fc59fd94f8864f872dcf43db5f6}\label{structbigint_a9eab9fc59fd94f8864f872dcf43db5f6}} 
+bool {\bfseries isone} () const
+\item 
+\mbox{\Hypertarget{structbigint_a6b30764ad71fc751522c2d88e8f51469}\label{structbigint_a6b30764ad71fc751522c2d88e8f51469}} 
+int {\bfseries numbits} () const
+\item 
+\mbox{\Hypertarget{structbigint_a8fc7a7e90cf0a50c0ad2154467622ca1}\label{structbigint_a8fc7a7e90cf0a50c0ad2154467622ca1}} 
+bool {\bfseries hasbit} (int n) const
+\item 
+\mbox{\Hypertarget{structbigint_a1f5588d9e62942ef3ca83996fc09eda9}\label{structbigint_a1f5588d9e62942ef3ca83996fc09eda9}} 
+bool {\bfseries morebits} (int n) const
+\item 
+\mbox{\Hypertarget{structbigint_a83de2e0a69faa39b852074a3c9f9c428}\label{structbigint_a83de2e0a69faa39b852074a3c9f9c428}} 
+{\footnotesize template$<$int X\+\_\+\+D\+I\+G\+I\+TS, int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\\hyperlink{structbigint}{bigint} \& {\bfseries add} (const \hyperlink{structbigint}{bigint}$<$ X\+\_\+\+D\+I\+G\+I\+TS $>$ \&x, const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y)
+\item 
+\mbox{\Hypertarget{structbigint_af39bc07861dec7beb1113f87c1210897}\label{structbigint_af39bc07861dec7beb1113f87c1210897}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\\hyperlink{structbigint}{bigint} \& {\bfseries add} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y)
+\item 
+\mbox{\Hypertarget{structbigint_a61d22457b7cefdcbc901c48ef4e0d6ac}\label{structbigint_a61d22457b7cefdcbc901c48ef4e0d6ac}} 
+{\footnotesize template$<$int X\+\_\+\+D\+I\+G\+I\+TS, int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\\hyperlink{structbigint}{bigint} \& {\bfseries sub} (const \hyperlink{structbigint}{bigint}$<$ X\+\_\+\+D\+I\+G\+I\+TS $>$ \&x, const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y)
+\item 
+\mbox{\Hypertarget{structbigint_ae78b03cf65e8dc3f83f295666db944d0}\label{structbigint_ae78b03cf65e8dc3f83f295666db944d0}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\\hyperlink{structbigint}{bigint} \& {\bfseries sub} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y)
+\item 
+\mbox{\Hypertarget{structbigint_a38a2d634b288f4c23f406bcb794de22b}\label{structbigint_a38a2d634b288f4c23f406bcb794de22b}} 
+void {\bfseries shrink} ()
+\item 
+\mbox{\Hypertarget{structbigint_a1cc3b88393338ca9c1813d36b4636601}\label{structbigint_a1cc3b88393338ca9c1813d36b4636601}} 
+void {\bfseries shrinkdigits} (int n)
+\item 
+\mbox{\Hypertarget{structbigint_a3498ee3a712c2057a900217ffc9e39fa}\label{structbigint_a3498ee3a712c2057a900217ffc9e39fa}} 
+void {\bfseries shrinkbits} (int n)
+\item 
+\mbox{\Hypertarget{structbigint_a02338caddb7028e53afe0d463a1ad436}\label{structbigint_a02338caddb7028e53afe0d463a1ad436}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\void {\bfseries copyshrinkdigits} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y, int n)
+\item 
+\mbox{\Hypertarget{structbigint_a9cc3c9a99a3b52b9da27500514f22bfa}\label{structbigint_a9cc3c9a99a3b52b9da27500514f22bfa}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\void {\bfseries copyshrinkbits} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y, int n)
+\item 
+\mbox{\Hypertarget{structbigint_a916fbb1ce43a8dff864d90452890b91e}\label{structbigint_a916fbb1ce43a8dff864d90452890b91e}} 
+{\footnotesize template$<$int X\+\_\+\+D\+I\+G\+I\+TS, int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\\hyperlink{structbigint}{bigint} \& {\bfseries mul} (const \hyperlink{structbigint}{bigint}$<$ X\+\_\+\+D\+I\+G\+I\+TS $>$ \&x, const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y)
+\item 
+\mbox{\Hypertarget{structbigint_a0a11867c8ff9b0f2ab796fe25b5f4733}\label{structbigint_a0a11867c8ff9b0f2ab796fe25b5f4733}} 
+\hyperlink{structbigint}{bigint} \& {\bfseries rshift} (int n)
+\item 
+\mbox{\Hypertarget{structbigint_a160aacfae19cfa773b89a1fb3c8b033f}\label{structbigint_a160aacfae19cfa773b89a1fb3c8b033f}} 
+\hyperlink{structbigint}{bigint} \& {\bfseries lshift} (int n)
+\item 
+\mbox{\Hypertarget{structbigint_ae14cecc50be88164a6b84456cbd0d600}\label{structbigint_ae14cecc50be88164a6b84456cbd0d600}} 
+void {\bfseries zerodigits} (int i, int n)
+\item 
+\mbox{\Hypertarget{structbigint_a97bf226c66e0b6ed908910997f7c4461}\label{structbigint_a97bf226c66e0b6ed908910997f7c4461}} 
+void {\bfseries zerobits} (int i, int n)
+\item 
+\mbox{\Hypertarget{structbigint_a4694155d250bbc896ddce4d294681c8f}\label{structbigint_a4694155d250bbc896ddce4d294681c8f}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\void {\bfseries copydigits} (int to, const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y, int from, int n)
+\item 
+\mbox{\Hypertarget{structbigint_a262bca28b013b25af643bb691af40a3a}\label{structbigint_a262bca28b013b25af643bb691af40a3a}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\void {\bfseries copybits} (int to, const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y, int from, int n)
+\item 
+\mbox{\Hypertarget{structbigint_a5d12ed3c4a08d3ccbb318d9c5fb906ce}\label{structbigint_a5d12ed3c4a08d3ccbb318d9c5fb906ce}} 
+void {\bfseries dupdigits} (int to, int from, int n)
+\item 
+\mbox{\Hypertarget{structbigint_aa74fdf7e468f16bf49383ef8083e5e62}\label{structbigint_aa74fdf7e468f16bf49383ef8083e5e62}} 
+void {\bfseries dupbits} (int to, int from, int n)
+\item 
+\mbox{\Hypertarget{structbigint_a52ae643a11c12fde1df268428ecae7cd}\label{structbigint_a52ae643a11c12fde1df268428ecae7cd}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\bool {\bfseries operator==} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y) const
+\item 
+\mbox{\Hypertarget{structbigint_aa1a4b8f666b091218a239487babfb05e}\label{structbigint_aa1a4b8f666b091218a239487babfb05e}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\bool {\bfseries operator!=} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y) const
+\item 
+\mbox{\Hypertarget{structbigint_adde64ef4f3e9c35e7d520a731108aba4}\label{structbigint_adde64ef4f3e9c35e7d520a731108aba4}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\bool {\bfseries operator$<$} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y) const
+\item 
+\mbox{\Hypertarget{structbigint_ac9a645a1bca2713954e5fc12a9712f30}\label{structbigint_ac9a645a1bca2713954e5fc12a9712f30}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\bool {\bfseries operator$>$} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y) const
+\item 
+\mbox{\Hypertarget{structbigint_ae3eea80018ba3c4348586b412be3674f}\label{structbigint_ae3eea80018ba3c4348586b412be3674f}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\bool {\bfseries operator$<$=} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y) const
+\item 
+\mbox{\Hypertarget{structbigint_a638bc743bb86d6df3d0f30ad5b771685}\label{structbigint_a638bc743bb86d6df3d0f30ad5b771685}} 
+{\footnotesize template$<$int Y\+\_\+\+D\+I\+G\+I\+TS$>$ }\\bool {\bfseries operator$>$=} (const \hyperlink{structbigint}{bigint}$<$ Y\+\_\+\+D\+I\+G\+I\+TS $>$ \&y) const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structbigint_aa307c43dfccd4ecf23aaa4533635eb4a}\label{structbigint_aa307c43dfccd4ecf23aaa4533635eb4a}} 
+static int {\bfseries parsedigits} (ushort $\ast$digits, int maxlen, const char $\ast$s)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structbigint_af00912d392799078ac8eb452a3b04d5a}\label{structbigint_af00912d392799078ac8eb452a3b04d5a}} 
+int {\bfseries len}
+\item 
+\mbox{\Hypertarget{structbigint_a0e5b25c406c20d6156f12bfd3f7e8596}\label{structbigint_a0e5b25c406c20d6156f12bfd3f7e8596}} 
+digit {\bfseries digits} \mbox{[}B\+I\+\_\+\+D\+I\+G\+I\+TS\mbox{]}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/crypto.\+cpp\end{DoxyCompactItemize}

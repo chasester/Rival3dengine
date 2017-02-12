@@ -1,0 +1,95 @@
+\hypertarget{structutf8stream}{}\section{utf8stream Struct Reference}
+\label{structutf8stream}\index{utf8stream@{utf8stream}}
+Inheritance diagram for utf8stream\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structutf8stream}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structutf8stream_a13619b369b728ffdb61d865801c1a8a5}\label{structutf8stream_a13619b369b728ffdb61d865801c1a8a5}} 
+enum \{ {\bfseries B\+U\+F\+S\+I\+ZE} = 4096
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structutf8stream_a5a5de465a8ba65d4ee7df313f3474664}\label{structutf8stream_a5a5de465a8ba65d4ee7df313f3474664}} 
+bool {\bfseries readbuf} (size\+\_\+t size=B\+U\+F\+S\+I\+ZE)
+\item 
+\mbox{\Hypertarget{structutf8stream_a8b70b64dd68e0c354314607d22a9eb1a}\label{structutf8stream_a8b70b64dd68e0c354314607d22a9eb1a}} 
+bool {\bfseries checkheader} ()
+\item 
+\mbox{\Hypertarget{structutf8stream_a3ce552942d3002dc901ba52efe08a14d}\label{structutf8stream_a3ce552942d3002dc901ba52efe08a14d}} 
+bool {\bfseries open} (\hyperlink{structstream}{stream} $\ast$f, const char $\ast$mode, bool needclose)
+\item 
+\mbox{\Hypertarget{structutf8stream_acf50a6ba63185ab1f1160597fd0b26c6}\label{structutf8stream_acf50a6ba63185ab1f1160597fd0b26c6}} 
+void {\bfseries finishreading} ()
+\item 
+\mbox{\Hypertarget{structutf8stream_a14eea012b71ce6fe77e6ebc5b7296aa2}\label{structutf8stream_a14eea012b71ce6fe77e6ebc5b7296aa2}} 
+void {\bfseries stopreading} ()
+\item 
+\mbox{\Hypertarget{structutf8stream_a4b20fab66cdb930f4b3c8345fa8596ce}\label{structutf8stream_a4b20fab66cdb930f4b3c8345fa8596ce}} 
+void {\bfseries stopwriting} ()
+\item 
+\mbox{\Hypertarget{structutf8stream_aa4791819dd4e90ce2339667f43339c41}\label{structutf8stream_aa4791819dd4e90ce2339667f43339c41}} 
+void {\bfseries close} ()
+\item 
+\mbox{\Hypertarget{structutf8stream_ada7dfa3f25e5b80e2d93f751f0d34819}\label{structutf8stream_ada7dfa3f25e5b80e2d93f751f0d34819}} 
+bool {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{structutf8stream_a7eb6abce80bab8145350bd1902516a98}\label{structutf8stream_a7eb6abce80bab8145350bd1902516a98}} 
+offset {\bfseries tell} ()
+\item 
+\mbox{\Hypertarget{structutf8stream_a4fe76ef7eda75c06ddd8762f815ef5ad}\label{structutf8stream_a4fe76ef7eda75c06ddd8762f815ef5ad}} 
+bool {\bfseries seek} (offset off, int whence)
+\item 
+\mbox{\Hypertarget{structutf8stream_a31f3af9959b2cdbe3c5cd2d4eb49db4b}\label{structutf8stream_a31f3af9959b2cdbe3c5cd2d4eb49db4b}} 
+size\+\_\+t {\bfseries read} (void $\ast$dst, size\+\_\+t len)
+\item 
+\mbox{\Hypertarget{structutf8stream_ae7e5bf0d4525c3fc6a60b83a396fb843}\label{structutf8stream_ae7e5bf0d4525c3fc6a60b83a396fb843}} 
+bool {\bfseries getline} (char $\ast$dst, size\+\_\+t len)
+\item 
+\mbox{\Hypertarget{structutf8stream_aecdf9b0fa5c0b6966b185ab30788d6db}\label{structutf8stream_aecdf9b0fa5c0b6966b185ab30788d6db}} 
+size\+\_\+t {\bfseries write} (const void $\ast$src, size\+\_\+t len)
+\item 
+\mbox{\Hypertarget{structutf8stream_a60bd7a6dbec98c37df0e1927b63be660}\label{structutf8stream_a60bd7a6dbec98c37df0e1927b63be660}} 
+bool {\bfseries flush} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structutf8stream_ae8ab7140d92c0e539ad0c7782ae73303}\label{structutf8stream_ae8ab7140d92c0e539ad0c7782ae73303}} 
+\hyperlink{structstream}{stream} $\ast$ {\bfseries file}
+\item 
+\mbox{\Hypertarget{structutf8stream_a92f9abf025144af7b718ac0579b57583}\label{structutf8stream_a92f9abf025144af7b718ac0579b57583}} 
+offset {\bfseries pos}
+\item 
+\mbox{\Hypertarget{structutf8stream_a7c03abf01873a7f97f24619e9a8e376f}\label{structutf8stream_a7c03abf01873a7f97f24619e9a8e376f}} 
+size\+\_\+t {\bfseries bufread}
+\item 
+\mbox{\Hypertarget{structutf8stream_af798efc9ea2c2b3d995c27afe8b6a4e2}\label{structutf8stream_af798efc9ea2c2b3d995c27afe8b6a4e2}} 
+size\+\_\+t {\bfseries bufcarry}
+\item 
+\mbox{\Hypertarget{structutf8stream_a96e1080fbb60ea669f740f1ec37f2aa0}\label{structutf8stream_a96e1080fbb60ea669f740f1ec37f2aa0}} 
+size\+\_\+t {\bfseries buflen}
+\item 
+\mbox{\Hypertarget{structutf8stream_a6572149d75525352d94412c9e0feff11}\label{structutf8stream_a6572149d75525352d94412c9e0feff11}} 
+bool {\bfseries reading}
+\item 
+\mbox{\Hypertarget{structutf8stream_a66044e654e225f2e57c483ed99a3ef3f}\label{structutf8stream_a66044e654e225f2e57c483ed99a3ef3f}} 
+bool {\bfseries writing}
+\item 
+\mbox{\Hypertarget{structutf8stream_a9354bcdf0ffd11de250f23c4f1be6689}\label{structutf8stream_a9354bcdf0ffd11de250f23c4f1be6689}} 
+bool {\bfseries autoclose}
+\item 
+\mbox{\Hypertarget{structutf8stream_ac602a61dc12c6ff87f8025449a657835}\label{structutf8stream_ac602a61dc12c6ff87f8025449a657835}} 
+uchar {\bfseries buf} \mbox{[}B\+U\+F\+S\+I\+ZE\mbox{]}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/stream.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,78 @@
+\hypertarget{structanimmodel_1_1mesh}{}\section{animmodel\+:\+:mesh Struct Reference}
+\label{structanimmodel_1_1mesh}\index{animmodel\+::mesh@{animmodel\+::mesh}}
+Inheritance diagram for animmodel\+:\+:mesh\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structanimmodel_1_1mesh}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structanimmodel_1_1mesh_1_1smoothdata}{smoothdata}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_ad786c1648b088539b073c070850110c4}\label{structanimmodel_1_1mesh_ad786c1648b088539b073c070850110c4}} 
+virtual void {\bfseries calcbb} (\hyperlink{structvec}{vec} \&bbmin, \hyperlink{structvec}{vec} \&bbmax, const \hyperlink{structmatrix4x3}{matrix4x3} \&m)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a3e7dfcc86f7dc00f449920c0f8841a04}\label{structanimmodel_1_1mesh_a3e7dfcc86f7dc00f449920c0f8841a04}} 
+virtual void {\bfseries gen\+B\+IH} (\hyperlink{struct_b_i_h_1_1mesh}{B\+I\+H\+::mesh} \&m)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a80da4277433e08bac26e7d77670bd080}\label{structanimmodel_1_1mesh_a80da4277433e08bac26e7d77670bd080}} 
+void {\bfseries gen\+B\+IH} (\hyperlink{structanimmodel_1_1skin}{skin} \&s, \hyperlink{structvector}{vector}$<$ \hyperlink{struct_b_i_h_1_1mesh}{B\+I\+H\+::mesh} $>$ \&bih, const \hyperlink{structmatrix4x3}{matrix4x3} \&t)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a73245d5bc464c4b92ae81c4bf638875d}\label{structanimmodel_1_1mesh_a73245d5bc464c4b92ae81c4bf638875d}} 
+virtual void {\bfseries genshadowmesh} (\hyperlink{structvector}{vector}$<$ \hyperlink{structtriangle}{triangle} $>$ \&tris, const \hyperlink{structmatrix4x3}{matrix4x3} \&m)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_ade162fa6b82ae67226136be0c191186e}\label{structanimmodel_1_1mesh_ade162fa6b82ae67226136be0c191186e}} 
+virtual void {\bfseries setshader} (\hyperlink{struct_shader}{Shader} $\ast$s, int row=0)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a99c63711cb3a0d380dab5f2d5a01ec07}\label{structanimmodel_1_1mesh_a99c63711cb3a0d380dab5f2d5a01ec07}} 
+{\footnotesize template$<$class V , class T $>$ }\\void {\bfseries smoothnorms} (V $\ast$verts, int numverts, T $\ast$tris, int numtris, float limit, bool areaweight)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_ad306c9f3ed4469c326152e3ee0aed520}\label{structanimmodel_1_1mesh_ad306c9f3ed4469c326152e3ee0aed520}} 
+{\footnotesize template$<$class V , class T $>$ }\\void {\bfseries buildnorms} (V $\ast$verts, int numverts, T $\ast$tris, int numtris, bool areaweight)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_ac6aad360dc3f947d833a8f1a1a56d4d0}\label{structanimmodel_1_1mesh_ac6aad360dc3f947d833a8f1a1a56d4d0}} 
+{\footnotesize template$<$class V , class T $>$ }\\void {\bfseries buildnorms} (V $\ast$verts, int numverts, T $\ast$tris, int numtris, bool areaweight, int numframes)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a8271ad158eac68d3b5a07110f0d2368e}\label{structanimmodel_1_1mesh_a8271ad158eac68d3b5a07110f0d2368e}} 
+{\footnotesize template$<$class V , class TC , class T $>$ }\\void {\bfseries calctangents} (V $\ast$verts, TC $\ast$tcverts, int numverts, T $\ast$tris, int numtris, bool areaweight)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a65a1088f41aba10cb8347902cbd9778d}\label{structanimmodel_1_1mesh_a65a1088f41aba10cb8347902cbd9778d}} 
+{\footnotesize template$<$class V , class TC , class T $>$ }\\void {\bfseries calctangents} (V $\ast$verts, TC $\ast$tcverts, int numverts, T $\ast$tris, int numtris, bool areaweight, int numframes)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_ac60fd29f55e0cc7e907f23a546ea5755}\label{structanimmodel_1_1mesh_ac60fd29f55e0cc7e907f23a546ea5755}} 
+static void {\bfseries fixqtangent} (\hyperlink{structquat}{quat} \&q, float bt)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a24e9629a2c6817e3e828b4c77686b3fa}\label{structanimmodel_1_1mesh_a24e9629a2c6817e3e828b4c77686b3fa}} 
+{\footnotesize template$<$class V $>$ }\\static void {\bfseries calctangent} (V \&v, const \hyperlink{structvec}{vec} \&n, const \hyperlink{structvec}{vec} \&t, float bt)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a2a98dd6a648c9931de06289508bf5298}\label{structanimmodel_1_1mesh_a2a98dd6a648c9931de06289508bf5298}} 
+\hyperlink{structanimmodel_1_1meshgroup}{meshgroup} $\ast$ {\bfseries group}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a79fe1da62857c70cf31b6aab0d52a653}\label{structanimmodel_1_1mesh_a79fe1da62857c70cf31b6aab0d52a653}} 
+char $\ast$ {\bfseries name}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_abc4839a30ec8b3991a9dbfdbcb3e8e3b}\label{structanimmodel_1_1mesh_abc4839a30ec8b3991a9dbfdbcb3e8e3b}} 
+bool {\bfseries cancollide}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a63b44ced5ac5b323818a239b52069012}\label{structanimmodel_1_1mesh_a63b44ced5ac5b323818a239b52069012}} 
+bool {\bfseries canrender}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1mesh_a4ad8a0d4a2b8e40da01d42b4f7b44eb5}\label{structanimmodel_1_1mesh_a4ad8a0d4a2b8e40da01d42b4f7b44eb5}} 
+bool {\bfseries noclip}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/animmodel.\+h\end{DoxyCompactItemize}

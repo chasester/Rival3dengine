@@ -1,0 +1,194 @@
+\hypertarget{structserver_1_1clientinfo}{}\section{server\+:\+:clientinfo Struct Reference}
+\label{structserver_1_1clientinfo}\index{server\+::clientinfo@{server\+::clientinfo}}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ad6da0c29adb5ee59f89caf401b430790}\label{structserver_1_1clientinfo_ad6da0c29adb5ee59f89caf401b430790}} 
+enum \{ {\bfseries P\+U\+S\+H\+M\+I\+L\+L\+IS} = 3000
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a38a1bf4febbe675f44ee31224f746ff6}\label{structserver_1_1clientinfo_a38a1bf4febbe675f44ee31224f746ff6}} 
+void {\bfseries addevent} (\hyperlink{structserver_1_1gameevent}{gameevent} $\ast$e)
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a2466cde18027b1da1e0034c8d12d2c62}\label{structserver_1_1clientinfo_a2466cde18027b1da1e0034c8d12d2c62}} 
+int {\bfseries calcpushrange} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a334e58d4f2f0698cbbd087c5a9a73cef}\label{structserver_1_1clientinfo_a334e58d4f2f0698cbbd087c5a9a73cef}} 
+bool {\bfseries checkpushed} (int millis, int range)
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_af0e88f0a6b326d2199ec21809365b3ca}\label{structserver_1_1clientinfo_af0e88f0a6b326d2199ec21809365b3ca}} 
+void {\bfseries scheduleexceeded} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ab1aafce1865c46d1cdece4434a6628db}\label{structserver_1_1clientinfo_ab1aafce1865c46d1cdece4434a6628db}} 
+void {\bfseries setexceeded} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_af77ef8d33e9be42088687e0e998d6f35}\label{structserver_1_1clientinfo_af77ef8d33e9be42088687e0e998d6f35}} 
+void {\bfseries setpushed} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a7871e865162abe6c0c708cefa90524d7}\label{structserver_1_1clientinfo_a7871e865162abe6c0c708cefa90524d7}} 
+bool {\bfseries checkexceeded} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a1d6ac1b1bb4bbf48669d88791c4794d5}\label{structserver_1_1clientinfo_a1d6ac1b1bb4bbf48669d88791c4794d5}} 
+void {\bfseries mapchange} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ac4745359622a834ee79bd8dcbd757546}\label{structserver_1_1clientinfo_ac4745359622a834ee79bd8dcbd757546}} 
+void {\bfseries reassign} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a801db6eb4ec0397d275f4e09be79569c}\label{structserver_1_1clientinfo_a801db6eb4ec0397d275f4e09be79569c}} 
+void {\bfseries cleanclipboard} (bool fullclean=true)
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ae385924a6d99e68bd6b4550c50713b12}\label{structserver_1_1clientinfo_ae385924a6d99e68bd6b4550c50713b12}} 
+void {\bfseries cleanauthkick} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a83892c395c493c8fe9a931e0a0b0440c}\label{structserver_1_1clientinfo_a83892c395c493c8fe9a931e0a0b0440c}} 
+void {\bfseries cleanauth} (bool full=true)
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a0c423be136e2ca972f4b13b053c0823d}\label{structserver_1_1clientinfo_a0c423be136e2ca972f4b13b053c0823d}} 
+void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a33ed0f9aab1ca3a28738b760fd68f583}\label{structserver_1_1clientinfo_a33ed0f9aab1ca3a28738b760fd68f583}} 
+int {\bfseries geteventmillis} (int servmillis, int clientmillis)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a3ecc5031c20160ed0b72324d07a371a5}\label{structserver_1_1clientinfo_a3ecc5031c20160ed0b72324d07a371a5}} 
+int {\bfseries clientnum}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_aa803b3ecd777f7e83153e1d4b83f1a10}\label{structserver_1_1clientinfo_aa803b3ecd777f7e83153e1d4b83f1a10}} 
+int {\bfseries ownernum}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_afb3498182d64f6a2e86e0dcd835d17df}\label{structserver_1_1clientinfo_afb3498182d64f6a2e86e0dcd835d17df}} 
+int {\bfseries connectmillis}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a0b45abd9fb3f85e5e0ff62b86f1ddfa4}\label{structserver_1_1clientinfo_a0b45abd9fb3f85e5e0ff62b86f1ddfa4}} 
+int {\bfseries sessionid}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_afdb907491d4453ec7634b63f78e77d5c}\label{structserver_1_1clientinfo_afdb907491d4453ec7634b63f78e77d5c}} 
+int {\bfseries overflow}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_afdcfc91a4e7ff892fe2afb9e1e7c8e05}\label{structserver_1_1clientinfo_afdcfc91a4e7ff892fe2afb9e1e7c8e05}} 
+cubestr {\bfseries name}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a8959f2299efb82796751be391d1a372c}\label{structserver_1_1clientinfo_a8959f2299efb82796751be391d1a372c}} 
+cubestr {\bfseries mapvote}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a278efa351776a339538d904f2aea05f6}\label{structserver_1_1clientinfo_a278efa351776a339538d904f2aea05f6}} 
+int {\bfseries team}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_affdbed069334fe3811cde2f02e5d842e}\label{structserver_1_1clientinfo_affdbed069334fe3811cde2f02e5d842e}} 
+int {\bfseries playermodel}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a7f3a6ac80a4decd6902e2a567a017917}\label{structserver_1_1clientinfo_a7f3a6ac80a4decd6902e2a567a017917}} 
+int {\bfseries playercolor}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ace1c7964d3d41ae6ce0a3869ececc586}\label{structserver_1_1clientinfo_ace1c7964d3d41ae6ce0a3869ececc586}} 
+int {\bfseries modevote}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a8773b9cb88b5d7c5a5185cac05630847}\label{structserver_1_1clientinfo_a8773b9cb88b5d7c5a5185cac05630847}} 
+int {\bfseries privilege}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_accc64cfb12e5c816af25f3c568a5b2d4}\label{structserver_1_1clientinfo_accc64cfb12e5c816af25f3c568a5b2d4}} 
+bool {\bfseries connected}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a15acb839659009482c46e15eaef5a62f}\label{structserver_1_1clientinfo_a15acb839659009482c46e15eaef5a62f}} 
+bool {\bfseries local}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a8be92879ff4f263d3e0bc499c283fc7b}\label{structserver_1_1clientinfo_a8be92879ff4f263d3e0bc499c283fc7b}} 
+bool {\bfseries timesync}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a49833d3ccda00e0aca0ed11572b7d4c1}\label{structserver_1_1clientinfo_a49833d3ccda00e0aca0ed11572b7d4c1}} 
+int {\bfseries gameoffset}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a5478b64f83ca1725ffb3d89ce10e1fd6}\label{structserver_1_1clientinfo_a5478b64f83ca1725ffb3d89ce10e1fd6}} 
+int {\bfseries lastevent}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a6ddd8bd687906f18b8c7215b653d08ca}\label{structserver_1_1clientinfo_a6ddd8bd687906f18b8c7215b653d08ca}} 
+int {\bfseries pushed}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a11894e094e882ce0097ddfd4d60a4390}\label{structserver_1_1clientinfo_a11894e094e882ce0097ddfd4d60a4390}} 
+int {\bfseries exceeded}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ae09ebbc2d6b3b329fa600444c88d0526}\label{structserver_1_1clientinfo_ae09ebbc2d6b3b329fa600444c88d0526}} 
+\hyperlink{structserver_1_1servstate}{servstate} {\bfseries state}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a7da3c16a57016e0ddbee344a92e9576e}\label{structserver_1_1clientinfo_a7da3c16a57016e0ddbee344a92e9576e}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structserver_1_1gameevent}{gameevent} $\ast$ $>$ {\bfseries events}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_af6c6d82d90bc2cc66158e9a162b353cc}\label{structserver_1_1clientinfo_af6c6d82d90bc2cc66158e9a162b353cc}} 
+\hyperlink{structvector}{vector}$<$ uchar $>$ {\bfseries position}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ac935533746dc0e88c5cb8ab44cc99167}\label{structserver_1_1clientinfo_ac935533746dc0e88c5cb8ab44cc99167}} 
+\hyperlink{structvector}{vector}$<$ uchar $>$ {\bfseries messages}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ad2a4c6d2bba1d0d05451b6a046f0cf51}\label{structserver_1_1clientinfo_ad2a4c6d2bba1d0d05451b6a046f0cf51}} 
+uchar $\ast$ {\bfseries wsdata}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_af187ed2b9e2f7702cff33db3e6e741ef}\label{structserver_1_1clientinfo_af187ed2b9e2f7702cff33db3e6e741ef}} 
+int {\bfseries wslen}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a87ba878f713289a84864bf32a5cf55f9}\label{structserver_1_1clientinfo_a87ba878f713289a84864bf32a5cf55f9}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ $>$ {\bfseries bots}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a191fa2fea779563d9a090b2ea88f0845}\label{structserver_1_1clientinfo_a191fa2fea779563d9a090b2ea88f0845}} 
+int {\bfseries ping}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_af92725649c7a594e1b1fad2bf655e2b8}\label{structserver_1_1clientinfo_af92725649c7a594e1b1fad2bf655e2b8}} 
+int {\bfseries aireinit}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a469bd680490aced6200475132c12789f}\label{structserver_1_1clientinfo_a469bd680490aced6200475132c12789f}} 
+cubestr {\bfseries clientmap}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a1b906701a66ca6c2dcb0ac2a8dc102fd}\label{structserver_1_1clientinfo_a1b906701a66ca6c2dcb0ac2a8dc102fd}} 
+int {\bfseries mapcrc}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a390fd938f9ce2f31303266a6cc0e2dc6}\label{structserver_1_1clientinfo_a390fd938f9ce2f31303266a6cc0e2dc6}} 
+bool {\bfseries warned}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a51d591008d2698bcec88759f7520ea54}\label{structserver_1_1clientinfo_a51d591008d2698bcec88759f7520ea54}} 
+bool {\bfseries gameclip}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a106d722fa0c5c056a37bdcbfa7021705}\label{structserver_1_1clientinfo_a106d722fa0c5c056a37bdcbfa7021705}} 
+E\+Net\+Packet $\ast$ {\bfseries getdemo}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_afe90c90631889918528cd92efca6bd74}\label{structserver_1_1clientinfo_afe90c90631889918528cd92efca6bd74}} 
+E\+Net\+Packet $\ast$ {\bfseries getmap}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a9b361c429e68884cde9c7489af43e366}\label{structserver_1_1clientinfo_a9b361c429e68884cde9c7489af43e366}} 
+E\+Net\+Packet $\ast$ {\bfseries clipboard}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a3250512af682e86a507d65767cccdb33}\label{structserver_1_1clientinfo_a3250512af682e86a507d65767cccdb33}} 
+int {\bfseries lastclipboard}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ab8a50a8d6060a012441eb5e265179a73}\label{structserver_1_1clientinfo_ab8a50a8d6060a012441eb5e265179a73}} 
+int {\bfseries needclipboard}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ae9bf281b7742705a23ffec8cbc67e290}\label{structserver_1_1clientinfo_ae9bf281b7742705a23ffec8cbc67e290}} 
+int {\bfseries connectauth}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a5acab1da73faeaab8661d660f8440e29}\label{structserver_1_1clientinfo_a5acab1da73faeaab8661d660f8440e29}} 
+uint {\bfseries authreq}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ad53b41b38baa0fbdd93e135c88c3a348}\label{structserver_1_1clientinfo_ad53b41b38baa0fbdd93e135c88c3a348}} 
+cubestr {\bfseries authname}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_ae424791dd7324173d9599ad4e7a47fe6}\label{structserver_1_1clientinfo_ae424791dd7324173d9599ad4e7a47fe6}} 
+cubestr {\bfseries authdesc}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_adfbba599ef870c7abab914b5a8bfa4a5}\label{structserver_1_1clientinfo_adfbba599ef870c7abab914b5a8bfa4a5}} 
+void $\ast$ {\bfseries authchallenge}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a7328f0d7bb6dd93df11a82ab864be89a}\label{structserver_1_1clientinfo_a7328f0d7bb6dd93df11a82ab864be89a}} 
+int {\bfseries authkickvictim}
+\item 
+\mbox{\Hypertarget{structserver_1_1clientinfo_a74b689c598a29ac26e9a8535cf9fd7cb}\label{structserver_1_1clientinfo_a74b689c598a29ac26e9a8535cf9fd7cb}} 
+char $\ast$ {\bfseries authkickreason}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/game/server.\+cpp\end{DoxyCompactItemize}

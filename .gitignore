@@ -32,3 +32,4 @@ bin/tesseract.exp
 *.map
 bin/tesseract.pdb
 *.BAK
+*.BAK

@@ -1,0 +1,37 @@
+\hypertarget{struct_my_overlap_callback}{}\section{My\+Overlap\+Callback Struct Reference}
+\label{struct_my_overlap_callback}\index{My\+Overlap\+Callback@{My\+Overlap\+Callback}}
+Inheritance diagram for My\+Overlap\+Callback\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_my_overlap_callback}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_my_overlap_callback_aab0ec53437855bd51e152d90c87bc308}\label{struct_my_overlap_callback_aab0ec53437855bd51e152d90c87bc308}} 
+{\bfseries My\+Overlap\+Callback} (const bt\+Vector3 \&aabb\+Min, const bt\+Vector3 \&aabb\+Max)
+\item 
+\mbox{\Hypertarget{struct_my_overlap_callback_a800de19342d0fe5b72e75e1f52c4f6c0}\label{struct_my_overlap_callback_a800de19342d0fe5b72e75e1f52c4f6c0}} 
+virtual bool {\bfseries process} (const bt\+Broadphase\+Proxy $\ast$proxy)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_my_overlap_callback_aef47a99d3560e8e3c9fc9acdf47446de}\label{struct_my_overlap_callback_aef47a99d3560e8e3c9fc9acdf47446de}} 
+bt\+Vector3 {\bfseries m\+\_\+query\+Aabb\+Min}
+\item 
+\mbox{\Hypertarget{struct_my_overlap_callback_a7a4eef43032ad6c7762059a07a1ed463}\label{struct_my_overlap_callback_a7a4eef43032ad6c7762059a07a1ed463}} 
+bt\+Vector3 {\bfseries m\+\_\+query\+Aabb\+Max}
+\item 
+\mbox{\Hypertarget{struct_my_overlap_callback_aa956303c4fc43b1598be062437cf9595}\label{struct_my_overlap_callback_aa956303c4fc43b1598be062437cf9595}} 
+int {\bfseries m\+\_\+num\+Overlap}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{struct_my_overlap_callback}{My\+Overlap\+Callback} is used to show how to collect object that overlap with a given bounding box defined by aabb\+Min and aabb\+Max. See m\+\_\+physics\+Setup.\+m\+\_\+dynamics\+World-\/$>$get\+Broadphase()-\/$>$aabb\+Test. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/A\+J\+M\+Phys.\+cpp\end{DoxyCompactItemize}

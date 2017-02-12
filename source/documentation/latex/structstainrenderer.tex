@@ -1,0 +1,154 @@
+\hypertarget{structstainrenderer}{}\section{stainrenderer Struct Reference}
+\label{structstainrenderer}\index{stainrenderer@{stainrenderer}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a8b1460d4b6f4c49fe69cadf7a2142547}\label{structstainrenderer_a8b1460d4b6f4c49fe69cadf7a2142547}} 
+{\bfseries stainrenderer} (const char $\ast$texname, int flags=0, int fadeintime=0, int fadeouttime=1000, int timetolive=-\/1)
+\item 
+\mbox{\Hypertarget{structstainrenderer_a395d93b22bba104adbcc48555a0edaf3}\label{structstainrenderer_a395d93b22bba104adbcc48555a0edaf3}} 
+bool {\bfseries usegbuffer} () const
+\item 
+\mbox{\Hypertarget{structstainrenderer_abb81eb2063beb22afbfec8b3aa8e3e4a}\label{structstainrenderer_abb81eb2063beb22afbfec8b3aa8e3e4a}} 
+void {\bfseries init} (int tris)
+\item 
+\mbox{\Hypertarget{structstainrenderer_a031f1359671ce0724cfa738375a8507f}\label{structstainrenderer_a031f1359671ce0724cfa738375a8507f}} 
+void {\bfseries preload} ()
+\item 
+\mbox{\Hypertarget{structstainrenderer_a15085b7a7a4d1a08e9c3bb4c6535227b}\label{structstainrenderer_a15085b7a7a4d1a08e9c3bb4c6535227b}} 
+int {\bfseries totalstains} ()
+\item 
+\mbox{\Hypertarget{structstainrenderer_af08707c1a7f329330945a1defbae69ed}\label{structstainrenderer_af08707c1a7f329330945a1defbae69ed}} 
+bool {\bfseries hasstains} (int sbuf)
+\item 
+\mbox{\Hypertarget{structstainrenderer_a2031153c1eb97c334d98c0613224b425}\label{structstainrenderer_a2031153c1eb97c334d98c0613224b425}} 
+void {\bfseries clearstains} ()
+\item 
+\mbox{\Hypertarget{structstainrenderer_ab1336a0207d225f67537aa00c7050c18}\label{structstainrenderer_ab1336a0207d225f67537aa00c7050c18}} 
+int {\bfseries freestain} ()
+\item 
+\mbox{\Hypertarget{structstainrenderer_a7103443287966274185977840259f00f}\label{structstainrenderer_a7103443287966274185977840259f00f}} 
+bool {\bfseries faded} (const \hyperlink{structstaininfo}{staininfo} \&d) const
+\item 
+\mbox{\Hypertarget{structstainrenderer_adf3f8440894207b922aa236a839c1400}\label{structstainrenderer_adf3f8440894207b922aa236a839c1400}} 
+void {\bfseries fadestain} (const \hyperlink{structstaininfo}{staininfo} \&d, uchar alpha)
+\item 
+\mbox{\Hypertarget{structstainrenderer_a8d9e28267b659e7cdeb38ed2c2dcd336}\label{structstainrenderer_a8d9e28267b659e7cdeb38ed2c2dcd336}} 
+void {\bfseries clearfadedstains} ()
+\item 
+\mbox{\Hypertarget{structstainrenderer_a6fb5c66b095306fbc1bc8d8119f34420}\label{structstainrenderer_a6fb5c66b095306fbc1bc8d8119f34420}} 
+void {\bfseries fadeinstains} ()
+\item 
+\mbox{\Hypertarget{structstainrenderer_a12a9293915bbb4b9a45decab078a7685}\label{structstainrenderer_a12a9293915bbb4b9a45decab078a7685}} 
+void {\bfseries fadeoutstains} ()
+\item 
+\mbox{\Hypertarget{structstainrenderer_af59f0bd9c2ef9549f4e9dfffc7526ec1}\label{structstainrenderer_af59f0bd9c2ef9549f4e9dfffc7526ec1}} 
+void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structstainrenderer_a4f15217797fbce8f77a6538f3422ae47}\label{structstainrenderer_a4f15217797fbce8f77a6538f3422ae47}} 
+void {\bfseries render} (int sbuf)
+\item 
+\mbox{\Hypertarget{structstainrenderer_a216cec6bcfafeedeb554af6c7298d563}\label{structstainrenderer_a216cec6bcfafeedeb554af6c7298d563}} 
+\hyperlink{structstaininfo}{staininfo} \& {\bfseries newstain} ()
+\item 
+\mbox{\Hypertarget{structstainrenderer_a4ce0c1568040115ecf1d4b1a99740ec9}\label{structstainrenderer_a4ce0c1568040115ecf1d4b1a99740ec9}} 
+void {\bfseries addstain} (const \hyperlink{structvec}{vec} \&center, const \hyperlink{structvec}{vec} \&dir, float radius, const \hyperlink{structbvec}{bvec} \&color, int info)
+\item 
+\mbox{\Hypertarget{structstainrenderer_a75c14c0a8d7af49a1768b03647b58655}\label{structstainrenderer_a75c14c0a8d7af49a1768b03647b58655}} 
+void {\bfseries gentris} (\hyperlink{structcube}{cube} \&cu, int orient, const \hyperlink{structivec}{ivec} \&o, int size, \hyperlink{structmaterialsurface}{materialsurface} $\ast$mat=N\+U\+LL, int vismask=0)
+\item 
+\mbox{\Hypertarget{structstainrenderer_a7a9fd8cb7f8733f189f7d52975afa267}\label{structstainrenderer_a7a9fd8cb7f8733f189f7d52975afa267}} 
+void {\bfseries findmaterials} (\hyperlink{structvtxarray}{vtxarray} $\ast$va)
+\item 
+\mbox{\Hypertarget{structstainrenderer_ac64c815bcb9c05e96ac4be0932b154d2}\label{structstainrenderer_ac64c815bcb9c05e96ac4be0932b154d2}} 
+void {\bfseries findescaped} (\hyperlink{structcube}{cube} $\ast$c, const \hyperlink{structivec}{ivec} \&o, int size, int escaped)
+\item 
+\mbox{\Hypertarget{structstainrenderer_a4cc0543c6b2c05a2d3c58f3d1d4d211c}\label{structstainrenderer_a4cc0543c6b2c05a2d3c58f3d1d4d211c}} 
+void {\bfseries genmmtri} (const \hyperlink{structvec}{vec} v\mbox{[}3\mbox{]})
+\item 
+\mbox{\Hypertarget{structstainrenderer_a3c58aa7bebaa09ccd76b8294e1e2da49}\label{structstainrenderer_a3c58aa7bebaa09ccd76b8294e1e2da49}} 
+void {\bfseries genmmtris} (\hyperlink{structoctaentities}{octaentities} \&oe)
+\item 
+\mbox{\Hypertarget{structstainrenderer_a7317f18d9f1ea9b19c704f0d9adc136b}\label{structstainrenderer_a7317f18d9f1ea9b19c704f0d9adc136b}} 
+void {\bfseries gentris} (\hyperlink{structcube}{cube} $\ast$c, const \hyperlink{structivec}{ivec} \&o, int size, int escaped=0)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a36ae9c192c3b52b7cf290584385fb1d7}\label{structstainrenderer_a36ae9c192c3b52b7cf290584385fb1d7}} 
+static void {\bfseries setuprenderstate} (int sbuf, bool gbuf, int layer)
+\item 
+\mbox{\Hypertarget{structstainrenderer_a28168ee14a546301e0f0bf9bec35d830}\label{structstainrenderer_a28168ee14a546301e0f0bf9bec35d830}} 
+static void {\bfseries cleanuprenderstate} (int sbuf, bool gbuf, int layer)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a2ae16d6194a7d7b0a43eb1109bdebb3b}\label{structstainrenderer_a2ae16d6194a7d7b0a43eb1109bdebb3b}} 
+const char $\ast$ {\bfseries texname}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a0bafc4ebd88bed4e2a1b253fe251f526}\label{structstainrenderer_a0bafc4ebd88bed4e2a1b253fe251f526}} 
+int {\bfseries flags}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a3fd8a7cd6eee0b19c5773c47dc602529}\label{structstainrenderer_a3fd8a7cd6eee0b19c5773c47dc602529}} 
+int {\bfseries fadeintime}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a00877517d3f5b50cb3ba1ccbb91fd7cf}\label{structstainrenderer_a00877517d3f5b50cb3ba1ccbb91fd7cf}} 
+int {\bfseries fadeouttime}
+\item 
+\mbox{\Hypertarget{structstainrenderer_acc9a1cd6570cf2a668347ddca21b1e6a}\label{structstainrenderer_acc9a1cd6570cf2a668347ddca21b1e6a}} 
+int {\bfseries timetolive}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a7c522ee3b0be4693b804776ac67c538c}\label{structstainrenderer_a7c522ee3b0be4693b804776ac67c538c}} 
+\hyperlink{struct_texture}{Texture} $\ast$ {\bfseries tex}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a65e05d64412faffd46fd09ebd204ac85}\label{structstainrenderer_a65e05d64412faffd46fd09ebd204ac85}} 
+\hyperlink{structstaininfo}{staininfo} $\ast$ {\bfseries stains}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a6e82c8f0ff0695904e8ee072d4d83024}\label{structstainrenderer_a6e82c8f0ff0695904e8ee072d4d83024}} 
+int {\bfseries maxstains}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a3b81c0f3d876b5b80687d37dcc24ff32}\label{structstainrenderer_a3b81c0f3d876b5b80687d37dcc24ff32}} 
+int {\bfseries startstain}
+\item 
+\mbox{\Hypertarget{structstainrenderer_aeb56b315cbc3f2dda94918cd533b3452}\label{structstainrenderer_aeb56b315cbc3f2dda94918cd533b3452}} 
+int {\bfseries endstain}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a9e22746e57879834530b4e9fcde3809b}\label{structstainrenderer_a9e22746e57879834530b4e9fcde3809b}} 
+\hyperlink{structstainbuffer}{stainbuffer} {\bfseries verts} \mbox{[}N\+U\+M\+S\+T\+A\+I\+N\+B\+U\+FS\mbox{]}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a426b87c6ea11bf94b8606f2a4df4b63b}\label{structstainrenderer_a426b87c6ea11bf94b8606f2a4df4b63b}} 
+\hyperlink{structivec}{ivec} {\bfseries bbmin}
+\item 
+\mbox{\Hypertarget{structstainrenderer_ab4e35639ab7fcb094b1e030c93d28ddd}\label{structstainrenderer_ab4e35639ab7fcb094b1e030c93d28ddd}} 
+\hyperlink{structivec}{ivec} {\bfseries bbmax}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a374a94546faa7406eebe087e6bacc118}\label{structstainrenderer_a374a94546faa7406eebe087e6bacc118}} 
+\hyperlink{structvec}{vec} {\bfseries staincenter}
+\item 
+\mbox{\Hypertarget{structstainrenderer_aff7006cb650b88585ecb71c355850c73}\label{structstainrenderer_aff7006cb650b88585ecb71c355850c73}} 
+\hyperlink{structvec}{vec} {\bfseries stainnormal}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a60fdf62f49aea0b490a44ceb45c45566}\label{structstainrenderer_a60fdf62f49aea0b490a44ceb45c45566}} 
+\hyperlink{structvec}{vec} {\bfseries staintangent}
+\item 
+\mbox{\Hypertarget{structstainrenderer_ac2439c02738a49a97a7810f1ce066dc8}\label{structstainrenderer_ac2439c02738a49a97a7810f1ce066dc8}} 
+\hyperlink{structvec}{vec} {\bfseries stainbitangent}
+\item 
+\mbox{\Hypertarget{structstainrenderer_ae68d49ff814fd667fcaf983f6daa9ee9}\label{structstainrenderer_ae68d49ff814fd667fcaf983f6daa9ee9}} 
+float {\bfseries stainradius}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a1c45141459c55a9436f089f8911e3de8}\label{structstainrenderer_a1c45141459c55a9436f089f8911e3de8}} 
+float {\bfseries stainu}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a57125f5f739a7666e1e8ff44b1c63882}\label{structstainrenderer_a57125f5f739a7666e1e8ff44b1c63882}} 
+float {\bfseries stainv}
+\item 
+\mbox{\Hypertarget{structstainrenderer_a26c5e1b263ef906829e0c4b95fad763b}\label{structstainrenderer_a26c5e1b263ef906829e0c4b95fad763b}} 
+\hyperlink{structbvec4}{bvec4} {\bfseries staincolor}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/stain.\+cpp\end{DoxyCompactItemize}

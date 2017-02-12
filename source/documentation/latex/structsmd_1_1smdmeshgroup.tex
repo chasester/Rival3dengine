@@ -1,0 +1,57 @@
+\hypertarget{structsmd_1_1smdmeshgroup}{}\section{smd\+:\+:smdmeshgroup Struct Reference}
+\label{structsmd_1_1smdmeshgroup}\index{smd\+::smdmeshgroup@{smd\+::smdmeshgroup}}
+Inheritance diagram for smd\+:\+:smdmeshgroup\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{structsmd_1_1smdmeshgroup}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structsmd_1_1smdmeshgroup_1_1smdmeshdata}{smdmeshdata}
+\item 
+struct \hyperlink{structsmd_1_1smdmeshgroup_1_1smdvertkey}{smdvertkey}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_ad29f8b3464db8802dc802b2c0b674b79}\label{structsmd_1_1smdmeshgroup_ad29f8b3464db8802dc802b2c0b674b79}} 
+bool {\bfseries skipcomment} (char $\ast$\&curbuf)
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_a356be46fd8311d4fa5b3ad065445b011}\label{structsmd_1_1smdmeshgroup_a356be46fd8311d4fa5b3ad065445b011}} 
+void {\bfseries skipsection} (\hyperlink{structstream}{stream} $\ast$f, char $\ast$buf, size\+\_\+t bufsize)
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_addf2eb06e5339408fa204a159b899a63}\label{structsmd_1_1smdmeshgroup_addf2eb06e5339408fa204a159b899a63}} 
+void {\bfseries readname} (char $\ast$\&curbuf, char $\ast$name, size\+\_\+t namesize)
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_a2898023113ce41637d1b34d35c50523a}\label{structsmd_1_1smdmeshgroup_a2898023113ce41637d1b34d35c50523a}} 
+void {\bfseries readnodes} (\hyperlink{structstream}{stream} $\ast$f, char $\ast$buf, size\+\_\+t bufsize, \hyperlink{structvector}{vector}$<$ \hyperlink{structsmdbone}{smdbone} $>$ \&bones)
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_a2ca2e0c8ddab4702c3fec658ff10fb5c}\label{structsmd_1_1smdmeshgroup_a2ca2e0c8ddab4702c3fec658ff10fb5c}} 
+void {\bfseries readmaterial} (char $\ast$\&curbuf, char $\ast$name, size\+\_\+t namesize)
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_a96a40e3e1ca09f119fc94f6e4e62070b}\label{structsmd_1_1smdmeshgroup_a96a40e3e1ca09f119fc94f6e4e62070b}} 
+void {\bfseries readtriangles} (\hyperlink{structstream}{stream} $\ast$f, char $\ast$buf, size\+\_\+t bufsize)
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_a666cdf1de80648464b39a8bbab58f596}\label{structsmd_1_1smdmeshgroup_a666cdf1de80648464b39a8bbab58f596}} 
+void {\bfseries readskeleton} (\hyperlink{structstream}{stream} $\ast$f, char $\ast$buf, size\+\_\+t bufsize)
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_ab72b1bcd312f16d69d5fb1f62956668f}\label{structsmd_1_1smdmeshgroup_ab72b1bcd312f16d69d5fb1f62956668f}} 
+bool {\bfseries loadmesh} (const char $\ast$filename)
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_ad9f42362953cabd4833b13fdb8199051}\label{structsmd_1_1smdmeshgroup_ad9f42362953cabd4833b13fdb8199051}} 
+int {\bfseries readframes} (\hyperlink{structstream}{stream} $\ast$f, char $\ast$buf, size\+\_\+t bufsize, \hyperlink{structvector}{vector}$<$ \hyperlink{structsmdbone}{smdbone} $>$ \&bones, \hyperlink{structvector}{vector}$<$ \hyperlink{structdualquat}{dualquat} $>$ \&animbones)
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_a21d59cdf537f3ab56843442040c5bf1f}\label{structsmd_1_1smdmeshgroup_a21d59cdf537f3ab56843442040c5bf1f}} 
+\hyperlink{structskelmodel_1_1skelanimspec}{skelanimspec} $\ast$ {\bfseries loadanim} (const char $\ast$filename)
+\item 
+\mbox{\Hypertarget{structsmd_1_1smdmeshgroup_a64a1ad7facd06e682368a54b8e9051c9}\label{structsmd_1_1smdmeshgroup_a64a1ad7facd06e682368a54b8e9051c9}} 
+bool {\bfseries load} (const char $\ast$meshfile, float smooth)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/smd.\+h\end{DoxyCompactItemize}

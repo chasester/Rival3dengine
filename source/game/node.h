@@ -61,6 +61,8 @@ struct scriptinterface
 struct node
 {
 	asILockableSharedBool *weakRefFlag;
+	uint parent;
+	vector<uint> children;
 	str name, tags; //instance name, tag to classify data, set on a per object basis, allows it to search by these break tags up by space
 	int refcount; //for weak reference
 	vector<asIScriptObject *> ctrl; //link to the script functions on* funcitons
@@ -221,13 +223,25 @@ public:
 	}
 	void updateregistaredobjects()
 	{
-
 	}
 };
 
 //definition of world declaration is in the bottom of world.cpp
 struct world
 {
+	struct nodemgr
+	{
+	private:
+		
+		node *newnode();  //call to get a new node from scratch; recieve the node
+		uint newnode(node *n); //class to copy an existing node; recieve the id
+		
+		bool removenode(uint id);
+		bool removenode(node *n);
+
+		node *root;
+		vector<node *> nodes();
+	};
 	int nodehover, oldhover, nodeorient, nfocus, nodemoving = 0;
 	vector<uint> physicbodies;
 	//int nodemoving = 0;
@@ -235,7 +249,7 @@ struct world
 	scenegraph *curscene;
 	bool nodeselsnap = false, nodeediting = true;
 	int spotlights, volumetriclights, nodelooplevel;
-	bool paused = false , touched = false;
+	bool paused = false, touched = false;
 	vector<light *> lights;
 	//vector<scenegraph *> scenes; add later
 
@@ -259,12 +273,12 @@ struct world
 	uint getnumnodes();
 	void addnodetoscene(node *g);
 	void rendernodes();
-	bool ispaused(){ return paused; }
+	bool ispaused() { return paused; }
 	bool hoveringonnode(int node, int orient);
 	float getnearestent(const vec &o, const vec &ray, float radius, int mode, int &hitnode);
 
 	void saveworld(stream *f);
-	void loadworld(stream *f){ curscene->loadscene(f); }
+	void loadworld(stream *f) { curscene->loadscene(f); }
 	void doAwake() { curscene->doawake(); }
 	void addctrltonode(str name, bool first);
 	//undo add later
@@ -289,7 +303,6 @@ struct world
 	void delnode();
 	void resetmap();
 };
-
 
 //struct ModelCtrl : IController
 //{

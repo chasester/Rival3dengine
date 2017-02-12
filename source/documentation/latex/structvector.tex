@@ -1,0 +1,196 @@
+\hypertarget{structvector}{}\section{vector$<$ T $>$ Struct Template Reference}
+\label{structvector}\index{vector$<$ T $>$@{vector$<$ T $>$}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvector_ac636edc485bffa973b50b8bdfb1cc9cb}\label{structvector_ac636edc485bffa973b50b8bdfb1cc9cb}} 
+{\bfseries vector} (const \hyperlink{structvector}{vector} \&v)
+\item 
+\mbox{\Hypertarget{structvector_a7715d43cace69c42ecfa79f8416933a4}\label{structvector_a7715d43cace69c42ecfa79f8416933a4}} 
+\hyperlink{structvector}{vector}$<$ T $>$ \& {\bfseries operator=} (const \hyperlink{structvector}{vector}$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{structvector_a6b49c3419e911a3696ac7accd93797e0}\label{structvector_a6b49c3419e911a3696ac7accd93797e0}} 
+T \& {\bfseries add} (const T \&x)
+\item 
+\mbox{\Hypertarget{structvector_afaecf88fd5905d67d85cefe027ab5f89}\label{structvector_afaecf88fd5905d67d85cefe027ab5f89}} 
+T \& {\bfseries add} ()
+\item 
+\mbox{\Hypertarget{structvector_a125e3f903da9fa0889645e2b89ce4ebe}\label{structvector_a125e3f903da9fa0889645e2b89ce4ebe}} 
+T \& {\bfseries dup} ()
+\item 
+\mbox{\Hypertarget{structvector_ad4c9f84ea231d91dbe2507aa3aef82ec}\label{structvector_ad4c9f84ea231d91dbe2507aa3aef82ec}} 
+void {\bfseries move} (\hyperlink{structvector}{vector}$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{structvector_a9c8b60b827cee171c65238526b27a623}\label{structvector_a9c8b60b827cee171c65238526b27a623}} 
+bool {\bfseries inrange} (size\+\_\+t i) const
+\item 
+\mbox{\Hypertarget{structvector_a4fc5cf788f4ff40e5c9c31f7ac10b5ce}\label{structvector_a4fc5cf788f4ff40e5c9c31f7ac10b5ce}} 
+bool {\bfseries inrange} (int i) const
+\item 
+\mbox{\Hypertarget{structvector_ae802c19b7cd3079d98559452d1f0b71e}\label{structvector_ae802c19b7cd3079d98559452d1f0b71e}} 
+T \& {\bfseries pop} ()
+\item 
+\mbox{\Hypertarget{structvector_a0fcb724cfa21f1774d20cd40adbe80f3}\label{structvector_a0fcb724cfa21f1774d20cd40adbe80f3}} 
+T \& {\bfseries last} ()
+\item 
+\mbox{\Hypertarget{structvector_a0cbbd7fecd97f3c5e3262966ecd15a66}\label{structvector_a0cbbd7fecd97f3c5e3262966ecd15a66}} 
+void {\bfseries drop} ()
+\item 
+\mbox{\Hypertarget{structvector_a9af39ba556fbaeaa09cff474c6308076}\label{structvector_a9af39ba556fbaeaa09cff474c6308076}} 
+bool {\bfseries empty} () const
+\item 
+\mbox{\Hypertarget{structvector_a5770d0ba12e51d3534986f1ae4655ea4}\label{structvector_a5770d0ba12e51d3534986f1ae4655ea4}} 
+int {\bfseries capacity} () const
+\item 
+\mbox{\Hypertarget{structvector_a6c907908675387470a149acfe8684811}\label{structvector_a6c907908675387470a149acfe8684811}} 
+int {\bfseries length} () const
+\item 
+\mbox{\Hypertarget{structvector_aa7dc74e9142f08df9c9288d111aa1c3b}\label{structvector_aa7dc74e9142f08df9c9288d111aa1c3b}} 
+T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i)
+\item 
+\mbox{\Hypertarget{structvector_a6ad3005958d6df4d90edd4c6d2b0512d}\label{structvector_a6ad3005958d6df4d90edd4c6d2b0512d}} 
+const T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i) const
+\item 
+\mbox{\Hypertarget{structvector_a0872ebf55eb96e11087c4c5d5b938514}\label{structvector_a0872ebf55eb96e11087c4c5d5b938514}} 
+T $\ast$ {\bfseries disown} ()
+\item 
+\mbox{\Hypertarget{structvector_aee8f5fea5bb485f72d4044a6b121e264}\label{structvector_aee8f5fea5bb485f72d4044a6b121e264}} 
+void {\bfseries shrink} (int i)
+\item 
+\mbox{\Hypertarget{structvector_a63a989ce0517774b2390d0641eccf835}\label{structvector_a63a989ce0517774b2390d0641eccf835}} 
+void {\bfseries setsize} (int i)
+\item 
+\mbox{\Hypertarget{structvector_af48aa137e8665f0e08ca13044312c828}\label{structvector_af48aa137e8665f0e08ca13044312c828}} 
+void {\bfseries deletecontents} (int n=0)
+\item 
+\mbox{\Hypertarget{structvector_ac71e8013132ee3a5ec582d147579d2f2}\label{structvector_ac71e8013132ee3a5ec582d147579d2f2}} 
+void {\bfseries deletearrays} (int n=0)
+\item 
+\mbox{\Hypertarget{structvector_ad20f7a08b2a7aeb79903856729c0356f}\label{structvector_ad20f7a08b2a7aeb79903856729c0356f}} 
+T $\ast$ {\bfseries getbuf} ()
+\item 
+\mbox{\Hypertarget{structvector_afefec90640f14cabdbe2a3c3b2bd3fc8}\label{structvector_afefec90640f14cabdbe2a3c3b2bd3fc8}} 
+const T $\ast$ {\bfseries getbuf} () const
+\item 
+\mbox{\Hypertarget{structvector_a1597d5f5683b5666dca9edf2365c6c27}\label{structvector_a1597d5f5683b5666dca9edf2365c6c27}} 
+bool {\bfseries inbuf} (const T $\ast$e) const
+\item 
+\mbox{\Hypertarget{structvector_aa8ed3bcb552484154fb959aa1f02a3a0}\label{structvector_aa8ed3bcb552484154fb959aa1f02a3a0}} 
+{\footnotesize template$<$class F $>$ }\\void {\bfseries sort} (F fun, int i=0, int n=-\/1)
+\item 
+\mbox{\Hypertarget{structvector_a2f7b573d71c078d65dc0e40b8409b700}\label{structvector_a2f7b573d71c078d65dc0e40b8409b700}} 
+void {\bfseries sort} ()
+\item 
+\mbox{\Hypertarget{structvector_a0feade3a2946e44e2e13759fbe6bfd72}\label{structvector_a0feade3a2946e44e2e13759fbe6bfd72}} 
+void {\bfseries sortname} ()
+\item 
+\mbox{\Hypertarget{structvector_a500a5fefd99c45e122ffdedaf8cb55b6}\label{structvector_a500a5fefd99c45e122ffdedaf8cb55b6}} 
+void {\bfseries growbuf} (int sz)
+\item 
+\mbox{\Hypertarget{structvector_aeafc05147e62c1e6a8f163c20b9ddf62}\label{structvector_aeafc05147e62c1e6a8f163c20b9ddf62}} 
+\hyperlink{structdatabuf}{databuf}$<$ T $>$ {\bfseries reserve} (int sz)
+\item 
+\mbox{\Hypertarget{structvector_ac4030f469794397798fff6928ea9b91c}\label{structvector_ac4030f469794397798fff6928ea9b91c}} 
+void {\bfseries advance} (int sz)
+\item 
+\mbox{\Hypertarget{structvector_a5c232d5d8e81ee353c64ad51745fff54}\label{structvector_a5c232d5d8e81ee353c64ad51745fff54}} 
+void {\bfseries addbuf} (const \hyperlink{structdatabuf}{databuf}$<$ T $>$ \&p)
+\item 
+\mbox{\Hypertarget{structvector_ab7afc277fe11b5c37edce44122362156}\label{structvector_ab7afc277fe11b5c37edce44122362156}} 
+T $\ast$ {\bfseries pad} (int n)
+\item 
+\mbox{\Hypertarget{structvector_ac3d44f0f942b1210dc91b8a3e8e88cc5}\label{structvector_ac3d44f0f942b1210dc91b8a3e8e88cc5}} 
+void {\bfseries put} (const T \&v)
+\item 
+\mbox{\Hypertarget{structvector_a9231b000547521ee4c24bfc1c53a48d3}\label{structvector_a9231b000547521ee4c24bfc1c53a48d3}} 
+void {\bfseries put} (const T $\ast$v, int n)
+\item 
+\mbox{\Hypertarget{structvector_a32cb8f72325a5f52298ffac9abd8d102}\label{structvector_a32cb8f72325a5f52298ffac9abd8d102}} 
+void {\bfseries remove} (int i, int n)
+\item 
+\mbox{\Hypertarget{structvector_a515096bf4dcf9d9aeda81ece3c8b24b6}\label{structvector_a515096bf4dcf9d9aeda81ece3c8b24b6}} 
+T {\bfseries remove} (int i)
+\item 
+\mbox{\Hypertarget{structvector_a6a92723c52a0b1a02c2ad43e2a7672de}\label{structvector_a6a92723c52a0b1a02c2ad43e2a7672de}} 
+T {\bfseries removeunordered} (int i)
+\item 
+\mbox{\Hypertarget{structvector_a6189bf4fa76f6304289a706b8b81767e}\label{structvector_a6189bf4fa76f6304289a706b8b81767e}} 
+{\footnotesize template$<$class U $>$ }\\int {\bfseries find} (const U \&o)
+\item 
+\mbox{\Hypertarget{structvector_a6228008b964380b3e519a9949efda079}\label{structvector_a6228008b964380b3e519a9949efda079}} 
+void {\bfseries addunique} (const T \&o)
+\item 
+\mbox{\Hypertarget{structvector_a10daba22a06b056f79048f614dccbd52}\label{structvector_a10daba22a06b056f79048f614dccbd52}} 
+void {\bfseries removeobj} (const T \&o)
+\item 
+\mbox{\Hypertarget{structvector_a5f1fe4bf71fda4f1f9fa65d7e810e6c4}\label{structvector_a5f1fe4bf71fda4f1f9fa65d7e810e6c4}} 
+void {\bfseries replacewithlast} (const T \&o)
+\item 
+\mbox{\Hypertarget{structvector_adc0841f7a1df685c56dd4ab3aaf3c499}\label{structvector_adc0841f7a1df685c56dd4ab3aaf3c499}} 
+T \& {\bfseries insert} (int i, const T \&e)
+\item 
+\mbox{\Hypertarget{structvector_a38fa525b600c8efc6c1da1ac93caace5}\label{structvector_a38fa525b600c8efc6c1da1ac93caace5}} 
+T $\ast$ {\bfseries insert} (int i, const T $\ast$e, int n)
+\item 
+\mbox{\Hypertarget{structvector_a34d321ce952d2ac32c673623cb8cdb63}\label{structvector_a34d321ce952d2ac32c673623cb8cdb63}} 
+void {\bfseries reverse} ()
+\item 
+\mbox{\Hypertarget{structvector_a4a20cf726867fca1a00b90aaa2f43893}\label{structvector_a4a20cf726867fca1a00b90aaa2f43893}} 
+void {\bfseries buildheap} ()
+\item 
+\mbox{\Hypertarget{structvector_aadd16b607b5ed81b7e3a7ba5617712dd}\label{structvector_aadd16b607b5ed81b7e3a7ba5617712dd}} 
+int {\bfseries upheap} (int i)
+\item 
+\mbox{\Hypertarget{structvector_a68007f6136a4d48d868c47ab692ac4c2}\label{structvector_a68007f6136a4d48d868c47ab692ac4c2}} 
+T \& {\bfseries addheap} (const T \&x)
+\item 
+\mbox{\Hypertarget{structvector_afd018336bccb491ad569e12c9ec6092b}\label{structvector_afd018336bccb491ad569e12c9ec6092b}} 
+int {\bfseries downheap} (int i)
+\item 
+\mbox{\Hypertarget{structvector_aae7414b428036a6a109e2a40976e0eb1}\label{structvector_aae7414b428036a6a109e2a40976e0eb1}} 
+T {\bfseries removeheap} ()
+\item 
+\mbox{\Hypertarget{structvector_aeb422be9160e47b6960ac83078e725bc}\label{structvector_aeb422be9160e47b6960ac83078e725bc}} 
+{\footnotesize template$<$class K $>$ }\\int {\bfseries htfind} (const K \&key)
+\item 
+\mbox{\Hypertarget{structvector_adf718ba43138d1e28f8e914fca4fd332}\label{structvector_adf718ba43138d1e28f8e914fca4fd332}} 
+void {\bfseries unique} ()
+\item 
+\mbox{\Hypertarget{structvector_a9ce497c56e52a9e9ef5593928692eae0}\label{structvector_a9ce497c56e52a9e9ef5593928692eae0}} 
+void {\bfseries uniquedeletecontents} ()
+\item 
+\mbox{\Hypertarget{structvector_a55ec5680fd3731aaf7364b86e3e21f5a}\label{structvector_a55ec5680fd3731aaf7364b86e3e21f5a}} 
+void {\bfseries uniquedeletearrays} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvector_ad5053033279ea5d16860228c1fb460b3}\label{structvector_ad5053033279ea5d16860228c1fb460b3}} 
+static int {\bfseries heapparent} (int i)
+\item 
+\mbox{\Hypertarget{structvector_a960f7ccf713e2e29475b4534607573a5}\label{structvector_a960f7ccf713e2e29475b4534607573a5}} 
+static int {\bfseries heapchild} (int i)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvector_a2bb835cb1456a5a1700906a49fe72483}\label{structvector_a2bb835cb1456a5a1700906a49fe72483}} 
+T $\ast$ {\bfseries buf}
+\item 
+\mbox{\Hypertarget{structvector_a7bf3e117a2c8618edc5dc0ef7c06e455}\label{structvector_a7bf3e117a2c8618edc5dc0ef7c06e455}} 
+int {\bfseries alen}
+\item 
+\mbox{\Hypertarget{structvector_add07f68356671ba0bf6537267fde2946}\label{structvector_add07f68356671ba0bf6537267fde2946}} 
+int {\bfseries ulen}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvector_a698115fea16e441abf3ea84dd8376d3c}\label{structvector_a698115fea16e441abf3ea84dd8376d3c}} 
+static const int {\bfseries M\+I\+N\+S\+I\+ZE} = 8
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/tools.\+h\end{DoxyCompactItemize}

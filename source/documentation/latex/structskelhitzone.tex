@@ -1,0 +1,76 @@
+\hypertarget{structskelhitzone}{}\section{skelhitzone Struct Reference}
+\label{structskelhitzone}\index{skelhitzone@{skelhitzone}}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a73f26cc07172f6c5a290318300dd0c6c}\label{structskelhitzone_a73f26cc07172f6c5a290318300dd0c6c}} 
+typedef \hyperlink{structskelbih_1_1tri}{skelbih\+::tri} {\bfseries tri}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a6eeeec40231fb119e498308c66b239c7}\label{structskelhitzone_a6eeeec40231fb119e498308c66b239c7}} 
+bool {\bfseries shellintersect} (const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray)
+\item 
+\mbox{\Hypertarget{structskelhitzone_a5f4680b14b6e1aa0e9b9fd144cf18c02}\label{structskelhitzone_a5f4680b14b6e1aa0e9b9fd144cf18c02}} 
+void {\bfseries intersect} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$m, \hyperlink{structanimmodel_1_1skin}{skelmodel\+::skin} $\ast$s, const \hyperlink{structdualquat}{dualquat} $\ast$bdata1, const \hyperlink{structdualquat}{dualquat} $\ast$bdata2, int numblends, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray)
+\item 
+\mbox{\Hypertarget{structskelhitzone_a03681353508c6a700e756f2c3ac09161}\label{structskelhitzone_a03681353508c6a700e756f2c3ac09161}} 
+void {\bfseries propagate} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$m, const \hyperlink{structdualquat}{dualquat} $\ast$bdata1, const \hyperlink{structdualquat}{dualquat} $\ast$bdata2, int numblends)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a1de3038dd07c9848a8abc667fa07b013}\label{structskelhitzone_a1de3038dd07c9848a8abc667fa07b013}} 
+static bool {\bfseries triintersect} (\hyperlink{structskelmodel_1_1skelmeshgroup}{skelmodel\+::skelmeshgroup} $\ast$m, \hyperlink{structanimmodel_1_1skin}{skelmodel\+::skin} $\ast$s, const \hyperlink{structdualquat}{dualquat} $\ast$bdata1, const \hyperlink{structdualquat}{dualquat} $\ast$bdata2, int numblends, const \hyperlink{structskelbih_1_1tri}{tri} \&t, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a37391fea103a25e5d9a578435c7ac642}\label{structskelhitzone_a37391fea103a25e5d9a578435c7ac642}} 
+int {\bfseries numparents}
+\item 
+\mbox{\Hypertarget{structskelhitzone_ac8ba0a0efebd69c4a1503072cce06dd4}\label{structskelhitzone_ac8ba0a0efebd69c4a1503072cce06dd4}} 
+int {\bfseries numchildren}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a176a6343e4f1fef7591ac7ba675ad2a4}\label{structskelhitzone_a176a6343e4f1fef7591ac7ba675ad2a4}} 
+\hyperlink{structskelhitzone}{skelhitzone} $\ast$$\ast$ {\bfseries parents}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a52b576d23aaa6f34da0afb4314c3eac6}\label{structskelhitzone_a52b576d23aaa6f34da0afb4314c3eac6}} 
+\hyperlink{structskelhitzone}{skelhitzone} $\ast$$\ast$ {\bfseries children}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a2bee42249520b2833bc18eb958145ea1}\label{structskelhitzone_a2bee42249520b2833bc18eb958145ea1}} 
+\hyperlink{structvec}{vec} {\bfseries center}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a8f958a5f5a01cef71aa9a1adcf3b94b1}\label{structskelhitzone_a8f958a5f5a01cef71aa9a1adcf3b94b1}} 
+\hyperlink{structvec}{vec} {\bfseries animcenter}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a91c66635350be8a34226ee0efeaebb27}\label{structskelhitzone_a91c66635350be8a34226ee0efeaebb27}} 
+float {\bfseries radius}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a4aba3e5223d050d9f5fed042c0ead604}\label{structskelhitzone_a4aba3e5223d050d9f5fed042c0ead604}} 
+int {\bfseries visited}
+\item 
+\mbox{\Hypertarget{structskelhitzone_a441031ae2d129464b31efd8d773084f0}\label{structskelhitzone_a441031ae2d129464b31efd8d773084f0}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>int {\bfseries blend}\\
+\>int {\bfseries numtris}\\
+\}; \\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{structskelhitzone_ab82540908d7304a95c72b8b95004f319}\label{structskelhitzone_ab82540908d7304a95c72b8b95004f319}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>\hyperlink{structskelbih_1_1tri}{tri} $\ast$ {\bfseries tris}\\
+\>\hyperlink{structskelbih}{skelbih} $\ast$ {\bfseries bih}\\
+\}; \\
+
+\end{tabbing}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/hitzone.\+h\end{DoxyCompactItemize}
