@@ -3,7 +3,7 @@ struct bulletobj;
 struct ridgidbody;
 struct editnode;
 struct node;
-struct scenegraph;
+struct scene;
 struct world;
 struct scriptinterface;
 struct savenode;
@@ -124,7 +124,7 @@ enum SCENE_FLAGS
 	//** we will set these up later when we get a better framwork
 };
 
-struct scenegraph 
+struct scene 
 {
 public:
 	vector<node *> nodes;
@@ -168,21 +168,6 @@ public:
 		}
 		asScript->serializer->ClearRoot();
 		nodes = nd;
-		//loopv(nodes)nodes[i]->doawake();
-		//if (nodes.length()) nodes.deletecontents();
-
-		//loopv(editnodes)
-		//{
-		//	editnode *en = editnodes[i];
-		//	node *g = new node(vec(en->o));
-		//	g->ctrl = asScript->CreateController(en->name, g);
-		//	g->e = en; en->g = g;
-		//	if(!g->c) g->c = asScript->serializer->storenode(g);
-		//	else g->c->Restore(g, CSerialnode::getID());
-		//	
-		//	asScript->doStart(g->ctrl);
-		//	nodes.add(g);
-		//}
 	}
 	void preloadentities(); //load all the enties at gamestart get this list from the map file
 	void doawake()
@@ -218,7 +203,7 @@ public:
 	{
 		asScript->serializer->load(f);
 	}
-	~scenegraph()
+	~scene()
 	{
 		if (nodes.length())	nodes.deletecontents();
 		delete &nodes;
@@ -228,82 +213,81 @@ public:
 	}
 };
 
+struct worldeditor //static
+{
+	static bool pointinsel(const selinfo &sel, const vec &o);
+	static bool nodeselsnap = false, nodeediting = true;
+	static inline bool nodenoedit();
+	static bool nodehavesel();
+	static void nodeselcancel();
+	static void nodeseladd(int id);
+	static vec getselpos();
+	static vector<node *> getselnodes();
+	static void rendernodeselection(const vec &o, const vec &ray, bool nodemoving);
+	static bool hoveringonnode(int node, int orient);
+	//nessary functions that need recoded;
+	static float getnearestnode(const vec &o, const vec &ray, float radius, int mode, int &hitnode);
+	static undoblock *newundonode();
+	static void makeundonode();
+	static undoblock *copyundonodes(undoblock *u);
+	static void pasteundonode(int idx, const node &un);
+	static void pasteundoents(undoblock *u);
+	static void detachnode(node &n); //use to release links
+	static void nodeflip(); //           flip around selected cube * if no cube * selected call each node through the message system to get a result
+	static void noderotate(int *cw); //rotate around selected cube * if no cube * selected call each node through the message system to get a result
+	static void startmap(const char *name);
+	static bool emptymap(int scale, bool force, const char *mname, bool usecfg);
+	static bool enlargemap(bool force); //this is an obsolete call, this should only enlarge a scene's world root. Check to find the curent  editing scene, and which worldroots are in active edit state then only enlarge the ones that are asked
+	static void nodeautoview(int *dir); //used to rotate through node positions (use later)
+	
+	//bool editmoveplane(const vec &o, const vec &ray, int d, float off, vec &handle, vec &dest, bool first);
+	static void nodedrag(const vec &ray);
+	static void delnode();
+private:
+	static int nodehover, oldhover, nodeorient, nfocus, nodemoving = 0;
+	static vector<int> nodeselect;
+	static int nodelooplevel;
+}; 
 //definition of world declaration is in the bottom of world.cpp
 struct world
 {
+public:
+	world(scene *s);
+	void addlight(vec o, vec color, int radius, char type);
+	vector<light *> getlights();
+	void serializedworld();
+	void updateworld();
+	void clearworld(bool force = false);
+	uint getnumnodes();
+	void addnodetoscene(node *g);
+	void rendernodes();
+	bool ispaused() { return paused; }
+	void saveworld(stream *f);
+	void loadworld(stream *f) { curscene->loadscene(f); }
+	void doAwake() { curscene->doawake(); }
+	void addctrltonode(str name, bool first);
+	void resetmap();
+private:
 	struct nodemgr
 	{
-	private:
-		
+
+
 		node *newnode();  //call to get a new node from scratch; recieve the node
 		uint newnode(node *n); //class to copy an existing node; recieve the id
-		
+
 		bool removenode(uint id);
 		bool removenode(node *n);
 
 		node *root;
 		vector<node *> nodes();
 	};
-	int nodehover, oldhover, nodeorient, nfocus, nodemoving = 0;
+
+	scene *curscene;
 	vector<uint> physicbodies;
-	//int nodemoving = 0;
-	vector<int> nodeselect;
-	scenegraph *curscene;
-	bool nodeselsnap = false, nodeediting = true;
-	int spotlights, volumetriclights, nodelooplevel;
-	bool paused = false, touched = false;
 	vector<light *> lights;
-	//vector<scenegraph *> scenes; add later
-
-	world(scenegraph *s);
-
-	inline bool nonodeedit();
-
-	void addlight(vec o, vec color, int radius, char type);
-	bool haveselnode();
-	void nodeselcancel();
-	void nodeseladd(int id);
-	vec getselpos();
-	vector<node *> getselnodes();
-	vector<light *> getlights();
-
-	void serializedworld();
-	void updateworld();
-	void clearworld(bool force = false);
-	void rendernodeselection(const vec &o, const vec &ray, bool nodemoving);
-
-	uint getnumnodes();
-	void addnodetoscene(node *g);
-	void rendernodes();
-	bool ispaused() { return paused; }
-	bool hoveringonnode(int node, int orient);
-	float getnearestent(const vec &o, const vec &ray, float radius, int mode, int &hitnode);
-
-	void saveworld(stream *f);
-	void loadworld(stream *f) { curscene->loadscene(f); }
-	void doAwake() { curscene->doawake(); }
-	void addctrltonode(str name, bool first);
-	//undo add later
-	//undoblock *newundoent();
-	//void makeundoent();
-	//undoblock *copyundoents(undoblock *u);
-	//void pasteundoent(int idx, const entity &ue);
-	//void pasteundoents(undoblock *u)
-
-	//nessary functions that need recoded
-	//void detachentity(extentity &e);
-	//void entflip();
-	//void entrotate(int *cw);
-	//void startmap(const char *name)
-	//bool emptymap(int scale, bool force, const char *mname, bool usecfg) 
-	//bool enlargemap(bool force)
-	//void entautoview(int *dir);
-
-	//	bool pointinsel(const selinfo &sel, const vec &o);
-	//bool editmoveplane(const vec &o, const vec &ray, int d, float off, vec &handle, vec &dest, bool first);
-	void nodedrag(const vec &ray);
-	void delnode();
-	void resetmap();
+	vector<scene *> scenes;
+	int spotlights, volumetriclights,
+	bool paused = false, touched = false;
 };
 
 //struct ModelCtrl : IController

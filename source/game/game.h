@@ -498,7 +498,6 @@ namespace entities
 
 	
 #endif
-	extern scenegraph *scene;
 	extern vector<extentity *> ents;
 
     extern const char *entmdlname(int type);

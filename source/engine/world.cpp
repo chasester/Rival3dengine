@@ -343,13 +343,13 @@ bool undonext = true;
 
 VARF(entediting, 0, 0, 1, { if(!entediting) { entcancel(); efocus = enthover = -1; } });
 
-bool nonodeedit()
+bool worldeditor::nodenoedit()
 {
     if(!editmode) { conoutf(CON_ERROR, "operation only allowed in edit mode"); return true; }
     return !entediting;
 }
 
-bool pointinsel(const selinfo &sel, const vec &o)
+bool worldeditor::pointinsel(const selinfo &sel, const vec &o)
 {
     return(o.x <= sel.o.x+sel.s.x*sel.grid
         && o.x >= sel.o.x
@@ -359,23 +359,23 @@ bool pointinsel(const selinfo &sel, const vec &o)
         && o.z >= sel.o.z);
 }
 
-vector<int> entgroup;
+//vector<int> entgroup;
 
-bool haveselent()
+bool worldeditor::nodehavesel()
 {
     return entgroup.length() > 0;
 }
 
-void entcancel()
+void worldeditor::nodeselcancel()
 {
-	curworld->nodeselect.shrink(0);
-    entgroup.shrink(0);
+	nodeselect.shrink(0);
+    //entgroup.shrink(0);
 }
 
-void entadd(int id)
+void worldeditor::nodeseladd(int id)
 {
     undonext = true;
-    curworld->nodeselect.add(id);
+    nodeselect.add(id);
 }
 
 undoblock *newundoent()
@@ -1570,7 +1570,7 @@ int getmapversion() { return mapversion; }
 
 #define getnodesvec vector<node *> &nodes = curscene->getnodes();
 
-	world::world(scenegraph *s) : curscene(s), nodehover(-1), nodeorient(-1), nfocus(-1), oldhover(-1){}
+	world::world(scene *s) : curscene(s), nodehover(-1), nodeorient(-1), nfocus(-1), oldhover(-1){}
 
 	inline bool world::nonodeedit() { if (!editmode) { conoutf(CON_ERROR, "operation only allowed in edit mode"); return true; } return !nodeediting; }
 
@@ -1661,7 +1661,7 @@ int getmapversion() { return mapversion; }
 		if (asScript->serializer) asScript->resetserializer();
 		else asScript->setupserializer(new CSerializer()); 
 		//loopk(scenes)
-		//scenegraph * cursn = sense[k];
+		//scene * cursn = sense[k];
 		curscene->store();
 		
 	}
@@ -1835,7 +1835,7 @@ int getmapversion() { return mapversion; }
 		l->radius = r;
 		lights.add(l);
 	}
-	world *curworld = new world(new scenegraph());
+	world *curworld = new world(new scene());
 	
 	void editnodeattr(const char *input, int *v)
 	{
