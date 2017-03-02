@@ -228,7 +228,7 @@ void CSerializer::save(stream *f)
 	}\
 }
 
-static int index = -1; //define a local static because passing a index via the peramiters creates an unknow error;
+static int serializer_index = -1; //define a local static because passing a serializer_index via the peramiters creates an unknow error;
 void CSerializer::load(stream *f)
 {
 	if (!m_engine) SetEngine(asScript->asEngine);
@@ -254,7 +254,7 @@ void CSerializer::load(stream *f)
 	m_root.Init();
 	m_root.m_serializer = asScript->serializer;
 	if (!m_root.m_serializer) { conoutf("failed to init serializer, map will not load nodes."); return; }
-	index = -1; //this is to avoid a compile time error that causes the function to add extra number to index
+    serializer_index = -1; //this is to avoid a compile time error that causes the function to add extra number to serializer_index
 	m_root.load();
 	curworld->serializedworld();
 	return;
@@ -263,10 +263,10 @@ void CSerializer::load(stream *f)
 
 void CSerializedValue::load()
 {
-	index++;
-	//index is always the element in the array where the object we are calling from is at.
-	if (index >= saveddata.length()) { conoutf("TOO MANY OBJECTS IN TREE %d", index);  return ; }
-	DataHold &sd = *saveddata[index];
+    serializer_index++;
+    //serializer_index is always the element in the array where the object we are calling from is at.
+    if (serializer_index >= saveddata.length()) { conoutf("TOO MANY OBJECTS IN TREE %d", serializer_index);  return ; }
+    DataHold &sd = *saveddata[serializer_index];
 	if (sd.children && (sd.typeID > asTYPEID_STRING || sd.typeID == asTYPEID_VOID))
 		loopi(sd.children)
 	{
@@ -313,7 +313,7 @@ void CSerializedValue::load()
 				m_restorePtr = asScript->asEngine->CreateUninitializedScriptObject(ot);
 				asIScriptObject *a = static_cast<asIScriptObject *> (m_restorePtr);
 
-				loopi(min(m_children.size(), a->GetPropertyCount()))
+                loopi(min(int(m_children.size()), int(a->GetPropertyCount())))
 				{
 					try
 					{
@@ -929,7 +929,7 @@ void CSerializedValue::SetUserData(void *data)
 void CSerializedValue::print(int depth)
 {
 	std::string a = "";
-	loop(depth) a += ">";
+    loopi(depth) a += ">";
 	a += m_typeName + m_name;
 	conoutf("%s", a.c_str());
 	for (uint i = 0; i < m_children.size(); i++)
