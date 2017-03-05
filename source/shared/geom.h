@@ -309,6 +309,16 @@ struct vec
     //bool operator==(const vec &o) const { return x == o.x && y == o.y && z == o.z; }
     vec operator*(float f) const { return mul(f); }
     //bool operator*(float f)*/
+
+
+    template<class T> vec operator+= (T a){ return *this->add(a); }
+    template<class T> vec operator-= (T a){ return *this->sub(a); }
+    template<class T> vec operator*= (T a){ return *this->mul(a); }
+    template<class T> vec operator/= (T a){ return *this->div(a); }
+    template<class T> vec operator+ (T a){ return vec(*this).add(a); }
+    template<class T> vec operator- (T a){ return vec(*this).sub(a); }
+    template<class T> vec operator* (T a){ return vec(*this).mul(a); }
+    template<class T> vec operator/ (T a){ return vec(*this).div(a); }
 };
 
 inline vec2::vec2(const vec &v) : x(v.x), y(v.y) {}

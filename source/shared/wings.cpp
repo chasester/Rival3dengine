@@ -169,7 +169,7 @@ void addvarible(const char *declaration, void *pointer){ int r = ASEngine->Regis
 #define TEMP9ARG  template<typename C, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9>
 #define TEMP10ARG template<typename C, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9,typename A10>
 
-#define GETDECONSTRUCTOR(c) ~##c
+#define GETDECONSTRUCTOR(c) ~c
 
 //set all functions here
 TEMP0ARG FUNCSET(BaseConstructor) { new (gen->GetObject()) C(); }
@@ -303,7 +303,7 @@ void RegisterVec3(asIScriptEngine *engine){
 	r = engine->RegisterObjectProperty("vec", "float b", asOFFSET(vec, b));
 }
 
-void wrapper_adddynamiclight(vec &o, float rad, vec &color, int fade=0, int peak =0,float initrad = 0,vec &initcolor = vec(0,0,0))
+void wrapper_adddynamiclight(vec &o, float rad, vec &color, int fade, int peak,float initrad,vec &initcolor)
 {
 	adddynlight(o, rad, color,fade,peak,0,initrad, initcolor);
 }
@@ -344,11 +344,10 @@ void config(asIScriptEngine *asEngine){
 			functions[i]->regiserfunction();
 	}
 	//add math funcitons
-	SETUPMATHFUNC(float);
 	//SETUPMATHFUNC(double);
-	asEngine->RegisterGlobalProperty("const float PI", &float(pi));
-	asEngine->RegisterGlobalProperty("const float RAD", &float(rad));
-	asEngine->RegisterGlobalProperty("const int lastmillis", &int(lastmillis));
+    //asEngine->RegisterGlobalProperty("const float PI", pi);
+    //asEngine->RegisterGlobalProperty("const float RAD", rad);
+    //asEngine->RegisterGlobalProperty("const int lastmillis", lastmillis);
 
 	RegisterVec3(asEngine);
 
@@ -426,6 +425,7 @@ END_AS_NAMESPACE
 void asEngineShutdown(){ ASEngine->ShutDownAndRelease(); } //shutdown asEngine called in main::shutdown
 
 void asConfigureEngine() {
+    return;
 	ASEngine = asCreateScriptEngine(ANGELSCRIPT_VERSION); if (ASEngine) config(ASEngine); else conoutf("asengine didnt build");
 } //starts asEngine up and inits major variables called in main::main
 
@@ -710,19 +710,19 @@ void ScriptManager::printinstancedata(asITypeInfo *typ, int level)
 				return;
 			case(asTYPEID_INT8):
 			case(asTYPEID_UINT8):
-				assigntoptr<__int8>(a, b, handle);
+                assigntoptr<int8_t>(a, b, handle);
 				return;
 			case(asTYPEID_INT16):
 			case(asTYPEID_UINT16):
-				assigntoptr<__int16>(a, b, handle);
+                assigntoptr<int16_t>(a, b, handle);
 				return;
 			case(asTYPEID_INT32):
 			case(asTYPEID_UINT32):
-				assigntoptr<__int32>(a, b, handle);
+                assigntoptr<int32_t>(a, b, handle);
 				return;
 			case(asTYPEID_INT64):
 			case(asTYPEID_UINT64):
-				assigntoptr<__int64>(a, b, handle);
+                assigntoptr<int64_t>(a, b, handle);
 				return;
 			case(asTYPEID_FLOAT):
 				assigntoptr<float>(a, b, handle);
@@ -750,16 +750,16 @@ void ScriptManager::printinstancedata(asITypeInfo *typ, int level)
 				return new bool;
 			case(asTYPEID_INT8):
 			case(asTYPEID_UINT8):
-				return new __int8;
+                return new int8_t;
 			case(asTYPEID_INT16):
 			case(asTYPEID_UINT16):
-				return new __int16;
+                return new int16_t;
 			case(asTYPEID_INT32):
 			case(asTYPEID_UINT32):
-				return new __int32;
+                return new int32_t;
 			case(asTYPEID_INT64):
 			case(asTYPEID_UINT64):
-				return new __int64;
+                return new int64_t;
 			case(asTYPEID_FLOAT):
 				return new float;
 			case(asTYPEID_DOUBLE):
@@ -782,19 +782,19 @@ void ScriptManager::printinstancedata(asITypeInfo *typ, int level)
 			return b;
 		case(asTYPEID_INT8):
 		case(asTYPEID_UINT8):
-			changerefptr<__int8>(b, v);
+            changerefptr<int8_t>(b, v);
 			return b;
 		case(asTYPEID_INT16):
 		case(asTYPEID_UINT16):
-			changerefptr<__int16>(b, v);
+            changerefptr<int16_t>(b, v);
 			return b;
 		case(asTYPEID_INT32):
 		case(asTYPEID_UINT32):
-			changerefptr<__int32>(b, v);
+            changerefptr<int32_t>(b, v);
 			return b;
 		case(asTYPEID_INT64):
 		case(asTYPEID_UINT64):
-			changerefptr<__int64>(b, v);
+            changerefptr<int64_t>(b, v);
 			return b;
 		case(asTYPEID_FLOAT):
 			changerefptr<float>(b, v);			

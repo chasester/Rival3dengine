@@ -10,33 +10,33 @@
 BEGIN_AS_NAMESPACE
 
 void summonAngel(const char *cmd, const char *arg){
-		
-	if (engine == 0){ conoutf("scripting engine failed to launch"); return; }
-	
-	// Interpret the command
-	if (!strcmp(cmd, "exec"))
-		ExecString(engine, arg);
-	/*else if (cmd == "addfunc")
-		AddFunction(engine, arg);
-	else if (cmd == "delfunc")
-		DeleteFunction(engine, arg);
-	else if (cmd == "addvar")
-		AddVariable(engine, arg);
-	else if (cmd == "delvar")
-		DeleteVariable(engine, arg);
-	else if (cmd == "help")
-		PrintHelp();
-	else if (cmd == "listfuncs")
-		ListFunctions(engine);
-	else if (cmd == "listvars")
-		ListVariables(engine);*/
-	else
-		conoutf("UKNOWN COMMAND");
 
-	// Shut down the engine
-	
+    if (asScript->asEngine == 0){ conoutf("scripting engine failed to launch"); return; }
 
-	return;
+    // Interpret the command
+    if (!strcmp(cmd, "exec"))
+        ExecString(asScript->asEngine, arg);
+    /*else if (cmd == "addfunc")
+        AddFunction(engine, arg);
+    else if (cmd == "delfunc")
+        DeleteFunction(engine, arg);
+    else if (cmd == "addvar")
+        AddVariable(engine, arg);
+    else if (cmd == "delvar")
+        DeleteVariable(engine, arg);
+    else if (cmd == "help")
+        PrintHelp();
+    else if (cmd == "listfuncs")
+        ListFunctions(engine);
+    else if (cmd == "listvars")
+        ListVariables(engine);*/
+    else
+        conoutf("UKNOWN COMMAND");
+
+    // Shut down the engine
+
+
+    return;
 
 }
 
@@ -59,11 +59,11 @@ void ExecString(asIScriptEngine *engine, const char *arg)
 	int refTypeId = asTYPEID_VOID;
 	defformatstring(funcCode, "%s %s%s%s", engine->GetTypeDeclaration(asTYPEID_VOID, true), "ExecuteString() {\n", arg, ";\n}");
 
-	asIObjectType *type = 0;
+    asITypeInfo *type = 0;
 
 	if (refTypeId & asTYPEID_MASK_OBJECT)
 	{
-		type = engine->GetObjectTypeById(refTypeId);
+        type = engine->GetObjectTypeByIndex(refTypeId);
 		if (type)
 			type->AddRef();
 	}
@@ -112,28 +112,28 @@ void config(){
 	int r; //error checker
 
 
-	RegisterStdString(engine);
-	engine->SetMessageCallback(asFUNCTION(MessageCallback), 0, asCALL_CDECL);
+    RegisterStdString(asScript->asEngine);
+    asScript->asEngine->SetMessageCallback(asFUNCTION(MessageCallback), 0, asCALL_CDECL);
 	//string a;
-	r = engine->RegisterGlobalFunction("void helloworld()", asFUNCTION(helloworld), asCALL_CDECL);// assert(r >= 0);
-	r = engine->RegisterGlobalFunction("float sin(float)", asFUNCTION(sinf), asCALL_CDECL);// assert(r >= 0);
-	r = engine->RegisterGlobalFunction("float cos(float)", asFUNCTION(cosf), asCALL_CDECL);// assert(r >= 0);
+    r = asScript->asEngine->RegisterGlobalFunction("void helloworld()", asFUNCTION(helloworld), asCALL_CDECL);// assert(r >= 0);
+    r = asScript->asEngine->RegisterGlobalFunction("float sin(float)", asFUNCTION(sinf), asCALL_CDECL);// assert(r >= 0);
+    r = asScript->asEngine->RegisterGlobalFunction("float cos(float)", asFUNCTION(cosf), asCALL_CDECL);// assert(r >= 0);
 
-	r = engine->RegisterGlobalFunction("void print(bool)", asFUNCTIONPR(print, (bool), void), asCALL_CDECL);// assert(r >= 0);
-	r = engine->RegisterGlobalFunction("void print(int)", asFUNCTIONPR(print, (int), void), asCALL_CDECL); //assert(r >= 0);
-	r = engine->RegisterGlobalFunction("void print(uint)", asFUNCTIONPR(print, (asUINT), void), asCALL_CDECL); //assert(r >= 0);
-	r = engine->RegisterGlobalFunction("void print(float)", asFUNCTIONPR(print, (float), void), asCALL_CDECL); //assert(r >= 0);
-	r = engine->RegisterGlobalFunction("void print(double)", asFUNCTIONPR(print, (double), void), asCALL_CDECL); //assert(r >= 0);
-	r = engine->RegisterGlobalFunction("void print()", asFUNCTIONPR(print, (void), void), asCALL_CDECL); //assert(r >= 0);
+    r = asScript->asEngine->RegisterGlobalFunction("void print(bool)", asFUNCTIONPR(print, (bool), void), asCALL_CDECL);// assert(r >= 0);
+    r = asScript->asEngine->RegisterGlobalFunction("void print(int)", asFUNCTIONPR(print, (int), void), asCALL_CDECL); //assert(r >= 0);
+    r = asScript->asEngine->RegisterGlobalFunction("void print(uint)", asFUNCTIONPR(print, (asUINT), void), asCALL_CDECL); //assert(r >= 0);
+    r = asScript->asEngine->RegisterGlobalFunction("void print(float)", asFUNCTIONPR(print, (float), void), asCALL_CDECL); //assert(r >= 0);
+    r = asScript->asEngine->RegisterGlobalFunction("void print(double)", asFUNCTIONPR(print, (double), void), asCALL_CDECL); //assert(r >= 0);
+    r = asScript->asEngine->RegisterGlobalFunction("void print()", asFUNCTIONPR(print, (void), void), asCALL_CDECL); //assert(r >= 0);
 	//r = engine->RegisterGlobalFunction("void print(string)", asFUNCTIONPR(print, (string), void), asCALL_CDECL);
 
-	engine->ClearMessageCallback();
+    asScript->asEngine->ClearMessageCallback();
 }
 END_AS_NAMESPACE
 
-void asEngineShutdown(){ AngelScript::engine->ShutDownAndRelease(); } //shutdown engine called in main::shutdown
+//void asEngineShutdown(){ asEngineShutdown(); } //shutdown engine called in main::shutdown
 
-void asConfigureEngine(){ AngelScript::config(); } //starts engine up and inits major variables called in main::main
+//void asConfigureEngine(){ asConfigureEngine(); } //starts engine up and inits major variables called in main::main
 
 
 

@@ -54,7 +54,7 @@
  #define AS_NAMESPACE_QUALIFIER ::
 #endif
 
-BEGIN_AS_NAMESPACE
+//BEGIN_AS_NAMESPACE
 
 // AngelScript version
 
