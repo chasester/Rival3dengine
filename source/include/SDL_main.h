@@ -19,8 +19,8 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef _SDL_main_h
-#define _SDL_main_h
+//#ifndef _SDL_main_h
+//#define _SDL_main_h
 
 #include "SDL_stdinc.h"
 

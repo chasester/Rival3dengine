@@ -6,7 +6,7 @@
 
 
 
-BEGIN_AS_NAMESPACE
+//BEGIN_AS_NAMESPACE
 
 // Compare relation between two objects of the same type
 int CompareRelation(asIScriptEngine *engine, void *lobj, void *robj, int typeId, int &result);

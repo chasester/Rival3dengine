@@ -14,6 +14,7 @@
 
 
 #include <string>
+#include <angelscript.h>
 typedef std::string str;
 //---------------------------
 // Compilation settings
@@ -40,11 +41,11 @@ typedef std::string str;
 #define AS_USE_STLNAMES 0
 #endif
 
-BEGIN_AS_NAMESPACE
+//BEGIN_AS_NAMESPACE
 
 void RegisterStdString(asIScriptEngine *engine);
 void RegisterStdStringUtils(asIScriptEngine *engine);
 
-END_AS_NAMESPACE
+//END_AS_NAMESPACE
 
 #endif
