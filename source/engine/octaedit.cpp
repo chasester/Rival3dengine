@@ -337,9 +337,10 @@ void rendereditcursor()
             sel.o[C[od]] = o[C[od]];
         }
     }
-    else if(curworld->nodemoving)
+    else if(worldeditor::nodemoving)
     {
-        curworld->nodedrag(camdir);
+		//add back when defined
+       // worldeditor::nodedrag(camdir);
     }
     else
     {
@@ -364,7 +365,7 @@ void rendereditcursor()
                 }
             }
 
-        if((hovering = curworld->hoveringonnode(hidecursor ? -1 : ent, entorient)))
+        if((hovering = worldeditor::hoveringonnode(hidecursor ? -1 : ent, entorient)))
         {
            if(!havesel)
            {
@@ -459,7 +460,7 @@ void rendereditcursor()
     // cursors
 
     ldrnotextureshader->set();
-	curworld->rendernodeselection(player->o, camdir, curworld->nodemoving != 0);
+	worldeditor::rendernodeselection(player->o, camdir, worldeditor::nodemoving != 0);
     //renderentselection(player->o, camdir, entmoving!=0);
 	//curworld->renderentselection(player->o, camdir, entmoving != 0);
 

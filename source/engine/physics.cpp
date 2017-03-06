@@ -373,7 +373,7 @@ float rayent(const vec &o, const vec &ray, float radius, int mode, int size, int
     float dist = raycube(o, ray, radius, mode, size);
     if((mode&RAY_ENTS) == RAY_ENTS)
     {
-		float dent = curworld->getnearestent(o, ray, dist < 0 ? 1e16f : dist, mode, hitnode);
+		float dent = worldeditor::getnearestnode(o, ray, dist < 0 ? 1e16f : dist, mode, hitnode);
         //float dent = disttooutsideent(o, ray, dist < 0 ? 1e16f : dist, mode, NULL);
         if(dent < 1e15f && (dist < 0 || dent < dist)) dist = dent;
     }

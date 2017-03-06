@@ -25,7 +25,7 @@ namespace game
         return NULL;
     }
 
-	ICOMMAND(editpause, "i", (int *i), { if (*i == 0) !curworld->paused; else curworld->paused = *i > 0 ? true : false; })
+	ICOMMAND(editpause, "i", (int *i), { if (*i == 0) !curworld->ispaused(); })
     ICOMMAND(getfollow, "", (),
     {
         gameent *f = followingplayer();

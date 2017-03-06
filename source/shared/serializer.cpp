@@ -959,7 +959,7 @@ void CSerialnode::Create(CSerializedValue *val)
 {
 	node *n = new node(vec(0));
 	val->m_restorePtr = n;
-	curworld->addnodetoscene(n);
+	//curworld->addnodetoscene(n);
 	n->c = val;
 	//attach ctrls to the object
 	if (val->m_children.size() > 3)
@@ -1026,7 +1026,7 @@ void CSerialnode::Create(CSerializedValue *val)
 		
 	}
 	
-	curworld->addnodetoscene(n);
+	//curworld->addnodetoscene(n);
 }
 void CSerialnode::Store(CSerializedValue *val, void *ptr)
 {

@@ -81,7 +81,7 @@ struct node
 	//editnode *en;
 	void store();
 	bool restore();
-private:
+//private: make private later
 	node() {}
 	node(const node &n) {};
 	node(vec pos, str name = "unnamed", str tags = "");
@@ -241,12 +241,12 @@ struct worldeditor //static struct
 	static void nodeseladd(int id);
 	static inline vec getselpos();
 private:
-	static vector<node *> getselnodes();
+	static vector<node *> &getselnodes();
 	struct undoinfo;
 
 	//nessary functions that need recoded;
 public:
-	static float getnearestnode(const vec &o, const vec &ray, float radius, int mode, int &hitnode);
+	static float getnearestnode(const vec &o, const vec &ray, float radius, int mode, int &hitnode); //this was for old attatchment, maybe useful though
 	static undoinfo *newundonode();
 	static void makeundonode();
 	static undoinfo *copyundonodes(undoinfo *u);
@@ -307,19 +307,20 @@ public:
 	//	selectinfo() {} //only can be created internally
 	//};
 
-private:
+//private:
 	struct undoinfo
 	{
 
 	};
 	worldeditor() {}; //make private so no one tries to instance this
 	static int nodehover, oldhover, nodeorient, nfocus, nodemoving;
-	static vector<int> nodeselect;
+	static vector<uint> nodeselect;
 	//static vector<selectinfo *> selinfos;
 	static vector<undoinfo *> undoinfos;
 	static int nodelooplevel;
 	static bool undonext, nodecanedit;
 	static bool nodeselsnap, nodeediting;
+	static vector<cube *> octrootsel; //octrees that we are modifying ;)
 }; 
 
 
@@ -354,15 +355,17 @@ public:
 	node *newnode(vec o = vec(0), vec rot = vec(0), asITypeInfo *ast = NULL); //create a new node from a type
 	node *newnode(uint id, vec o = vec(0), vec rot = vec(0)); //create a new node from a reference copy
 	node *newnode(const node &on, vec o = vec(0), vec rot = vec(0)); //create a new node from a pointer
-	node *removenode(uint id);
-	node *removenode(node *n);
+	bool removenode(uint id);
+	bool removenode(node *n);
+	node *getnodefromid(uint id);
+	vector<node *> &getnodefromid(const vector<uint> nids);
 
 	//add a light manger later
 	void addlight(vec o, vec color, int radius, char type);
 	vector<light *> getlights();
 
 
-	bool validate(node *n, bool forcedestroy = true);
+	bool nodevalidate(node *n, bool forcedestroy = true);
 	void setnodealocation(uint num, ushort numpercall); //preallocate x amount of nodes, and keep it at this level for as long as posible. You should change this based on your intake this will allow you to save time and memmory
 private:
 	struct nodemgr

@@ -1743,10 +1743,6 @@ int getmapversion() { return mapversion; }
 	//	//if (entmoving == 1) makeundoent();
 	//	
 	//}
-	void world::addctrltonode(str name, bool first)
-	{
-	
-	}
 	//bool world::hoveringonnode(int node, int orient)
 	//{
 	//	if (nonodeedit()) return false;
@@ -1799,13 +1795,13 @@ int getmapversion() { return mapversion; }
 	//		curscene->savescene(f);
 	//	}
 	//}
-	vector<light *> world::getlights()
+	/*vector<light *> world::getlights()
 	{
 		vector<light *> li;
 		loopv(lights)
 			li.add(lights.pop());
 		return li;
-	}
+	}*/
 	//void world::addlight(vec o, vec c, int r, char ty)
 	//{
 	//	light *l = new light();
@@ -1857,19 +1853,8 @@ node *newasent(str name, vec o, bool addnode)
 	//move this code to the scene graph
 	//create the game object and contrler from the scriptmgr, then check to make sure the ctrl exist and it compiled correctly
 	if (curworld->getnumnodes() >= maxnodes) return NULL;
-	node *g = new node(vec(o), name);
-	asIScriptObject *obj = asScript->CreateController(name, g);
-	if (!obj)
-	{
-		delete g;  
-		return NULL;
-	}
-	g->ctrl.add(obj);
-
-	//create the edit entity object as the begining reference point
-	//makeundoent();
-	//entedit(idx, e.type = ET_EMPTY);
-	//commitchanges();
+	node *g = curworld->newnode(o, vec(), name);
+	if (!g) return NULL;
 	loopv(g->ctrl)asScript->doCreate(g->ctrl[i]);
 
 	if (addnode)g->store();
@@ -2000,8 +1985,19 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 			n->moveto(o); n->rotateto(rot);
 			return n;
 		}
-		node *world::removenode(uint id) { nmgr.removenode(id); }
-		node *world::removenode(node *n) { nmgr.removenode(n); }
+		bool world::removenode(uint id) { return nmgr.removenode(id); }
+		bool world::removenode(node *n) { return nmgr.removenode(n); }
+		node *world::getnodefromid(uint id) {return nmgr.getnodefromid(id); }
+		vector<node *> &world::getnodefromid(const vector<uint> nids)
+		{
+			vector<node *> nodes;
+			loopv(nids)
+			{
+				node *n = nmgr.getnodefromid(nids[i]);
+				if (n)nodes.add(n);
+			}
+			return nodes;
+		}
 
 		void world::addlight(vec o, vec color, int radius, char type)
 		{
@@ -2014,7 +2010,7 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 		}
 		vector<light *> world::getlights() { return lights; }
 		
-		bool world::validate(node *n, bool forcedestroy = true) //this function calls the nodemager validate which allows us to check the validity of a *n. This should be done periodically to see if a node is referenced by * but doesnt have an id
+		bool world::nodevalidate(node *n, bool forcedestroy) //this function calls the nodemager validate which allows us to check the validity of a *n. This should be done periodically to see if a node is referenced by * but doesnt have an id
 		{
 			uint id = nmgr.checkvalid(n);
 			if (id < 1 && forcedestroy) { delete n; return false; }
@@ -2078,7 +2074,7 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 			if (!n)return false; // make sure we are given a vaild pointer 
 			if (nodes[n->id] != n || (n->id == 0)) //to make sure we have this node has a valid id, and that the id given is not null
 			{
-				int id = nodes.find(*n);
+				int id = 0; // nodes.find(*n);
 				if (id < 0) return 0;
 				return id;
 			}
@@ -2141,20 +2137,86 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 		}
 		vec worldeditor::getselpos()
 		{
-
-			vector<extentity *> &ents = entities::getents();
-			if (entgroup.length() && ents.inrange(entgroup[0])) return ents[entgroup[0]]->o;
-			if (ents.inrange(nodehover)) return ents[nodehover]->o;
-			//return vec(sel.o);
-			return vec();
+			vector<node *> nodes = curworld->getnodefromid(nodeselect);
+			if (nodes.length() > 0 && nodes[0]) return nodes[0]->o;
+			if (node *n = curworld->getnodefromid(nodehover)) return n->o;
+			return vec(0); //return sel.o; fix when octselect is added
 		}
-		inline vector<node*> worldeditor::getselnodes()
-		{
-			
-			return vector<node *>();
-		}
+		inline vector<node*> &worldeditor::getselnodes(){ return curworld->getnodefromid(nodeselect); }
+		/* add later when we have do and undo set up
+		float worldeditor::getnearestnode(const vec &o, const vec &ray, float radius, int mode, int &hitnode); //this was for old attatchment, maybe useful though
+		undoinfo *worldeditor::newundonode();
+		void worldeditor::makeundonode();
+		undoinfo *worldeditor::copyundonodes(undoinfo *u);
+		void worldeditor::pasteundonode(int idx, const node &un);
+		void worldeditor::pasteundonodes(undoinfo *u);
+		void worldeditor::detachnode(node &n); //use to release 
+		*/
 	#pragma endregion (Gets sets checks)
 	#pragma region "Map Calls"
+		bool worldeditor::emptymap(int scale, bool force, const char *mname, bool usecfg)
+		{
+			if (!force && !editmode)
+			{
+				conoutf(CON_ERROR, "newmap only allowed in edit mode");
+				return false;
+			}
+
+
+
+			setvar("mapscale", scale<10 ? 10 : (scale>16 ? 16 : scale), true, false);
+			setvar("mapsize", 1 << worldscale, true, false);
+			setvar("emptymap", 1, true, false);
+
+			texmru.shrink(0);
+			freeocta(worldroot);
+			worldroot = newcubes(F_EMPTY);
+			loopi(4) solidfaces(worldroot[i]);
+
+			if (worldsize > 0x1000) splitocta(worldroot, worldsize >> 1);
+
+			clearmainmenu();
+
+			if (usecfg)
+			{
+				identflags |= IDF_OVERRIDDEN;
+				execfile("config/default_map_settings.cfg", false);
+				identflags &= ~IDF_OVERRIDDEN;
+			}
+
+			initlights();
+			allchanged(usecfg);
+
+			startmap(mname);
+
+			return true;
+		}
+		bool worldeditor::enlargemap(bool force)
+		{
+			if (!force && !editmode)
+			{
+				conoutf(CON_ERROR, "mapenlarge only allowed in edit mode");
+				return false;
+			}
+			if (worldsize >= 1 << 16) return false;
+
+			while (outsideents.length()) removeentity(outsideents.pop());
+
+			worldscale++;
+			worldsize *= 2;
+			cube *c = newcubes(F_EMPTY);
+			c[0].children = worldroot;
+			loopi(3) solidfaces(c[i + 1]);
+			worldroot = c;
+
+			if (worldsize > 0x1000) splitocta(worldroot, worldsize >> 1);
+
+			enlargeblendmap();
+
+			allchanged();
+
+			return true;
+		}
 		void worldeditor::reset() //inits or resets the editor. Should be done on map load or change, or when entering or exiting editmode
 		{
 			undonext = true;
@@ -2163,6 +2225,10 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 			nodelooplevel = 0;
 			nodeselect.shrink(0); /*selinfos.shrink(0);*/ undoinfos.shrink(0);
 			nodeselsnap = false; nodeediting = true;
+		}
+		void worldeditor::startmap(const char *name)
+		{
+
 		}
 	#pragma endregion (calls used when loading and reseting, and changing the map)
 	#pragma region "rendering"
