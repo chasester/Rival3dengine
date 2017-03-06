@@ -3400,7 +3400,7 @@ void collectlights()
 
 		if (lastdonehere < lastmillis)
 		{
-			curworld->lights.deletecontents();
+			curworld->getlights();
 			loopi(20) curworld->addlight(vec((rand() % 400) - 200 + 512, (rand() % 400) - 200 + 512, (rand() % 200) + 512), vec(rand() % 200, rand() % 200, rand() % 200), (rand() % 100) + 200, 0);
 			lastdonehere = lastmillis + 500;
 			shoulddeletenext = true;

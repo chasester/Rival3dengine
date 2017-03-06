@@ -239,11 +239,10 @@ void CSerializer::load(stream *f)
 	namespaces.shrink(0);
 	saveddata.shrink(0);
 	curworld->clearworld();
-	curworld->curscene->nodes.shrink(0);
+	//curworld->curscene->nodes.shrink(0);
 	PULLLILVECTOR(namespaces);
 	PULLLILVECTOR(types);
 	PULLLILVECTOR(names);
-	PRINT_VECTOR(types);
 	uint size = f->getlil<uint>();
 	loopi(size)saveddata.put(DataHold::read(f));
 	loopv(saveddata)
@@ -257,9 +256,9 @@ void CSerializer::load(stream *f)
 	if (!m_root.m_serializer) { conoutf("failed to init serializer, map will not load nodes."); return; }
 	index = -1; //this is to avoid a compile time error that causes the function to add extra number to index
 	m_root.load();
-	curworld->curscene->resetworld();
+	//curworld->curscene->resetworld();
 	m_root.print(0);
-	curworld->serializedworld();
+	//curworld->serializedworld();
 	return;
 }
 #define CALLCONSTRUCTOR(n) new n();
@@ -940,7 +939,7 @@ void CSerializedValue::SetUserData(void *data)
 void CSerializedValue::print(int depth)
 {
 	std::string a = "", b = "";
-	loop(depth) b = ">";
+	loop(depth) b += ">";
 	conoutf("%s%s::%s %s %d", b.c_str(), m_name.c_str(), m_typeName.c_str(), a.c_str(), m_children.size());
 	for (uint i = 0; i < m_children.size(); i++)
 	{

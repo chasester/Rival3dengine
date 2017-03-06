@@ -177,4 +177,3 @@ node::~node()
 //void setupbulletfromaabb(vec offset, vec size, float friction = 0.3f, float elasticity = 0.8f){} // add more properties later
 //void setupbulletfromcylender(vec offset, float radius, float height, float friction = 0.3f, float elasticity = 0.8f){}
 
-

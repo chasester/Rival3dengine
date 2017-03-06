@@ -81,8 +81,6 @@ struct IController
 	node *self;
 };
 
-
-
 struct node;
 struct ScriptManager 
 {
@@ -112,7 +110,6 @@ private:
 		//vector<const char *> paths;
 		prefab(str n, vector<str> paths);
 	};
-	
 public:
 	int r;
 	bool hasCompileErrors;
@@ -123,7 +120,6 @@ public:
 	CSerializer *serializer;
 
 	ScriptManager();
-
 	//prefabs
 	//serializer
 	void setupserializer(CSerializer *s);
@@ -182,7 +178,5 @@ private:
 	
 };
 extern ScriptManager *asScript;
-
-#include "node.h"
 
 #endif

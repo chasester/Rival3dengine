@@ -303,15 +303,15 @@ void RegisterVec3(asIScriptEngine *engine){
 	r = engine->RegisterObjectProperty("vec", "float b", asOFFSET(vec, b));
 }
 
-void wrapper_adddynamiclight(vec &o, float rad, vec &color, int fade=0, int peak =0,float initrad = 0,vec &initcolor = vec(0,0,0))
+void wrapper_adddynamiclight(const vec &o, float rad, const vec &color, int fade=0, int peak =0,float initrad = 0, const vec &initcolor = vec(0,0,0))
 {
 	adddynlight(o, rad, color,fade,peak,0,initrad, initcolor);
 }
-void wrapper_addlight(vec &o, vec &color, int radius, int type)
+void wrapper_addlight(const vec &o, const vec &color, int radius, int type)
 {
 	curworld->addlight(o, color, radius, type % 5);
 }
-void wrapper_rendermapmodel(int ind, int ani, vec &o, vec &rot)
+void wrapper_rendermapmodel(int ind, int ani, const vec &o, const vec &rot)
 {
 	const char *mdlname = mapmodelname(ind);
 	if (!mdlname) return;
@@ -346,9 +346,9 @@ void config(asIScriptEngine *asEngine){
 	//add math funcitons
 	SETUPMATHFUNC(float);
 	//SETUPMATHFUNC(double);
-	asEngine->RegisterGlobalProperty("const float PI", &float(pi));
-	asEngine->RegisterGlobalProperty("const float RAD", &float(rad));
-	asEngine->RegisterGlobalProperty("const int lastmillis", &int(lastmillis));
+	//asEngine->RegisterGlobalProperty("const float PI", &int(pi));
+	//asEngine->RegisterGlobalProperty("const float RAD", &int(rad));
+	asEngine->RegisterGlobalProperty("const int lastmillis", &lastmillis);
 
 	RegisterVec3(asEngine);
 
@@ -365,9 +365,9 @@ void config(asIScriptEngine *asEngine){
 
 	//r = asEngine->RegisterGlobalFunction("void rebuildmodule(string a)", asFUNCTIONPR(rebuildmodule, (str), void), asCALL_CDECL); asFATAL(r);
 
-	r = asEngine->RegisterGlobalFunction("void adddynamiclight(const vec &in, float radius, const vec &in, int fade=0, int peak=0, float initrad=0.0f, const vec &in = vec(0,0,0))", asFUNCTIONPR(wrapper_adddynamiclight, (vec&, float, vec&, int, int, float, vec&), void), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void rendermapmodel(int index,int ani, const vec &in, const vec &in)", asFUNCTIONPR(wrapper_rendermapmodel, (int, int, vec&, vec&), void), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void addlight(const vec &in, const vec &in, int radius, int type)", asFUNCTIONPR(wrapper_addlight, (vec&, vec&, int, int), void), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void adddynamiclight(const vec &in, float radius, const vec &in, int fade=0, int peak=0, float initrad=0.0f, const vec &in = vec(0,0,0))", asFUNCTIONPR(wrapper_adddynamiclight, (const vec&, float, const vec&, int, int, float, const vec&), void), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void rendermapmodel(int index,int ani, const vec &in, const vec &in)", asFUNCTIONPR(wrapper_rendermapmodel, (int, int, const vec&, const vec&), void), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void addlight(const vec &in, const vec &in, int radius, int type)", asFUNCTIONPR(wrapper_addlight, (const vec&, const vec&, int, int), void), asCALL_CDECL);
 #define setupobjectpropert(o,t, p) asEngine->RegisterObjectProperty( str(#o).c_str() ,  str(str(#t) + " " +  str(#p)).c_str(), asOFFSET(o, p)); assert(r >= 0);
 
 	//setup type light

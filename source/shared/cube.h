@@ -75,6 +75,7 @@
 #include "halo.h"
 
 #include "ents.h"
+#include "node.h"
 
 #include "command.h"
 

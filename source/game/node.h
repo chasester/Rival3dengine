@@ -8,6 +8,11 @@ struct world;
 struct scriptinterface;
 struct savenode;
 struct light;
+//outside structs that need defined so we can use them 
+struct selinfo;
+struct model;
+struct cube;
+struct vtxarray;
 //list includes
 #include "AJMPhys.h"
 
@@ -60,6 +65,7 @@ struct scriptinterface
 
 struct node
 {
+	friend world;
 	asILockableSharedBool *weakRefFlag;
 	uint parent;
 	vector<uint> children;
@@ -75,9 +81,12 @@ struct node
 	//editnode *en;
 	void store();
 	bool restore();
+private:
+	node() {}
+	node(const node &n) {};
 	node(vec pos, str name = "unnamed", str tags = "");
 	node(vec pos, vec rotation);
-
+public:
 	int addref();
 	int release();
 
@@ -213,80 +222,178 @@ public:
 	}
 };
 
-struct worldeditor //static
+enum MODOE
 {
+	MODOE_ADD = 1 << 0,
+	MODOE_UPDATEBB = 1 << 1,
+	MODOE_CHANGED = 1 << 2
+};
+
+struct worldeditor //static struct
+{
+
+	//utility calls (get sets and checks)
+	static bool isnodeedit(bool deselect=true); //force deselection if you shouldnt be editing nodes;
 	static bool pointinsel(const selinfo &sel, const vec &o);
-	static bool nodeselsnap = false, nodeediting = true;
 	static inline bool nodenoedit();
 	static bool nodehavesel();
 	static void nodeselcancel();
 	static void nodeseladd(int id);
-	static vec getselpos();
+	static inline vec getselpos();
+private:
 	static vector<node *> getselnodes();
-	static void rendernodeselection(const vec &o, const vec &ray, bool nodemoving);
-	static bool hoveringonnode(int node, int orient);
+	struct undoinfo;
+
 	//nessary functions that need recoded;
+public:
 	static float getnearestnode(const vec &o, const vec &ray, float radius, int mode, int &hitnode);
-	static undoblock *newundonode();
+	static undoinfo *newundonode();
 	static void makeundonode();
-	static undoblock *copyundonodes(undoblock *u);
+	static undoinfo *copyundonodes(undoinfo *u);
 	static void pasteundonode(int idx, const node &un);
-	static void pasteundoents(undoblock *u);
+	static void pasteundonodes(undoinfo *u);
 	static void detachnode(node &n); //use to release links
-	static void nodeflip(); //           flip around selected cube * if no cube * selected call each node through the message system to get a result
-	static void noderotate(int *cw); //rotate around selected cube * if no cube * selected call each node through the message system to get a result
-	static void startmap(const char *name);
+	
+	//global map calls
 	static bool emptymap(int scale, bool force, const char *mname, bool usecfg);
 	static bool enlargemap(bool force); //this is an obsolete call, this should only enlarge a scene's world root. Check to find the curent  editing scene, and which worldroots are in active edit state then only enlarge the ones that are asked
-	static void nodeautoview(int *dir); //used to rotate through node positions (use later)
+	static void reset();
+	static void startmap(const char *name);
 	
-	//bool editmoveplane(const vec &o, const vec &ray, int d, float off, vec &handle, vec &dest, bool first);
+	//rendering
+	static void rendernodeselection(const vec &o, const vec &ray, bool nodemoving);
+	static bool hoveringonnode(int node, int orient);
+	static void rendernodering(const node &n, int axis);
+	static void rendernodesphere(const node &n);
+	static void rendernodelink(const node &n, int type);
+	static void rendernodearrow(const node &n, const vec &dir, float radius);
+	static void rendernodecone(const node &n, const vec &dir, float radius, float angle);
+	static void rendernodebox(const node &n);
+	static void rendernodebox(const vec no, vec es);
+
+	//functionality
+	static bool editmoveplane(const vec &o, const vec &ray, int d, float off, vec &handle, vec &dest, bool first);
 	static void nodedrag(const vec &ray);
 	static void delnode();
+	static void nodeflip(); //           flip around selected cube * if no cube * selected call each node through the message system to get a result
+	static void noderotate(int *cw); //rotate around selected cube * if no cube * selected call each node through the message system to get a result
+	static void nodeautoview(int *dir); //used to rotate through node positions (use later)
+	
+
+	//octtree intergration
+	static void modifyoctaentity(int flags, int id, node &n, cube *c, const ivec &cor, int size, const ivec &bo, const ivec &br, int leafsize, vtxarray *lastva = NULL);
+	static bool modifyoctanode(int flags, int id, node &n);
+	static inline bool modifyoctanode(int flags, int id);
+	static inline void addnode(int id);// { modifyoctaent(MODOE_ADD | MODOE_UPDATEBB, id); }
+	static inline void addnodeedit(int id);// { modifyoctaent(MODOE_ADD | MODOE_UPDATEBB | MODOE_CHANGED, id); }
+	static inline void removenode(int id);// { modifyoctaent(MODOE_UPDATEBB, id); }
+	static inline void removenodeedit(int id);// { modifyoctaent(MODOE_UPDATEBB | MODOE_CHANGED, id); }
+	static void nodesinocta();
+
+	//static void freeoctanodes(cube &c);
+
+	//posibly obsolete
+	static inline void transformbb(node &n);
+	static inline void mmboundbox(const node &n, model *m);
+	static inline void mmcollisionbox(const node &n);
+
+	//aabb calls
+	//static inline vec getrenderbounds(node &n);
+	//static inline vec getphysicsbounds(node &n);
+
+	//struct selectinfo
+	//{
+	//private:
+	//	selectinfo() {} //only can be created internally
+	//};
+
 private:
-	static int nodehover, oldhover, nodeorient, nfocus, nodemoving = 0;
+	struct undoinfo
+	{
+
+	};
+	worldeditor() {}; //make private so no one tries to instance this
+	static int nodehover, oldhover, nodeorient, nfocus, nodemoving;
 	static vector<int> nodeselect;
+	//static vector<selectinfo *> selinfos;
+	static vector<undoinfo *> undoinfos;
 	static int nodelooplevel;
+	static bool undonext, nodecanedit;
+	static bool nodeselsnap, nodeediting;
 }; 
+
+
+
+
+
+
+
+
 //definition of world declaration is in the bottom of world.cpp
 struct world
 {
 public:
-	world(scene *s);
-	void addlight(vec o, vec color, int radius, char type);
-	vector<light *> getlights();
+	//utilitycalls (get sets and checks)
+	world(scene *s, uint maxnodes = 2000, ushort maxallocate = 200, ushort maxalocateperround = 20);
+	uint getnumnodes();
+	bool ispaused();
+
+	//update and resets
+	void doAwake();
+	void rendernodes();
 	void serializedworld();
 	void updateworld();
 	void clearworld(bool force = false);
-	uint getnumnodes();
-	void addnodetoscene(node *g);
-	void rendernodes();
-	bool ispaused() { return paused; }
-	void saveworld(stream *f);
-	void loadworld(stream *f) { curscene->loadscene(f); }
-	void doAwake() { curscene->doawake(); }
-	void addctrltonode(str name, bool first);
 	void resetmap();
+	void saveworld(stream *f);
+	void loadworld(stream *f);
+
+	//asset changes
+	node *newnode(vec o = vec(0), vec rot = vec(0), str mod = ""); //create a new node from script name
+	node *newnode(vec o = vec(0), vec rot = vec(0), asIScriptObject *aso = NULL); //create a new node from premade object
+	node *newnode(vec o = vec(0), vec rot = vec(0), asITypeInfo *ast = NULL); //create a new node from a type
+	node *newnode(uint id, vec o = vec(0), vec rot = vec(0)); //create a new node from a reference copy
+	node *newnode(const node &on, vec o = vec(0), vec rot = vec(0)); //create a new node from a pointer
+	node *removenode(uint id);
+	node *removenode(node *n);
+
+	//add a light manger later
+	void addlight(vec o, vec color, int radius, char type);
+	vector<light *> getlights();
+
+
+	bool validate(node *n, bool forcedestroy = true);
+	void setnodealocation(uint num, ushort numpercall); //preallocate x amount of nodes, and keep it at this level for as long as posible. You should change this based on your intake this will allow you to save time and memmory
 private:
 	struct nodemgr
 	{
-
-
-		node *newnode();  //call to get a new node from scratch; recieve the node
-		uint newnode(node *n); //class to copy an existing node; recieve the id
-
-		bool removenode(uint id);
+		void init(ushort maxalocate, ushort maxpertime);
+		void update();
+		node *newnode();
+		node *getnodefromid(uint id);
 		bool removenode(node *n);
-
-		node *root;
-		vector<node *> nodes();
+		bool removenode(uint id);
+		void kill();
+		const inline uint numofnodes();
+		uint checkvalid(node *n);
+		void setnodealocation(uint num, ushort numpercall);
+	private:
+		uint getnextopenid();
+		void allocatenodes(ushort amt);
+		void deallocatenodes(ushort amt);
+		node *getnodefrompool();
+		vector<node *> nodes;
+		vector<node *> nodepool;
+		vector<uint> openids;
+		ushort maxallocateatonce;
+		uint worldnodealocate;
 	};
-
+	nodemgr nmgr;
 	scene *curscene;
 	vector<uint> physicbodies;
 	vector<light *> lights;
 	vector<scene *> scenes;
-	int spotlights, volumetriclights,
+	int spotlights, volumetriclights;
 	bool paused = false, touched = false;
 };
 
