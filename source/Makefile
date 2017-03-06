@@ -48,7 +48,7 @@ STD_LIBS= -static-libgcc -static-libstdc++
 CLIENT_LIBS= -mwindows $(STD_LIBS) -L$(WINBIN) -L$(WINLIB) -lSDL2 -lSDL2_image -lSDL2_mixer -lzlib1 -lopengl32 -lenet -lws2_32 -lwinmm
 else
 CLIENT_INCLUDES= $(INCLUDES) -I/usr/X11R6/include `sdl2-config --cflags`
-CLIENT_LIBS= -Lenet -lenet -L/usr/X11R6/lib -lX11 `sdl2-config --libs` -L/usr/lib -lSDL2_image -L/usr/lib -lSDL2_mixer -Langel/lib -langelscript -lz -lGL
+CLIENT_LIBS= -Lenet -lenet -L/usr/X11R6/lib -lX11 `sdl2-config --libs` -L/usr/lib -framework SDL2_image -L/usr/lib -framework SDL2_mixer -Langel/lib -langelscript -lz -lGL
 endif
 ifeq ($(PLATFORM),Linux)
 CLIENT_LIBS+= -lrt
@@ -71,7 +71,6 @@ CLIENT_OBJS= \
 	shared/scriptbuilder.o\
 	shared/scripthandle.o\
 	shared/scripthelper.o\
-	shared/scriptstring.o\
 	shared/serializer.o\
 	shared/stream.o \
 	shared/tools.o \
@@ -80,7 +79,6 @@ CLIENT_OBJS= \
 	shared/zip.o \
 	engine/aa.o \
 	engine/AJMPhys.o \
-	engine/angelscript.o\
 	engine/bih.o \
 	engine/blend.o \
 	engine/client.o	\
