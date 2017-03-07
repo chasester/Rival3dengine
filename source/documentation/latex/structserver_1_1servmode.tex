@@ -1,0 +1,73 @@
+\hypertarget{structserver_1_1servmode}{}\section{server\+:\+:servmode Struct Reference}
+\label{structserver_1_1servmode}\index{server\+::servmode@{server\+::servmode}}
+Inheritance diagram for server\+:\+:servmode\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structserver_1_1servmode}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a56c5b58eb16369b1e4ea203453e8ab29}\label{structserver_1_1servmode_a56c5b58eb16369b1e4ea203453e8ab29}} 
+virtual void {\bfseries entergame} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_ac0919315170eeba9c561131e824214de}\label{structserver_1_1servmode_ac0919315170eeba9c561131e824214de}} 
+virtual void {\bfseries leavegame} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, bool disconnecting=false)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a43dcd470aa291cf13f704f2629bb05e4}\label{structserver_1_1servmode_a43dcd470aa291cf13f704f2629bb05e4}} 
+virtual void {\bfseries moved} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, const \hyperlink{structvec}{vec} \&oldpos, bool oldclip, const \hyperlink{structvec}{vec} \&newpos, bool newclip)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a53ad2be2818b38cd1f0a321ae5951dbc}\label{structserver_1_1servmode_a53ad2be2818b38cd1f0a321ae5951dbc}} 
+virtual bool {\bfseries canspawn} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, bool connecting=false)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_ac6ed3f41f5e10437809d16e7d139593f}\label{structserver_1_1servmode_ac6ed3f41f5e10437809d16e7d139593f}} 
+virtual void {\bfseries spawned} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a068cef94c895a4abfd58ac5f16f59fe0}\label{structserver_1_1servmode_a068cef94c895a4abfd58ac5f16f59fe0}} 
+virtual int {\bfseries fragvalue} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$victim, \hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$actor)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a3ec098da25cfb56c7b7963bbfb47074d}\label{structserver_1_1servmode_a3ec098da25cfb56c7b7963bbfb47074d}} 
+virtual void {\bfseries died} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$victim, \hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$actor)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a713bd2ea5354d83cbb5347b6b27fa173}\label{structserver_1_1servmode_a713bd2ea5354d83cbb5347b6b27fa173}} 
+virtual bool {\bfseries canchangeteam} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, int oldteam, int newteam)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a5e84ce3eed54475288adbbd8f7378465}\label{structserver_1_1servmode_a5e84ce3eed54475288adbbd8f7378465}} 
+virtual void {\bfseries changeteam} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, int oldteam, int newteam)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a6220e24bd22718275c7a22cb67cc6489}\label{structserver_1_1servmode_a6220e24bd22718275c7a22cb67cc6489}} 
+virtual void {\bfseries initclient} (\hyperlink{structserver_1_1clientinfo}{clientinfo} $\ast$ci, \hyperlink{structpacketbuf}{packetbuf} \&p, bool connecting)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_afc5c72238e635713477af11e0e37ce3b}\label{structserver_1_1servmode_afc5c72238e635713477af11e0e37ce3b}} 
+virtual void {\bfseries update} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a36fa58660b39485e097e27b780f29021}\label{structserver_1_1servmode_a36fa58660b39485e097e27b780f29021}} 
+virtual void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a932eddc330334e2313b66995e393a06f}\label{structserver_1_1servmode_a932eddc330334e2313b66995e393a06f}} 
+virtual void {\bfseries setup} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_aff7ae36f8f5ccb1ef2e47496f042573c}\label{structserver_1_1servmode_aff7ae36f8f5ccb1ef2e47496f042573c}} 
+virtual void {\bfseries newmap} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_ab85ae5f3ebd5fd80ab1cb302420ae412}\label{structserver_1_1servmode_ab85ae5f3ebd5fd80ab1cb302420ae412}} 
+virtual void {\bfseries intermission} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a45ae3bc5922d024b7a2947c8dc2e744f}\label{structserver_1_1servmode_a45ae3bc5922d024b7a2947c8dc2e744f}} 
+virtual bool {\bfseries hidefrags} ()
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a7a55802c3911aaca5728dbc77edbf44c}\label{structserver_1_1servmode_a7a55802c3911aaca5728dbc77edbf44c}} 
+virtual int {\bfseries getteamscore} (int team)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a30de1ce83db65674ef2d8e2bafe51f03}\label{structserver_1_1servmode_a30de1ce83db65674ef2d8e2bafe51f03}} 
+virtual void {\bfseries getteamscores} (\hyperlink{structvector}{vector}$<$ \hyperlink{structteamscore}{teamscore} $>$ \&scores)
+\item 
+\mbox{\Hypertarget{structserver_1_1servmode_a8bb98ac7373c7d667e42d39cae6cef01}\label{structserver_1_1servmode_a8bb98ac7373c7d667e42d39cae6cef01}} 
+virtual bool {\bfseries extinfoteam} (int team, \hyperlink{structdatabuf}{ucharbuf} \&p)
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/game/server.\+cpp\end{DoxyCompactItemize}

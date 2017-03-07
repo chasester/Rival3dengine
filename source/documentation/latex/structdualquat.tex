@@ -1,0 +1,88 @@
+\hypertarget{structdualquat}{}\section{dualquat Struct Reference}
+\label{structdualquat}\index{dualquat@{dualquat}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdualquat_af485158a42a402ee5f99852fb0a0f3fb}\label{structdualquat_af485158a42a402ee5f99852fb0a0f3fb}} 
+{\bfseries dualquat} (const \hyperlink{structquat}{quat} \&q, const \hyperlink{structvec}{vec} \&p)
+\item 
+\mbox{\Hypertarget{structdualquat_a33f70256fa19bb34537f63e0fef1264c}\label{structdualquat_a33f70256fa19bb34537f63e0fef1264c}} 
+{\bfseries dualquat} (const \hyperlink{structquat}{quat} \&q)
+\item 
+\mbox{\Hypertarget{structdualquat_a81399da7ab3d67c713c2b191bcdc06af}\label{structdualquat_a81399da7ab3d67c713c2b191bcdc06af}} 
+{\bfseries dualquat} (const \hyperlink{structmatrix4x3}{matrix4x3} \&m)
+\item 
+\mbox{\Hypertarget{structdualquat_a904d696a0b2b2458a1ed33363f383bec}\label{structdualquat_a904d696a0b2b2458a1ed33363f383bec}} 
+\hyperlink{structdualquat}{dualquat} \& {\bfseries mul} (float k)
+\item 
+\mbox{\Hypertarget{structdualquat_a520295bb77d6bc2271cc4ca0208398ee}\label{structdualquat_a520295bb77d6bc2271cc4ca0208398ee}} 
+\hyperlink{structdualquat}{dualquat} \& {\bfseries add} (const \hyperlink{structdualquat}{dualquat} \&d)
+\item 
+\mbox{\Hypertarget{structdualquat_a71fa02bd086ed83c2bd8054ee8e7e65e}\label{structdualquat_a71fa02bd086ed83c2bd8054ee8e7e65e}} 
+\hyperlink{structdualquat}{dualquat} \& {\bfseries lerp} (const \hyperlink{structdualquat}{dualquat} \&to, float t)
+\item 
+\mbox{\Hypertarget{structdualquat_a705eb3df45e1bf19cf578eb16423cdc8}\label{structdualquat_a705eb3df45e1bf19cf578eb16423cdc8}} 
+\hyperlink{structdualquat}{dualquat} \& {\bfseries lerp} (const \hyperlink{structdualquat}{dualquat} \&from, const \hyperlink{structdualquat}{dualquat} \&to, float t)
+\item 
+\mbox{\Hypertarget{structdualquat_a3462e3334e37b494d0453c4048834a78}\label{structdualquat_a3462e3334e37b494d0453c4048834a78}} 
+\hyperlink{structdualquat}{dualquat} \& {\bfseries invert} ()
+\item 
+\mbox{\Hypertarget{structdualquat_ac0b8fdb6d9e67813373c9957ac4b8aca}\label{structdualquat_ac0b8fdb6d9e67813373c9957ac4b8aca}} 
+void {\bfseries mul} (const \hyperlink{structdualquat}{dualquat} \&p, const \hyperlink{structdualquat}{dualquat} \&o)
+\item 
+\mbox{\Hypertarget{structdualquat_af9940944e4a530e7f82e4f0eb5a70c74}\label{structdualquat_af9940944e4a530e7f82e4f0eb5a70c74}} 
+void {\bfseries mul} (const \hyperlink{structdualquat}{dualquat} \&o)
+\item 
+\mbox{\Hypertarget{structdualquat_a39d015b5df10c297e1b56d2d966c2efe}\label{structdualquat_a39d015b5df10c297e1b56d2d966c2efe}} 
+void {\bfseries mulorient} (const \hyperlink{structquat}{quat} \&q)
+\item 
+\mbox{\Hypertarget{structdualquat_a765e740cb7fc2dfec283613cfa430413}\label{structdualquat_a765e740cb7fc2dfec283613cfa430413}} 
+void {\bfseries mulorient} (const \hyperlink{structquat}{quat} \&q, const \hyperlink{structdualquat}{dualquat} \&base)
+\item 
+\mbox{\Hypertarget{structdualquat_a93c67d4d04bdd2652e5c72f2d4bd3572}\label{structdualquat_a93c67d4d04bdd2652e5c72f2d4bd3572}} 
+void {\bfseries normalize} ()
+\item 
+\mbox{\Hypertarget{structdualquat_a96d2ab7c1b91512bb3b514579497f297}\label{structdualquat_a96d2ab7c1b91512bb3b514579497f297}} 
+void {\bfseries translate} (const \hyperlink{structvec}{vec} \&p)
+\item 
+\mbox{\Hypertarget{structdualquat_aedd716e397ffb0174e71ff7bba510c6b}\label{structdualquat_aedd716e397ffb0174e71ff7bba510c6b}} 
+void {\bfseries scale} (float k)
+\item 
+\mbox{\Hypertarget{structdualquat_a25fe6cf8ae3f08ed26f189af8a8b5de7}\label{structdualquat_a25fe6cf8ae3f08ed26f189af8a8b5de7}} 
+void {\bfseries fixantipodal} (const \hyperlink{structdualquat}{dualquat} \&d)
+\item 
+\mbox{\Hypertarget{structdualquat_a0e65a3c564046cd1321f2d94af6e8b16}\label{structdualquat_a0e65a3c564046cd1321f2d94af6e8b16}} 
+void {\bfseries accumulate} (const \hyperlink{structdualquat}{dualquat} \&d, float k)
+\item 
+\mbox{\Hypertarget{structdualquat_a982a0ba7691e52c281dde62349434819}\label{structdualquat_a982a0ba7691e52c281dde62349434819}} 
+\hyperlink{structvec}{vec} {\bfseries transform} (const \hyperlink{structvec}{vec} \&v) const
+\item 
+\mbox{\Hypertarget{structdualquat_af92ee93fce8635cf9bebd0aa1e80b45f}\label{structdualquat_af92ee93fce8635cf9bebd0aa1e80b45f}} 
+\hyperlink{structquat}{quat} {\bfseries transform} (const \hyperlink{structquat}{quat} \&q) const
+\item 
+\mbox{\Hypertarget{structdualquat_adf022059c82c8675ceca71359ca414f8}\label{structdualquat_adf022059c82c8675ceca71359ca414f8}} 
+\hyperlink{structvec}{vec} {\bfseries transposedtransform} (const \hyperlink{structvec}{vec} \&v) const
+\item 
+\mbox{\Hypertarget{structdualquat_a0c895860a49ba224327bcd88040a14ec}\label{structdualquat_a0c895860a49ba224327bcd88040a14ec}} 
+\hyperlink{structvec}{vec} {\bfseries transformnormal} (const \hyperlink{structvec}{vec} \&v) const
+\item 
+\mbox{\Hypertarget{structdualquat_a85b57d72c8a78a2fa2fc2e284bb05071}\label{structdualquat_a85b57d72c8a78a2fa2fc2e284bb05071}} 
+\hyperlink{structvec}{vec} {\bfseries transposedtransformnormal} (const \hyperlink{structvec}{vec} \&v) const
+\item 
+\mbox{\Hypertarget{structdualquat_ab70c5b3e4d651a632482b6abff6c0f18}\label{structdualquat_ab70c5b3e4d651a632482b6abff6c0f18}} 
+\hyperlink{structvec}{vec} {\bfseries gettranslation} () const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdualquat_a34cfd1d698c9a8e964565e3bceffbeae}\label{structdualquat_a34cfd1d698c9a8e964565e3bceffbeae}} 
+\hyperlink{structquat}{quat} {\bfseries real}
+\item 
+\mbox{\Hypertarget{structdualquat_a804e351db2ac4c438b7d3d16462b950b}\label{structdualquat_a804e351db2ac4c438b7d3d16462b950b}} 
+\hyperlink{structquat}{quat} {\bfseries dual}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/geom.\+h\end{DoxyCompactItemize}

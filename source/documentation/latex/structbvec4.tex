@@ -1,0 +1,72 @@
+\hypertarget{structbvec4}{}\section{bvec4 Struct Reference}
+\label{structbvec4}\index{bvec4@{bvec4}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structbvec4_a756d5f0b6c3c27c6450c91920f15f4f3}\label{structbvec4_a756d5f0b6c3c27c6450c91920f15f4f3}} 
+{\bfseries bvec4} (uchar x, uchar y, uchar z, uchar w=0)
+\item 
+\mbox{\Hypertarget{structbvec4_a19af9bb03a719da801b65d215043706d}\label{structbvec4_a19af9bb03a719da801b65d215043706d}} 
+{\bfseries bvec4} (const \hyperlink{structbvec}{bvec} \&v, uchar w=0)
+\item 
+\mbox{\Hypertarget{structbvec4_ac4800bece478ff435350c2d50cbe7a28}\label{structbvec4_ac4800bece478ff435350c2d50cbe7a28}} 
+uchar \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i)
+\item 
+\mbox{\Hypertarget{structbvec4_a79373dde0569e2aac5075f9b06d6fec9}\label{structbvec4_a79373dde0569e2aac5075f9b06d6fec9}} 
+uchar {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i) const
+\item 
+\mbox{\Hypertarget{structbvec4_a30c8feb7ae725ff2e9d27f32614f9c0d}\label{structbvec4_a30c8feb7ae725ff2e9d27f32614f9c0d}} 
+bool {\bfseries operator==} (const \hyperlink{structbvec4}{bvec4} \&v) const
+\item 
+\mbox{\Hypertarget{structbvec4_a383cf1edb547ffffea3b6e23fb480d29}\label{structbvec4_a383cf1edb547ffffea3b6e23fb480d29}} 
+bool {\bfseries operator!=} (const \hyperlink{structbvec4}{bvec4} \&v) const
+\item 
+\mbox{\Hypertarget{structbvec4_af0b4f4e608ad7c9b5a1813d3f449907b}\label{structbvec4_af0b4f4e608ad7c9b5a1813d3f449907b}} 
+bool {\bfseries iszero} () const
+\item 
+\mbox{\Hypertarget{structbvec4_a0e243a93d6c2b805ad43d0d2029e0f88}\label{structbvec4_a0e243a93d6c2b805ad43d0d2029e0f88}} 
+\hyperlink{structvec}{vec} {\bfseries tonormal} () const
+\item 
+\mbox{\Hypertarget{structbvec4_abec4e054a61d6dbe309305a2f28e8dec}\label{structbvec4_abec4e054a61d6dbe309305a2f28e8dec}} 
+void {\bfseries lerp} (const \hyperlink{structbvec4}{bvec4} \&a, const \hyperlink{structbvec4}{bvec4} \&b, float t)
+\item 
+\mbox{\Hypertarget{structbvec4_adb9692d7b45258d290a5f53a6c01a4d9}\label{structbvec4_adb9692d7b45258d290a5f53a6c01a4d9}} 
+void {\bfseries lerp} (const \hyperlink{structbvec4}{bvec4} \&a, const \hyperlink{structbvec4}{bvec4} \&b, int ka, int kb, int d)
+\item 
+\mbox{\Hypertarget{structbvec4_ac5aa20a51527c1df55e7a99424e0d4c5}\label{structbvec4_ac5aa20a51527c1df55e7a99424e0d4c5}} 
+void {\bfseries lerp} (const \hyperlink{structbvec4}{bvec4} \&a, const \hyperlink{structbvec4}{bvec4} \&b, const \hyperlink{structbvec4}{bvec4} \&c, float ta, float tb, float tc)
+\item 
+\mbox{\Hypertarget{structbvec4_a988285e635ee8c6a1e044e9adc5d0d2d}\label{structbvec4_a988285e635ee8c6a1e044e9adc5d0d2d}} 
+void {\bfseries flip} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structbvec4_a59e9cde0af46d0182bb5cfa4a89e1233}\label{structbvec4_a59e9cde0af46d0182bb5cfa4a89e1233}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\mbox{\Hypertarget{unionbvec4_1_1_0D207_ad99206f115276e8155a5f39a2958b7ad}\label{unionbvec4_1_1_0D207_ad99206f115276e8155a5f39a2958b7ad}} 
+\>struct \{\\
+\>\>uchar {\bfseries x}\\
+\>\>uchar {\bfseries y}\\
+\>\>uchar {\bfseries z}\\
+\>\>uchar {\bfseries w}\\
+\>\} \\
+\mbox{\Hypertarget{unionbvec4_1_1_0D207_af335e7e6224c0fe83e84ed901593a078}\label{unionbvec4_1_1_0D207_af335e7e6224c0fe83e84ed901593a078}} 
+\>struct \{\\
+\>\>uchar {\bfseries r}\\
+\>\>uchar {\bfseries g}\\
+\>\>uchar {\bfseries b}\\
+\>\>uchar {\bfseries a}\\
+\>\} \\
+\>uchar {\bfseries v} \mbox{[}4\mbox{]}\\
+\>uint {\bfseries mask}\\
+\}; \\
+
+\end{tabbing}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/geom.\+h\end{DoxyCompactItemize}

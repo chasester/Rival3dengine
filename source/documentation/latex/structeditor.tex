@@ -1,0 +1,145 @@
+\hypertarget{structeditor}{}\section{editor Struct Reference}
+\label{structeditor}\index{editor@{editor}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structeditor_a73d800d5ae8e42c056166ad8fd9f0d09}\label{structeditor_a73d800d5ae8e42c056166ad8fd9f0d09}} 
+{\bfseries editor} (const char $\ast$name, int mode, const char $\ast$initval)
+\item 
+\mbox{\Hypertarget{structeditor_ae824bd24fcdcb69208c791f7cbcfdd33}\label{structeditor_ae824bd24fcdcb69208c791f7cbcfdd33}} 
+bool {\bfseries empty} ()
+\item 
+\mbox{\Hypertarget{structeditor_a5ec80a331e365c594c15e7ae3e587b39}\label{structeditor_a5ec80a331e365c594c15e7ae3e587b39}} 
+void {\bfseries clear} (const char $\ast$init=\char`\"{}\char`\"{})
+\item 
+\mbox{\Hypertarget{structeditor_ac88f39c72c21bea2c1cef32533f5f5ca}\label{structeditor_ac88f39c72c21bea2c1cef32533f5f5ca}} 
+void {\bfseries init} (const char $\ast$inittext)
+\item 
+\mbox{\Hypertarget{structeditor_a412c70983695801aa20629f732bbace0}\label{structeditor_a412c70983695801aa20629f732bbace0}} 
+void {\bfseries updateheight} ()
+\item 
+\mbox{\Hypertarget{structeditor_ae7966c2485d7670f580b632fc35768ee}\label{structeditor_ae7966c2485d7670f580b632fc35768ee}} 
+void {\bfseries setfile} (const char $\ast$fname)
+\item 
+\mbox{\Hypertarget{structeditor_a2d507562b7e1ec359303c00f8d52a9cd}\label{structeditor_a2d507562b7e1ec359303c00f8d52a9cd}} 
+void {\bfseries load} ()
+\item 
+\mbox{\Hypertarget{structeditor_a9f4fc95fea744a815c8bf0a42b2cef9a}\label{structeditor_a9f4fc95fea744a815c8bf0a42b2cef9a}} 
+void {\bfseries save} ()
+\item 
+\mbox{\Hypertarget{structeditor_a05196453980b40d4e831c23fc56c0f25}\label{structeditor_a05196453980b40d4e831c23fc56c0f25}} 
+void {\bfseries mark} (bool enable)
+\item 
+\mbox{\Hypertarget{structeditor_aa53a80499cfc20776b37a20b5a1ff45f}\label{structeditor_aa53a80499cfc20776b37a20b5a1ff45f}} 
+void {\bfseries selectall} ()
+\item 
+\mbox{\Hypertarget{structeditor_a2b2e4cd80ab8e735ce72c5bb0086dff5}\label{structeditor_a2b2e4cd80ab8e735ce72c5bb0086dff5}} 
+bool {\bfseries region} (int \&sx, int \&sy, int \&ex, int \&ey)
+\item 
+\mbox{\Hypertarget{structeditor_af206725c53188ae8c71057b04a6966bd}\label{structeditor_af206725c53188ae8c71057b04a6966bd}} 
+bool {\bfseries region} ()
+\item 
+\mbox{\Hypertarget{structeditor_a044ffeb175cc4f070ad48c3d9d789cd6}\label{structeditor_a044ffeb175cc4f070ad48c3d9d789cd6}} 
+\hyperlink{structeditline}{editline} \& {\bfseries currentline} ()
+\item 
+\mbox{\Hypertarget{structeditor_a332d998647823fe5429dc9f431dac87b}\label{structeditor_a332d998647823fe5429dc9f431dac87b}} 
+void {\bfseries copyselectionto} (\hyperlink{structeditor}{editor} $\ast$b)
+\item 
+\mbox{\Hypertarget{structeditor_a67c852303cea937e79f07b85e43851de}\label{structeditor_a67c852303cea937e79f07b85e43851de}} 
+char $\ast$ {\bfseries tostring} ()
+\item 
+\mbox{\Hypertarget{structeditor_a6f1384db9c58b4b3758aa89dd55d05df}\label{structeditor_a6f1384db9c58b4b3758aa89dd55d05df}} 
+char $\ast$ {\bfseries selectiontostring} ()
+\item 
+\mbox{\Hypertarget{structeditor_a65463dc6d9210bdb69be40f63a0a7ffe}\label{structeditor_a65463dc6d9210bdb69be40f63a0a7ffe}} 
+void {\bfseries removelines} (int start, int count)
+\item 
+\mbox{\Hypertarget{structeditor_ab456c9f04564795c90f52c3ecb2b22d0}\label{structeditor_ab456c9f04564795c90f52c3ecb2b22d0}} 
+bool {\bfseries del} ()
+\item 
+\mbox{\Hypertarget{structeditor_a9d79191f8b3ccddccd8b083ad0a9e3dd}\label{structeditor_a9d79191f8b3ccddccd8b083ad0a9e3dd}} 
+void {\bfseries insert} (char ch)
+\item 
+\mbox{\Hypertarget{structeditor_a382e17bd2853bec918fdd8158ddc0c0d}\label{structeditor_a382e17bd2853bec918fdd8158ddc0c0d}} 
+void {\bfseries insert} (const char $\ast$s)
+\item 
+\mbox{\Hypertarget{structeditor_a4524cdbc7b3bcc631c85c3d1fd89fa99}\label{structeditor_a4524cdbc7b3bcc631c85c3d1fd89fa99}} 
+void {\bfseries insertallfrom} (\hyperlink{structeditor}{editor} $\ast$b)
+\item 
+\mbox{\Hypertarget{structeditor_a0891d5a364871c199fe38e3c2e85815f}\label{structeditor_a0891d5a364871c199fe38e3c2e85815f}} 
+void {\bfseries scrollup} ()
+\item 
+\mbox{\Hypertarget{structeditor_a6173910e8a38625de244256ece5ee40f}\label{structeditor_a6173910e8a38625de244256ece5ee40f}} 
+void {\bfseries scrolldown} ()
+\item 
+\mbox{\Hypertarget{structeditor_aec26a5e5780a67244ae7edef506bc967}\label{structeditor_aec26a5e5780a67244ae7edef506bc967}} 
+void {\bfseries key} (int code)
+\item 
+\mbox{\Hypertarget{structeditor_aceb6a8299b0181d2b88e6439bc5b1d27}\label{structeditor_aceb6a8299b0181d2b88e6439bc5b1d27}} 
+void {\bfseries input} (const char $\ast$str, int len)
+\item 
+\mbox{\Hypertarget{structeditor_afea643d1c4eba985b6978b228a15f957}\label{structeditor_afea643d1c4eba985b6978b228a15f957}} 
+void {\bfseries hit} (int hitx, int hity, bool dragged)
+\item 
+\mbox{\Hypertarget{structeditor_a61d3b1198c453856c3ae69ce2c92b036}\label{structeditor_a61d3b1198c453856c3ae69ce2c92b036}} 
+int {\bfseries limitscrolly} ()
+\item 
+\mbox{\Hypertarget{structeditor_addadc273617926d876d009c29b3440ae}\label{structeditor_addadc273617926d876d009c29b3440ae}} 
+void {\bfseries draw} (int x, int y, int color, bool hit)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structeditor_a28a82e6cd5f3f9ddfff752cabe7ad1ef}\label{structeditor_a28a82e6cd5f3f9ddfff752cabe7ad1ef}} 
+int {\bfseries mode}
+\item 
+\mbox{\Hypertarget{structeditor_afbae92cf046700ca6e65eca8d470ede7}\label{structeditor_afbae92cf046700ca6e65eca8d470ede7}} 
+bool {\bfseries active}
+\item 
+\mbox{\Hypertarget{structeditor_a9a4395bb5cb85cc2d534c251ffa52bea}\label{structeditor_a9a4395bb5cb85cc2d534c251ffa52bea}} 
+bool {\bfseries rendered}
+\item 
+\mbox{\Hypertarget{structeditor_a22f369dd45964527fa9cfdb8cd01e28b}\label{structeditor_a22f369dd45964527fa9cfdb8cd01e28b}} 
+const char $\ast$ {\bfseries name}
+\item 
+\mbox{\Hypertarget{structeditor_a98b321e8ecd8cc9dc802233d7c5d2253}\label{structeditor_a98b321e8ecd8cc9dc802233d7c5d2253}} 
+const char $\ast$ {\bfseries filename}
+\item 
+\mbox{\Hypertarget{structeditor_a3555bb91667bd7825daa738ffe800239}\label{structeditor_a3555bb91667bd7825daa738ffe800239}} 
+int {\bfseries cx}
+\item 
+\mbox{\Hypertarget{structeditor_a2ab02b4d78fe909b6f2c1c8b55969bdd}\label{structeditor_a2ab02b4d78fe909b6f2c1c8b55969bdd}} 
+int {\bfseries cy}
+\item 
+\mbox{\Hypertarget{structeditor_ad47e36e2479ec1ad5b8c33aa5bdeebb9}\label{structeditor_ad47e36e2479ec1ad5b8c33aa5bdeebb9}} 
+int {\bfseries mx}
+\item 
+\mbox{\Hypertarget{structeditor_a5759712451f062dc5942aa1d452c4b57}\label{structeditor_a5759712451f062dc5942aa1d452c4b57}} 
+int {\bfseries my}
+\item 
+\mbox{\Hypertarget{structeditor_a2b728cc5938b2dc0acda99554628b5f1}\label{structeditor_a2b728cc5938b2dc0acda99554628b5f1}} 
+int {\bfseries maxx}
+\item 
+\mbox{\Hypertarget{structeditor_ad318edcb8171bc7d56852cab53002395}\label{structeditor_ad318edcb8171bc7d56852cab53002395}} 
+int {\bfseries maxy}
+\item 
+\mbox{\Hypertarget{structeditor_a3ab0fe5870f10f8dd7471122a3bbc2a6}\label{structeditor_a3ab0fe5870f10f8dd7471122a3bbc2a6}} 
+int {\bfseries scrolly}
+\item 
+\mbox{\Hypertarget{structeditor_a37594098ee488498295473f3295ce646}\label{structeditor_a37594098ee488498295473f3295ce646}} 
+bool {\bfseries linewrap}
+\item 
+\mbox{\Hypertarget{structeditor_a139a8e5b3f2e85ea95c3f38f92e8e82a}\label{structeditor_a139a8e5b3f2e85ea95c3f38f92e8e82a}} 
+int {\bfseries pixelwidth}
+\item 
+\mbox{\Hypertarget{structeditor_a44929d2a5da7cfebda79c7673a95e34e}\label{structeditor_a44929d2a5da7cfebda79c7673a95e34e}} 
+int {\bfseries pixelheight}
+\item 
+\mbox{\Hypertarget{structeditor_a3fa0c216055a1c485d8f443122a2d083}\label{structeditor_a3fa0c216055a1c485d8f443122a2d083}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structeditline}{editline} $>$ {\bfseries lines}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/textedit.\+h\end{DoxyCompactItemize}

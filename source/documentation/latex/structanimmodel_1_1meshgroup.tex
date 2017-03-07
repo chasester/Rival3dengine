@@ -1,0 +1,91 @@
+\hypertarget{structanimmodel_1_1meshgroup}{}\section{animmodel\+:\+:meshgroup Struct Reference}
+\label{structanimmodel_1_1meshgroup}\index{animmodel\+::meshgroup@{animmodel\+::meshgroup}}
+Inheritance diagram for animmodel\+:\+:meshgroup\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{structanimmodel_1_1meshgroup}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a8547cce3717e205984738cc2b17e7b1f}\label{structanimmodel_1_1meshgroup_a8547cce3717e205984738cc2b17e7b1f}} 
+virtual int {\bfseries findtag} (const char $\ast$name)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_aa874289535bd369dea840b60dfdf3a87}\label{structanimmodel_1_1meshgroup_aa874289535bd369dea840b60dfdf3a87}} 
+virtual void {\bfseries concattagtransform} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p, int i, const \hyperlink{structmatrix4x3}{matrix4x3} \&m, \hyperlink{structmatrix4x3}{matrix4x3} \&n)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_ad6edbf2e4df1b38f71240f65acd7fea5}\label{structanimmodel_1_1meshgroup_ad6edbf2e4df1b38f71240f65acd7fea5}} 
+void {\bfseries calcbb} (\hyperlink{structvec}{vec} \&bbmin, \hyperlink{structvec}{vec} \&bbmax, const \hyperlink{structmatrix4x3}{matrix4x3} \&t)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_ac381f1c88f65c0a1813e0a0e129a5418}\label{structanimmodel_1_1meshgroup_ac381f1c88f65c0a1813e0a0e129a5418}} 
+void {\bfseries gen\+B\+IH} (\hyperlink{structvector}{vector}$<$ \hyperlink{structanimmodel_1_1skin}{skin} $>$ \&skins, \hyperlink{structvector}{vector}$<$ \hyperlink{struct_b_i_h_1_1mesh}{B\+I\+H\+::mesh} $>$ \&bih, const \hyperlink{structmatrix4x3}{matrix4x3} \&t)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a56e65b227eb235f1eaf5ccf83218717e}\label{structanimmodel_1_1meshgroup_a56e65b227eb235f1eaf5ccf83218717e}} 
+void {\bfseries genshadowmesh} (\hyperlink{structvector}{vector}$<$ \hyperlink{structtriangle}{triangle} $>$ \&tris, const \hyperlink{structmatrix4x3}{matrix4x3} \&t)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_ae8caea7c9756f781c678e6f97a42fd53}\label{structanimmodel_1_1meshgroup_ae8caea7c9756f781c678e6f97a42fd53}} 
+virtual void $\ast$ {\bfseries animkey} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a578f38fc290a1afd59cdd41243cccbce}\label{structanimmodel_1_1meshgroup_a578f38fc290a1afd59cdd41243cccbce}} 
+virtual int {\bfseries totalframes} () const
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a15dbdfc1083a258110a8d656152b5e35}\label{structanimmodel_1_1meshgroup_a15dbdfc1083a258110a8d656152b5e35}} 
+bool {\bfseries hasframe} (int i) const
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_ad8e26304cb9c795c7c1d62858d99ac69}\label{structanimmodel_1_1meshgroup_ad8e26304cb9c795c7c1d62858d99ac69}} 
+bool {\bfseries hasframes} (int i, int n) const
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a045d04608f8a49435b9ba54459d32fde}\label{structanimmodel_1_1meshgroup_a045d04608f8a49435b9ba54459d32fde}} 
+int {\bfseries clipframes} (int i, int n) const
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a2a46d8085d77c9ea70110461ca65cec6}\label{structanimmodel_1_1meshgroup_a2a46d8085d77c9ea70110461ca65cec6}} 
+virtual void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a6978ac7e5db2bf75693b278508ebbd3e}\label{structanimmodel_1_1meshgroup_a6978ac7e5db2bf75693b278508ebbd3e}} 
+virtual void {\bfseries preload} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_ac01a9b8c3bc84f5125616c97a619b396}\label{structanimmodel_1_1meshgroup_ac01a9b8c3bc84f5125616c97a619b396}} 
+virtual void {\bfseries render} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, float pitch, const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structanimmodel_1_1part}{part} $\ast$p)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a046f7840f0685f321082870a7f2919d6}\label{structanimmodel_1_1meshgroup_a046f7840f0685f321082870a7f2919d6}} 
+virtual void {\bfseries intersect} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, float pitch, const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structanimmodel_1_1part}{part} $\ast$p, const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&ray)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_ac6e45d64b0765c14aa9dab72ef320a1b}\label{structanimmodel_1_1meshgroup_ac6e45d64b0765c14aa9dab72ef320a1b}} 
+void {\bfseries bindpos} (G\+Luint ebuf, G\+Luint vbuf, void $\ast$v, int stride, int type, int size)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_aaf7dce2b10521f82630dca8455516a79}\label{structanimmodel_1_1meshgroup_aaf7dce2b10521f82630dca8455516a79}} 
+void {\bfseries bindpos} (G\+Luint ebuf, G\+Luint vbuf, \hyperlink{structvec}{vec} $\ast$v, int stride)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a7b8e0bb0f12234c3b79f412640880797}\label{structanimmodel_1_1meshgroup_a7b8e0bb0f12234c3b79f412640880797}} 
+void {\bfseries bindpos} (G\+Luint ebuf, G\+Luint vbuf, \hyperlink{structhvec4}{hvec4} $\ast$v, int stride)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_ae8df120e8d0aaa41320abc1a73aa7abd}\label{structanimmodel_1_1meshgroup_ae8df120e8d0aaa41320abc1a73aa7abd}} 
+void {\bfseries bindtc} (void $\ast$v, int stride)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a0ba5e1098c48fa71d13e453319ec0f21}\label{structanimmodel_1_1meshgroup_a0ba5e1098c48fa71d13e453319ec0f21}} 
+void {\bfseries bindtangents} (void $\ast$v, int stride)
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_ada6e92dc9c9d883384ca756b26f90c81}\label{structanimmodel_1_1meshgroup_ada6e92dc9c9d883384ca756b26f90c81}} 
+void {\bfseries bindbones} (void $\ast$wv, void $\ast$bv, int stride)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_ab4c26d6a82b2b7e4ccc22011ee6274be}\label{structanimmodel_1_1meshgroup_ab4c26d6a82b2b7e4ccc22011ee6274be}} 
+\hyperlink{structanimmodel_1_1meshgroup}{meshgroup} $\ast$ {\bfseries next}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a9096b447782c622774b95bcfbd415b76}\label{structanimmodel_1_1meshgroup_a9096b447782c622774b95bcfbd415b76}} 
+int {\bfseries shared}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_a333a1a07c0b2befba2cb8b8b4647415a}\label{structanimmodel_1_1meshgroup_a333a1a07c0b2befba2cb8b8b4647415a}} 
+char $\ast$ {\bfseries name}
+\item 
+\mbox{\Hypertarget{structanimmodel_1_1meshgroup_ae6cd91e3f3e98f3fe5318d4ab5062aa3}\label{structanimmodel_1_1meshgroup_ae6cd91e3f3e98f3fe5318d4ab5062aa3}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structanimmodel_1_1mesh}{mesh} $\ast$ $>$ {\bfseries meshes}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/animmodel.\+h\end{DoxyCompactItemize}

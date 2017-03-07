@@ -1,0 +1,73 @@
+\hypertarget{struct_u_i_1_1_scroll_bar}{}\section{UI\+:\+:Scroll\+Bar Struct Reference}
+\label{struct_u_i_1_1_scroll_bar}\index{U\+I\+::\+Scroll\+Bar@{U\+I\+::\+Scroll\+Bar}}
+Inheritance diagram for UI\+:\+:Scroll\+Bar\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{struct_u_i_1_1_scroll_bar}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a3237a117ac2a933c5666e12e82ccc279}\label{struct_u_i_1_1_scroll_bar_a3237a117ac2a933c5666e12e82ccc279}} 
+const char $\ast$ {\bfseries gettype} () const
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_adf8b30592d03615141b6f9f8b55951ec}\label{struct_u_i_1_1_scroll_bar_adf8b30592d03615141b6f9f8b55951ec}} 
+const char $\ast$ {\bfseries gettypename} () const
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a6c2c6f7ce9a72c4bdf1bc935993b9aa4}\label{struct_u_i_1_1_scroll_bar_a6c2c6f7ce9a72c4bdf1bc935993b9aa4}} 
+bool {\bfseries target} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a541716a8ea30ece26ec852dfa70383a7}\label{struct_u_i_1_1_scroll_bar_a541716a8ea30ece26ec852dfa70383a7}} 
+virtual void {\bfseries scrollto} (float cx, float cy, bool closest=false)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_aa63afa17d210a89b16ebdb034aae0af3}\label{struct_u_i_1_1_scroll_bar_aa63afa17d210a89b16ebdb034aae0af3}} 
+void {\bfseries hold} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_ae64fa02dc4c739001d0a9449bb9765cf}\label{struct_u_i_1_1_scroll_bar_ae64fa02dc4c739001d0a9449bb9765cf}} 
+void {\bfseries press} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_ac8a993f7a3d9ad221c8fa3f20cf8ad93}\label{struct_u_i_1_1_scroll_bar_ac8a993f7a3d9ad221c8fa3f20cf8ad93}} 
+virtual void {\bfseries addscroll} (\hyperlink{struct_u_i_1_1_scroller}{Scroller} $\ast$scroller, float dir)=0
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a31e02226bfbfb4e0b9dd5922991f2418}\label{struct_u_i_1_1_scroll_bar_a31e02226bfbfb4e0b9dd5922991f2418}} 
+void {\bfseries addscroll} (float dir)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a0444005249790e9854b15d5181ffa8f7}\label{struct_u_i_1_1_scroll_bar_a0444005249790e9854b15d5181ffa8f7}} 
+void {\bfseries arrowscroll} (float dir)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_ab616828b3587704076b9cc6542d5eccc}\label{struct_u_i_1_1_scroll_bar_ab616828b3587704076b9cc6542d5eccc}} 
+void {\bfseries wheelscroll} (float step)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_aa0886b8be46eaff5e7b3a523887708a2}\label{struct_u_i_1_1_scroll_bar_aa0886b8be46eaff5e7b3a523887708a2}} 
+virtual int {\bfseries wheelscrolldirection} () const
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a63897b6775eec7427ef89d1826f7d8fb}\label{struct_u_i_1_1_scroll_bar_a63897b6775eec7427ef89d1826f7d8fb}} 
+void {\bfseries scrollup} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a467d1175718ef6daaa402f59e2133e88}\label{struct_u_i_1_1_scroll_bar_a467d1175718ef6daaa402f59e2133e88}} 
+void {\bfseries scrolldown} (float cx, float cy)
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a1302bcea0bd56f002cab7baa229ec493}\label{struct_u_i_1_1_scroll_bar_a1302bcea0bd56f002cab7baa229ec493}} 
+virtual void {\bfseries movebutton} (\hyperlink{struct_u_i_1_1_object}{Object} $\ast$o, float fromx, float fromy, float tox, float toy)=0
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a40813d891d2def26a1cd713413977787}\label{struct_u_i_1_1_scroll_bar_a40813d891d2def26a1cd713413977787}} 
+static const char $\ast$ {\bfseries typestr} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a75096b3cab26eb75db199887e3d1f6a9}\label{struct_u_i_1_1_scroll_bar_a75096b3cab26eb75db199887e3d1f6a9}} 
+float {\bfseries offsetx}
+\item 
+\mbox{\Hypertarget{struct_u_i_1_1_scroll_bar_a7773a627bebaa7658949e8af8369eaa3}\label{struct_u_i_1_1_scroll_bar_a7773a627bebaa7658949e8af8369eaa3}} 
+float {\bfseries offsety}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/ui.\+cpp\end{DoxyCompactItemize}

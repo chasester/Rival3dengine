@@ -1,0 +1,134 @@
+\hypertarget{class_c_serialized_value}{}\section{C\+Serialized\+Value Class Reference}
+\label{class_c_serialized_value}\index{C\+Serialized\+Value@{C\+Serialized\+Value}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a4a17ff539b11fc3bf358dde412850040}\label{class_c_serialized_value_a4a17ff539b11fc3bf358dde412850040}} 
+{\bfseries C\+Serialized\+Value} (\hyperlink{class_c_serialized_value}{C\+Serialized\+Value} $\ast$parent, const std\+::string \&name, const std\+::string \&name\+Space, void $\ast$ref, int type\+Id)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_ac80415970a8d513a47b86276ed20beae}\label{class_c_serialized_value_ac80415970a8d513a47b86276ed20beae}} 
+void {\bfseries Create} (void $\ast$ref, int ref\+Type\+Id)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a1ce92f7cc0a6ef1b9295664c30fe9432}\label{class_c_serialized_value_a1ce92f7cc0a6ef1b9295664c30fe9432}} 
+void {\bfseries Store} (void $\ast$ref, int ref\+Type\+Id)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a58a55335e58683ad02bc78a2ce2eef27}\label{class_c_serialized_value_a58a55335e58683ad02bc78a2ce2eef27}} 
+void {\bfseries Restore} (void $\ast$ref, int ref\+Type\+Id)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_ac95712970e78726e2bdf8406e24f6d47}\label{class_c_serialized_value_ac95712970e78726e2bdf8406e24f6d47}} 
+void {\bfseries Set\+Type} (int type\+Id)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a8743d0419165e9007eb8cf7ffd81baa3}\label{class_c_serialized_value_a8743d0419165e9007eb8cf7ffd81baa3}} 
+\hyperlink{classas_i_type_info}{as\+I\+Type\+Info} $\ast$ {\bfseries Get\+Type} ()
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_aaa9d8be7c288aa81de5a657aa3ae1318}\label{class_c_serialized_value_aaa9d8be7c288aa81de5a657aa3ae1318}} 
+\hyperlink{class_c_serialized_value}{C\+Serialized\+Value} $\ast$ {\bfseries Find\+By\+Name} (const std\+::string \&name, const std\+::string \&name\+Space)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_ad48ee62b7f146e6cbbbe01a4307f10da}\label{class_c_serialized_value_ad48ee62b7f146e6cbbbe01a4307f10da}} 
+\hyperlink{class_c_serialized_value}{C\+Serialized\+Value} $\ast$ {\bfseries Find\+By\+Ptr} (void $\ast$ptr)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a18a3f3e42a01f6812da163a0443092b3}\label{class_c_serialized_value_a18a3f3e42a01f6812da163a0443092b3}} 
+void $\ast$ {\bfseries Get\+User\+Data} ()
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_abffa48b34e94e7d7c6f29d72185404d6}\label{class_c_serialized_value_abffa48b34e94e7d7c6f29d72185404d6}} 
+void {\bfseries Set\+User\+Data} (void $\ast$data)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a43d9be3d828efe8afaf244a2ba5986af}\label{class_c_serialized_value_a43d9be3d828efe8afaf244a2ba5986af}} 
+void {\bfseries print} (int depth)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a77035394150be9192042026780edbf9e}\label{class_c_serialized_value_a77035394150be9192042026780edbf9e}} 
+void {\bfseries Clear\+Children} ()
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_abd9e9b1cf226738a3232b394fb301357}\label{class_c_serialized_value_abd9e9b1cf226738a3232b394fb301357}} 
+void {\bfseries get\+Data\+Types} ()
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a0b34c2f8658a12cb23f29a78946767de}\label{class_c_serialized_value_a0b34c2f8658a12cb23f29a78946767de}} 
+void {\bfseries save} ()
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a49120dfb32abbc788fd7d77d509e7063}\label{class_c_serialized_value_a49120dfb32abbc788fd7d77d509e7063}} 
+void {\bfseries load} ()
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a92abe68f2284088295edcf120e5599f4}\label{class_c_serialized_value_a92abe68f2284088295edcf120e5599f4}} 
+uint {\bfseries Get\+Type\+Id} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a25711cdf0f93825f511cd4024115449c}\label{class_c_serialized_value_a25711cdf0f93825f511cd4024115449c}} 
+std\+::vector$<$ \hyperlink{class_c_serialized_value}{C\+Serialized\+Value} $\ast$ $>$ {\bfseries m\+\_\+children}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a6577a549b2ba075038794b32a2142f2e}\label{class_c_serialized_value_a6577a549b2ba075038794b32a2142f2e}} 
+void $\ast$ {\bfseries m\+\_\+restore\+Ptr}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a058401708f2e547d9bb18ff71650ca72}\label{class_c_serialized_value_a058401708f2e547d9bb18ff71650ca72}} 
+std\+::vector$<$ char $>$ {\bfseries m\+\_\+mem}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a1493f597804d5bd6aae80f283f2faf24}\label{class_c_serialized_value_a1493f597804d5bd6aae80f283f2faf24}} 
+void {\bfseries Init} ()
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_ac4d2c90f0c2ee9235348394dc96e5f28}\label{class_c_serialized_value_ac4d2c90f0c2ee9235348394dc96e5f28}} 
+void {\bfseries Uninit} ()
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a5d4eb9858c807d9e2536d7518c9bf4fb}\label{class_c_serialized_value_a5d4eb9858c807d9e2536d7518c9bf4fb}} 
+void {\bfseries Replace\+Handles} ()
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_ad07c4b78db6a79181f02d455a43d12ae}\label{class_c_serialized_value_ad07c4b78db6a79181f02d455a43d12ae}} 
+void {\bfseries Restore\+Handles} ()
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a5a2578f3451e1bd999b3dfd88c900d3e}\label{class_c_serialized_value_a5a2578f3451e1bd999b3dfd88c900d3e}} 
+void {\bfseries Get\+All\+Pointers\+Of\+Children} (std\+::vector$<$ void $\ast$$>$ $\ast$ptrs)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_aeefb44cd21c266c6a84c1e41ac949671}\label{class_c_serialized_value_aeefb44cd21c266c6a84c1e41ac949671}} 
+void {\bfseries Cancel\+Duplicates} (\hyperlink{class_c_serialized_value}{C\+Serialized\+Value} $\ast$from)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_adcb9fca9006a9924ce0c3158c7c3180d}\label{class_c_serialized_value_adcb9fca9006a9924ce0c3158c7c3180d}} 
+\hyperlink{class_c_serialized_value}{C\+Serialized\+Value} $\ast$ {\bfseries Find\+By\+Ptr\+In\+Handles} (void $\ast$ptr)
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a3215999697b735b2e097ae6fcb28f7ef}\label{class_c_serialized_value_a3215999697b735b2e097ae6fcb28f7ef}} 
+void $\ast$ {\bfseries Get\+Pointer\+To\+Restored\+Object} (void $\ast$ptr)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a0871a4a6bdd01aebe227fda42a1b5e66}\label{class_c_serialized_value_a0871a4a6bdd01aebe227fda42a1b5e66}} 
+\hyperlink{class_c_serializer}{C\+Serializer} $\ast$ {\bfseries m\+\_\+serializer}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a0145fbc20178a9c722709a3e40618c6e}\label{class_c_serialized_value_a0145fbc20178a9c722709a3e40618c6e}} 
+void $\ast$ {\bfseries m\+\_\+user\+Data}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a090e1c565f821d3b4eeb6a418eb0a97f}\label{class_c_serialized_value_a090e1c565f821d3b4eeb6a418eb0a97f}} 
+int {\bfseries m\+\_\+type\+Id}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a4db1d1aae7118e8a70404d1a07523a6e}\label{class_c_serialized_value_a4db1d1aae7118e8a70404d1a07523a6e}} 
+std\+::string {\bfseries m\+\_\+type\+Name}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a9e8c24673d33d1a994b0c460bca4e1f6}\label{class_c_serialized_value_a9e8c24673d33d1a994b0c460bca4e1f6}} 
+std\+::string {\bfseries m\+\_\+name}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a51aa9f2503513cbb146af247234bd835}\label{class_c_serialized_value_a51aa9f2503513cbb146af247234bd835}} 
+std\+::string {\bfseries m\+\_\+name\+Space}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_afab6067d2a24f2248780e46a9dce0012}\label{class_c_serialized_value_afab6067d2a24f2248780e46a9dce0012}} 
+bool {\bfseries m\+\_\+is\+Init}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_ad39435527a66e13c5038e6210b36c1a1}\label{class_c_serialized_value_ad39435527a66e13c5038e6210b36c1a1}} 
+void $\ast$ {\bfseries m\+\_\+original\+Ptr}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a8fa6ba0c3a7c8555240b25a50f82ef59}\label{class_c_serialized_value_a8fa6ba0c3a7c8555240b25a50f82ef59}} 
+void $\ast$ {\bfseries m\+\_\+handle\+Ptr}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_serialized_value_a4d820ccd071659b3ddc0e01636efdeff}\label{class_c_serialized_value_a4d820ccd071659b3ddc0e01636efdeff}} 
+class {\bfseries C\+Serializer}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/serializer.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/serializer.\+cpp\end{DoxyCompactItemize}

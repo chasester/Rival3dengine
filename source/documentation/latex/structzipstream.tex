@@ -1,0 +1,71 @@
+\hypertarget{structzipstream}{}\section{zipstream Struct Reference}
+\label{structzipstream}\index{zipstream@{zipstream}}
+Inheritance diagram for zipstream\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structzipstream}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structzipstream_a5e90c3161e6d36375925d98da1fb7c98}\label{structzipstream_a5e90c3161e6d36375925d98da1fb7c98}} 
+enum \{ {\bfseries B\+U\+F\+S\+I\+ZE} = 16384
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structzipstream_a40235f676bf2b82cca03cdd362bb1371}\label{structzipstream_a40235f676bf2b82cca03cdd362bb1371}} 
+void {\bfseries readbuf} (uint size=B\+U\+F\+S\+I\+ZE)
+\item 
+\mbox{\Hypertarget{structzipstream_a798fcdb22e051b5108576521163924a4}\label{structzipstream_a798fcdb22e051b5108576521163924a4}} 
+bool {\bfseries open} (\hyperlink{structziparchive}{ziparchive} $\ast$a, \hyperlink{structzipfile}{zipfile} $\ast$f)
+\item 
+\mbox{\Hypertarget{structzipstream_ab5315993e94c2d6a23b4ba32cd0856bf}\label{structzipstream_ab5315993e94c2d6a23b4ba32cd0856bf}} 
+void {\bfseries stopreading} ()
+\item 
+\mbox{\Hypertarget{structzipstream_a4c07eea7d22436fe5df392eaecf621f9}\label{structzipstream_a4c07eea7d22436fe5df392eaecf621f9}} 
+void {\bfseries close} ()
+\item 
+\mbox{\Hypertarget{structzipstream_a639acd3860daec1b9d4ef1ebcc94c9cc}\label{structzipstream_a639acd3860daec1b9d4ef1ebcc94c9cc}} 
+offset {\bfseries size} ()
+\item 
+\mbox{\Hypertarget{structzipstream_a0c6a1f0a8cfba63f9bfbe5dc845f8b18}\label{structzipstream_a0c6a1f0a8cfba63f9bfbe5dc845f8b18}} 
+bool {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{structzipstream_a15d382b56df228f14fa73639f3764463}\label{structzipstream_a15d382b56df228f14fa73639f3764463}} 
+offset {\bfseries tell} ()
+\item 
+\mbox{\Hypertarget{structzipstream_a0907e4346b6034118ef708c970c40356}\label{structzipstream_a0907e4346b6034118ef708c970c40356}} 
+bool {\bfseries seek} (offset pos, int whence)
+\item 
+\mbox{\Hypertarget{structzipstream_ad89565e867d15329dbc1bb6e2dea15d2}\label{structzipstream_ad89565e867d15329dbc1bb6e2dea15d2}} 
+size\+\_\+t {\bfseries read} (void $\ast$buf, size\+\_\+t len)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structzipstream_af955c5fb2e417043181c31c8b6b369a6}\label{structzipstream_af955c5fb2e417043181c31c8b6b369a6}} 
+\hyperlink{structziparchive}{ziparchive} $\ast$ {\bfseries arch}
+\item 
+\mbox{\Hypertarget{structzipstream_a6f4535a7a7ead6205656d25129abcdbb}\label{structzipstream_a6f4535a7a7ead6205656d25129abcdbb}} 
+\hyperlink{structzipfile}{zipfile} $\ast$ {\bfseries info}
+\item 
+\mbox{\Hypertarget{structzipstream_a3883353e36ce50d96b73eae81f99b98b}\label{structzipstream_a3883353e36ce50d96b73eae81f99b98b}} 
+z\+\_\+stream {\bfseries zfile}
+\item 
+\mbox{\Hypertarget{structzipstream_ad025d073530e2b649aac6c6691158c64}\label{structzipstream_ad025d073530e2b649aac6c6691158c64}} 
+uchar $\ast$ {\bfseries buf}
+\item 
+\mbox{\Hypertarget{structzipstream_a9afb91a7e9cc20777caa71d7a643b041}\label{structzipstream_a9afb91a7e9cc20777caa71d7a643b041}} 
+uint {\bfseries reading}
+\item 
+\mbox{\Hypertarget{structzipstream_ac586de5ad8394e7074b4d649b6205043}\label{structzipstream_ac586de5ad8394e7074b4d649b6205043}} 
+bool {\bfseries ended}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/zip.\+cpp\end{DoxyCompactItemize}

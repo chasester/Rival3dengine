@@ -1,0 +1,97 @@
+\hypertarget{structlightinfo}{}\section{lightinfo Struct Reference}
+\label{structlightinfo}\index{lightinfo@{lightinfo}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structlightinfo_ace96a5e912d01efab10f324ce976c789}\label{structlightinfo_ace96a5e912d01efab10f324ce976c789}} 
+{\bfseries lightinfo} (const \hyperlink{structvec}{vec} \&o, const \hyperlink{structvec}{vec} \&color, float radius, int flags=0, const \hyperlink{structvec}{vec} \&dir=\hyperlink{structvec}{vec}(0, 0, 0), int spot=0)
+\item 
+\mbox{\Hypertarget{structlightinfo_a82776a3421bfaf52056cbcea14f98647}\label{structlightinfo_a82776a3421bfaf52056cbcea14f98647}} 
+{\bfseries lightinfo} (int i, const \hyperlink{structextentity}{extentity} \&e)
+\item 
+\mbox{\Hypertarget{structlightinfo_a7f9a8cda37ffa9b125baf681c89a52d3}\label{structlightinfo_a7f9a8cda37ffa9b125baf681c89a52d3}} 
+void {\bfseries calcspot} ()
+\item 
+\mbox{\Hypertarget{structlightinfo_ab1f0be72c0c1ab36dd86c5f6d360becf}\label{structlightinfo_ab1f0be72c0c1ab36dd86c5f6d360becf}} 
+bool {\bfseries noshadow} () const
+\item 
+\mbox{\Hypertarget{structlightinfo_a8e336b5b4d25fbe5b1ce8f04a9718dc4}\label{structlightinfo_a8e336b5b4d25fbe5b1ce8f04a9718dc4}} 
+void {\bfseries addscissor} (float \&dx1, float \&dy1, float \&dx2, float \&dy2) const
+\item 
+\mbox{\Hypertarget{structlightinfo_ace5fe1dbf377cabafd7fe7e0ec291fe7}\label{structlightinfo_ace5fe1dbf377cabafd7fe7e0ec291fe7}} 
+void {\bfseries addscissor} (float \&dx1, float \&dy1, float \&dx2, float \&dy2, float \&dz1, float \&dz2) const
+\item 
+\mbox{\Hypertarget{structlightinfo_ab36b17d75413343ff4d1e26b87040ae3}\label{structlightinfo_ab36b17d75413343ff4d1e26b87040ae3}} 
+bool {\bfseries validscissor} () const
+\item 
+\mbox{\Hypertarget{structlightinfo_aa19c02ff98f0c21062f08f42f4b021e3}\label{structlightinfo_aa19c02ff98f0c21062f08f42f4b021e3}} 
+void {\bfseries calcscissor} ()
+\item 
+\mbox{\Hypertarget{structlightinfo_a1f8e68d2401dc3c0c77e02c623d25e66}\label{structlightinfo_a1f8e68d2401dc3c0c77e02c623d25e66}} 
+bool {\bfseries checkquery} () const
+\item 
+\mbox{\Hypertarget{structlightinfo_ad207f7c7bfb0772c57b23f615f0c6921}\label{structlightinfo_ad207f7c7bfb0772c57b23f615f0c6921}} 
+void {\bfseries calcbb} (\hyperlink{structvec}{vec} \&bbmin, \hyperlink{structvec}{vec} \&bbmax)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structlightinfo_af2ffd72cc112138731c4f7562cdf288c}\label{structlightinfo_af2ffd72cc112138731c4f7562cdf288c}} 
+int {\bfseries ent}
+\item 
+\mbox{\Hypertarget{structlightinfo_a661f2ea719409243d8853fedcbd9ea1d}\label{structlightinfo_a661f2ea719409243d8853fedcbd9ea1d}} 
+int {\bfseries shadowmap}
+\item 
+\mbox{\Hypertarget{structlightinfo_a7351d937cf677612e0035cd660c1252d}\label{structlightinfo_a7351d937cf677612e0035cd660c1252d}} 
+int {\bfseries flags}
+\item 
+\mbox{\Hypertarget{structlightinfo_a9649c85f547291eec84b5daaa8b568df}\label{structlightinfo_a9649c85f547291eec84b5daaa8b568df}} 
+\hyperlink{structvec}{vec} {\bfseries o}
+\item 
+\mbox{\Hypertarget{structlightinfo_aeb62853ddc37c78b8e9daa563eb1d267}\label{structlightinfo_aeb62853ddc37c78b8e9daa563eb1d267}} 
+\hyperlink{structvec}{vec} {\bfseries color}
+\item 
+\mbox{\Hypertarget{structlightinfo_a86427c5be640bd1fc15423b65614752c}\label{structlightinfo_a86427c5be640bd1fc15423b65614752c}} 
+float {\bfseries radius}
+\item 
+\mbox{\Hypertarget{structlightinfo_aa6a5680169e97d7118640123ab2cbaa1}\label{structlightinfo_aa6a5680169e97d7118640123ab2cbaa1}} 
+float {\bfseries dist}
+\item 
+\mbox{\Hypertarget{structlightinfo_a4b238ed73af03c686ece23bdefe78e72}\label{structlightinfo_a4b238ed73af03c686ece23bdefe78e72}} 
+\hyperlink{structvec}{vec} {\bfseries dir}
+\item 
+\mbox{\Hypertarget{structlightinfo_aef3c95d22ce8d508231a2307450311a7}\label{structlightinfo_aef3c95d22ce8d508231a2307450311a7}} 
+\hyperlink{structvec}{vec} {\bfseries spotx}
+\item 
+\mbox{\Hypertarget{structlightinfo_a1aa6874ce5df4714792f741c936711f0}\label{structlightinfo_a1aa6874ce5df4714792f741c936711f0}} 
+\hyperlink{structvec}{vec} {\bfseries spoty}
+\item 
+\mbox{\Hypertarget{structlightinfo_a8a572bb9dd938fabb98ceae5c759d30c}\label{structlightinfo_a8a572bb9dd938fabb98ceae5c759d30c}} 
+int {\bfseries spot}
+\item 
+\mbox{\Hypertarget{structlightinfo_a971c952e620f4aa2d266cc05d2468798}\label{structlightinfo_a971c952e620f4aa2d266cc05d2468798}} 
+float {\bfseries sx1}
+\item 
+\mbox{\Hypertarget{structlightinfo_abb7ce529d63a6cd648b5f1d0679459a5}\label{structlightinfo_abb7ce529d63a6cd648b5f1d0679459a5}} 
+float {\bfseries sy1}
+\item 
+\mbox{\Hypertarget{structlightinfo_a8f742293c0aca03b62d0c378ed3029ee}\label{structlightinfo_a8f742293c0aca03b62d0c378ed3029ee}} 
+float {\bfseries sx2}
+\item 
+\mbox{\Hypertarget{structlightinfo_ab0b5ac2b6d24b292012588302fb8c5af}\label{structlightinfo_ab0b5ac2b6d24b292012588302fb8c5af}} 
+float {\bfseries sy2}
+\item 
+\mbox{\Hypertarget{structlightinfo_a54946c55382004082f85d24314b4a076}\label{structlightinfo_a54946c55382004082f85d24314b4a076}} 
+float {\bfseries sz1}
+\item 
+\mbox{\Hypertarget{structlightinfo_ada317a27e92a3a41a65a7d5dfd4775a0}\label{structlightinfo_ada317a27e92a3a41a65a7d5dfd4775a0}} 
+float {\bfseries sz2}
+\item 
+\mbox{\Hypertarget{structlightinfo_a8c8241a689e36979cd95eec533c50638}\label{structlightinfo_a8c8241a689e36979cd95eec533c50638}} 
+\hyperlink{structoccludequery}{occludequery} $\ast$ {\bfseries query}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/renderlights.\+cpp\end{DoxyCompactItemize}

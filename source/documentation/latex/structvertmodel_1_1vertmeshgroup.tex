@@ -1,0 +1,88 @@
+\hypertarget{structvertmodel_1_1vertmeshgroup}{}\section{vertmodel\+:\+:vertmeshgroup Struct Reference}
+\label{structvertmodel_1_1vertmeshgroup}\index{vertmodel\+::vertmeshgroup@{vertmodel\+::vertmeshgroup}}
+Inheritance diagram for vertmodel\+:\+:vertmeshgroup\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{structvertmodel_1_1vertmeshgroup}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_aa2b47affbbe13007eed582d28a7f5dfb}\label{structvertmodel_1_1vertmeshgroup_aa2b47affbbe13007eed582d28a7f5dfb}} 
+int {\bfseries findtag} (const char $\ast$name)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a1a7df1852ea2aa88ca9a4cd5bf58c067}\label{structvertmodel_1_1vertmeshgroup_a1a7df1852ea2aa88ca9a4cd5bf58c067}} 
+bool {\bfseries addtag} (const char $\ast$name, const \hyperlink{structmatrix4x3}{matrix4x3} \&matrix)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a9c3f0682fe894a9f2217a2e67d3eba40}\label{structvertmodel_1_1vertmeshgroup_a9c3f0682fe894a9f2217a2e67d3eba40}} 
+int {\bfseries totalframes} () const
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a8b1c911f823a1547b0e83b102acefba3}\label{structvertmodel_1_1vertmeshgroup_a8b1c911f823a1547b0e83b102acefba3}} 
+void {\bfseries concattagtransform} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p, int i, const \hyperlink{structmatrix4x3}{matrix4x3} \&m, \hyperlink{structmatrix4x3}{matrix4x3} \&n)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a45dff7dbf336f11aef2c08c4d93f789b}\label{structvertmodel_1_1vertmeshgroup_a45dff7dbf336f11aef2c08c4d93f789b}} 
+void {\bfseries calctagmatrix} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p, int i, const \hyperlink{structanimmodel_1_1animstate}{animstate} \&as, \hyperlink{structmatrix4}{matrix4} \&matrix)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_affc3003daa9192e96fcd7c846227cf72}\label{structvertmodel_1_1vertmeshgroup_affc3003daa9192e96fcd7c846227cf72}} 
+void {\bfseries genvbo} (\hyperlink{structvertmodel_1_1vbocacheentry}{vbocacheentry} \&vc)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a9f18b3ceb7cce1993e071c36fd6a497e}\label{structvertmodel_1_1vertmeshgroup_a9f18b3ceb7cce1993e071c36fd6a497e}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries bindvbo} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, \hyperlink{structanimmodel_1_1part}{part} $\ast$p, \hyperlink{structvertmodel_1_1vbocacheentry}{vbocacheentry} \&vc)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a323e7f9362b124c45a60d0197349fd85}\label{structvertmodel_1_1vertmeshgroup_a323e7f9362b124c45a60d0197349fd85}} 
+void {\bfseries bindvbo} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, \hyperlink{structanimmodel_1_1part}{part} $\ast$p, \hyperlink{structvertmodel_1_1vbocacheentry}{vbocacheentry} \&vc)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a0974ca4dc57231d2b4cca06b5e7c375b}\label{structvertmodel_1_1vertmeshgroup_a0974ca4dc57231d2b4cca06b5e7c375b}} 
+void {\bfseries cleanup} ()
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_aadd0f3c512e71331a52bac0df1f4aac3}\label{structvertmodel_1_1vertmeshgroup_aadd0f3c512e71331a52bac0df1f4aac3}} 
+void {\bfseries preload} (\hyperlink{structanimmodel_1_1part}{part} $\ast$p)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a0439dd8eca12753860aca81dbfbe8700}\label{structvertmodel_1_1vertmeshgroup_a0439dd8eca12753860aca81dbfbe8700}} 
+void {\bfseries render} (const \hyperlink{structanimmodel_1_1animstate}{animstate} $\ast$as, float pitch, const \hyperlink{structvec}{vec} \&axis, const \hyperlink{structvec}{vec} \&forward, \hyperlink{structdynent}{dynent} $\ast$d, \hyperlink{structanimmodel_1_1part}{part} $\ast$p)
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_aa9d1e9e207d313ff9ebee7c701dd51ee}\label{structvertmodel_1_1vertmeshgroup_aa9d1e9e207d313ff9ebee7c701dd51ee}} 
+virtual bool {\bfseries load} (const char $\ast$name, float smooth)=0
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a53fa567f581ce3ed8df31b656ec2b43b}\label{structvertmodel_1_1vertmeshgroup_a53fa567f581ce3ed8df31b656ec2b43b}} 
+int {\bfseries numframes}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a3d8bdd0f8c5e4f9be178bc06d5b53468}\label{structvertmodel_1_1vertmeshgroup_a3d8bdd0f8c5e4f9be178bc06d5b53468}} 
+\hyperlink{structvertmodel_1_1tag}{tag} $\ast$ {\bfseries tags}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_ae0e526366163ecc2c407580d436bd91a}\label{structvertmodel_1_1vertmeshgroup_ae0e526366163ecc2c407580d436bd91a}} 
+int {\bfseries numtags}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a8cc63ab862835fedf864eae2663fec21}\label{structvertmodel_1_1vertmeshgroup_a8cc63ab862835fedf864eae2663fec21}} 
+\hyperlink{structvertmodel_1_1vbocacheentry}{vbocacheentry} {\bfseries vbocache} \mbox{[}M\+A\+X\+V\+B\+O\+C\+A\+C\+HE\mbox{]}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a63d42d34a7988f08b65213992e923c43}\label{structvertmodel_1_1vertmeshgroup_a63d42d34a7988f08b65213992e923c43}} 
+ushort $\ast$ {\bfseries edata}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_ac2a8f1bb971af1fa3dbcc4e43b703078}\label{structvertmodel_1_1vertmeshgroup_ac2a8f1bb971af1fa3dbcc4e43b703078}} 
+G\+Luint {\bfseries ebuf}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a5f5a8b24b2c4126116ac2c6fa6470c66}\label{structvertmodel_1_1vertmeshgroup_a5f5a8b24b2c4126116ac2c6fa6470c66}} 
+int {\bfseries vlen}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_ad16d144bf8b0141a9ce58fa8e8e3cc95}\label{structvertmodel_1_1vertmeshgroup_ad16d144bf8b0141a9ce58fa8e8e3cc95}} 
+int {\bfseries vertsize}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_adb907a9e346795dd397ef8e6b00488b2}\label{structvertmodel_1_1vertmeshgroup_adb907a9e346795dd397ef8e6b00488b2}} 
+uchar $\ast$ {\bfseries vdata}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structvertmodel_1_1vertmeshgroup_a8ddbf3f040f3343199a7b0c68f930d84}\label{structvertmodel_1_1vertmeshgroup_a8ddbf3f040f3343199a7b0c68f930d84}} 
+static const int {\bfseries M\+A\+X\+V\+B\+O\+C\+A\+C\+HE} = 16
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/vertmodel.\+h\end{DoxyCompactItemize}

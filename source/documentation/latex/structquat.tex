@@ -1,0 +1,89 @@
+\hypertarget{structquat}{}\section{quat Struct Reference}
+\label{structquat}\index{quat@{quat}}
+Inheritance diagram for quat\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structquat}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structquat_a5284f92399e537ee18cd71980ca1a7c3}\label{structquat_a5284f92399e537ee18cd71980ca1a7c3}} 
+{\bfseries quat} (float x, float y, float z, float w)
+\item 
+\mbox{\Hypertarget{structquat_a85307e0fe276d42bb0bf758ecea7c29b}\label{structquat_a85307e0fe276d42bb0bf758ecea7c29b}} 
+{\bfseries quat} (const \hyperlink{structvec}{vec} \&axis, float angle)
+\item 
+\mbox{\Hypertarget{structquat_a27f68bd0381bca2c8cb629cfe0398a25}\label{structquat_a27f68bd0381bca2c8cb629cfe0398a25}} 
+{\bfseries quat} (const bt\+Quaternion \&v)
+\item 
+\mbox{\Hypertarget{structquat_a4fc4a1c3acbadd99f7e6420d682777e0}\label{structquat_a4fc4a1c3acbadd99f7e6420d682777e0}} 
+{\bfseries quat} (const \hyperlink{structvec}{vec} \&u, const \hyperlink{structvec}{vec} \&v)
+\item 
+\mbox{\Hypertarget{structquat_ad348e46ff36b1aff9eac46a8f612cf87}\label{structquat_ad348e46ff36b1aff9eac46a8f612cf87}} 
+{\bfseries quat} (const \hyperlink{structvec}{vec} \&v)
+\item 
+\mbox{\Hypertarget{structquat_a6c2daa89f0739b83d3c401df65069c95}\label{structquat_a6c2daa89f0739b83d3c401df65069c95}} 
+{\bfseries quat} (const \hyperlink{structmatrix3}{matrix3} \&m)
+\item 
+\mbox{\Hypertarget{structquat_ac70bf5475da1a0b4cc005dbbf8381031}\label{structquat_ac70bf5475da1a0b4cc005dbbf8381031}} 
+{\bfseries quat} (const \hyperlink{structmatrix4x3}{matrix4x3} \&m)
+\item 
+\mbox{\Hypertarget{structquat_a85921aadf148ed818aa0f06a2ec9e8c1}\label{structquat_a85921aadf148ed818aa0f06a2ec9e8c1}} 
+{\bfseries quat} (const \hyperlink{structmatrix4}{matrix4} \&m)
+\item 
+\mbox{\Hypertarget{structquat_ade639ed256df186398b75f38b4d19f4d}\label{structquat_ade639ed256df186398b75f38b4d19f4d}} 
+void {\bfseries restorew} ()
+\item 
+\mbox{\Hypertarget{structquat_a3085effe1cfa4d027356697a5892b33c}\label{structquat_a3085effe1cfa4d027356697a5892b33c}} 
+\hyperlink{structvec}{vec} {\bfseries quat2euler} ()
+\item 
+\mbox{\Hypertarget{structquat_a31ca366790e104502df3d230e01f7ca9}\label{structquat_a31ca366790e104502df3d230e01f7ca9}} 
+\hyperlink{structquat}{quat} \& {\bfseries add} (const \hyperlink{structvec4}{vec4} \&o)
+\item 
+\mbox{\Hypertarget{structquat_ab604950c271dc05b4f5d8c38aef61b2f}\label{structquat_ab604950c271dc05b4f5d8c38aef61b2f}} 
+\hyperlink{structquat}{quat} \& {\bfseries sub} (const \hyperlink{structvec4}{vec4} \&o)
+\item 
+\mbox{\Hypertarget{structquat_ad42d151ed650153752d750399febf1a0}\label{structquat_ad42d151ed650153752d750399febf1a0}} 
+\hyperlink{structquat}{quat} \& {\bfseries mul} (float k)
+\item 
+\mbox{\Hypertarget{structquat_a094b10f1e252c3a69671f1a4e169a797}\label{structquat_a094b10f1e252c3a69671f1a4e169a797}} 
+{\footnotesize template$<$class B $>$ }\\\hyperlink{structquat}{quat} \& {\bfseries madd} (const \hyperlink{structvec4}{vec4} \&a, const B \&b)
+\item 
+\mbox{\Hypertarget{structquat_ac9b31f22cc918da8e2d3e34580d5d242}\label{structquat_ac9b31f22cc918da8e2d3e34580d5d242}} 
+{\footnotesize template$<$class B $>$ }\\\hyperlink{structquat}{quat} \& {\bfseries msub} (const \hyperlink{structvec4}{vec4} \&a, const B \&b)
+\item 
+\mbox{\Hypertarget{structquat_a167d8d312d429900212642fdda52b01c}\label{structquat_a167d8d312d429900212642fdda52b01c}} 
+\hyperlink{structquat}{quat} \& {\bfseries mul} (const \hyperlink{structquat}{quat} \&p, const \hyperlink{structquat}{quat} \&o)
+\item 
+\mbox{\Hypertarget{structquat_a3e4f931398a6d04331c8ecdf047e99f4}\label{structquat_a3e4f931398a6d04331c8ecdf047e99f4}} 
+\hyperlink{structquat}{quat} \& {\bfseries mul} (const \hyperlink{structquat}{quat} \&o)
+\item 
+\mbox{\Hypertarget{structquat_a8e02a8a29c7870bf47cb912624bf9956}\label{structquat_a8e02a8a29c7870bf47cb912624bf9956}} 
+\hyperlink{structquat}{quat} \& {\bfseries invert} ()
+\item 
+\mbox{\Hypertarget{structquat_a9a4ff4d8a0b3c4d4481400e539068bea}\label{structquat_a9a4ff4d8a0b3c4d4481400e539068bea}} 
+\hyperlink{structquat}{quat} \& {\bfseries normalize} ()
+\item 
+\mbox{\Hypertarget{structquat_a1f670b133defa6d4ccca6c4a6d3d9a21}\label{structquat_a1f670b133defa6d4ccca6c4a6d3d9a21}} 
+void {\bfseries calcangleaxis} (float \&angle, \hyperlink{structvec}{vec} \&axis) const
+\item 
+\mbox{\Hypertarget{structquat_a03093e4baea6a1fbf50f9a3661aa7318}\label{structquat_a03093e4baea6a1fbf50f9a3661aa7318}} 
+\hyperlink{structvec}{vec} {\bfseries calcangles} () const
+\item 
+\mbox{\Hypertarget{structquat_a21e9f7caf2242b7bbdc2ffbd86f23367}\label{structquat_a21e9f7caf2242b7bbdc2ffbd86f23367}} 
+\hyperlink{structvec}{vec} {\bfseries rotate} (const \hyperlink{structvec}{vec} \&v) const
+\item 
+\mbox{\Hypertarget{structquat_a44cf4ca4291dee43087b008ca15f5682}\label{structquat_a44cf4ca4291dee43087b008ca15f5682}} 
+\hyperlink{structvec}{vec} {\bfseries invertedrotate} (const \hyperlink{structvec}{vec} \&v) const
+\item 
+\mbox{\Hypertarget{structquat_ad24ce4136a1ce2b212ba153b575ae327}\label{structquat_ad24ce4136a1ce2b212ba153b575ae327}} 
+{\footnotesize template$<$class M $>$ }\\void {\bfseries convertmatrix} (const M \&m)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/geom.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,176 @@
+\hypertarget{struct_shader}{}\section{Shader Struct Reference}
+\label{struct_shader}\index{Shader@{Shader}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_shader_a6b5692d41fe3d22b300d2bd0436d5932}\label{struct_shader_a6b5692d41fe3d22b300d2bd0436d5932}} 
+void {\bfseries allocparams} (\hyperlink{struct_slot}{Slot} $\ast$slot=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{struct_shader_adc7b90b55d5cff72b3e747748a86dc46}\label{struct_shader_adc7b90b55d5cff72b3e747748a86dc46}} 
+void {\bfseries setslotparams} (\hyperlink{struct_slot}{Slot} \&slot)
+\item 
+\mbox{\Hypertarget{struct_shader_a15e7b8f2307a84db121d7ff7ca40fff1}\label{struct_shader_a15e7b8f2307a84db121d7ff7ca40fff1}} 
+void {\bfseries setslotparams} (\hyperlink{struct_slot}{Slot} \&slot, \hyperlink{struct_v_slot}{V\+Slot} \&vslot)
+\item 
+\mbox{\Hypertarget{struct_shader_aa5358a5f674af7953655be764e301751}\label{struct_shader_aa5358a5f674af7953655be764e301751}} 
+void {\bfseries bindprograms} ()
+\item 
+\mbox{\Hypertarget{struct_shader_af27fe1d3725ecba22d7b47c20f4d9037}\label{struct_shader_af27fe1d3725ecba22d7b47c20f4d9037}} 
+void {\bfseries flushparams} (\hyperlink{struct_slot}{Slot} $\ast$slot=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{struct_shader_a13e1acd44e0072b713f948ee038a940e}\label{struct_shader_a13e1acd44e0072b713f948ee038a940e}} 
+void {\bfseries force} ()
+\item 
+\mbox{\Hypertarget{struct_shader_a97308c31066772eebb8c1f1f8d5eb034}\label{struct_shader_a97308c31066772eebb8c1f1f8d5eb034}} 
+bool {\bfseries invalid} () const
+\item 
+\mbox{\Hypertarget{struct_shader_afd9a62f3a24bf86e1baf63fedb8f6fb1}\label{struct_shader_afd9a62f3a24bf86e1baf63fedb8f6fb1}} 
+bool {\bfseries deferred} () const
+\item 
+\mbox{\Hypertarget{struct_shader_a56965f0e3f82138c4b6c1f9dee9c4149}\label{struct_shader_a56965f0e3f82138c4b6c1f9dee9c4149}} 
+bool {\bfseries loaded} () const
+\item 
+\mbox{\Hypertarget{struct_shader_a3367214c0f2fa3af8a5c7f6f23f97ead}\label{struct_shader_a3367214c0f2fa3af8a5c7f6f23f97ead}} 
+bool {\bfseries hasoption} () const
+\item 
+\mbox{\Hypertarget{struct_shader_afea4fa8e8c6a7610518ca0a2eaf4de1a}\label{struct_shader_afea4fa8e8c6a7610518ca0a2eaf4de1a}} 
+bool {\bfseries isdynamic} () const
+\item 
+\mbox{\Hypertarget{struct_shader_abbe9aba15a22e931ec4fb95f05291a93}\label{struct_shader_abbe9aba15a22e931ec4fb95f05291a93}} 
+bool {\bfseries isnull} () const
+\item 
+\mbox{\Hypertarget{struct_shader_af68b0ca57149870b50ab3bb681e4c8db}\label{struct_shader_af68b0ca57149870b50ab3bb681e4c8db}} 
+int {\bfseries numvariants} (int row) const
+\item 
+\mbox{\Hypertarget{struct_shader_a4fd0c9cbfe16f4e9620596070e8201be}\label{struct_shader_a4fd0c9cbfe16f4e9620596070e8201be}} 
+\hyperlink{struct_shader}{Shader} $\ast$ {\bfseries getvariant} (int col, int row) const
+\item 
+\mbox{\Hypertarget{struct_shader_aca0e2b1ce5ecefd2142145183bac3cee}\label{struct_shader_aca0e2b1ce5ecefd2142145183bac3cee}} 
+void {\bfseries addvariant} (int row, \hyperlink{struct_shader}{Shader} $\ast$s)
+\item 
+\mbox{\Hypertarget{struct_shader_af06bab06416b30f18ab9140af6d048e1}\label{struct_shader_af06bab06416b30f18ab9140af6d048e1}} 
+void {\bfseries setvariant\+\_\+} (int col, int row)
+\item 
+\mbox{\Hypertarget{struct_shader_ae97edab51c5ce882e4e83f218a73b4b5}\label{struct_shader_ae97edab51c5ce882e4e83f218a73b4b5}} 
+void {\bfseries setvariant} (int col, int row)
+\item 
+\mbox{\Hypertarget{struct_shader_a5b070c999fc466e16facf8cb6c95d6d4}\label{struct_shader_a5b070c999fc466e16facf8cb6c95d6d4}} 
+void {\bfseries setvariant} (int col, int row, \hyperlink{struct_slot}{Slot} \&slot)
+\item 
+\mbox{\Hypertarget{struct_shader_ac2244aa83aa0f4aa9e2bbf95a8a8b204}\label{struct_shader_ac2244aa83aa0f4aa9e2bbf95a8a8b204}} 
+void {\bfseries setvariant} (int col, int row, \hyperlink{struct_slot}{Slot} \&slot, \hyperlink{struct_v_slot}{V\+Slot} \&vslot)
+\item 
+\mbox{\Hypertarget{struct_shader_af11fc70623aec838db49294c3dd2bf26}\label{struct_shader_af11fc70623aec838db49294c3dd2bf26}} 
+void {\bfseries set\+\_\+} ()
+\item 
+\mbox{\Hypertarget{struct_shader_af38b132b131208d3aeec4841b4d0d117}\label{struct_shader_af38b132b131208d3aeec4841b4d0d117}} 
+void {\bfseries set} ()
+\item 
+\mbox{\Hypertarget{struct_shader_a6f7a5446ef6ed34852141342b11645e4}\label{struct_shader_a6f7a5446ef6ed34852141342b11645e4}} 
+void {\bfseries set} (\hyperlink{struct_slot}{Slot} \&slot)
+\item 
+\mbox{\Hypertarget{struct_shader_a43fad44d662e65005703626867dbaece}\label{struct_shader_a43fad44d662e65005703626867dbaece}} 
+void {\bfseries set} (\hyperlink{struct_slot}{Slot} \&slot, \hyperlink{struct_v_slot}{V\+Slot} \&vslot)
+\item 
+\mbox{\Hypertarget{struct_shader_a75512fd8255dc4442d65f1fde2d5feb2}\label{struct_shader_a75512fd8255dc4442d65f1fde2d5feb2}} 
+bool {\bfseries compile} ()
+\item 
+\mbox{\Hypertarget{struct_shader_adc295a24f30329ef7b5a3e841442dfb8}\label{struct_shader_adc295a24f30329ef7b5a3e841442dfb8}} 
+void {\bfseries cleanup} (bool full=false)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_shader_a121af31ed5e1593a6e94cca201d7d666}\label{struct_shader_a121af31ed5e1593a6e94cca201d7d666}} 
+static bool {\bfseries isnull} (const \hyperlink{struct_shader}{Shader} $\ast$s)
+\item 
+\mbox{\Hypertarget{struct_shader_ac6fe7462b240ce7ea99cb9d9db1e8c79}\label{struct_shader_ac6fe7462b240ce7ea99cb9d9db1e8c79}} 
+static int {\bfseries uniformlocversion} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_shader_a63fc645b9235c69c54c1a5b6a019db69}\label{struct_shader_a63fc645b9235c69c54c1a5b6a019db69}} 
+char $\ast$ {\bfseries name}
+\item 
+\mbox{\Hypertarget{struct_shader_a8f583686f63b84538a737beba119cd3f}\label{struct_shader_a8f583686f63b84538a737beba119cd3f}} 
+char $\ast$ {\bfseries vsstr}
+\item 
+\mbox{\Hypertarget{struct_shader_a3e5a80ad5f85e89ac4c89422ce9e760a}\label{struct_shader_a3e5a80ad5f85e89ac4c89422ce9e760a}} 
+char $\ast$ {\bfseries psstr}
+\item 
+\mbox{\Hypertarget{struct_shader_aa9a61ea24ee4acdeb925b68b344c45d6}\label{struct_shader_aa9a61ea24ee4acdeb925b68b344c45d6}} 
+char $\ast$ {\bfseries defer}
+\item 
+\mbox{\Hypertarget{struct_shader_a24cd869ce48a60b5a3d3858f50b3f059}\label{struct_shader_a24cd869ce48a60b5a3d3858f50b3f059}} 
+int {\bfseries type}
+\item 
+\mbox{\Hypertarget{struct_shader_af036f983d35fe0f8f31dedc009b3645e}\label{struct_shader_af036f983d35fe0f8f31dedc009b3645e}} 
+G\+Luint {\bfseries program}
+\item 
+\mbox{\Hypertarget{struct_shader_a568390c78ee4b602db6628ddac38b637}\label{struct_shader_a568390c78ee4b602db6628ddac38b637}} 
+G\+Luint {\bfseries vsobj}
+\item 
+\mbox{\Hypertarget{struct_shader_a5e44b9f57fec0dd35ad8ab08b0248491}\label{struct_shader_a5e44b9f57fec0dd35ad8ab08b0248491}} 
+G\+Luint {\bfseries psobj}
+\item 
+\mbox{\Hypertarget{struct_shader_a82b43cd598322ec53103dd4ec26a6782}\label{struct_shader_a82b43cd598322ec53103dd4ec26a6782}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{struct_slot_shader_param_state}{Slot\+Shader\+Param\+State} $>$ {\bfseries defaultparams}
+\item 
+\mbox{\Hypertarget{struct_shader_a09b94beed7c8266c61543d69d8f7119d}\label{struct_shader_a09b94beed7c8266c61543d69d8f7119d}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{struct_global_shader_param_use}{Global\+Shader\+Param\+Use} $>$ {\bfseries globalparams}
+\item 
+\mbox{\Hypertarget{struct_shader_affed7c9584ca8217ac3f21127f72977e}\label{struct_shader_affed7c9584ca8217ac3f21127f72977e}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{struct_local_shader_param_state}{Local\+Shader\+Param\+State} $>$ {\bfseries localparams}
+\item 
+\mbox{\Hypertarget{struct_shader_ac9a753b7011b05760c7339f9ad7edd22}\label{struct_shader_ac9a753b7011b05760c7339f9ad7edd22}} 
+\hyperlink{structvector}{vector}$<$ uchar $>$ {\bfseries localparamremap}
+\item 
+\mbox{\Hypertarget{struct_shader_a429ab8ad69af4f717594acdaba0cd68b}\label{struct_shader_a429ab8ad69af4f717594acdaba0cd68b}} 
+\hyperlink{struct_shader}{Shader} $\ast$ {\bfseries variantshader}
+\item 
+\mbox{\Hypertarget{struct_shader_af860182908a3cb7634388e189ec9789a}\label{struct_shader_af860182908a3cb7634388e189ec9789a}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{struct_shader}{Shader} $\ast$ $>$ {\bfseries variants}
+\item 
+\mbox{\Hypertarget{struct_shader_a703782d5000f84e5712adca1d91128fe}\label{struct_shader_a703782d5000f84e5712adca1d91128fe}} 
+ushort $\ast$ {\bfseries variantrows}
+\item 
+\mbox{\Hypertarget{struct_shader_af90f159183f3f306ab46c4c9c1208af6}\label{struct_shader_af90f159183f3f306ab46c4c9c1208af6}} 
+bool {\bfseries standard}
+\item 
+\mbox{\Hypertarget{struct_shader_ab3d931df1f7cf8ddbe325065a6f18e90}\label{struct_shader_ab3d931df1f7cf8ddbe325065a6f18e90}} 
+bool {\bfseries forced}
+\item 
+\mbox{\Hypertarget{struct_shader_a4ccf963b54bd3e4721893ad94377b317}\label{struct_shader_a4ccf963b54bd3e4721893ad94377b317}} 
+bool {\bfseries used}
+\item 
+\mbox{\Hypertarget{struct_shader_a1747d276125028fa9ca2fd3f9104c7cf}\label{struct_shader_a1747d276125028fa9ca2fd3f9104c7cf}} 
+\hyperlink{struct_shader}{Shader} $\ast$ {\bfseries reusevs}
+\item 
+\mbox{\Hypertarget{struct_shader_af433d0fb557d9eb18ca5befe8f20fc4e}\label{struct_shader_af433d0fb557d9eb18ca5befe8f20fc4e}} 
+\hyperlink{struct_shader}{Shader} $\ast$ {\bfseries reuseps}
+\item 
+\mbox{\Hypertarget{struct_shader_aeb9b15892b1ae9120ee117af7ed47290}\label{struct_shader_aeb9b15892b1ae9120ee117af7ed47290}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{struct_uniform_loc}{Uniform\+Loc} $>$ {\bfseries uniformlocs}
+\item 
+\mbox{\Hypertarget{struct_shader_a52c219e4b8f1e8d2b828bd758781d6ac}\label{struct_shader_a52c219e4b8f1e8d2b828bd758781d6ac}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{struct_attrib_loc}{Attrib\+Loc} $>$ {\bfseries attriblocs}
+\item 
+\mbox{\Hypertarget{struct_shader_a949d0fbb56c6478cc78a08fe9b36d519}\label{struct_shader_a949d0fbb56c6478cc78a08fe9b36d519}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{struct_frag_data_loc}{Frag\+Data\+Loc} $>$ {\bfseries fragdatalocs}
+\item 
+\mbox{\Hypertarget{struct_shader_a1f9363fb35ec2b331ac577e5d160a484}\label{struct_shader_a1f9363fb35ec2b331ac577e5d160a484}} 
+const void $\ast$ {\bfseries owner}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_shader_a8a1e74e8c28426e1f4d8c60496c2a7a2}\label{struct_shader_a8a1e74e8c28426e1f4d8c60496c2a7a2}} 
+static \hyperlink{struct_shader}{Shader} $\ast$ {\bfseries lastshader} = N\+U\+LL
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/texture.\+h\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/shader.\+cpp\end{DoxyCompactItemize}

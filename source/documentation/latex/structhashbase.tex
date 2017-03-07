@@ -1,0 +1,106 @@
+\hypertarget{structhashbase}{}\section{hashbase$<$ H, E, K, T $>$ Struct Template Reference}
+\label{structhashbase}\index{hashbase$<$ H, E, K, T $>$@{hashbase$<$ H, E, K, T $>$}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structhashbase_1_1chain}{chain}
+\item 
+struct \hyperlink{structhashbase_1_1chainchunk}{chainchunk}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structhashbase_a23d764580f45007f5e835976cb86e07c}\label{structhashbase_a23d764580f45007f5e835976cb86e07c}} 
+enum \{ {\bfseries C\+H\+U\+N\+K\+S\+I\+ZE} = 64
+ \}
+\item 
+\mbox{\Hypertarget{structhashbase_af9b3b2fac33b501ffe9bc31f3ee53a4c}\label{structhashbase_af9b3b2fac33b501ffe9bc31f3ee53a4c}} 
+enum \{ {\bfseries D\+E\+F\+A\+U\+L\+T\+S\+I\+ZE} = 1$<$$<$10
+ \}
+\item 
+\mbox{\Hypertarget{structhashbase_a6cb82d402e0c7d9bd770722d8d1eb6df}\label{structhashbase_a6cb82d402e0c7d9bd770722d8d1eb6df}} 
+typedef E {\bfseries elemtype}
+\item 
+\mbox{\Hypertarget{structhashbase_a1d6055f94835a81eae6fd7f70d180f1e}\label{structhashbase_a1d6055f94835a81eae6fd7f70d180f1e}} 
+typedef K {\bfseries keytype}
+\item 
+\mbox{\Hypertarget{structhashbase_ae97da04ae671d9246ddd1326f3931f78}\label{structhashbase_ae97da04ae671d9246ddd1326f3931f78}} 
+typedef T {\bfseries datatype}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structhashbase_af21a8ef4ce7ae76ebab5971533521a59}\label{structhashbase_af21a8ef4ce7ae76ebab5971533521a59}} 
+{\bfseries hashbase} (int size=D\+E\+F\+A\+U\+L\+T\+S\+I\+ZE)
+\item 
+\mbox{\Hypertarget{structhashbase_ad04058aa2b5a25cb6c61236d3d2b542f}\label{structhashbase_ad04058aa2b5a25cb6c61236d3d2b542f}} 
+\hyperlink{structhashbase_1_1chain}{chain} $\ast$ {\bfseries insert} (uint h)
+\item 
+\mbox{\Hypertarget{structhashbase_abd035efc8a331bfb0856bfe1ba6e9a55}\label{structhashbase_abd035efc8a331bfb0856bfe1ba6e9a55}} 
+{\footnotesize template$<$class U $>$ }\\T \& {\bfseries insert} (uint h, const U \&key)
+\item 
+\mbox{\Hypertarget{structhashbase_a12163e20ba78e48400771dbd6b8cbe5b}\label{structhashbase_a12163e20ba78e48400771dbd6b8cbe5b}} 
+{\footnotesize template$<$class U $>$ }\\T $\ast$ {\bfseries access} (const U \&key)
+\item 
+\mbox{\Hypertarget{structhashbase_ab52626a876edc969af522e2c94658dbd}\label{structhashbase_ab52626a876edc969af522e2c94658dbd}} 
+{\footnotesize template$<$class U , class V $>$ }\\T \& {\bfseries access} (const U \&key, const V \&elem)
+\item 
+\mbox{\Hypertarget{structhashbase_a6c546956b0685adbde081c0fe1bb5c42}\label{structhashbase_a6c546956b0685adbde081c0fe1bb5c42}} 
+{\footnotesize template$<$class V $>$ }\\T \& {\bfseries add} (const V \&elem)
+\item 
+\mbox{\Hypertarget{structhashbase_a55e85b351ca5cf32978f5c08ef413f9b}\label{structhashbase_a55e85b351ca5cf32978f5c08ef413f9b}} 
+{\footnotesize template$<$class U $>$ }\\T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (const U \&key)
+\item 
+\mbox{\Hypertarget{structhashbase_ae0be9b1b7ef3e6fa27b2fdfff0482d80}\label{structhashbase_ae0be9b1b7ef3e6fa27b2fdfff0482d80}} 
+{\footnotesize template$<$class U $>$ }\\T \& {\bfseries find} (const U \&key, T \&notfound)
+\item 
+\mbox{\Hypertarget{structhashbase_a151c6709ccf7b057e9f0e841fd67fda9}\label{structhashbase_a151c6709ccf7b057e9f0e841fd67fda9}} 
+{\footnotesize template$<$class U $>$ }\\const T \& {\bfseries find} (const U \&key, const T \&notfound)
+\item 
+\mbox{\Hypertarget{structhashbase_ae032e2e2ea6f7caddb77d03501fcb9cd}\label{structhashbase_ae032e2e2ea6f7caddb77d03501fcb9cd}} 
+{\footnotesize template$<$class U $>$ }\\bool {\bfseries remove} (const U \&key)
+\item 
+\mbox{\Hypertarget{structhashbase_a1a50ac106c87f05a155037698d8887fe}\label{structhashbase_a1a50ac106c87f05a155037698d8887fe}} 
+void {\bfseries recycle} ()
+\item 
+\mbox{\Hypertarget{structhashbase_a1ef02c93cfa6e0d59c14d4a09d99db2d}\label{structhashbase_a1ef02c93cfa6e0d59c14d4a09d99db2d}} 
+void {\bfseries deletechunks} ()
+\item 
+\mbox{\Hypertarget{structhashbase_aaee9d8fca8fb4077defa31be500b643d}\label{structhashbase_aaee9d8fca8fb4077defa31be500b643d}} 
+void {\bfseries clear} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structhashbase_aad23144a39ee5bb6cf549a86664e26a7}\label{structhashbase_aad23144a39ee5bb6cf549a86664e26a7}} 
+static \hyperlink{structhashbase_1_1chain}{chain} $\ast$ {\bfseries enumnext} (void $\ast$i)
+\item 
+\mbox{\Hypertarget{structhashbase_a0ef25f4bde4909fa55b32ca430b1e5e6}\label{structhashbase_a0ef25f4bde4909fa55b32ca430b1e5e6}} 
+static K \& {\bfseries enumkey} (void $\ast$i)
+\item 
+\mbox{\Hypertarget{structhashbase_ad25120ee6c3050418948bda379115560}\label{structhashbase_ad25120ee6c3050418948bda379115560}} 
+static T \& {\bfseries enumdata} (void $\ast$i)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structhashbase_a600b191339f6da94d03bd9d69bcd9baf}\label{structhashbase_a600b191339f6da94d03bd9d69bcd9baf}} 
+int {\bfseries size}
+\item 
+\mbox{\Hypertarget{structhashbase_a330deb84e27f14c22f27d870f3686c56}\label{structhashbase_a330deb84e27f14c22f27d870f3686c56}} 
+int {\bfseries numelems}
+\item 
+\mbox{\Hypertarget{structhashbase_a94b490f872197369d1cdf618a5bcaf95}\label{structhashbase_a94b490f872197369d1cdf618a5bcaf95}} 
+\hyperlink{structhashbase_1_1chain}{chain} $\ast$$\ast$ {\bfseries chains}
+\item 
+\mbox{\Hypertarget{structhashbase_a558356b897ae6305cdf9365fcdd76d1b}\label{structhashbase_a558356b897ae6305cdf9365fcdd76d1b}} 
+\hyperlink{structhashbase_1_1chainchunk}{chainchunk} $\ast$ {\bfseries chunks}
+\item 
+\mbox{\Hypertarget{structhashbase_a2e6fb865c933c90e21b4b0ec504d7a63}\label{structhashbase_a2e6fb865c933c90e21b4b0ec504d7a63}} 
+\hyperlink{structhashbase_1_1chain}{chain} $\ast$ {\bfseries unused}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/shared/tools.\+h\end{DoxyCompactItemize}

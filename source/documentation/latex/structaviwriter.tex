@@ -1,0 +1,147 @@
+\hypertarget{structaviwriter}{}\section{aviwriter Struct Reference}
+\label{structaviwriter}\index{aviwriter@{aviwriter}}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structaviwriter_af2f5c4eaf5ccf66abfeda8146f637b5f}\label{structaviwriter_af2f5c4eaf5ccf66abfeda8146f637b5f}} 
+enum \{ {\bfseries M\+A\+X\+\_\+\+C\+H\+U\+N\+K\+\_\+\+D\+E\+P\+TH} = 16, 
+{\bfseries M\+A\+X\+\_\+\+S\+U\+P\+E\+R\+\_\+\+I\+N\+D\+EX} = 1024
+ \}
+\item 
+\mbox{\Hypertarget{structaviwriter_a5db8c15db09f6c7231a1231bb8245e09}\label{structaviwriter_a5db8c15db09f6c7231a1231bb8245e09}} 
+enum \{ {\bfseries V\+I\+D\+\_\+\+R\+GB} = 0, 
+{\bfseries V\+I\+D\+\_\+\+Y\+UV}, 
+{\bfseries V\+I\+D\+\_\+\+Y\+U\+V420}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structaviwriter_a77e098e4d2f631777c899cc60fc97228}\label{structaviwriter_a77e098e4d2f631777c899cc60fc97228}} 
+\hyperlink{structaviindexentry}{aviindexentry} \& {\bfseries addindex} (int frame, int type, int size)
+\item 
+\mbox{\Hypertarget{structaviwriter_a925721c093e3d0b4d0c6fd9631f0dccd}\label{structaviwriter_a925721c093e3d0b4d0c6fd9631f0dccd}} 
+double {\bfseries filespaceguess} ()
+\item 
+\mbox{\Hypertarget{structaviwriter_ad0fd578fdbe8f0829c4b48c6f6cb5029}\label{structaviwriter_ad0fd578fdbe8f0829c4b48c6f6cb5029}} 
+void {\bfseries startchunk} (const char $\ast$fcc, uint size=0)
+\item 
+\mbox{\Hypertarget{structaviwriter_a93bd10b87e030c3ebcc398181e37913f}\label{structaviwriter_a93bd10b87e030c3ebcc398181e37913f}} 
+void {\bfseries listchunk} (const char $\ast$fcc, const char $\ast$lfcc)
+\item 
+\mbox{\Hypertarget{structaviwriter_a040a22049556269e810cd13079cda438}\label{structaviwriter_a040a22049556269e810cd13079cda438}} 
+void {\bfseries endchunk} ()
+\item 
+\mbox{\Hypertarget{structaviwriter_ac18da2b770a119e0724ac33d1392b428}\label{structaviwriter_ac18da2b770a119e0724ac33d1392b428}} 
+void {\bfseries endlistchunk} ()
+\item 
+\mbox{\Hypertarget{structaviwriter_ae9c7449da244dfb722ea6ad62f94fc81}\label{structaviwriter_ae9c7449da244dfb722ea6ad62f94fc81}} 
+void {\bfseries writechunk} (const char $\ast$fcc, const void $\ast$data, uint len)
+\item 
+\mbox{\Hypertarget{structaviwriter_ad92f56c6d0dc14d2de524ead38882434}\label{structaviwriter_ad92f56c6d0dc14d2de524ead38882434}} 
+void {\bfseries close} ()
+\item 
+\mbox{\Hypertarget{structaviwriter_ad48af40fa6e1038979f5f8d230fca47f}\label{structaviwriter_ad48af40fa6e1038979f5f8d230fca47f}} 
+{\bfseries aviwriter} (const char $\ast$name, uint w, uint h, uint fps, bool sound)
+\item 
+\mbox{\Hypertarget{structaviwriter_a715ae6cc97a9c4d2cdf1c63a2c103f5e}\label{structaviwriter_a715ae6cc97a9c4d2cdf1c63a2c103f5e}} 
+bool {\bfseries open} ()
+\item 
+\mbox{\Hypertarget{structaviwriter_a031f24e197b329854736a38204544882}\label{structaviwriter_a031f24e197b329854736a38204544882}} 
+void {\bfseries scaleyuv} (const uchar $\ast$pixels, uint srcw, uint srch)
+\item 
+\mbox{\Hypertarget{structaviwriter_a8c2c0aed71f773b24e4eafa1e9420234}\label{structaviwriter_a8c2c0aed71f773b24e4eafa1e9420234}} 
+void {\bfseries encodeyuv} (const uchar $\ast$pixels)
+\item 
+\mbox{\Hypertarget{structaviwriter_adb2650291d6231a0c471a70aab343d13}\label{structaviwriter_adb2650291d6231a0c471a70aab343d13}} 
+void {\bfseries compressyuv} (const uchar $\ast$pixels)
+\item 
+\mbox{\Hypertarget{structaviwriter_a5b70b88a2f69554b1b53efc059bd57c1}\label{structaviwriter_a5b70b88a2f69554b1b53efc059bd57c1}} 
+bool {\bfseries writesound} (uchar $\ast$data, uint framesize, uint frame)
+\item 
+\mbox{\Hypertarget{structaviwriter_a9a0cfbeab22accb63886520706d04477}\label{structaviwriter_a9a0cfbeab22accb63886520706d04477}} 
+void {\bfseries flushsegment} ()
+\item 
+\mbox{\Hypertarget{structaviwriter_a5a15257b5a8ba6e5bafd8d9ff5117197}\label{structaviwriter_a5a15257b5a8ba6e5bafd8d9ff5117197}} 
+bool {\bfseries nextsegment} ()
+\item 
+\mbox{\Hypertarget{structaviwriter_aac0d7df09bf41c32323f1a1a4eaac806}\label{structaviwriter_aac0d7df09bf41c32323f1a1a4eaac806}} 
+bool {\bfseries writevideoframe} (const uchar $\ast$pixels, uint srcw, uint srch, int format, uint frame)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structaviwriter_a4b5e2d67eeca2935ea90ccf425c8f4f6}\label{structaviwriter_a4b5e2d67eeca2935ea90ccf425c8f4f6}} 
+static void {\bfseries boxsample} (const uchar $\ast$src, const uint stride, const uint area, const uint w, uint h, const uint xlow, const uint xhigh, const uint ylow, const uint yhigh, uint \&bdst, uint \&gdst, uint \&rdst)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structaviwriter_a7ce63e3eaf9e3868dffdf6ab7d1ffbf8}\label{structaviwriter_a7ce63e3eaf9e3868dffdf6ab7d1ffbf8}} 
+\hyperlink{structstream}{stream} $\ast$ {\bfseries f}
+\item 
+\mbox{\Hypertarget{structaviwriter_a977746fde70dc24771083cea805fe896}\label{structaviwriter_a977746fde70dc24771083cea805fe896}} 
+uchar $\ast$ {\bfseries yuv}
+\item 
+\mbox{\Hypertarget{structaviwriter_a564d1095af96967ccb0643a22eef55a4}\label{structaviwriter_a564d1095af96967ccb0643a22eef55a4}} 
+uint {\bfseries videoframes}
+\item 
+\mbox{\Hypertarget{structaviwriter_a356c990a5982165f0ff295efc07aa6f7}\label{structaviwriter_a356c990a5982165f0ff295efc07aa6f7}} 
+stream\+::offset {\bfseries totalsize}
+\item 
+\mbox{\Hypertarget{structaviwriter_a34912daccb395c3cecf9e71853b29c40}\label{structaviwriter_a34912daccb395c3cecf9e71853b29c40}} 
+const uint {\bfseries videow}
+\item 
+\mbox{\Hypertarget{structaviwriter_a69d0f5c0baf5f551bc8ffa224d59c094}\label{structaviwriter_a69d0f5c0baf5f551bc8ffa224d59c094}} 
+const uint {\bfseries videoh}
+\item 
+\mbox{\Hypertarget{structaviwriter_a732d2e784b486fce75e762161f06ee59}\label{structaviwriter_a732d2e784b486fce75e762161f06ee59}} 
+const uint {\bfseries videofps}
+\item 
+\mbox{\Hypertarget{structaviwriter_a3921a6b9504b20795c4919c8cd2cbb69}\label{structaviwriter_a3921a6b9504b20795c4919c8cd2cbb69}} 
+cubestr {\bfseries filename}
+\item 
+\mbox{\Hypertarget{structaviwriter_a7bece3e17fd6fea555b9dbcd06244fd3}\label{structaviwriter_a7bece3e17fd6fea555b9dbcd06244fd3}} 
+int {\bfseries soundfrequency}
+\item 
+\mbox{\Hypertarget{structaviwriter_afd48fbbab405089ab7df00c2ede0f779}\label{structaviwriter_afd48fbbab405089ab7df00c2ede0f779}} 
+int {\bfseries soundchannels}
+\item 
+\mbox{\Hypertarget{structaviwriter_a3ab663dfd4807115addb22e42bdc1192}\label{structaviwriter_a3ab663dfd4807115addb22e42bdc1192}} 
+Uint16 {\bfseries soundformat}
+\item 
+\mbox{\Hypertarget{structaviwriter_a0cd93177be03758eb325ea4f9d7b5307}\label{structaviwriter_a0cd93177be03758eb325ea4f9d7b5307}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structaviindexentry}{aviindexentry} $>$ {\bfseries index}
+\item 
+\mbox{\Hypertarget{structaviwriter_a542bd506829bc629dac42ef0624c7ece}\label{structaviwriter_a542bd506829bc629dac42ef0624c7ece}} 
+\hyperlink{structvector}{vector}$<$ \hyperlink{structavisegmentinfo}{avisegmentinfo} $>$ {\bfseries segments}
+\item 
+\mbox{\Hypertarget{structaviwriter_ace727046657df3927b4e168de7dc0e2d}\label{structaviwriter_ace727046657df3927b4e168de7dc0e2d}} 
+stream\+::offset {\bfseries fileframesoffset}
+\item 
+\mbox{\Hypertarget{structaviwriter_ad1a574e8986c741060963571e429455f}\label{structaviwriter_ad1a574e8986c741060963571e429455f}} 
+stream\+::offset {\bfseries fileextframesoffset}
+\item 
+\mbox{\Hypertarget{structaviwriter_a28518b6becc8c98418f391e1f9645095}\label{structaviwriter_a28518b6becc8c98418f391e1f9645095}} 
+stream\+::offset {\bfseries filevideooffset}
+\item 
+\mbox{\Hypertarget{structaviwriter_a7869e5609d1aa743cdb52c69a88b8a32}\label{structaviwriter_a7869e5609d1aa743cdb52c69a88b8a32}} 
+stream\+::offset {\bfseries filesoundoffset}
+\item 
+\mbox{\Hypertarget{structaviwriter_a41aec634e34374105e7149ed3cb889b5}\label{structaviwriter_a41aec634e34374105e7149ed3cb889b5}} 
+stream\+::offset {\bfseries superindexvideooffset}
+\item 
+\mbox{\Hypertarget{structaviwriter_abc90ce28d6e2ad434f57b599abc44f69}\label{structaviwriter_abc90ce28d6e2ad434f57b599abc44f69}} 
+stream\+::offset {\bfseries superindexsoundoffset}
+\item 
+\mbox{\Hypertarget{structaviwriter_a4660bf93eee6e67291aeeb93ea85b9dc}\label{structaviwriter_a4660bf93eee6e67291aeeb93ea85b9dc}} 
+stream\+::offset {\bfseries chunkoffsets} \mbox{[}M\+A\+X\+\_\+\+C\+H\+U\+N\+K\+\_\+\+D\+E\+P\+TH\mbox{]}
+\item 
+\mbox{\Hypertarget{structaviwriter_a0f2fd32486c25d1d77e742de29648cf5}\label{structaviwriter_a0f2fd32486c25d1d77e742de29648cf5}} 
+int {\bfseries chunkdepth}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/movie.\+cpp\end{DoxyCompactItemize}

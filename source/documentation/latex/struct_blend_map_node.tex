@@ -1,0 +1,35 @@
+\hypertarget{struct_blend_map_node}{}\section{Blend\+Map\+Node Struct Reference}
+\label{struct_blend_map_node}\index{Blend\+Map\+Node@{Blend\+Map\+Node}}
+Inheritance diagram for Blend\+Map\+Node\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_blend_map_node}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_blend_map_node_a81d8023d5abe4d61e596511ff9338e1f}\label{struct_blend_map_node_a81d8023d5abe4d61e596511ff9338e1f}} 
+void {\bfseries cleanup} (int type)
+\item 
+\mbox{\Hypertarget{struct_blend_map_node_ac89dbc56181a3eb63f57aac3a5784fe7}\label{struct_blend_map_node_ac89dbc56181a3eb63f57aac3a5784fe7}} 
+void {\bfseries splitsolid} (uchar \&type, uchar val)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_blend_map_node_aafabf99c170ee0343131fa06919ae770}\label{struct_blend_map_node_aafabf99c170ee0343131fa06919ae770}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>\hyperlink{struct_blend_map_branch}{BlendMapBranch} $\ast$ {\bfseries branch}\\
+\>\hyperlink{struct_blend_map_solid}{BlendMapSolid} $\ast$ {\bfseries solid}\\
+\>\hyperlink{struct_blend_map_image}{BlendMapImage} $\ast$ {\bfseries image}\\
+\}; \\
+
+\end{tabbing}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/blend.\+cpp\end{DoxyCompactItemize}

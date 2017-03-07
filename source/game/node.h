@@ -44,7 +44,6 @@ struct bulletobj
 	~bulletobj(){ if(btridgidbody)delete btridgidbody; if(tempbody) delete tempbody; }
 };
 
-
 struct scriptinterface
 {
 	asIScriptObject *object;
@@ -61,20 +60,21 @@ struct scriptinterface
 struct node
 {
 	asILockableSharedBool *weakRefFlag;
+	uint parent;
+	vector<uint> children;
 	str name, tags; //instance name, tag to classify data, set on a per object basis, allows it to search by these break tags up by space
 	int refcount; //for weak reference
-	vector<asIScriptObject *> ctrl; //link to the script functions on* funcitons
+	vector < asIScriptObject *> ctrl; //link to the script functions on* funcitons
 	// position or start origin of the object
-	bulletobj *b;
+	bulletobj *b,*d;
 	vec o, rot, radius; //readius should not be changed, this is used to get a general idea of the bounds of the visual reprentation
 	vec old_o, old_rot; //store the data before we move it
 	CSerializedValue *c; //stored game data for said object;
 	//editnode *en;
 	void store();
 	bool restore();
-	node(vec pos, str name = "unnamed", str tags = "");
-	node(vec pos, vec rotation);
-
+	node (vec pos, str name = "unnamed", str tags = "");
+	node (vec pos, vec rotation);
 	int addref();
 	int release();
 
@@ -147,10 +147,11 @@ public:
 	void resetworld()
 	{
 		int a = nodes.length();
-		vector<node*> nd;
+		vector< node * > nd;
+		print(str("helo world"));
 		loopi(a)
 		{
-			node *g = nodes[i];
+			node * g = nodes[i];
 			if (!g->restore())
 			{
 				delete g;
@@ -220,13 +221,30 @@ public:
 	}
 	void updateregistaredobjects()
 	{
-
 	}
 };
-
 //definition of world declaration is in the bottom of world.cpp
 struct world
 {
+	struct nodemgr
+	{
+	private:
+		
+		node *newnode();  //call to get a new node from scratch; recieve the node
+		uint newnode(node *n); //class to copy an existing node; recieve the id
+		
+		bool removenode(uint id);
+		bool removenode(node *n);
+
+		node *getnode(uint id);
+		uint getnode(node *n);
+
+		uint search(uint id); // returns the index not id interal use only
+		uint search(node *n); // returns the index not id interal use only
+
+		node *root;
+		vector<node *> nodes();
+	};
 	int nodehover, oldhover, nodeorient, nfocus, nodemoving = 0;
 	vector<uint> physicbodies;
 	//int nodemoving = 0;
@@ -234,7 +252,7 @@ struct world
 	scenegraph *curscene;
 	bool nodeselsnap = false, nodeediting = true;
 	int spotlights, volumetriclights, nodelooplevel;
-	bool paused = false , touched = false;
+	bool paused = false, touched = false;
 	vector<light *> lights;
 	//vector<scenegraph *> scenes; add later
 
@@ -258,12 +276,12 @@ struct world
 	uint getnumnodes();
 	void addnodetoscene(node *g);
 	void rendernodes();
-	bool ispaused(){ return paused; }
+	bool ispaused() { return paused; }
 	bool hoveringonnode(int node, int orient);
 	float getnearestent(const vec &o, const vec &ray, float radius, int mode, int &hitnode);
 
 	void saveworld(stream *f);
-	void loadworld(stream *f){ curscene->loadscene(f); }
+	void loadworld(stream *f) { curscene->loadscene(f); }
 	void doAwake() { curscene->doawake(); }
 	void addctrltonode(str name, bool first);
 	//undo add later
@@ -289,10 +307,9 @@ struct world
 	void resetmap();
 };
 
-
 //struct ModelCtrl : IController
 //{
-//	model *m;
+//	model ;
 //};
 //enum {BT_SHAPE_BOX = 0, BT_SHAPE_SPHERE, BT_SHAPE_BULLET, BT_SHAPE_CYLLENDER};
 //struct PhysicsCtrl : IController

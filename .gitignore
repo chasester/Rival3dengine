@@ -35,3 +35,6 @@ bin/tesseract.lib
 source/vcpp/Release
 source/vcpp/Debug
 source/vcpp/ipch
+bin/tesseract.pdb
+bin/tesseract.lib
+bin/tesseract.exp

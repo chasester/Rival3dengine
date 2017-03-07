@@ -1,0 +1,65 @@
+\hypertarget{structeditline}{}\section{editline Struct Reference}
+\label{structeditline}\index{editline@{editline}}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structeditline_a3d4a39e526697d6f73dcfeede8245545}\label{structeditline_a3d4a39e526697d6f73dcfeede8245545}} 
+enum \{ {\bfseries C\+H\+U\+N\+K\+S\+I\+ZE} = 256
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structeditline_aaa101a9248d101995d593667581e4996}\label{structeditline_aaa101a9248d101995d593667581e4996}} 
+{\bfseries editline} (const char $\ast$init)
+\item 
+\mbox{\Hypertarget{structeditline_aff8a51dd9a54c65b674bc86bfa1566a9}\label{structeditline_aff8a51dd9a54c65b674bc86bfa1566a9}} 
+bool {\bfseries empty} ()
+\item 
+\mbox{\Hypertarget{structeditline_a22d5497ef592e0df789e50288e9cddc9}\label{structeditline_a22d5497ef592e0df789e50288e9cddc9}} 
+void {\bfseries clear} ()
+\item 
+\mbox{\Hypertarget{structeditline_ad265849bc6b8e6d587b16be5fc7b47bb}\label{structeditline_ad265849bc6b8e6d587b16be5fc7b47bb}} 
+bool {\bfseries grow} (int total, const char $\ast$fmt=\char`\"{}\char`\"{},...)
+\item 
+\mbox{\Hypertarget{structeditline_a68cad302d8daf88381753bbaeb3a6681}\label{structeditline_a68cad302d8daf88381753bbaeb3a6681}} 
+void {\bfseries set} (const char $\ast$str, int slen=-\/1)
+\item 
+\mbox{\Hypertarget{structeditline_a52837ff76228fbd8935117096475cd93}\label{structeditline_a52837ff76228fbd8935117096475cd93}} 
+void {\bfseries prepend} (const char $\ast$str)
+\item 
+\mbox{\Hypertarget{structeditline_a389153edfce8843acac521157380300c}\label{structeditline_a389153edfce8843acac521157380300c}} 
+void {\bfseries append} (const char $\ast$str)
+\item 
+\mbox{\Hypertarget{structeditline_a80640b49f44eb8a0492135716c0df5f7}\label{structeditline_a80640b49f44eb8a0492135716c0df5f7}} 
+bool {\bfseries read} (\hyperlink{structstream}{stream} $\ast$f, int chop=-\/1)
+\item 
+\mbox{\Hypertarget{structeditline_aac1676e4f0579285cd16f585a465dec0}\label{structeditline_aac1676e4f0579285cd16f585a465dec0}} 
+void {\bfseries del} (int start, int count)
+\item 
+\mbox{\Hypertarget{structeditline_a5ab95cb33794ff819377b04a54722ff3}\label{structeditline_a5ab95cb33794ff819377b04a54722ff3}} 
+void {\bfseries chop} (int newlen)
+\item 
+\mbox{\Hypertarget{structeditline_a01fb8b60099754c85e2c2941e6c1da53}\label{structeditline_a01fb8b60099754c85e2c2941e6c1da53}} 
+void {\bfseries insert} (char $\ast$str, int start, int count=0)
+\item 
+\mbox{\Hypertarget{structeditline_a0e1a2086b6f1ff1f571878b8df38e9ea}\label{structeditline_a0e1a2086b6f1ff1f571878b8df38e9ea}} 
+void {\bfseries combinelines} (\hyperlink{structvector}{vector}$<$ \hyperlink{structeditline}{editline} $>$ \&src)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structeditline_aca6722eaec92a332e2f5f19a0218346f}\label{structeditline_aca6722eaec92a332e2f5f19a0218346f}} 
+char $\ast$ {\bfseries text}
+\item 
+\mbox{\Hypertarget{structeditline_aedf4d62cf6b138c761b9f1bb2df3fdba}\label{structeditline_aedf4d62cf6b138c761b9f1bb2df3fdba}} 
+int {\bfseries len}
+\item 
+\mbox{\Hypertarget{structeditline_abec5185ee12832521ad20127df5f818d}\label{structeditline_abec5185ee12832521ad20127df5f818d}} 
+int {\bfseries maxlen}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+H\+:/\+Rival\+Engine/\+Rival\+\_\+\+Game\+\_\+\+Engine\+\_\+\+G\+I\+T/\+Rival3dengine/source/engine/textedit.\+h\end{DoxyCompactItemize}
