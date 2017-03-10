@@ -820,3 +820,4 @@ void ScriptManager::printinstancedata(asITypeInfo *typ, int level)
 	}
 
 	void ScriptManager::ScriptControler::reload(){}
+

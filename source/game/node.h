@@ -234,26 +234,17 @@ struct worldeditor //static struct
 
 	//utility calls (get sets and checks)
 	static bool isnodeedit(bool deselect=true); //force deselection if you shouldnt be editing nodes;
-	static bool pointinsel(const selinfo &sel, const vec &o);
+	static bool pointinselect(const selinfo &sel, const vec &o);
 	static inline bool nodenoedit();
-	static bool nodehavesel();
-	static void nodeselcancel();
-	static void nodeseladd(int id);
+	static bool nodehaveselect();
+	static void nodeselectcancel();
+	static void nodeselectadd(int id);
 	static inline vec getselpos();
-private:
-	static vector<node *> &getselnodes();
-	struct undoinfo;
-
-	//nessary functions that need recoded;
-public:
 	static float getnearestnode(const vec &o, const vec &ray, float radius, int mode, int &hitnode); //this was for old attatchment, maybe useful though
-	static undoinfo *newundonode();
-	static void makeundonode();
-	static undoinfo *copyundonodes(undoinfo *u);
-	static void pasteundonode(int idx, const node &un);
-	static void pasteundonodes(undoinfo *u);
-	static void detachnode(node &n); //use to release links
-	
+private:
+	static inline vector<node *> &getselectnodes();
+	struct undoinfo;
+public:	
 	//global map calls
 	static bool emptymap(int scale, bool force, const char *mname, bool usecfg);
 	static bool enlargemap(bool force); //this is an obsolete call, this should only enlarge a scene's world root. Check to find the curent  editing scene, and which worldroots are in active edit state then only enlarge the ones that are asked
@@ -266,10 +257,9 @@ public:
 	static void rendernodering(const node &n, int axis);
 	static void rendernodesphere(const node &n);
 	static void rendernodelink(const node &n, int type);
-	static void rendernodearrow(const node &n, const vec &dir, float radius);
-	static void rendernodecone(const node &n, const vec &dir, float radius, float angle);
+	static void rendernodearrow(const node &n, float radius);
+	static void rendernodecone(const node &n, float radius, float angle);
 	static void rendernodebox(const node &n);
-	static void rendernodebox(const vec no, vec es);
 
 	//functionality
 	static bool editmoveplane(const vec &o, const vec &ray, int d, float off, vec &handle, vec &dest, bool first);
@@ -278,7 +268,12 @@ public:
 	static void nodeflip(); //           flip around selected cube * if no cube * selected call each node through the message system to get a result
 	static void noderotate(int *cw); //rotate around selected cube * if no cube * selected call each node through the message system to get a result
 	static void nodeautoview(int *dir); //used to rotate through node positions (use later)
-	
+	static undoinfo *newundonode();
+	static void makeundonode();
+	static undoinfo *copyundonodes(undoinfo *u);
+	static void pasteundonode(int idx, const node &un);
+	static void pasteundonodes(undoinfo *u);
+	static void detachnode(node &n); //use to release links
 
 	//octtree intergration
 	static void modifyoctaentity(int flags, int id, node &n, cube *c, const ivec &cor, int size, const ivec &bo, const ivec &br, int leafsize, vtxarray *lastva = NULL);
@@ -320,7 +315,7 @@ public:
 	static int nodelooplevel;
 	static bool undonext, nodecanedit;
 	static bool nodeselsnap, nodeediting;
-	static vector<cube *> octrootsel; //octrees that we are modifying ;)
+	static vector<uint> octrootselect; //ids to octrees that we are modifying ;)
 }; 
 
 
@@ -357,6 +352,7 @@ public:
 	node *newnode(const node &on, vec o = vec(0), vec rot = vec(0)); //create a new node from a pointer
 	bool removenode(uint id);
 	bool removenode(node *n);
+	bool removenode(const vector<uint > &nodes);
 	node *getnodefromid(uint id);
 	vector<node *> &getnodefromid(const vector<uint> nids);
 

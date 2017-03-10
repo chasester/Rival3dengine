@@ -81,7 +81,6 @@ struct IController
 	node *self;
 };
 
-struct node;
 struct ScriptManager 
 {
 private:

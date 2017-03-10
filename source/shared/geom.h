@@ -136,7 +136,8 @@ struct vec
 	bool operator==(const vec &o) const { return x == o.x && y == o.y && z == o.z; }
 	bool operator!=(const vec &o) const { return x != o.x || y != o.y || z != o.z; }
 
-	bool iszero() const { return x == 0 && y == 0 && z == 0; }
+	bool iszero() const  { return x == 0 && y == 0 && z == 0; }
+	bool haszero() const { return x == 0 || y == 0 || z == 0; }
 	float squaredlen() const { return x*x + y*y + z*z; }
 	float dot2(const vec2 &o) const { return x*o.x + y*o.y; }
 	float dot2(const vec &o) const { return x*o.x + y*o.y; }
@@ -1326,7 +1327,8 @@ struct ivec
     //int idx(int i) { return v[i]; }
     bool operator==(const ivec &v) const { return x==v.x && y==v.y && z==v.z; }
     bool operator!=(const ivec &v) const { return x!=v.x || y!=v.y || z!=v.z; }
-    bool iszero() const { return x==0 && y==0 && z==0; }
+    bool iszero() const  { return x==0 && y==0 && z==0; }
+	bool haszero() const { return x==0 || y==0 || z==0; } //check before you divide
     ivec &shl(int n) { x<<= n; y<<= n; z<<= n; return *this; }
     ivec &shr(int n) { x>>= n; y>>= n; z>>= n; return *this; }
     ivec &mul(int n) { x *= n; y *= n; z *= n; return *this; }
