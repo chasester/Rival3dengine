@@ -223,7 +223,7 @@ struct editinfo
     editinfo() : copy(NULL) {}
 };
 
-struct undoent   { int i; entity e; };
+struct undonode   { int i; node n; }; //this needs to be a serialization of this one object. So each undblock should contain a serialized world
 struct undoblock // undo header, all data sits in payload
 {
     undoblock *prev, *next;
@@ -235,7 +235,7 @@ struct undoblock // undo header, all data sits in payload
         block3 *ub = block();
         return (uchar *)(ub->c() + ub->size());
     }
-    undoent *ents() { return (undoent *)(this + 1); }
+    undonode *node() { return (undonode *)(this + 1); }
 };
 
 extern cube *worldroot;             // the world data. only a ptr to 8 cubes (ie: like cube.children above)

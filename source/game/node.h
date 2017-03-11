@@ -13,6 +13,7 @@ struct selinfo;
 struct model;
 struct cube;
 struct vtxarray;
+struct undoblock;
 //list includes
 #include "AJMPhys.h"
 
@@ -243,7 +244,7 @@ struct worldeditor //static struct
 	static float getnearestnode(const vec &o, const vec &ray, float radius, int mode, int &hitnode); //this was for old attatchment, maybe useful though
 private:
 	static inline vector<node *> &getselectnodes();
-	struct undoinfo;
+	//struct undoblock;
 public:	
 	//global map calls
 	static bool emptymap(int scale, bool force, const char *mname, bool usecfg);
@@ -268,29 +269,29 @@ public:
 	static void nodeflip(); //           flip around selected cube * if no cube * selected call each node through the message system to get a result
 	static void noderotate(int *cw); //rotate around selected cube * if no cube * selected call each node through the message system to get a result
 	static void nodeautoview(int *dir); //used to rotate through node positions (use later)
-	static undoinfo *newundonode();
+	static undoblock *newundonode();
 	static void makeundonode();
-	static undoinfo *copyundonodes(undoinfo *u);
+	static undoblock *copyundonodes(undoblock *u);
 	static void pasteundonode(int idx, const node &un);
-	static void pasteundonodes(undoinfo *u);
-	static void detachnode(node &n); //use to release links
+	static void pasteundonodes(undoblock *u);
+	static void detachnode(node &n, bool ophanchildren = false); //use to release links
 
 	//octtree intergration
-	static void modifyoctaentity(int flags, int id, node &n, cube *c, const ivec &cor, int size, const ivec &bo, const ivec &br, int leafsize, vtxarray *lastva = NULL);
+	static void modifyoctanode(int flags, int id, node &n, cube *c, const ivec &cor, int size, const ivec &bo, const ivec &br, int leafsize, vtxarray *lastva = NULL);
 	static bool modifyoctanode(int flags, int id, node &n);
-	static inline bool modifyoctanode(int flags, int id);
-	static inline void addnode(int id);// { modifyoctaent(MODOE_ADD | MODOE_UPDATEBB, id); }
-	static inline void addnodeedit(int id);// { modifyoctaent(MODOE_ADD | MODOE_UPDATEBB | MODOE_CHANGED, id); }
-	static inline void removenode(int id);// { modifyoctaent(MODOE_UPDATEBB, id); }
-	static inline void removenodeedit(int id);// { modifyoctaent(MODOE_UPDATEBB | MODOE_CHANGED, id); }
+	static bool modifyoctanode(int flags, int id);
+	static inline void addnode(int id);
+	static inline void addnodeedit(int id);
+	static inline void removenode(int id);
+	static inline void removenodeedit(int id);
 	static void nodesinocta();
 
 	//static void freeoctanodes(cube &c);
 
 	//posibly obsolete
-	static inline void transformbb(node &n);
-	static inline void mmboundbox(const node &n, model *m);
-	static inline void mmcollisionbox(const node &n);
+	//static inline void transformbb(node &n);
+	//static inline void mmboundbox(const node &n, model *m);
+	//static inline void mmcollisionbox(const node &n);
 
 	//aabb calls
 	//static inline vec getrenderbounds(node &n);
@@ -303,15 +304,11 @@ public:
 	//};
 
 //private:
-	struct undoinfo
-	{
-
-	};
 	worldeditor() {}; //make private so no one tries to instance this
 	static int nodehover, oldhover, nodeorient, nfocus, nodemoving;
 	static vector<uint> nodeselect;
 	//static vector<selectinfo *> selinfos;
-	static vector<undoinfo *> undoinfos;
+	//static vector<undoblock *> undoblocks;
 	static int nodelooplevel;
 	static bool undonext, nodecanedit;
 	static bool nodeselsnap, nodeediting;

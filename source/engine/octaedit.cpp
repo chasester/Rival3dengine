@@ -653,7 +653,7 @@ void pasteundo(undoblock *u)
 
 static inline int undosize(undoblock *u)
 {
-    if(u->numents) return u->numents*sizeof(undoent);
+    if(u->numents) return u->numents*sizeof(undonode);
     else
     {
         block3 *b = u->block();
@@ -704,7 +704,7 @@ struct undolist
 };
 
 undolist undos, redos;
-VARP(undomegs, 0, 5, 100);                              // bounded by n megs
+VARP(undomegs, 0, 50, 1000);                              // bounded by n megs
 int totalundos = 0;
 
 void pruneundos(int maxremain)                          // bound memory
@@ -1062,15 +1062,16 @@ bool packundo(undoblock *u, int &inlen, uchar *&outbuf, int &outlen)
     *(ushort *)buf.pad(2) = lilswap(ushort(u->numents));
     if(u->numents)
     {
-        undoent *ue = u->ents();
-        loopi(u->numents)
+        //undonode *ue = u->ents();
+		//undo fix
+        /*loopi(u->numents)
         {
             *(ushort *)buf.pad(2) = lilswap(ushort(ue[i].i));
             entity &e = *(entity *)buf.pad(sizeof(entity));
-            e = ue[i].e;
+            e = ue[i].n;
             lilswap(&e.o.x, 3);
             lilswap(&e.attr1, 5); 
-        }
+        }*/
     }
     else
     {
