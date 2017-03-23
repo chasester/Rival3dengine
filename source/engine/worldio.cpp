@@ -926,8 +926,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
 
 	preloadmapsounds();
 
-	entitiesinoctanodes();
-	attachentities();
+	worldeditor::nodesinocta();
 	initlights();
 	allchanged(true);
 	renderbackground("loading...", mapshot, mname, game::getmapinfo());
@@ -1054,20 +1053,20 @@ void writecollideobj(char *name)
     }
     vector<extentity *> &ents = entities::getents();
     extentity *mm = NULL;
-    loopv(entgroup)
+  /*  loopv(entgroup)
     {
         extentity &e = *ents[entgroup[i]];
-        if(e.type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
+        if(e.type != ET_MAPMODEL || !worldeditor::pointinselect(sel, e.o)) continue;
         mm = &e;
         break;
     }
     if(!mm) loopv(ents)
     {
         extentity &e = *ents[i];
-        if(e.type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
+        if(e.type != ET_MAPMODEL || !worldeditor::pointinselect(sel, e.o)) continue;
         mm = &e;
         break;
-    }
+    }*/
     if(!mm)
     {
         conoutf(CON_ERROR, "could not find map model in selection");

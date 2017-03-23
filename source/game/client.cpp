@@ -1515,7 +1515,7 @@ namespace game
                 parsestate(s, p);
                 s->state = CS_ALIVE;
                 if(cmode) cmode->pickspawn(s);
-                else findplayerspawn(s, -1, m_teammode ? s->team : 0);
+                //else findplayerspawn(s, -1, m_teammode ? s->team : 0);
                 if(s == player1)
                 {
                     showscores(false);
@@ -1753,13 +1753,14 @@ namespace game
                 break;
             case N_EDITENT:            // coop edit of ent
             {
-                if(!d) return;
+				//replace to edit nodes
+               /* if(!d) return;
                 int i = getint(p);
                 float x = getint(p)/DMF, y = getint(p)/DMF, z = getint(p)/DMF;
                 int type = getint(p);
                 int attr1 = getint(p), attr2 = getint(p), attr3 = getint(p), attr4 = getint(p), attr5 = getint(p);
 
-                mpeditent(i, vec(x, y, z), type, attr1, attr2, attr3, attr4, attr5, false);
+                mpeditent(i, vec(x, y, z), type, attr1, attr2, attr3, attr4, attr5, false);*/
                 break;
             }
             case N_EDITVAR:
@@ -1928,7 +1929,7 @@ namespace game
             {
                 int size = getint(p);
                 if(size>=0) emptymap(size, true, NULL);
-                else enlargemap(true);
+               // else enlargemap(true); fix later
                 if(d && d!=player1)
                 {
                     int newsize = 0;
@@ -2138,12 +2139,13 @@ namespace game
 
     void gotosel()
     {
-        if(player1->state!=CS_EDITING) return;
+		//replace later 
+       /* if(player1->state!=CS_EDITING) return;
         player1->o = getselpos();
         vec dir;
         vecfromyawpitch(player1->yaw, player1->pitch, 1, 0, dir);
         player1->o.add(dir.mul(-32));
-        player1->resetinterp();
+        player1->resetinterp();*/
     }
     COMMAND(gotosel, "");
 }

@@ -1436,19 +1436,20 @@ void updateparticles()
     }
     if(editmode) // show sparkly thingies for map entities in edit mode
     {
-        const vector<extentity *> &ents = entities::getents();
-        // note: order matters in this case as particles of the same type are drawn in the reverse order that they are added
-        loopv(entgroup)
-        {
-            entity &e = *ents[entgroup[i]];
-            particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0xFF4B19, 2.0f);
-        }
-        loopv(ents)
-        {
-            entity &e = *ents[i];
-            if(e.type==ET_EMPTY) continue;
-            particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0x1EC850, 2.0f);
-            regular_particle_splash(PART_EDIT, 2, 40, e.o, 0x3232FF, 0.32f*particlesize/100.0f);
-        }
+		//fixed in world
+    //    const vector<extentity *> &ents = entities::getents();
+    //    // note: order matters in this case as particles of the same type are drawn in the reverse order that they are added
+    //    loopv(entgroup)
+    //    {
+    //        entity &e = *ents[entgroup[i]];
+    //      //  particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0xFF4B19, 2.0f);
+    //    }
+    //    loopv(ents)
+    //    {
+    //        entity &e = *ents[i];
+    //        if(e.type==ET_EMPTY) continue;
+    //        //particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0x1EC850, 2.0f);
+    //        regular_particle_splash(PART_EDIT, 2, 40, e.o, 0x3232FF, 0.32f*particlesize/100.0f);
+    //    }
     }
 }

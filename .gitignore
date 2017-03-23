@@ -46,3 +46,9 @@ source/vcpp/Release
 source/vcpp/Debug
 source/vcpp/ipch
 >>>>>>> origin/Serial_rewrite
+*.pdb
+bin/tesseract.map
+bin/tesseract.exp
+*.exe
+bin/tesseract.lib
+bin/tesseract.pdb

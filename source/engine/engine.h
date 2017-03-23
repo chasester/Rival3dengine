@@ -32,7 +32,7 @@ extern bool inbetweenframes, renderedframe;
 extern SDL_Window *screen;
 extern int screenw, screenh, renderw, renderh, hudx, hudy, hudw, hudh;
 
-extern vector<int> entgroup;
+//extern vector<int> entgroup;
 
 // rendertext
 struct font
@@ -411,11 +411,11 @@ extern bool debugaa();
 extern void cleanupaa();
 
 // ents
-extern char *entname(entity &e);
-extern bool haveselent();
-extern undoblock *copyundoents(undoblock *u);
-extern void pasteundoent(int idx, const entity &ue);
-extern void pasteundoents(undoblock *u);
+//extern char *entname(entity &e);
+//extern bool haveselent();
+//extern undoblock *copyundoents(undoblock *u);
+//extern void pasteundoent(int idx, const entity &ue);
+//extern void pasteundoents(undoblock *u);
 
 // octaedit
 extern void cancelsel();
@@ -680,12 +680,13 @@ extern float shadowray(const vec &o, const vec &ray, float radius, int mode, ext
 extern vector<int> outsideents;
 
 extern node *newasent(str name, vec o, bool addeditnode = true);
-extern void rendernodeselection(const vec &o, const vec &ray, bool nodemoving);
-extern void entcancel();
-extern void entitiesinoctanodes();
-extern void attachentities();
+//extern void worldeditor::rendernodeselection(const vec &o, const vec &ray, bool nodemoving);
+//extern void worldeditor::nodeselectioncancel();
+//extern void entitiesinoctanodes();
+//extern void attachentities();
+extern worldeditor;
 extern void freeoctaentities(cube &c);
-extern bool pointinsel(const selinfo &sel, const vec &o);
+//extern bool pointinsel(const selinfo &sel, const vec &o);
 
 extern void startmap(const char *name);
 

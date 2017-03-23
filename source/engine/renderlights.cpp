@@ -2311,7 +2311,7 @@ void disableavatarmask()
 
 VAR(forcespotlights, 1, 0, 0);
 
-extern int spotlights;
+int spotlights;
 
 static Shader *volumetricshader = NULL, *volumetricbilateralshader[2] = { NULL, NULL };
 
@@ -3127,7 +3127,7 @@ void renderlights(float bsx1 = -1, float bsy1 = -1, float bsx2 = 1, float bsy2 =
     }
 }
 
-extern int volumetriclights;
+int volumetriclights; //fix this to reference world
 
 void rendervolumetric()
 {
@@ -3349,28 +3349,29 @@ void viewlightscissor()
 {
     vector<extentity *> &ents = entities::getents();
     gle::defvertex(2);
-    loopv(entgroup)
-    {
-        int idx = entgroup[i];
-        if(ents.inrange(idx) && ents[idx]->type == ET_LIGHT)
-        {
-            extentity &e = *ents[idx];
-            loopvj(lights) if(lights[j].o == e.o)
-            {
-                lightinfo &l = lights[j];
-                if(!l.validscissor()) break;
-                gle::colorf(l.color.x/255, l.color.y/255, l.color.z/255);
-                float x1 = (l.sx1+1)/2*hudw, x2 = (l.sx2+1)/2*hudw,
-                      y1 = (1-l.sy1)/2*hudh, y2 = (1-l.sy2)/2*hudh;
-                gle::begin(GL_TRIANGLE_STRIP);
-                gle::attribf(x1, y1);
-                gle::attribf(x2, y1);
-                gle::attribf(x1, y2);
-                gle::attribf(x2, y2);
-                gle::end();
-            }
-        }
-    }
+	//fix later light sissor
+    //loopv(entgroup)
+    //{
+    //    int idx = entgroup[i];
+    //    if(ents.inrange(idx) && ents[idx]->type == ET_LIGHT)
+    //    {
+    //        extentity &e = *ents[idx];
+    //        loopvj(lights) if(lights[j].o == e.o)
+    //        {
+    //            lightinfo &l = lights[j];
+    //            if(!l.validscissor()) break;
+    //            gle::colorf(l.color.x/255, l.color.y/255, l.color.z/255);
+    //            float x1 = (l.sx1+1)/2*hudw, x2 = (l.sx2+1)/2*hudw,
+    //                  y1 = (1-l.sy1)/2*hudh, y2 = (1-l.sy2)/2*hudh;
+    //            gle::begin(GL_TRIANGLE_STRIP);
+    //            gle::attribf(x1, y1);
+    //            gle::attribf(x2, y1);
+    //            gle::attribf(x1, y2);
+    //            gle::attribf(x2, y2);
+    //            gle::end();
+    //        }
+    //    }
+    //}
     gle::disable();
 }
 VAR(PartyTime, 0, 0, 1);

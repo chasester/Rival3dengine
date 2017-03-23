@@ -238,7 +238,7 @@ namespace entities
 
     void teleport(int n, gameent *d)     // also used by monsters
     {
-        int e = -1, tag = ents[n]->attr1, beenhere = -1;
+       /* int e = -1, tag = ents[n]->attr1, beenhere = -1;
         for(;;)
         {
             e = findentity(TELEDEST, e+1);
@@ -264,7 +264,7 @@ namespace entities
                 if(d == player1) ovr::reset();
                 break;
             }
-        }
+        }*/
     }
 
     void trypickup(int n, gameent *d)
@@ -634,7 +634,7 @@ namespace entities
 
     void entradius(extentity &e, bool color)
     {
-        switch(e.type)
+       /* switch(e.type)
         {
             case TELEPORT:
                 loopv(ents) if(ents[i]->type == TELEDEST && e.attr1==ents[i]->attr2)
@@ -670,7 +670,7 @@ namespace entities
             case MAPMODEL:
                 if(validtrigger(e.attr3)) renderentring(e, checktriggertype(e.attr3, TRIG_COLLIDE) ? 20 : 12);
                 break;            
-        }
+        }*/
     }
 //angelo sauer ents
     bool printent(extentity &e, char *buf, int len)

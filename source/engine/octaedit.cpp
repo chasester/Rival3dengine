@@ -1,5 +1,6 @@
 #include "engine.h"
 
+extern worldeditor;
 extern int outline;
 
 bool boxoutline = false;
@@ -67,7 +68,6 @@ int gridsize = 8;
 ivec cor, lastcor;
 ivec cur, lastcur;
 
-extern int entediting;
 bool editmode = false;
 bool havesel = false;
 bool hmapsel = false;
@@ -91,7 +91,7 @@ ICOMMAND(moving, "b", (int *n),
 {
     if(*n >= 0)
     {
-        if(!*n || (moving<=1 && !pointinsel(sel, vec(cur).add(1)))) moving = 0;
+        if(!*n || (moving<=1 && !worldeditor::pointinselect(sel, vec(cur).add(1)))) moving = 0;
         else if(!moving) moving = 1;
     }
     intret(moving);
@@ -125,7 +125,7 @@ void cubecancel()
 void cancelsel()
 {
     cubecancel();
-    entcancel();
+    worldeditor::nodeselectcancel();
 }
 
 void sethor(vec o)
@@ -160,7 +160,7 @@ void toggleedit(bool force)
     cancelsel();
     stoppaintblendmap();
     keyrepeat(editmode, KR_EDITMODE);
-    editing = entediting = editmode;
+    editing = weditor.nodeediting = editmode;
     if(!force) game::edittoggled(editmode);
     execident("edittoggled");
 }
@@ -168,7 +168,7 @@ void toggleedit(bool force)
 bool noedit(bool view, bool msg)
 {
     if(!editmode) { if(msg) conoutf(CON_ERROR, "operation only allowed in edit mode"); return true; }
-    if(view || haveselent()) return false;
+    if(view || worldeditor::nodehaveselect()) return false;
     vec o(sel.o), s(sel.s);
     s.mul(sel.grid / 2.0f);
     o.add(s);
@@ -205,7 +205,7 @@ void selextend()
 }
 
 ICOMMAND(edittoggle, "", (), toggleedit(false));
-COMMAND(entcancel, "");
+ICOMMAND(entcancel, "", (), worldeditor::nodeselectcancel(););
 COMMAND(cubecancel, "");
 COMMAND(cancelsel, "");
 COMMAND(reorient, "");
@@ -300,9 +300,9 @@ bool editmoveplane(const vec &o, const vec &ray, int d, float off, vec &handle, 
 }
 
 namespace hmap { inline bool isheightmap(int orient, int d, bool empty, cube *c); }
-extern void entdrag(const vec &ray);
-extern bool hoveringonent(int ent, int orient);
-extern void renderentselection(const vec &o, const vec &ray, bool entmoving);
+//extern void entdrag(const vec &ray);
+//extern bool hoveringonent(int ent, int orient);
+//extern void renderentselection(const vec &o, const vec &ray, bool entmoving);
 extern float rayent(const vec &o, const vec &ray, float radius, int mode, int size, int &orient, int &ent);
 
 VAR(gridlookup, 0, 0, 1);
@@ -337,7 +337,7 @@ void rendereditcursor()
             sel.o[C[od]] = o[C[od]];
         }
     }
-    else if(worldeditor::nodemoving)
+    else if(weditor.nodemoving)
     {
 		//add back when defined
        // worldeditor::nodedrag(camdir);
@@ -350,7 +350,7 @@ void rendereditcursor()
 
         wdist = rayent(player->o, camdir, 1e16f,
                        (editmode && showmat ? RAY_EDITMAT : 0)   // select cubes first
-                       | (!dragging && entediting ? RAY_ENTS : 0)
+                       | (!dragging && weditor.nodeediting ? RAY_ENTS : 0)
                        | RAY_SKIPFIRST
                        | (passthroughcube==1 ? RAY_PASS : 0), gridsize, entorient, ent);
 
@@ -460,7 +460,7 @@ void rendereditcursor()
     // cursors
 
     ldrnotextureshader->set();
-	worldeditor::rendernodeselection(player->o, camdir, worldeditor::nodemoving != 0);
+	weditor.rendernodeselection(player->o, camdir, weditor.nodemoving != 0);
     //renderentselection(player->o, camdir, entmoving!=0);
 	//curworld->renderentselection(player->o, camdir, entmoving != 0);
 
@@ -559,7 +559,7 @@ void commitchanges(bool force)
     extern vector<vtxarray *> valist;
     int oldlen = valist.length();
     resetclipplanes();
-    entitiesinoctanodes();
+    worldeditor::nodesinocta();
     inbetweenframes = false;
     octarender();
     inbetweenframes = true;
@@ -647,7 +647,7 @@ void pasteundoblock(block3 *b, uchar *g)
 
 void pasteundo(undoblock *u)
 {
-    if(u->numents) pasteundoents(u);
+	if (u->numents);// worldeditor::pasteundonode(u); fix later
     else pasteundoblock(u->block(), u->gridmap());
 }
 
@@ -801,7 +801,7 @@ void swapundo(undolist &a, undolist &b, int op)
     {
         if(op >= 0) game::edittrigger(sel, op);
         undoblock *u = a.poplast(), *r;
-        if(u->numents) r = copyundoents(u);
+        if(u->numents) r = worldeditor::copyundonodes(u);
         else
         {
             block3 *ub = u->block();
@@ -1104,7 +1104,7 @@ bool unpackundo(const uchar *inbuf, int inlen, int outlen)
             entity &e = *(entity *)buf.pad(sizeof(entity));
             lilswap(&e.o.x, 3);
             lilswap(&e.attr1, 5);
-            pasteundoent(idx, e);
+			//worldeditor::pasteundonode(idx, e); fix here so its nodes not enties or just remove and fix
         }
     }
     else

@@ -103,7 +103,7 @@ public:
 	void move(vec impulse);
 	void moveto(vec _o);
 	void rotate(vec impulse, bool degrees = true);
-	void rotateto(vec rot, bool degrees = true);
+	void rotateto(vec rot, bool degrees = true) { this->rot = vec(rot); }
 	void rotateto(float impy, float impp, float impr, bool deg = true);
 	void rotate(float yaw, float pitch, float roll, bool deg = true);
 	void setfriction(float f);
@@ -230,7 +230,7 @@ enum MODOE
 	MODOE_CHANGED = 1 << 2
 };
 
-struct worldeditor //static struct
+static struct worldeditor //static struct
 {
 
 	//utility calls (get sets and checks)
@@ -304,16 +304,15 @@ public:
 	//};
 
 //private:
-	worldeditor() {}; //make private so no one tries to instance this
-	static int nodehover, oldhover, nodeorient, nfocus, nodemoving;
-	static vector<uint> nodeselect;
+	int nodehover, oldhover, nodeorient, nfocus, nodemoving;
+	vector<uint> nodeselect;
 	//static vector<selectinfo *> selinfos;
 	//static vector<undoblock *> undoblocks;
-	static int nodelooplevel;
-	static bool undonext, nodecanedit;
-	static bool nodeselsnap, nodeediting;
-	static vector<uint> octrootselect; //ids to octrees that we are modifying ;)
-}; 
+	int nodelooplevel;
+	bool undonext, nodecanedit;
+	bool nodeselsnap, nodeediting;
+	vector<uint> octrootselect; //ids to octrees that we are modifying ;)
+}weditor = { -1,-1,0,-1,0, vector<uint>(),-1,false,true,false,true,vector<uint>() };
 
 
 

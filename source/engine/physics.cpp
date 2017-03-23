@@ -116,55 +116,56 @@ static inline bool raycubeintersect(const clipplanes &p, const cube &c, const ve
     return true;
 }
 
-extern void entselectionbox(const entity &e, vec &eo, vec &es);
+//extern void entselectionbox(const entity &e, vec &eo, vec &es);
 float hitentdist;
 int hitent, hitorient;
 
 static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, extentity *t)
 {
-    vec eo, es;
-    int orient = -1;
-    float dist = radius, f = 0.0f;
-    const vector<extentity *> &ents = entities::getents();
+  //  vec eo, es;
+  //  int orient = -1;
+  //  float dist = radius, f = 0.0f;
+  //  const vector<extentity *> &ents = entities::getents();
 
-    #define entintersect(type, func) do { \
-        loopv(oc->type) \
-        { \
-            extentity &e = *ents[oc->type[i]]; \
-            if(!(e.flags&EF_OCTA) || &e==t) continue; \
-            func; \
-            if(f<dist && f>0 && vec(ray).mul(f).add(o).insidebb(oc->o, oc->size)) \
-            { \
-                hitentdist = dist = f; \
-                hitent = oc->type[i]; \
-                hitorient = orient; \
-            } \
-        } \
-    } while(0)
+  //  #define entintersect(type, func) do { \
+  //      loopv(oc->type) \
+  //      { \
+  //          extentity &e = *ents[oc->type[i]]; \
+  //          if(!(e.flags&EF_OCTA) || &e==t) continue; \
+  //          func; \
+  //          if(f<dist && f>0 && vec(ray).mul(f).add(o).insidebb(oc->o, oc->size)) \
+  //          { \
+  //              hitentdist = dist = f; \
+  //              hitent = oc->type[i]; \
+  //              hitorient = orient; \
+  //          } \
+  //      } \
+  //  } while(0)
 
-    if((mode&RAY_POLY) == RAY_POLY) entintersect(mapmodels,
-    {
-        if(!mmintersect(e, o, ray, radius, mode, f)) continue;
-    });
+  //  if((mode&RAY_POLY) == RAY_POLY) entintersect(mapmodels,
+  //  {
+  //      if(!mmintersect(e, o, ray, radius, mode, f)) continue;
+  //  });
 
-    #define entselintersect(type) entintersect(type, { \
-        entselectionbox(e, eo, es); \
-        if(!rayboxintersect(eo, es, o, ray, f, orient)) continue; \
-    })
+  //  #define entselintersect(type) entintersect(type, { \
+		//worldeditor::nodeselectionbox
+  //      //entselectionbox(e, eo, es); \
+  //      if(!rayboxintersect(eo, es, o, ray, f, orient)) continue; \
+  //  })
 
-    if((mode&RAY_ENTS) == RAY_ENTS)
-    {
-        entselintersect(other);
-        entselintersect(mapmodels);
-        entselintersect(decals);
-    }
+  //  if((mode&RAY_ENTS) == RAY_ENTS)
+  //  {
+  //      entselintersect(other);
+  //      entselintersect(mapmodels);
+  //      entselintersect(decals);
+  //  }
 
-    return dist;
+  return radius;
 }
 
 static float disttooutsideent(const vec &o, const vec &ray, float radius, int mode, extentity *t)
 {
-    vec eo, es;
+   /* vec eo, es;
     int orient;
     float dist = radius, f = 0.0f;
     const vector<extentity *> &ents = entities::getents();
@@ -180,8 +181,8 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
             hitent = outsideents[i];
             hitorient = orient;
         }
-    }
-    return dist;
+    }*/
+    return radius;
 }
 
 // optimized shadow version

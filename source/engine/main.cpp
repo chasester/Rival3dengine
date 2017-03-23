@@ -366,6 +366,10 @@ void renderprogress(float bar, const char *text, bool background)   // also used
 
     clientkeepalive();      // make sure our connection doesn't time out while loading maps etc.
 
+	#ifdef __WINDOWS__
+	PeekMessage(new MSG(), NULL, 0, 0, PM_NOREMOVE); //this keeps windows from thing the window has died
+	#endif
+
     #ifdef __APPLE__
     interceptkey(SDLK_UNKNOWN); // keep the event queue awake to avoid 'beachball' cursor
     #endif
@@ -564,12 +568,12 @@ void setupscreen()
     scr_w = min(scr_w, desktopw);
     scr_h = min(scr_h, desktoph);
 
-    int winx = SDL_WINDOWPOS_UNDEFINED, winy = SDL_WINDOWPOS_UNDEFINED, winw = scr_w, winh = scr_h, flags = SDL_WINDOW_RESIZABLE;
+    int winx = SDL_WINDOWPOS_UNDEFINED, winy = SDL_WINDOWPOS_UNDEFINED, winw = scr_w, winh = scr_h, flags = SDL_WINDOW_BORDERLESS | SDL_WINDOW_ALLOW_HIGHDPI;
     if(fullscreen)
     {
         winw = desktopw;
         winh = desktoph;
-        flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+        //flags |= SDL_WINDOW_FULLSCREEN_DESKTOP; // killed to make fullscreen switching more smooth and to allow better optimzation for systems with multiple displays (may cause a slower render, will investigate and may make this an option later)
         initwindowpos = true;
     }
     if(ovr::enabled) winx = winy = 0;

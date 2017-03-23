@@ -1718,7 +1718,7 @@ void allchanged(bool load)
     resetqueries();
     resetclipplanes();
     if(load) initenvmaps();
-    entitiesinoctanodes();
+    worldeditor::nodesinocta();
     tjoints.setsize(0);
     if(filltjoints) findtjoints();
     octarender();

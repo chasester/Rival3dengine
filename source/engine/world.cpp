@@ -255,8 +255,8 @@ VAR(entselradius, 0, 2, 10);
 //static inline void removeentity(int id)     { /*modifyoctaent(MODOE_UPDATEBB, id);*/ }
 //static inline void removeentityedit(int id) { /*modifyoctaent(MODOE_UPDATEBB|MODOE_CHANGED, id);*/ }
 //
-//void freeoctaentities(cube &c)
-//{
+void freeoctaentities(cube &c)
+{
 //   /* if(!c.ext) return;
 //    if(entities::getents().length())
 //    {
@@ -269,7 +269,7 @@ VAR(entselradius, 0, 2, 10);
 //        delete c.ext->ents;
 //        c.ext->ents = NULL;
 //    }*/
-//}
+}
 //
 //void entitiesinoctanodes()
 //{
@@ -2208,8 +2208,8 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 	#pragma region "UTILITY"
 		bool worldeditor::isnodeedit(bool deselect)
 		{
-			if (deselect && nodecanedit & nodeediting) nodeselectcancel(); //remove entediting later
-			return nodecanedit;
+			if (deselect && weditor.nodecanedit & weditor.nodeediting) nodeselectcancel(); //remove entediting later
+			return weditor.nodecanedit;
 		}
 		bool worldeditor::pointinselect(const selinfo &sel, const vec &o)
 		{
@@ -2227,22 +2227,22 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 		}
 		bool worldeditor::nodehaveselect()
 		{
-			return nodeselect.length() > 0;
+			return weditor.nodeselect.length() > 0;
 		}
 		void worldeditor::nodeselectcancel()
 		{
-			nodeselect.shrink(0);
+			weditor.nodeselect.shrink(0);
 		}
 		void worldeditor::nodeselectadd(int id)
 		{
-			undonext = true;
-			nodeselect.add(id);
+			weditor.undonext = true;
+			weditor.nodeselect.add(id);
 		}
 		vec worldeditor::getselpos()
 		{
-			vector<node *> nodes = curworld->getnodefromid(nodeselect);
+			vector<node *> nodes = curworld->getnodefromid(weditor.nodeselect);
 			if (nodes.length() > 0 && nodes[0]) return nodes[0]->o;
-			if (node *n = curworld->getnodefromid(nodehover)) return n->o;
+			if (node *n = curworld->getnodefromid(weditor.nodehover)) return n->o;
 			return vec(0); //return sel.o; fix when octselect is added
 		}
 		float worldeditor::getnearestnode(const vec &o, const vec &ray, float radius, int mode, int &hitnode)
@@ -2271,7 +2271,7 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 			//obsolete call
 			return radius;
 		}
-		inline vector<node*> &worldeditor::getselectnodes() { return curworld->getnodefromid(nodeselect); }
+		inline vector<node*> &worldeditor::getselectnodes() { return curworld->getnodefromid(weditor.nodeselect); }
 	#pragma endregion (Gets sets checks)
 	#pragma region "Map Calls"
 		bool worldeditor::emptymap(int scale, bool force, const char *mname, bool usecfg)
@@ -2338,12 +2338,12 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 		}
 		void worldeditor::reset() //inits or resets the editor. Should be done on map load or change, or when entering or exiting editmode
 		{
-			undonext = true;
-			nodehover = -1; oldhover = -1; nodeorient = 0;
-			nfocus = -1; nodemoving = 0;
-			nodelooplevel = 0;
-			nodeselect.shrink(0); /*selinfos.shrink(0); undoblocks.shrink(0);*/
-			nodeselsnap = false; nodeediting = true;
+			weditor.undonext = true;
+			weditor.nodehover = -1; weditor.oldhover = -1; weditor.nodeorient = 0;
+			weditor.nfocus = -1; weditor.nodemoving = 0;
+			weditor.nodelooplevel = 0;
+			weditor.nodeselect.shrink(0); /*selinfos.shrink(0); undoblocks.shrink(0);*/
+			weditor.nodeselsnap = false; weditor.nodeediting = true;
 		}
 		void worldeditor::startmap(const char *name)
 		{
@@ -2371,24 +2371,24 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 			//	rendernodebox(o.sub(e->radius), vec(e->radius).mul(2));
 			//}
 			//xtraverts += gle::end();
-			if (nodeselect.empty() && nodehover < 0) return;
+			if (weditor.nodeselect.empty() && weditor.nodehover < 0) return;
 			vec no, ns;
-			if (nodeselect.length())
+			if (weditor.nodeselect.length())
 			{
-				vector<node *> nodes = curworld->getnodefromid(nodeselect);
+				vector<node *> nodes = curworld->getnodefromid(weditor.nodeselect);
 				gle::colorub(0, 50, 0);
 				gle::defvertex();
 				gle::begin(GL_LINES, nodes.length() * 24);
 				loopv(nodes){
 					node *n = nodes[i];
 					vec o(n->o);
-					renderentbox(o.sub(n->radius), vec(n->radius).mul(2));
+					renderbox(o.sub(n->radius), vec(n->radius).mul(2),vec(0), true);
 				}
 				xtraverts += gle::end();
 			}
-			if (nodehover)
+			if (weditor.nodehover)
 			{
-				node *n = curworld->getnodefromid(nodehover);
+				node *n = curworld->getnodefromid(weditor.nodehover);
 				if (!n)return;
 				gle::colorub(0, 40, 0);
 					// also ensurns enthover is back in focus
@@ -2397,7 +2397,7 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 				boxs3D(no, ns, 1);
 				if (nodemoving && nodemovingshadow == 1)
 				{
-					int plane = dimension(nodeorient); //do not render if can not move in that direction
+					int plane = dimension(weditor.nodeorient); //do not render if can not move in that direction
 					vec a, b;
 					gle::colorub(40, 20, 20);
 					(a = no).x = no.x - fmod(no.x, worldsize); (b = ns).x = a.x + worldsize; if (plane != 0){ boxs3D(a, b, 1); } //on x plane
@@ -2408,18 +2408,18 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 				}
 					
 				gle::colorub(200, 0, 0);
-				::boxs(nodeorient, no, ns);
+				::boxs(weditor.nodeorient, no, ns);
 			}
 			gle::disable();
 		}
 		bool worldeditor::hoveringonnode(int node, int orient)
 		{
 			if(nodenoedit()) return false;
-			nodeorient = orient;
-			if((nfocus = nodehover = node) >= 0)
+			weditor.nodeorient = orient;
+			if((weditor.nfocus = weditor.nodehover = node) >= 0)
 			return true;
-			nfocus   = nodeselect.empty() ? -1 : nodeselect.last();
-			nodehover = -1;
+			weditor.nfocus   = weditor.nodeselect.empty() ? -1 : weditor.nodeselect.last();
+			weditor.nodehover = -1;
 			return false;
 		}
 		void worldeditor::rendernodering(const node &n, int axis)
@@ -2491,11 +2491,11 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 			float r = 0, c = 0;
 			static vec dest, handle;
 			vec eo, es;
-			int d = dimension(nodeorient);
-			int dc = dimcoord(nodeorient);
-			vector<node *> nodes = curworld->getnodefromid(nodeselect);
+			int d = dimension(weditor.nodeorient);
+			int dc = dimcoord(weditor.nodeorient);
+			vector<node *> nodes = curworld->getnodefromid(weditor.nodeselect);
 			loopv(nodes) {
-				if (!editmoveplane(nodes[i]->o, ray, d, nodes[i]->o[d] + (dc ? nodes[i]->radius[d] : 0), handle, dest, nodemoving == 1))
+				if (!editmoveplane(nodes[i]->o, ray, d, nodes[i]->o[d] + (dc ? nodes[i]->radius[d] : 0), handle, dest, weditor.nodemoving == 1))
 					return;
 
 				ivec g = dest;
@@ -2507,25 +2507,25 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 				c = (entselsnap ? g[C[d]] : dest[C[d]]) - nodes[i]->o[C[d]];
 			}
 
-			if(nodemoving==1) makeundonode();
-			if (nodes.length() < 1)nodes.add(curworld->getnodefromid(nfocus));
+			if(weditor.nodemoving==1) makeundonode();
+			if (nodes.length() < 1)nodes.add(curworld->getnodefromid(weditor.nfocus));
 			makeundonode();
 			loopv(nodes)
 			{ 
 			nodes[i]->o[R[d]] += r; 
 			nodes[i]->o[C[d]] += c; 
 			}
-			nodemoving = 2;
+			weditor.nodemoving = 2;
 		}
-		void worldeditor::delnode(){ if(!curworld->removenode(nodeselect))  curworld->removenode(nfocus); nodeselectcancel(); }//this removes all the nodeselects if nodeselect.length() > 0; if not it returns false;
+		void worldeditor::delnode(){ if(!curworld->removenode(weditor.nodeselect))  curworld->removenode(weditor.nfocus); nodeselectcancel(); }//this removes all the nodeselects if nodeselect.length() > 0; if not it returns false;
 		void worldeditor::nodeflip()
 		{
 			if(nodenoedit()) return;
 			int d = dimension(sel.orient);
 			float mid = sel.s[d]*sel.grid/2+sel.o[d];
 			//groupeditundo(e.o[d] -= (e.o[d]-mid)*2);
-			vector<node *> nodes = curworld->getnodefromid(nodeselect);
-			if (nodes.length() < 1)nodes.add(curworld->getnodefromid(nfocus));
+			vector<node *> nodes = curworld->getnodefromid(weditor.nodeselect);
+			if (nodes.length() < 1)nodes.add(curworld->getnodefromid(weditor.nfocus));
 			makeundonode();
 			loopv(nodes) nodes[i]->o[d] -= (nodes[i]->o[d] - mid) * 2;
 		} 
@@ -2536,8 +2536,8 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 			int dd = (*cw<0) == dimcoord(sel.orient) ? R[d] : C[d];
 			float mid = sel.s[dd]*sel.grid/2+sel.o[dd];
 			vec s(sel.o.v);
-			vector<node *> nodes = curworld->getnodefromid(nodeselect);
-			if (nodes.length() < 1)nodes.add(curworld->getnodefromid(nfocus));
+			vector<node *> nodes = curworld->getnodefromid(weditor.nodeselect);
+			if (nodes.length() < 1)nodes.add(curworld->getnodefromid(weditor.nfocus));
 			makeundonode();
 			loopv(nodes)
 			{
@@ -2567,7 +2567,7 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 		}
 		undoblock *worldeditor::newundonode()
 		{
-			int numents = nodeselect.length();
+			int numents = weditor.nodeselect.length();
 			if(numents <= 0) return NULL;
 			undoblock *ub = (undoblock *)new uchar[sizeof(undoblock) + numents*sizeof(undonode)];
 			ub->numents = numents;
@@ -2582,9 +2582,9 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 		}
 		void worldeditor::makeundonode()
 		{ 
-			if(!undonext) return;
-			undonext = false;
-			oldhover = nodehover;
+			if(!weditor.undonext) return;
+			weditor.undonext = false;
+			weditor.oldhover = weditor.nodehover;
 			undoblock *u = newundonode();
 			if(u) addundo(u);
 		}
