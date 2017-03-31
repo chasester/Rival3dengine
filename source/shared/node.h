@@ -1,6 +1,6 @@
 //list of class defines
 struct bulletobj;
-struct ridgidbody;
+struct rigidbody;
 struct editnode;
 struct node;
 struct scenegraph;
@@ -22,7 +22,7 @@ enum NODE_FLAGS
 };
 
 //class declarations
-struct ridgidbody // tempclass for setting up bullet, this gets deleted and converted into btRidgidBody which is used for updating entities
+struct rigidbody // tempclass for setting up bullet, this gets deleted and converted into btrigidBody which is used for updating entities
 {
 	float friction, weight, restitution, ldamp, adamp;
 	vec afactor, lfactor, gravity;
@@ -30,18 +30,18 @@ struct ridgidbody // tempclass for setting up bullet, this gets deleted and conv
 	//bool staticobj; // set weight to 0 or less to make an object static
 	vec radius, center, rot, o;
 
-	ridgidbody();
+    rigidbody();
 	void aabbfrommodel(int index); //moved to AJPhyis.cpp due to model not being inited yet
 };
 struct bulletobj
 {
-	btRigidBody *btridgidbody;  //change to a vector later
-	ridgidbody *tempbody; //stored object data
-	bulletobj() : btridgidbody(NULL), tempbody(NULL){}
+    btRigidBody *btrigidbody;  //change to a vector later
+    rigidbody *tempbody; //stored object data
+    bulletobj() : btrigidbody(NULL), tempbody(NULL){}
 	void move(vec im);
 	void rotate(vec im);
 	void moveto(vec _o);
-	~bulletobj(){ if(btridgidbody)delete btridgidbody; if(tempbody) delete tempbody; }
+    ~bulletobj(){ if(btrigidbody)delete btrigidbody; if(tempbody) delete tempbody; }
 };
 
 struct scriptinterface
@@ -78,28 +78,28 @@ struct node
 	int addref();
 	int release();
 
-	asILockableSharedBool *getweakflagref();
-	//void seteditbox(vec &rad);
-	void seteditbox(int i);
-	void updatefrombullet();
-	void doupdate();
-	void doawake();
-	void dorender();
-	void restart();
-	void move(vec impulse);
-	void moveto(vec _o);
-	void rotate(vec impulse, bool degrees = true);
-	void rotateto(vec rot, bool degrees = true);
-	void rotateto(float impy, float impp, float impr, bool deg = true);
-	void rotate(float yaw, float pitch, float roll, bool deg = true);
-	void setfriction(float f);
-	void setelasticity(float e);
-	void setgravity(float g);
-	void setupbulletfrommodel(int indx);
-	void setupbulletfrommodel(str name);
-	void setupbulletfromaabb(vec offset, vec size, float friction = 0.3f, float elasticity = 0.8f); // add more properties later
-	void setupbulletfromcylender(vec offset, float radius, float height, float friction = 0.3f, float elasticity = 0.8f);
-	~node();
+    asILockableSharedBool *getweakflagref();
+    //void seteditbox(vec &rad);
+    void seteditbox(int i);
+    void updatefrombullet();
+    void doupdate();
+    void doawake();
+    void dorender();
+    void restart();
+    void move(vec impulse);
+    void moveto(vec _o);
+    void rotate(vec impulse, bool degrees = true);
+    void rotateto(vec rot, bool degrees = true);
+    void rotateto(float impy, float impp, float impr, bool deg = true);
+    void rotate(float yaw, float pitch, float roll, bool deg = true);
+    void setfriction(float f);
+    void setelasticity(float e);
+    void setgravity(float g);
+    void setupbulletfrommodel(int indx);
+    void setupbulletfrommodel(str name);
+    void setupbulletfromaabb(vec offset, vec size, float friction = 0.3f, float elasticity = 0.8f); // add more properties later
+    void setupbulletfromcylender(vec offset, float radius, float height, float friction = 0.3f, float elasticity = 0.8f);
+    ~node();
 };
 
 struct soundemit
@@ -186,11 +186,29 @@ public:
 		loopv(nodes){ nodes[i]->doawake();}
 		
 	}
-	void updatenodes()
-	{
-		loopv(nodes)nodes[i]->updatefrombullet();
-		loopv(nodes) nodes[i]->doupdate();
-	}
+//	void updatenodes()
+//	{
+//        loopv(nodes)nodes[i]->updatefrombullet();
+//		loopv(nodes) nodes[i]->doupdate();
+//	}
+    void updatenodes()
+    {
+        loopv(nodes) {
+            node *n = nodes[i];
+            if (!n->b || !n->b->btrigidbody || !n->b->btrigidbody->getMotionState()) return;
+            btRigidBody &r = *(n->b->btrigidbody);
+            btTransform trans;
+            r.getMotionState()->getWorldTransform(trans);
+            n->o = vec(trans.getOrigin().getX(), trans.getOrigin().getZ(), trans.getOrigin().getY()).mul(SAUER_FACTOR);
+            vec temprot;
+            quat a(r.getOrientation());
+            temprot = a.quat2euler();
+            n->rot.x = temprot.z; //yaw
+            n->rot.y = temprot.y; //pitch
+            n->rot.z = temprot.x; //roll
+        }
+        loopv(nodes) nodes[i]->doupdate();
+    }
 	void rendernodes()
 	{
 		loopv(nodes) { nodes[i]->dorender(); }

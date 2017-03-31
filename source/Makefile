@@ -47,8 +47,8 @@ CLIENT_INCLUDES= $(INCLUDES) -Iinclude
 STD_LIBS= -static-libgcc -static-libstdc++
 CLIENT_LIBS= -mwindows $(STD_LIBS) -L$(WINBIN) -L$(WINLIB) -lSDL2 -lSDL2_image -lSDL2_mixer -lzlib1 -lopengl32 -lenet -lws2_32 -lwinmm
 else
-CLIENT_INCLUDES= $(INCLUDES) -I/usr/X11R6/include `sdl2-config --cflags`
-CLIENT_LIBS= -Lenet -lenet -L/usr/X11R6/lib -lX11 `sdl2-config --libs` -L/usr/lib -framework SDL2_image -L/usr/lib -framework SDL2_mixer -Langel/lib -langelscript -lz -lGL
+CLIENT_INCLUDES= $(INCLUDES) -I/usr/X11R6/include -I/usr/local/include/SDL2 -I/usr/X11R6/include -D_THREAD_SAFE
+CLIENT_LIBS= -Lenet -lenet -L/usr/X11R6/lib -lX11 -L/usr/local/lib -lSDL2 -L/usr/lib -framework SDL2_image -L/usr/local/lib -framework SDL2_mixer -Lextralib -langelscript -lz -lGL
 endif
 ifeq ($(PLATFORM),Linux)
 CLIENT_LIBS+= -lrt
@@ -59,9 +59,9 @@ endif
 endif
 
 BULLET_LIBS= \
-        -L/usr/lib -lBulletDynamics \
-        -L/usr/lib -lBulletCollision \
-        -L/usr/lib -lLinearMath \
+        $(BULLET_LIB_PATH)/libBulletDynamics_gmake_x64_release.a \
+        $(BULLET_LIB_PATH)/libBulletCollision_gmake_x64_release.a \
+        $(BULLET_LIB_PATH)/libLinearMath_gmake_x64_release.a
 
 CLIENT_OBJS= \
 	shared/crypto.o \
@@ -283,9 +283,7 @@ shared/weakref.o: shared/command.h shared/glexts.h shared/glemu.h
 shared/weakref.o: shared/iengine.h shared/igame.h
 shared/wings.o: shared/cube.h shared/tools.h shared/geom.h shared/ents.h shared/node.h
 shared/wings.o: shared/command.h shared/glexts.h shared/glemu.h
-shared/wings.o: shared/iengine.h shared/igame.h
-shared/wings.o: shared/scriptstdstring.h
-#@hyper, add shared/ : scriptbuilder.h scripthandel.h scriptarray.h stripthelper.h serializer.h if it has trouble finding functions declared in these headers
+shared/wings.o: shared/iengine.h shared/igame.h shared/scriptstdstring.h shared/scriptbuilder.h shared/scripthandle.h shared/scriptarray.h shared/scripthelper.h shared/serializer.h
 shared/zip.o: shared/cube.h shared/tools.h shared/geom.h shared/ents.h shared/node.h
 shared/zip.o: shared/command.h shared/glexts.h shared/glemu.h
 shared/zip.o: shared/iengine.h shared/igame.h
@@ -328,6 +326,10 @@ engine/grass.o: engine/engine.h shared/cube.h shared/tools.h shared/geom.h
 engine/grass.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
 engine/grass.o: shared/iengine.h shared/igame.h engine/world.h engine/octa.h
 engine/grass.o: engine/light.h engine/texture.h engine/bih.h engine/model.h
+engine/wings.o: engine/engine.h shared/cube.h shared/tools.h shared/geom.h
+engine/wings.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
+engine/wings.o: shared/iengine.h shared/igame.h engine/world.h engine/octa.h
+engine/wings.o: engine/light.h engine/texture.h engine/bih.h engine/model.h
 engine/light.o: engine/engine.h shared/cube.h shared/tools.h shared/geom.h
 engine/light.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
 engine/light.o: shared/iengine.h shared/igame.h engine/world.h engine/octa.h

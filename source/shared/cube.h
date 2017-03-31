@@ -88,7 +88,7 @@
 #include "tools.h"
 #include "geom.h"
 #include "halo.h"
-
+#include "node.h"
 #include "ents.h"
 
 #include "command.h"

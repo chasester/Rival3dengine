@@ -1662,7 +1662,7 @@ int getmapversion() { return mapversion; }
 		else asScript->setupserializer(new CSerializer()); 
 		//loopk(scenes)
 		//scenegraph * cursn = sense[k];
-		curscene->store();
+        curscene->store();
 		
 	}
 	void world::updateworld(){
@@ -1808,6 +1808,7 @@ int getmapversion() { return mapversion; }
 		}
 		return n;
 	}
+
 	void world::saveworld(stream *f)
 	{
 		//loopv(scences)

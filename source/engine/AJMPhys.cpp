@@ -775,7 +775,7 @@ void mapcfgname()//this might be handy for bullet serialization eg: mapname.bull
 //static bulletobj *defaultObj = new bulletobj();
 
 
-void addridgidbody(ridgidbody &r, node *g)
+void addrigidbody(rigidbody &r, node *g)
 {
 	if (!g || !m_dynamicsWorld) return;
 
@@ -812,7 +812,7 @@ void addridgidbody(ridgidbody &r, node *g)
 	body->setUserIndex(-1);
 	m_dynamicsWorld->addRigidBody(body);
 	if (!g->b) g->b = new bulletobj();
-	g->b->btridgidbody = body;
+    g->b->btrigidbody = body;
 }
 
 
