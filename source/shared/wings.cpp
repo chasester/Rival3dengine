@@ -333,7 +333,7 @@ void config(asIScriptEngine *asEngine){
 	int r; //error checker
 	asEngine->SetMessageCallback(asFUNCTION(MessageCallback), 0, asCALL_CDECL); 
 	asScript->setupserializer(new CSerializer());
-	RegisterStdString(asEngine);
+    //RegisterStdString(asEngine);
 	//RegisterScriptArray(asEngine, true);
 	RegisterScriptHandle(asEngine);
 	RegisterScriptWeakRef(asEngine);
@@ -376,21 +376,21 @@ void config(asIScriptEngine *asEngine){
 	//r = setupobjectpropert(light, int, type);
 	//r = setupobjectpropert(light, int, radius);
 
-	//setup ridgid body
-	r = asEngine->RegisterObjectType("ridgidbody", sizeof(ridgidbody), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK); assert(r >= 0);
-	r = setupobjectpropert(ridgidbody, float, friction);
-	r = setupobjectpropert(ridgidbody, vec, gravity); 
-	r = setupobjectpropert(ridgidbody, float, weight);
-	r = setupobjectpropert(ridgidbody, float, restitution);
-	r = setupobjectpropert(ridgidbody, float, ldamp);
-	r = setupobjectpropert(ridgidbody, float, adamp);
-	r = setupobjectpropert(ridgidbody, vec, afactor);
-	r = setupobjectpropert(ridgidbody, vec, lfactor);
-	r = setupobjectpropert(ridgidbody, int, type); 
-	r = setupobjectpropert(ridgidbody, vec, o); 
-	r = setupobjectpropert(ridgidbody, vec, rot); 
-	r = setupobjectpropert(ridgidbody, vec, center);
-	r = setupobjectpropert(ridgidbody, vec, radius);
+    //setup rigid body
+    r = asEngine->RegisterObjectType("rigidbody", sizeof(rigidbody), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK); assert(r >= 0);
+    r = setupobjectpropert(rigidbody, float, friction);
+    r = setupobjectpropert(rigidbody, vec, gravity);
+    r = setupobjectpropert(rigidbody, float, weight);
+    r = setupobjectpropert(rigidbody, float, restitution);
+    r = setupobjectpropert(rigidbody, float, ldamp);
+    r = setupobjectpropert(rigidbody, float, adamp);
+    r = setupobjectpropert(rigidbody, vec, afactor);
+    r = setupobjectpropert(rigidbody, vec, lfactor);
+    r = setupobjectpropert(rigidbody, int, type);
+    r = setupobjectpropert(rigidbody, vec, o);
+    r = setupobjectpropert(rigidbody, vec, rot);
+    r = setupobjectpropert(rigidbody, vec, center);
+    r = setupobjectpropert(rigidbody, vec, radius);
 
 
 	//set up the game object temperary varible for test later replace with entity
@@ -404,19 +404,19 @@ void config(asIScriptEngine *asEngine){
 
 	r = asEngine->RegisterObjectBehaviour("node", asBEHAVE_ADDREF, "void f()", asMETHOD(node, addref), asCALL_THISCALL); assert(r >= 0);
 	r = asEngine->RegisterObjectBehaviour("node", asBEHAVE_RELEASE, "void f()", asMETHOD(node, release), asCALL_THISCALL); assert(r >= 0);
-	r = asEngine->RegisterObjectBehaviour("node", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(node, getweakflagref), asCALL_THISCALL); assert(r >= 0);
+    //r = asEngine->RegisterObjectBehaviour("node", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(node, getweakflagref), asCALL_THISCALL); assert(r >= 0);
 
 	r = asEngine->RegisterObjectProperty("node", "string name", asOFFSET(node, name));
 	r = asEngine->RegisterObjectProperty("node", "vec o", asOFFSET(node, o));
 	r = asEngine->RegisterObjectProperty("node", "vec rot", asOFFSET(node, rot));
 	//r = asEngine->RegisterObjectMethod("node", "void seteditbox(const vec &in)", asMETHOD(node, seteditbox), asCALL_THISCALL); assert(r >= 0);
-	r = asEngine->RegisterObjectMethod("node", "void seteditbox(int i)", asMETHOD(node, seteditbox), asCALL_THISCALL); assert(r >= 0);
+    //r = asEngine->RegisterObjectMethod("node", "void seteditbox(int i)", asMETHOD(node, seteditbox), asCALL_THISCALL); assert(r >= 0);
 	//rigid body and physics
-	r = asEngine->RegisterObjectType("ridgidbody", sizeof(ridgidbody), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK); assert(r >= 0);
-	r = asEngine->RegisterObjectBehaviour("ridgidbody", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(BaseConstructor<ridgidbody>), asCALL_GENERIC); assert(r >= 0);
-	r = asEngine->RegisterObjectBehaviour("ridgidbody", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DeConstructor<ridgidbody>), asCALL_GENERIC); assert(r >= 0);
-	r = asEngine->RegisterObjectMethod("ridgidbody", "void aabbfrommodel(int index)", asMETHOD(ridgidbody, aabbfrommodel), asCALL_THISCALL); assert(r >= 0);
-	r = asEngine->RegisterGlobalFunction("void addridgidbody(const ridgidbody &in, const node @+ to)", asFUNCTIONPR(addridgidbody, (ridgidbody&, node*), void), asCALL_CDECL); asFATAL(r); 
+    r = asEngine->RegisterObjectType("rigidbody", sizeof(rigidbody), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK); assert(r >= 0);
+    r = asEngine->RegisterObjectBehaviour("rigidbody", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(BaseConstructor<rigidbody>), asCALL_GENERIC); assert(r >= 0);
+    r = asEngine->RegisterObjectBehaviour("rigidbody", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DeConstructor<rigidbody>), asCALL_GENERIC); assert(r >= 0);
+    r = asEngine->RegisterObjectMethod("rigidbody", "void aabbfrommodel(int index)", asMETHOD(rigidbody, rigidbody::aabbfrommodel), asCALL_THISCALL); assert(r >= 0);
+    r = asEngine->RegisterGlobalFunction("void addrigidbody(const rigidbody &in, const node @+ to)", asFUNCTIONPR(addrigidbody, (rigidbody&, node*), void), asCALL_CDECL); asFATAL(r);
 	r = asEngine->RegisterGlobalFunction("void createobject(string s, const vec &in, const vec &in)", asFUNCTIONPR(createobject, (str, vec&, vec&), void), asCALL_CDECL); asFATAL(r);
 	asEngine->ClearMessageCallback();
 }
@@ -425,7 +425,6 @@ END_AS_NAMESPACE
 void asEngineShutdown(){ ASEngine->ShutDownAndRelease(); } //shutdown asEngine called in main::shutdown
 
 void asConfigureEngine() {
-    return;
 	ASEngine = asCreateScriptEngine(ANGELSCRIPT_VERSION); if (ASEngine) config(ASEngine); else conoutf("asengine didnt build");
 } //starts asEngine up and inits major variables called in main::main
 

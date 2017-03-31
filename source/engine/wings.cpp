@@ -110,9 +110,7 @@ void print(){}
 
 void config(){
 	int r; //error checker
-
-
-    RegisterStdString(asScript->asEngine);
+    //RegisterStdString(asScript->asEngine);
     asScript->asEngine->SetMessageCallback(asFUNCTION(MessageCallback), 0, asCALL_CDECL);
 	//string a;
     r = asScript->asEngine->RegisterGlobalFunction("void helloworld()", asFUNCTION(helloworld), asCALL_CDECL);// assert(r >= 0);

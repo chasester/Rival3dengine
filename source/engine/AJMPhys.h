@@ -11,7 +11,7 @@
 #include "LinearMath/btDefaultMotionState.h"
 
 
-extern void addridgidbody(ridgidbody &r, node *g);
+extern void addrigidbody(rigidbody &r, node *g);
 
 
 class btBroadphaseInterface;

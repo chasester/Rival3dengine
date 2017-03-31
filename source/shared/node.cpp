@@ -1,11 +1,11 @@
 #include "cube.h"
 #include "engine.h" //need the model loading function calls
 
-////////ridgid body///////////
-ridgidbody::ridgidbody(): radius(5.f), center(5.f), weight(10), afactor(0.8f), lfactor(0.9f), friction(0.5), ldamp(0.1), adamp(0.4), gravity(0.f, 0.f, 0.f), restitution(0.01) \
+////////rigid body///////////
+rigidbody::rigidbody(): radius(5.f), center(5.f), weight(10), afactor(0.8f), lfactor(0.9f), friction(0.5), ldamp(0.1), adamp(0.4), gravity(0.f, 0.f, 0.f), restitution(0.01) \
 {}
 
-void ridgidbody::aabbfrommodel(int index) //moved because model has not been defined in ents.h
+void rigidbody::aabbfrommodel(int index) //moved because model has not been defined in ents.h
 {
 	const char *mdlname = mapmodelname(index);
 	if (!mdlname) return;
@@ -18,13 +18,13 @@ void ridgidbody::aabbfrommodel(int index) //moved because model has not been def
 void bulletobj::move(vec im){}
 void bulletobj::moveto(vec _o)
 {
-	if (!btridgidbody)return;
-	btTransform temp = btridgidbody->getWorldTransform();
+    if (!btrigidbody)return;
+    btTransform temp = btrigidbody->getWorldTransform();
 	temp.setOrigin(FROM_SAUER_VEC(_o));
-	btridgidbody->setWorldTransform(temp);
-	btridgidbody->forceActivationState(ACTIVE_TAG);
-	btridgidbody->setLinearVelocity(btVector3(0.f, 0.f, 0.f));
-	btridgidbody->setAngularVelocity(btVector3(0.f, 0.f, 0.f));
+    btrigidbody->setWorldTransform(temp);
+    btrigidbody->forceActivationState(ACTIVE_TAG);
+    btrigidbody->setLinearVelocity(btVector3(0.f, 0.f, 0.f));
+    btrigidbody->setAngularVelocity(btVector3(0.f, 0.f, 0.f));
 }
 void bulletobj::rotate(vec im){}
 //////scriptinterface//////
@@ -103,8 +103,8 @@ void node::seteditbox(int i)
 }
 void node::updatefrombullet()
 {
-	if (!b || !b->btridgidbody || !b->btridgidbody->getMotionState()) return;
-	btRigidBody &r = *(b->btridgidbody);
+    if (!b || !b->btrigidbody || !b->btrigidbody->getMotionState()) return;
+    btRigidBody &r = *(b->btrigidbody);
 	btTransform trans;
 	r.getMotionState()->getWorldTransform(trans);
 	o = vec(trans.getOrigin().getX(), trans.getOrigin().getZ(), trans.getOrigin().getY()).mul(SAUER_FACTOR);
