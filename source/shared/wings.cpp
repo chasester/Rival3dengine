@@ -444,10 +444,10 @@ ScriptManager::ScriptControler *ScriptManager::getctrlscript(const str &script, 
 		if (r < 0){ print("module not created, Interal error please try restarting or reinstalling"); return 0; }
 
 		FILE *f;
-		if ((f = fopen((script + ".halo").c_str(), "r")) == 0){ print("There is no file " + script + ".halo"); return 0; }
+		if ((f = fopen(("halo/" + script + ".halo").c_str(), "r")) == 0) { print("There is no file " + script + ".halo"); return 0; }
 		fclose(f);
 
-		r = builder.AddSectionFromFile((script + ".halo").c_str());
+		r = builder.AddSectionFromFile(("halo/" + script + ".halo").c_str());
 		if (r == 0)print(str("WARNING: File \"" + script + ".halo\" has already been included"));
 		else if (r < 0){ print(str("ERR: File \"" + script + ".halo\" Has ran into error")); }
 		r = builder.BuildModule(); if (r < 0) { print(str("failed to init module: Syntax error" )); print(r); return 0; }

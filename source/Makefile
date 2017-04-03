@@ -67,6 +67,7 @@ CLIENT_OBJS= \
 	shared/crypto.o \
 	shared/geom.o \
 	shared/glemu.o \
+	shared/node.o \
 	shared/scriptarray.o\
 	shared/scriptbuilder.o\
 	shared/scripthandle.o\
@@ -254,6 +255,9 @@ shared/geom.o: shared/iengine.h shared/igame.h
 shared/glemu.o: shared/cube.h shared/tools.h shared/geom.h shared/ents.h shared/node.h
 shared/glemu.o: shared/command.h shared/glexts.h shared/glemu.h
 shared/glemu.o: shared/iengine.h shared/igame.h
+shared/node.o: game/game.h shared/cube.h shared/tools.h shared/geom.h
+shared/node.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
+shared/node.o: shared/iengine.h shared/igame.h game/ai.h
 shared/scriptarray.o: shared/cube.h shared/tools.h shared/geom.h shared/ents.h shared/node.h
 shared/scriptarray.o: shared/command.h shared/glexts.h shared/glemu.h
 shared/scriptarray.o: shared/iengine.h shared/igame.h
@@ -474,9 +478,6 @@ engine/worldio.o: engine/texture.h engine/bih.h engine/model.h
 game/ai.o: game/game.h shared/cube.h shared/tools.h shared/geom.h
 game/ai.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
 game/ai.o: shared/iengine.h shared/igame.h game/ai.h
-game/node.o: game/game.h shared/cube.h shared/tools.h shared/geom.h
-game/node.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
-game/node.o: shared/iengine.h shared/igame.h game/ai.h
 game/client.o: game/game.h shared/cube.h shared/tools.h shared/geom.h
 game/client.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
 game/client.o: shared/iengine.h shared/igame.h game/ai.h game/ctf.h

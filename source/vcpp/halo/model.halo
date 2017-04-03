@@ -1,0 +1,24 @@
+class Model : IController
+{ 
+
+	private node @self;
+	int index;
+	int offsetx;
+	int offsety;
+	int offsetz;
+	void Create()
+	{
+		self.seteditbox(index);
+	}
+	void Awake()
+	{
+		self.seteditbox(index);
+	}
+
+	void Render() 
+	{
+		
+		vec offset = vec(offsetx, offsety, offsetz);
+		rendermapmodel(index , 0, self.o + offset, self.rot);
+	}
+}
