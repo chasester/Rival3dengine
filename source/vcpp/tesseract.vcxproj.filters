@@ -175,9 +175,6 @@
     <ClCompile Include="..\engine\ui.cpp">
       <Filter>game</Filter>
     </ClCompile>
-    <ClCompile Include="..\game\node.cpp">
-      <Filter>shared</Filter>
-    </ClCompile>
     <ClCompile Include="..\shared\scriptarray.cpp">
       <Filter>as</Filter>
     </ClCompile>
@@ -201,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="..\shared\wings.cpp">
       <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\node.cpp">
+      <Filter>shared</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,9 +315,6 @@
     <ClInclude Include="..\shared\tools.h">
       <Filter>shared</Filter>
     </ClInclude>
-    <ClInclude Include="..\game\node.h">
-      <Filter>shared</Filter>
-    </ClInclude>
     <ClInclude Include="..\engine\textedit.h">
       <Filter>engine</Filter>
     </ClInclude>
@@ -350,6 +347,9 @@
     </ClInclude>
     <ClInclude Include="..\shared\weakref.h">
       <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\node.h">
+      <Filter>shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

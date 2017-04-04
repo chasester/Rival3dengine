@@ -40,3 +40,5 @@ bin/tesseract.pdb
 bin/tesseract.exp
 bin/tesseract.map
 *.BAK
+bin/tesseract.lib
+*.exp
