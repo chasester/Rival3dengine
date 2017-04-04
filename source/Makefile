@@ -113,7 +113,6 @@ CLIENT_OBJS= \
 	engine/texture.o \
 	engine/ui.o \
 	engine/water.o \
-	engine/wings.o \
 	engine/world.o \
 	engine/worldio.o \
 	game/ai.o \
@@ -330,10 +329,6 @@ engine/grass.o: engine/engine.h shared/cube.h shared/tools.h shared/geom.h
 engine/grass.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
 engine/grass.o: shared/iengine.h shared/igame.h engine/world.h engine/octa.h
 engine/grass.o: engine/light.h engine/texture.h engine/bih.h engine/model.h
-engine/wings.o: engine/engine.h shared/cube.h shared/tools.h shared/geom.h
-engine/wings.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
-engine/wings.o: shared/iengine.h shared/igame.h engine/world.h engine/octa.h
-engine/wings.o: engine/light.h engine/texture.h engine/bih.h engine/model.h
 engine/light.o: engine/engine.h shared/cube.h shared/tools.h shared/geom.h
 engine/light.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
 engine/light.o: shared/iengine.h shared/igame.h engine/world.h engine/octa.h
