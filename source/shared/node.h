@@ -14,6 +14,8 @@ struct model;
 struct cube;
 struct vtxarray;
 struct undoblock;
+struct undolist;
+struct block3;
 //list includes
 #include "AJMPhys.h"
 
@@ -230,7 +232,8 @@ enum MODOE
 	MODOE_CHANGED = 1 << 2
 };
 
-static struct worldeditor //static struct
+
+struct worldeditor //static struct no constructor
 {
 
 	//utility calls (get sets and checks)
@@ -285,7 +288,10 @@ public:
 	static inline void removenode(int id);
 	static inline void removenodeedit(int id);
 	static void nodesinocta();
-
+	struct selectinfo
+	{
+		selectinfo(){}
+	};
 	//static void freeoctanodes(cube &c);
 
 	//posibly obsolete
@@ -303,21 +309,144 @@ public:
 	//	selectinfo() {} //only can be created internally
 	//};
 
-//private:
-	int nodehover, oldhover, nodeorient, nfocus, nodemoving;
-	vector<uint> nodeselect;
+	//global calls
+	static void toggleedit(bool force);
+	static void noedit(bool view, bool msg);
+	static void tryedit();
+
+	//octa undos/copypaste
+	static void forcenextundo();
+	static void commitchanges(bool force);
+	static void copycube();
+	static void pastecube();
+	static void freeundo(undoblock *u);
+	static void pasteundoblock(block3 *b, uchar *g);
+	static void pasteundo(undoblock *u);
+	static inline int undosize(undoblock *u);
+	static void pruneundos(int maxremain);
+	static void clearundos();
+	static undoblock *newundocube(const selinfo &s);
+	static void addundo(undoblock *u);
+	static void makeundo(selinfo &s);
+	static void makeundo();					 // stores state of selected cubes before editing
+	static void swapundo(undolist &a, undolist &b, int op);
+	static void editundo();
+	static void editredo();
+
+	//octa selection
+	static void changegridsize(uchar sz); //0-12 start at 3
+	static void dragging(bool);
+	static int moving(int m);
+	static void cubecancel();
+	static void cancelsel();
+	static void sethor(vec o); // posibably unused
+	static void reorient();
+	static void selextend();
+	static void selgridmap(const selinfo &sel, uchar *g);                          // generates a map of the cube sizes at each grid point
+
+	//curser calls
+	static void updateselection();
+//	static bool editmoveplane(const vec &o, const vec &ray, int d, float off, vec &handle, vec &dest, bool first);
+	static void rendereditcursor();
+
+
+	
+	
+
+	static int nodehover, oldhover, nodeorient, nfocus, nodemoving;
+	static int orient, gridsize;
+	static ivec cor, lastcor, cur, lastcur;
+	static bool haveselection, hmapselection, editmode;
+	static vector<uint> nodeselect;
 	//static vector<selectinfo *> selinfos;
 	//static vector<undoblock *> undoblocks;
-	int nodelooplevel;
-	bool undonext, nodecanedit;
-	bool nodeselsnap, nodeediting;
-	vector<uint> octrootselect; //ids to octrees that we are modifying ;)
-}weditor = { -1,-1,0,-1,0, vector<uint>(),-1,false,true,false,true,vector<uint>() };
+	static int nodelooplevel;
+	static bool undonext, nodecanedit;
+	static bool nodeselsnap, nodeediting;
+	static vector<uint> octrootselect; //ids to octrees that we are modifying ;)
+	//static selectinfo sel, lastsel, savedsel;
+	private:
+		worldeditor() {};
+	//posibably needed
+	//int selchildcount = 0, selchildmat = -1;
+	//vector<editinfo *> editinfos;
+	//editinfo *localedit = NULL;
+
+};
+
+struct worldroot
+{
+	static int countblock(block3 *b);
+	static inline int countblock(cube *c, int n = 8);
+	static void countselchild(cube *c, const ivec &cor, int size);
+	static void normalizelookupcube(const ivec &o);
+	static cube &blockcube(int x, int y, int z, const block3 &b, int rgrid); // looks up a world cube, based on coordinates mapped by the block
+	static void readychanges(const ivec &bbmin, const ivec &bbmax, cube *c, const ivec &cor, int size);
+	void changed(const ivec &bbmin, const ivec &bbmax, bool commit);
+	void changed(const block3 &sel, bool commit);
+	inline void copycube(const cube &src, cube &dst);
+	inline void pastecube(const cube &src, cube &dst);
+	void blockcopy(const block3 &s, int rgrid, block3 *b);
+	block3 *blockcopy(const block3 &s, int rgrid);
+	void freeblock(block3 *b, bool alloced = true);
+	
 
 
+	bool haschanged = false;
+};
+
+//list of commands we need to look at
+//#define protectsel(f) { undoblock *_u = newundocube(sel); f; if(_u) { pasteundo(_u); freeundo(_u); } }
+//VAR(passthroughsel, 0, 0, 1);
+//VAR(editing, 1, 0, 0);
+//VAR(selectcorners, 0, 0, 1);
+//VARF(hmapedit, 0, 0, 1, horient = sel.orient);
+//ICOMMAND(edittoggle, "", (), toggleedit(false));
+//ICOMMAND(entcancel, "", (), worldeditor::nodeselectcancel(););
+//COMMAND(cubecancel, "");
+//COMMAND(cancelsel, "");
+//COMMAND(reorient, "");
+//COMMAND(selextend, "");
+//ICOMMAND(selmoved, "", (), { if (noedit(true)) return; intret(sel.o != savedsel.o ? 1 : 0); });
+//ICOMMAND(selsave, "", (), { if (noedit(true)) return; savedsel = sel; });
+//ICOMMAND(selrestore, "", (), { if (noedit(true)) return; sel = savedsel; });
+//ICOMMAND(selswap, "", (), { if (noedit(true)) return; swap(sel, savedsel); });
+//#define loopxy(b)        loop(y,(b).s[C[dimension((b).orient)]]) loop(x,(b).s[R[dimension((b).orient)]])
+//#define loopxyz(b, r, f) { loop(z,(b).s[D[dimension((b).orient)]]) loopxy((b)) { cube &c = blockcube(x,y,z,b,r); f; } }
+//#define loopselxyz(f)    { if(local) makeundo(); loopxyz(sel, sel.grid, f); changed(sel); }
+//#define selcube(x, y, z) blockcube(x, y, z, sel, sel.grid)
 
 
+//ICOMMAND(moving, "b", (int *n),
+//{
+//	if (*n >= 0)
+//	{
+//		if (!*n || (moving <= 1 && !worldeditor::pointinselect(sel, vec(cur).add(1)))) moving = 0;
+//		else if (!moving) moving = 1;
+//	}
+//intret(moving);
+//});
+//
+//VARF(gridpower, 0, 3, 12,
+//{
+//	if (dragging) return;
+//gridsize = 1 << gridpower;
+//if (gridsize >= worldsize) gridsize = worldsize / 2;
+//cancelsel();
+//});
+//VARF(dragging, 0, 0, 1,
+//	if (!dragging || cor[0]<0) return;
+//lastcur = cur;
+//lastcor = cor;
+//sel.grid = gridsize;
+//sel.orient = orient;
+//);
 
+//important macros for loops and such
+//#define loopxy(b)        loop(y,(b).s[C[dimension((b).orient)]]) loop(x,(b).s[R[dimension((b).orient)]])
+//#define loopxyz(b, r, f) { loop(z,(b).s[D[dimension((b).orient)]]) loopxy((b)) { cube &c = blockcube(x,y,z,b,r); f; } }
+//#define loopselxyz(f)    { if(local) makeundo(); loopxyz(sel, sel.grid, f); changed(sel); }
+//#define selcube(x, y, z) blockcube(x, y, z, sel, sel.grid)
 
 
 
@@ -430,3 +559,15 @@ private:
 //};
 //
 extern world *curworld;
+
+
+int worldeditor::nodehover = -1, worldeditor::oldhover = -1, worldeditor::nodeorient = 0, worldeditor::nfocus = -1, worldeditor::nodemoving = 0, worldeditor::gridsize = 3;
+ivec worldeditor::cor = ivec(), worldeditor::lastcor = ivec(), worldeditor::cur = ivec(), worldeditor::lastcur = ivec();
+bool worldeditor::haveselection = false, worldeditor::hmapselection=false, worldeditor::editmode = true;
+static vector<uint> nodeselect = vector<uint>();
+//static vector<selectinfo *> selinfos;
+//static vector<undoblock *> undoblocks;
+//int nodelooplevel = ;
+bool worldeditor::undonext = false, worldeditor::nodecanedit = true;
+bool worldeditor::nodeselsnap = false, worldeditor::nodeediting = true;
+static vector<uint> octrootselect = vector<uint>();

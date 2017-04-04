@@ -41,7 +41,7 @@ namespace game
 	};
     //struct bulletmovable : dynent
     //{
-    //    int etype, mapmodel, health, weight, exploding, tag, dir;
+    //     etype, mapmodel, health, weight, exploding, tag, dir;
     //    physent *stacked;
     //    vec stackpos;
 

@@ -5,6 +5,7 @@ extern int outline;
 
 bool boxoutline = false;
 
+#pragma region "render calls"
 void boxs(int orient, vec o, const vec &s)
 {
     int d = dimension(orient), dc = dimcoord(orient);
@@ -60,6 +61,7 @@ void boxsgrid(int orient, vec o, vec s, int g)
     }
     xtraverts += gle::end();
 }
+#pragma endregion
 
 selinfo sel, lastsel, savedsel;
 
@@ -72,9 +74,6 @@ bool editmode = false;
 bool havesel = false;
 bool hmapsel = false;
 extern int horient = 0;
-
-extern int entmoving;
-
 
 
 VARF(dragging, 0, 0, 1,
@@ -160,7 +159,7 @@ void toggleedit(bool force)
     cancelsel();
     stoppaintblendmap();
     keyrepeat(editmode, KR_EDITMODE);
-    editing = weditor.nodeediting = editmode;
+    editing = worldeditor::nodeediting = editmode;
     if(!force) game::edittoggled(editmode);
     execident("edittoggled");
 }
@@ -337,7 +336,7 @@ void rendereditcursor()
             sel.o[C[od]] = o[C[od]];
         }
     }
-    else if(weditor.nodemoving)
+    else if(worldeditor::nodemoving)
     {
 		//add back when defined
        // worldeditor::nodedrag(camdir);
@@ -350,7 +349,7 @@ void rendereditcursor()
 
         wdist = rayent(player->o, camdir, 1e16f,
                        (editmode && showmat ? RAY_EDITMAT : 0)   // select cubes first
-                       | (!dragging && weditor.nodeediting ? RAY_ENTS : 0)
+                       | (!dragging && worldeditor::nodeediting ? RAY_ENTS : 0)
                        | RAY_SKIPFIRST
                        | (passthroughcube==1 ? RAY_PASS : 0), gridsize, entorient, ent);
 
@@ -460,7 +459,7 @@ void rendereditcursor()
     // cursors
 
     ldrnotextureshader->set();
-	weditor.rendernodeselection(player->o, camdir, weditor.nodemoving != 0);
+	worldeditor::rendernodeselection(player->o, camdir, worldeditor::nodemoving != 0);
     //renderentselection(player->o, camdir, entmoving!=0);
 	//curworld->renderentselection(player->o, camdir, entmoving != 0);
 
@@ -704,7 +703,7 @@ struct undolist
 };
 
 undolist undos, redos;
-VARP(undomegs, 0, 50, 1000);                              // bounded by n megs
+VARP(undomegs, 0, 500, 10000);                              // bounded by n megs
 int totalundos = 0;
 
 void pruneundos(int maxremain)                          // bound memory
