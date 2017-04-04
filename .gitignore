@@ -29,3 +29,5 @@
 
 bin/tesseract.lib
 *.BAK
+bin/tesseract.lib
+*.exp
