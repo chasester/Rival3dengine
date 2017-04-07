@@ -20,6 +20,33 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	}
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
 }
+typedef BOOL(WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
+
+LPFN_ISWOW64PROCESS fnIsWow64Process;
+
+BOOL IsWow64()
+{
+	BOOL bIsWow64 = FALSE;
+
+	//IsWow64Process is not available on all supported versions of Windows.
+	//Use GetModuleHandle to get a handle to the DLL that contains the function
+	//and GetProcAddress to get a pointer to the function if available.
+
+	fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
+		GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
+
+	if (NULL != fnIsWow64Process)
+	{
+		if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64))
+		{
+			//handle error
+			//be save and return false
+			return false;
+		}
+	}
+	return bIsWow64;
+}
+
 #define IDI_ICON1 1;
 
 // Create the window
@@ -90,7 +117,10 @@ int CALLBACK WinMain(
 	_In_ int       nShowCmd
 )
 {
-	ShellExecute(GetDesktopWindow(), L"open", L"bin\\tesseract.exe", NULL, NULL, SW_SHOWNORMAL);
+	if(!IsWow64())
+		ShellExecute(GetDesktopWindow(), L"open", L"bin\\tesseract.exe", NULL, NULL, SW_SHOWNORMAL);
+	else
+		ShellExecute(GetDesktopWindow(), L"open", L"bin64\\tesseract.exe", NULL, NULL, SW_SHOWNORMAL);
 	// Create the window using the function above
 	//Create_Window_Transparent(hInstance, hPrevInstance, lpCommandLine, nShowCmd, LPCWSTR("My Transparent Window!"));
 	//Sleep(10000);

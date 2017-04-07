@@ -139,6 +139,7 @@ enum SCENE_FLAGS
 struct scene 
 {
 public:
+	scene() {}
 	vector<node *> nodes;
 	uchar id;
 	str name;
@@ -162,9 +163,9 @@ public:
 	}
 	void resetworld()
 	{
+		return;
 		int a = nodes.length();
 		vector<node*> nd;
-		print(str("helo world"));
 		loopi(a)
 		{
 			node *g = nodes[i];
@@ -184,22 +185,22 @@ public:
 	void preloadentities(); //load all the enties at gamestart get this list from the map file
 	void doawake()
 	{
-		loopv(nodes){ nodes[i]->doawake();}
+		//loopv(nodes){ nodes[i]->doawake();}
 		
 	}
 	void updatenodes()
 	{
-		loopv(nodes)nodes[i]->updatefrombullet();
-		loopv(nodes) nodes[i]->doupdate();
+		//loopv(nodes)nodes[i]->updatefrombullet();
+		//loopv(nodes) nodes[i]->doupdate();
 	}
 	void rendernodes()
 	{
-		loopv(nodes) { nodes[i]->dorender(); }
+		//loopv(nodes) { nodes[i]->dorender(); }
 		//loopv(nodes) { nodes[i]->dogui(); } // do gui calls after may need to do this in a different function call
 	}
 	void store()
 	{
-		loopv(nodes) nodes[i]->store();
+		//loopv(nodes) nodes[i]->store();
 	}
 	void savescene(stream *f)
 	{
@@ -213,12 +214,11 @@ public:
 	}
 	void loadscene(stream *f)
 	{
-		asScript->serializer->load(f);
+		//asScript->serializer->load(f);
 	}
 	~scene()
 	{
-		if (nodes.length())	nodes.deletecontents();
-		delete &nodes;
+		
 	}
 	void updateregistaredobjects()
 	{
@@ -326,7 +326,7 @@ public:
 	static void pruneundos(int maxremain);
 	static void clearundos();
 	static undoblock *newundocube(const selinfo &s);
-	static void addundo(undoblock *u);
+	//static void addundo(undoblock *u);
 	static void makeundo(selinfo &s);
 	static void makeundo();					 // stores state of selected cubes before editing
 	static void swapundo(undolist &a, undolist &b, int op);
@@ -559,15 +559,3 @@ private:
 //};
 //
 extern world *curworld;
-
-
-int worldeditor::nodehover = -1, worldeditor::oldhover = -1, worldeditor::nodeorient = 0, worldeditor::nfocus = -1, worldeditor::nodemoving = 0, worldeditor::gridsize = 3;
-ivec worldeditor::cor = ivec(), worldeditor::lastcor = ivec(), worldeditor::cur = ivec(), worldeditor::lastcur = ivec();
-bool worldeditor::haveselection = false, worldeditor::hmapselection=false, worldeditor::editmode = true;
-static vector<uint> nodeselect = vector<uint>();
-//static vector<selectinfo *> selinfos;
-//static vector<undoblock *> undoblocks;
-//int nodelooplevel = ;
-bool worldeditor::undonext = false, worldeditor::nodecanedit = true;
-bool worldeditor::nodeselsnap = false, worldeditor::nodeediting = true;
-static vector<uint> octrootselect = vector<uint>();

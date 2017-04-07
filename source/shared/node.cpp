@@ -1,6 +1,6 @@
 #include "cube.h"
 #include "engine.h" //need the model loading function calls
-
+world *curworld = new world(new scene());
 ////////ridgid body///////////
 ridgidbody::ridgidbody(): radius(5.f), center(5.f), weight(10), afactor(0.8f), lfactor(0.9f), friction(0.5), ldamp(0.1), adamp(0.4), gravity(0.f, 0.f, 0.f), restitution(0.01) \
 {}
