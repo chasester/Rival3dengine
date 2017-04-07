@@ -4,7 +4,7 @@
 #include "angelscript.h" //base angelscirpt include
 
 #include "scriptstdstring.h" //string
-
+typedef std::string str;
 void print(int);
 void print(asUINT);
 void print(bool);

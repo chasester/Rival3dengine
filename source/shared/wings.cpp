@@ -253,7 +253,7 @@ template void DeConstructor  <vec>(asIScriptGeneric * gen);
 void RegisterVec3(asIScriptEngine *engine){
 	int r;
 	r = engine->RegisterObjectType("vec", sizeof(vec), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK); assert(r >= 0);
-	asScript->serializer->AddUserType(new CSerialvec(r), "vec");
+	//asScript->serializer->AddUserType(new CSerialvec(r), "vec");
 	//set up all constructors
 	r = engine->RegisterObjectBehaviour("vec", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(BaseConstructor<vec>), asCALL_GENERIC); assert(r >= 0);
 	r = engine->RegisterObjectBehaviour("vec", asBEHAVE_CONSTRUCT, "void f(float a)", asFUNCTION((ConstructorArg1<vec,float>)), asCALL_GENERIC); assert(r >= 0);
@@ -423,7 +423,7 @@ void config(asIScriptEngine *asEngine){
 }
 END_AS_NAMESPACE
 
-void asEngineShutdown(){ ASEngine->ShutDownAndRelease(); } //shutdown asEngine called in main::shutdown
+void asEngineShutdown(){ if(ASEngine) ASEngine->ShutDownAndRelease(); } //shutdown asEngine called in main::shutdown
 
 void asConfigureEngine() {
 	ASEngine = asCreateScriptEngine(ANGELSCRIPT_VERSION); if (ASEngine) config(ASEngine); else conoutf("asengine didnt build");
@@ -509,7 +509,7 @@ asIScriptContext *ScriptManager::PrepareContextFromPool(asIScriptFunction *func)
 
 void ScriptManager::ReturnContextToPool(asIScriptContext *ctx) { contexts.add(ctx); ctx->Unprepare(); }
 
-void ScriptManager::setupserializer(CSerializer *s){ serializer = s; s->SetEngine(asEngine); }
+void ScriptManager::setupserializer(CSerializer *s) { return; serializer = s; s->SetEngine(asEngine); }
 
 void ScriptManager::setupdatatypeasserializedtype(){}
 

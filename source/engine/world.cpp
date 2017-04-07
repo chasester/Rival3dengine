@@ -461,8 +461,8 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 			else asScript->setupserializer(new CSerializer());
 			//loopk(scenes)
 			//scene * cursn = sense[k];
-			if(curscene && curscene->nodes.length())
-			curscene->store();
+			//if(curscene && curscene->nodes.length())
+			//curscene->store();
 		}
 		void world::updateworld() { if (!touched) { serializedworld(); curscene->doawake(); touched = true;  return; }	curscene->updatenodes(); }
 		void world::clearworld(bool force) { if (touched || force) curscene->resetworld(); touched = false; }

@@ -175,6 +175,18 @@
     <ClCompile Include="..\engine\ui.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\serializer.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\weakref.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\wings.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\node.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
     <ClCompile Include="..\shared\scriptarray.cpp">
       <Filter>as</Filter>
     </ClCompile>
@@ -189,18 +201,6 @@
     </ClCompile>
     <ClCompile Include="..\shared\scriptstdstring.cpp">
       <Filter>as</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\serializer.cpp">
-      <Filter>as</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\weakref.cpp">
-      <Filter>as</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\wings.cpp">
-      <Filter>as</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\node.cpp">
-      <Filter>shared</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -327,6 +327,15 @@
     <ClInclude Include="..\engine\halo.h">
       <Filter>as</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\serializer.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\weakref.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\node.h">
+      <Filter>shared</Filter>
+    </ClInclude>
     <ClInclude Include="..\shared\scriptarray.h">
       <Filter>as</Filter>
     </ClInclude>
@@ -341,15 +350,6 @@
     </ClInclude>
     <ClInclude Include="..\shared\scriptstdstring.h">
       <Filter>as</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\serializer.h">
-      <Filter>as</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\weakref.h">
-      <Filter>as</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\node.h">
-      <Filter>shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

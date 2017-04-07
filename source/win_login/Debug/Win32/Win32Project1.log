@@ -1,0 +1,10 @@
+﻿  main.cpp
+h:\rivalengine\rival_game_engine_git\rival3dengine\source\win_login\main.cpp(73): warning C4302: 'type cast': truncation from 'LPWSTR' to 'WORD'
+h:\rivalengine\rival_game_engine_git\rival3dengine\source\win_login\main.cpp(74): warning C4302: 'type cast': truncation from 'LPWSTR' to 'WORD'
+h:\rivalengine\rival_game_engine_git\rival3dengine\source\win_login\main.cpp(65): warning C4101: 'dmScreenSettings': unreferenced local variable
+h:\rivalengine\rival_game_engine_git\rival3dengine\source\win_login\main.cpp(64): warning C4101: 'posY': unreferenced local variable
+h:\rivalengine\rival_game_engine_git\rival3dengine\source\win_login\main.cpp(64): warning C4101: 'posX': unreferenced local variable
+LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
+main.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
+  LINK : /LTCG specified but no code generation required; remove /LTCG from the link command line to improve linker performance
+  Win32Project1.vcxproj -> H:\RivalEngine\Rival_Game_Engine_GIT\Rival3dengine\source\win_login\..\..\login.exe

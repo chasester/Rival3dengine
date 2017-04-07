@@ -1,5 +1,5 @@
-#include <string.h>
 #include "cube.h"
+#include <string.h>
 #include "scripthelper.h"
 #include <assert.h>
 #include <stdio.h>
@@ -19,13 +19,13 @@ int CompareRelation(asIScriptEngine *engine, void *lobj, void *robj, int typeId,
 	int retval = -1;
 	asIScriptFunction *func = 0;
 
-	asITypeInfo *ot = engine->GetTypeInfoById(typeId);
-	if( ot )
+	asITypeInfo *ti = engine->GetTypeInfoById(typeId);
+	if( ti )
 	{
 		// Check if the object type has a compatible opCmp method
-		for( asUINT n = 0; n < ot->GetMethodCount(); n++ )
+		for( asUINT n = 0; n < ti->GetMethodCount(); n++ )
 		{
-			asIScriptFunction *f = ot->GetMethodByIndex(n);
+			asIScriptFunction *f = ti->GetMethodByIndex(n);
 			asDWORD flags;
 			if( strcmp(f->GetName(), "opCmp") == 0 &&
 				f->GetReturnTypeId(&flags) == asTYPEID_INT32 &&
@@ -76,13 +76,13 @@ int CompareEquality(asIScriptEngine *engine, void *lobj, void *robj, int typeId,
 	int retval = -1;
 	asIScriptFunction *func = 0;
 
-	asITypeInfo *ot = engine->GetTypeInfoById(typeId);
-	if( ot )
+	asITypeInfo *ti = engine->GetTypeInfoById(typeId);
+	if( ti )
 	{
 		// Check if the object type has a compatible opEquals method
-		for( asUINT n = 0; n < ot->GetMethodCount(); n++ )
+		for( asUINT n = 0; n < ti->GetMethodCount(); n++ )
 		{
-			asIScriptFunction *f = ot->GetMethodByIndex(n);
+			asIScriptFunction *f = ti->GetMethodByIndex(n);
 			asDWORD flags;
 			if( strcmp(f->GetName(), "opEquals") == 0 &&
 				f->GetReturnTypeId(&flags) == asTYPEID_BOOL &&
@@ -143,7 +143,7 @@ int ExecuteString(asIScriptEngine *engine, const char *code, void *ref, int refT
 	// Wrap the code in a function so that it can be compiled and executed
 	string funcCode = " ExecuteString() {\n";
 	funcCode += code;
-	funcCode += ";\n}";
+	funcCode += "\n;}";
 
 	// Determine the return type based on the type of the ref arg
 	funcCode = engine->GetTypeDeclaration(refTypeId, true) + funcCode;
@@ -173,36 +173,32 @@ int ExecuteString(asIScriptEngine *engine, const char *code, void *ref, int refT
 	// If no context was provided, request a new one from the engine
 	asIScriptContext *execCtx = ctx ? ctx : engine->RequestContext();
 	r = execCtx->Prepare(func);
-	if( r < 0 )
+	if (r >= 0)
 	{
-		func->Release();
-		if( !ctx ) execCtx->Release();
-		return r;
-	}
+		// Execute the function
+		r = execCtx->Execute();
 
-	// Execute the function
-	r = execCtx->Execute();
-
-	// Unless the provided type was void retrieve it's value
-	if( ref != 0 && refTypeId != asTYPEID_VOID )
-	{
-		if( refTypeId & asTYPEID_OBJHANDLE )
+		// Unless the provided type was void retrieve it's value
+		if (ref != 0 && refTypeId != asTYPEID_VOID)
 		{
-			// Expect the pointer to be null to start with
-			assert( *reinterpret_cast<void**>(ref) == 0 );
-			*reinterpret_cast<void**>(ref) = *reinterpret_cast<void**>(execCtx->GetAddressOfReturnValue());
-			engine->AddRefScriptObject(*reinterpret_cast<void**>(ref), engine->GetTypeInfoById(refTypeId));
-		}
-		else if( refTypeId & asTYPEID_MASK_OBJECT )
-		{
-			// Expect the pointer to point to a valid object
-			assert( *reinterpret_cast<void**>(ref) != 0 );
-			engine->AssignScriptObject(ref, execCtx->GetAddressOfReturnValue(), engine->GetTypeInfoById(refTypeId));
-		}
-		else
-		{
-			// Copy the primitive value
-			memcpy(ref, execCtx->GetAddressOfReturnValue(), engine->GetSizeOfPrimitiveType(refTypeId));
+			if (refTypeId & asTYPEID_OBJHANDLE)
+			{
+				// Expect the pointer to be null to start with
+				assert(*reinterpret_cast<void**>(ref) == 0);
+				*reinterpret_cast<void**>(ref) = *reinterpret_cast<void**>(execCtx->GetAddressOfReturnValue());
+				engine->AddRefScriptObject(*reinterpret_cast<void**>(ref), engine->GetTypeInfoById(refTypeId));
+			}
+			else if (refTypeId & asTYPEID_MASK_OBJECT)
+			{
+				// Expect the pointer to point to a valid object
+				assert(*reinterpret_cast<void**>(ref) != 0);
+				engine->AssignScriptObject(ref, execCtx->GetAddressOfReturnValue(), engine->GetTypeInfoById(refTypeId));
+			}
+			else
+			{
+				// Copy the primitive value
+				memcpy(ref, execCtx->GetAddressOfReturnValue(), engine->GetSizeOfPrimitiveType(refTypeId));
+			}
 		}
 	}
 
@@ -268,17 +264,17 @@ int WriteConfigToStream(asIScriptEngine *engine, ostream &strm)
 	// Write enum types and their values
 	strm << "\n// Enums\n";
 	c = engine->GetEnumCount();
-	for (n = 0; n < c; n++)
+	for( n = 0; n < c; n++ )
 	{
 		asITypeInfo *ti = engine->GetEnumByIndex(n);
 		asDWORD accessMask = ti->GetAccessMask();
-		if (accessMask != currAccessMask)
+		if( accessMask != currAccessMask )
 		{
-			strm << "access " << hex << (unsigned int) (accessMask) << dec << "\n";
+			strm << "access " << hex << (unsigned int)(accessMask) << dec << "\n";
 			currAccessMask = accessMask;
 		}
 		const char *nameSpace = ti->GetNamespace();
-		if (nameSpace != currNamespace)
+		if( nameSpace != currNamespace )
 		{
 			strm << "namespace \"" << nameSpace << "\"\n";
 			currNamespace = nameSpace;
@@ -286,7 +282,7 @@ int WriteConfigToStream(asIScriptEngine *engine, ostream &strm)
 		}
 		const char *enumName = ti->GetName();
 		strm << "enum " << enumName << "\n";
-		for (asUINT m = 0; m < ti->GetEnumValueCount(); m++)
+		for( asUINT m = 0; m < ti->GetEnumValueCount(); m++ )
 		{
 			const char *valName;
 			int val;
@@ -339,41 +335,41 @@ int WriteConfigToStream(asIScriptEngine *engine, ostream &strm)
 	}
 
 	c = engine->GetTypedefCount();
-	for (n = 0; n < c; n++)
+	for( n = 0; n < c; n++ )
 	{
 		asITypeInfo *ti = engine->GetTypedefByIndex(n);
 		const char *nameSpace = ti->GetNamespace();
-		if (nameSpace != currNamespace)
+		if( nameSpace != currNamespace )
 		{
 			strm << "namespace \"" << nameSpace << "\"\n";
 			currNamespace = nameSpace;
 			engine->SetDefaultNamespace(currNamespace.c_str());
 		}
 		asDWORD accessMask = ti->GetAccessMask();
-		if (accessMask != currAccessMask)
+		if( accessMask != currAccessMask )
 		{
-			strm << "access " << hex << (unsigned int) (accessMask) << dec << "\n";
+			strm << "access " << hex << (unsigned int)(accessMask) << dec << "\n";
 			currAccessMask = accessMask;
 		}
 		strm << "typedef " << ti->GetName() << " \"" << engine->GetTypeDeclaration(ti->GetTypedefTypeId()) << "\"\n";
 	}
 
 	c = engine->GetFuncdefCount();
-	for (n = 0; n < c; n++)
+	for( n = 0; n < c; n++ )
 	{
 		asITypeInfo *funcDef = engine->GetFuncdefByIndex(n);
 		asDWORD accessMask = funcDef->GetAccessMask();
 		const char *nameSpace = funcDef->GetNamespace();
 		// Child funcdefs do not have any namespace, as they belong to the parent object
-		if (nameSpace && nameSpace != currNamespace)
+		if( nameSpace && nameSpace != currNamespace )
 		{
 			strm << "namespace \"" << nameSpace << "\"\n";
 			currNamespace = nameSpace;
 			engine->SetDefaultNamespace(currNamespace.c_str());
 		}
-		if (accessMask != currAccessMask)
+		if( accessMask != currAccessMask )
 		{
-			strm << "access " << hex << (unsigned int) (accessMask) << dec << "\n";
+			strm << "access " << hex << (unsigned int)(accessMask) << dec << "\n";
 			currAccessMask = accessMask;
 		}
 		strm << "funcdef \"" << funcDef->GetFuncdefSignature()->GetDeclaration() << "\"\n";
@@ -662,7 +658,7 @@ int ConfigEngineFromStream(asIScriptEngine *engine, istream &strm, const char *c
 		{
 			string maskStr;
 			in::GetToken(engine, maskStr, config, pos);
-			asDWORD mask = strtol(maskStr.c_str(), 0, 16);
+			asDWORD mask = strtoul(maskStr.c_str(), 0, 16);
 			engine->SetDefaultAccessMask(mask);
 		}
 		else if( token == "objtype" )
@@ -690,6 +686,11 @@ int ConfigEngineFromStream(asIScriptEngine *engine, istream &strm, const char *c
 			in::GetToken(engine, decl, config, pos);
 			decl = decl.substr(1, decl.length() - 2);
 			in::ReplaceSlashQuote(decl);
+
+			// Remove the $ that the engine prefixes the behaviours with
+			size_t n = decl.find("$");
+			if( n != string::npos )
+				decl[n] = ' ';
 
 			asEBehaviours behave = static_cast<asEBehaviours>(atol(behaviour.c_str()));
 			if( behave == asBEHAVE_TEMPLATE_CALLBACK )
@@ -797,7 +798,7 @@ int ConfigEngineFromStream(asIScriptEngine *engine, istream &strm, const char *c
 			// All properties must have different offsets in order to make them
 			// distinct, so we simply register them with an incremental offset.
 			// The pointer must also be non-null so we add 1 to have a value.
-			r = engine->RegisterGlobalProperty(decl.c_str(), reinterpret_cast<void*>(engine->GetGlobalPropertyCount()+1));
+			r = engine->RegisterGlobalProperty(decl.c_str(), reinterpret_cast<void*>(asPWORD(engine->GetGlobalPropertyCount()+1)));
 			if( r < 0 )
 			{
 				engine->WriteMessage(configFile, in::GetLineNumber(config, pos), 0, asMSGTYPE_ERROR, "Failed to register global property");
@@ -896,8 +897,8 @@ string GetExceptionInfo(asIScriptContext *ctx, bool showStack)
 
 	const asIScriptFunction *function = ctx->GetExceptionFunction();
 	text << "func: " << function->GetDeclaration() << "\n";
-	text << "modl: " << function->GetModuleName() << "\n";
-	text << "sect: " << function->GetScriptSectionName() << "\n";
+	text << "modl: " << (function->GetModuleName() ? function->GetModuleName() : "") << "\n";
+	text << "sect: " << (function->GetScriptSectionName() ? function->GetScriptSectionName() : "") << "\n";
 	text << "line: " << ctx->GetExceptionLineNumber() << "\n";
 	text << "desc: " << ctx->GetExceptionString() << "\n";
 
@@ -911,7 +912,7 @@ string GetExceptionInfo(asIScriptContext *ctx, bool showStack)
 			{
 				if( function->GetFuncType() == asFUNC_SCRIPT )
 				{
-					text << function->GetScriptSectionName() << " (" << ctx->GetLineNumber(n) << "): " << function->GetDeclaration() << "\n";
+					text << (function->GetScriptSectionName() ? function->GetScriptSectionName() : "") << " (" << ctx->GetLineNumber(n) << "): " << function->GetDeclaration() << "\n";
 				}
 				else
 				{

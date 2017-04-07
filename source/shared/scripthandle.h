@@ -1,6 +1,10 @@
 #ifndef SCRIPTHANDLE_H
 #define SCRIPTHANDLE_H
 
+#ifndef ANGELSCRIPT_H 
+// Avoid having to inform include path if header is already include before
+#include <angelscript.h>
+#endif
 
 
 BEGIN_AS_NAMESPACE
@@ -30,7 +34,10 @@ public:
 
 	// Returns the type of the reference held
 	asITypeInfo *GetType() const;
-	int            GetTypeId() const;
+	int          GetTypeId() const;
+
+	// Get the reference
+	void *GetRef();
 
 protected:
 	// These functions need to have access to protected
@@ -47,7 +54,7 @@ protected:
 	CScriptHandle(void *ref, int typeId);
 	CScriptHandle &Assign(void *ref, int typeId);
 
-	void          *m_ref;
+	void        *m_ref;
 	asITypeInfo *m_type;
 };
 

@@ -1,4 +1,9 @@
-﻿  Generating code
-  All 1 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+﻿  main.cpp
+main.cpp(73): warning C4302: 'type cast': truncation from 'LPWSTR' to 'WORD'
+main.cpp(74): warning C4302: 'type cast': truncation from 'LPWSTR' to 'WORD'
+main.cpp(65): warning C4101: 'dmScreenSettings': unreferenced local variable
+main.cpp(64): warning C4101: 'posY': unreferenced local variable
+main.cpp(64): warning C4101: 'posX': unreferenced local variable
+  Generating code
   Finished generating code
-  Win32Project1.vcxproj -> H:\RivalEngine\Rival_game_engine_GIT2\Rival3dengine\source\win_login\..\..\login.exe
+  Win32Project1.vcxproj -> H:\RivalEngine\Rival_Game_Engine_GIT\Rival3dengine\source\win_login\..\..\login.exe

@@ -1,5 +1,5 @@
 #include <windows.h>
-
+#include <assert.h>
 // set some stuff
 #define WS_EX_LAYERED   0x00080000
 #define LWA_ALPHA       0x00000002
@@ -117,10 +117,15 @@ int CALLBACK WinMain(
 	_In_ int       nShowCmd
 )
 {
+	HINSTANCE a;
 	if(!IsWow64())
-		ShellExecute(GetDesktopWindow(), L"open", L"bin\\tesseract.exe", NULL, NULL, SW_SHOWNORMAL);
+		a = ShellExecute(GetDesktopWindow(), L"open", L"bin32\\rival.exe",NULL, NULL, SW_SHOWNORMAL);
 	else
-		ShellExecute(GetDesktopWindow(), L"open", L"bin64\\tesseract.exe", NULL, NULL, SW_SHOWNORMAL);
+		a = ShellExecute(GetDesktopWindow(), L"open", L"bin64\\rival.exe", NULL, NULL, SW_SHOWNORMAL);
+	if (int(a) > -1);// assert("Could not Open Rival, This is due to a missing exe, a bad exe, or a renamed directory.\n If error presist please reinstall");
+
+
+
 	// Create the window using the function above
 	//Create_Window_Transparent(hInstance, hPrevInstance, lpCommandLine, nShowCmd, LPCWSTR("My Transparent Window!"));
 	//Sleep(10000);
