@@ -54,3 +54,4 @@ bin/tesseract.lib
 bin/tesseract.pdb
 source/win_log/Release
 source/win_login/Release/Win32Project1.log
+bin64/rival.lib

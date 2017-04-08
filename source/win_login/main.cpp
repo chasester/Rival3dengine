@@ -119,9 +119,9 @@ int CALLBACK WinMain(
 {
 	HINSTANCE a;
 	if(!IsWow64())
-		a = ShellExecute(GetDesktopWindow(), L"open", L"bin32\\rival.exe",NULL, NULL, SW_SHOWNORMAL);
+		a = ShellExecute(GetDesktopWindow(), L"open", L"bin32\\Rival.exe",NULL, NULL, SW_SHOWNORMAL);
 	else
-		a = ShellExecute(GetDesktopWindow(), L"open", L"bin64\\rival.exe", NULL, NULL, SW_SHOWNORMAL);
+		a = ShellExecute(GetDesktopWindow(), L"open", L"bin64\\Rival.exe", NULL, NULL, SW_SHOWNORMAL);
 	if (int(a) > -1);// assert("Could not Open Rival, This is due to a missing exe, a bad exe, or a renamed directory.\n If error presist please reinstall");
 
 

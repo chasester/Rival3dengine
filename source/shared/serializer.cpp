@@ -406,6 +406,8 @@ void CSerializedValue::getDataTypes()
 
 void CSerializer::AddUserType(CUserType *ref, const std::string &name)
 {
+	return;
+	if(ref)
 	m_userTypes[name] = ref;
 }
 
