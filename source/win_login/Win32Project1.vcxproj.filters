@@ -3,4 +3,13 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource1.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Start.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\vcpp\rival.ico" />
+  </ItemGroup>
 </Project>

@@ -411,9 +411,9 @@ void config(asIScriptEngine *asEngine){
 	r = asEngine->RegisterObjectProperty("node", "vec o", asOFFSET(node, o));
 	r = asEngine->RegisterObjectProperty("node", "vec rot", asOFFSET(node, rot));
 	//r = asEngine->RegisterObjectMethod("node", "void seteditbox(const vec &in)", asMETHOD(node, seteditbox), asCALL_THISCALL); assert(r >= 0);
-	r = asEngine->RegisterObjectMethod("node", "void seteditbox(int i)", asMETHOD(node, seteditbox), asCALL_THISCALL); assert(r >= 0);
+	//r = asEngine->RegisterObjectMethod("node", "void seteditbox(int i)", asMETHOD(node, seteditbox), asCALL_THISCALL); assert(r >= 0);
 	//rigid body and physics
-	r = asEngine->RegisterObjectType("ridgidbody", sizeof(ridgidbody), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK); assert(r >= 0);
+	//r = asEngine->RegisterObjectType("ridgidbody", sizeof(ridgidbody), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK); assert(r >= 0);
 	r = asEngine->RegisterObjectBehaviour("ridgidbody", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(BaseConstructor<ridgidbody>), asCALL_GENERIC); assert(r >= 0);
 	r = asEngine->RegisterObjectBehaviour("ridgidbody", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DeConstructor<ridgidbody>), asCALL_GENERIC); assert(r >= 0);
 	r = asEngine->RegisterObjectMethod("ridgidbody", "void aabbfrommodel(int index)", asMETHOD(ridgidbody, aabbfrommodel), asCALL_THISCALL); assert(r >= 0);

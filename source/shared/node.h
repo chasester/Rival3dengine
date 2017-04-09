@@ -40,6 +40,7 @@ struct ridgidbody // tempclass for setting up bullet, this gets deleted and conv
 
 	ridgidbody();
 	void aabbfrommodel(int index); //moved to AJPhyis.cpp due to model not being inited yet
+	~ridgidbody(){}
 };
 struct bulletobj
 {

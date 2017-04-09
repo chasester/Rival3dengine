@@ -630,8 +630,8 @@ ICOMMAND(newasent, "s", (char *s), {if(!worldeditor::nodenoedit()) newasent(str(
 			void world::nodemgr::allocatenodes(ushort amt)
 			{
 				uint len = nodepool.length();
-				nodepool.pad(amt);
-				loopi(amt) nodepool[amt + len] = new node();
+				//nodepool.advance(amt);
+				loopi(amt) nodepool.add(new node());
 			}
 			void world::nodemgr::deallocatenodes(ushort amt){ nodepool.shrink(amt);	}
 			node *world::nodemgr::getnodefrompool(){ if (nodepool.length()) return nodepool.pop(); else return new node(); }

@@ -1,0 +1,5 @@
+skybox "cgtextures/clear01"
+skyboxcolour 0xFFFFFF
+skyboxoverbright 2.5
+skyboxoverbrightmin 1.2 
+skyboxoverbrightthreshold 0.9

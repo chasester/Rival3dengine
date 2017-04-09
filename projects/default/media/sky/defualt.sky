@@ -1,0 +1,59 @@
+
+defualtsky = "
+resetsky = [
+skybox ""
+skyboxcolour 0xFFFFFF
+skyboxoverbright 2.0
+skyboxoverbrightmin 1.0 
+skyboxoverbrightthreshold 0.7
+spinsky 0 0
+
+cloudlayer ""
+cloudalpha 1.0
+cloudclip 0.5
+cloudcolour 255 255 255
+cloudfade 0.2
+cloudheight 0.2
+cloudoffsetx 0.0
+cloudoffsety 0.0
+cloudscale 1.0
+cloudscrollx 0.0
+cloudscrolly 0.0
+cloudsubdiv 16
+spincloudlayer 0
+
+sunlight 0xFFF8E0
+skylight 0x7495B8
+
+cloudbox ""
+cloudboxalpha 1.0
+cloudboxcolour 0xFFFFFF
+spinclouds 0
+
+
+]
+skydir = "media/sky/"
+ffc = [ sunlight 0xFFFFFF ]
+loadsky = [
+	resetsky
+	skylight 0xFFFFFF
+	exec (concatword $skydir $arg1 ".sky")
+	echo "load sky"
+]
+loadcloudbox = [
+	if (< numargs 1) result; 
+	cloudbox $arg1
+	if (< numargs 2) result;
+	cloudboxalpha $arg2
+	if (< numargs 3) result;
+	cloudboxcolour $arg3
+	echo "load clouds box"
+]
+loadclouds = [
+	exec (concat $skydir $arg1)
+	echo "load clouds"
+]
+loadskybox = [
+	exec (concatword $skydir $arg1 ".skybox" )
+	echo "load skybox"
+]

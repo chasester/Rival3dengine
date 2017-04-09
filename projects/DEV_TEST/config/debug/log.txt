@@ -1,0 +1,15 @@
+init: sdl
+init: net
+init: Angel
+init: game
+init: video
+init: gl
+Renderer: GeForce GTX 550 Ti/PCIe/SSE2 (NVIDIA Corporation)
+Driver: 4.0.0 NVIDIA 344.48
+GLSL: 4.00 NVIDIA via Cg compiler
+init: console
+init: world
+init: sound
+init: cfg
+init: render
+init: mainloop
