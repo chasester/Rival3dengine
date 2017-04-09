@@ -39,19 +39,11 @@ bin/tesseract.pdb
 *.BAK
 *.BAK
 =======
-*.pdb
-*.map
-*.exp
 source/vcpp/Release
 source/vcpp/Debug
 source/vcpp/ipch
 >>>>>>> origin/Serial_rewrite
-*.pdb
-bin/tesseract.map
-bin/tesseract.exp
 *.exe
-bin/tesseract.lib
-bin/tesseract.pdb
 source/win_log/Release
-source/win_login/Release/Win32Project1.log
-bin64/rival.lib
+source/win_log/Debug
+projects/DEV_TEST/

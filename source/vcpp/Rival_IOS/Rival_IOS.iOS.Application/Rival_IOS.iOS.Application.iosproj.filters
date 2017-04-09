@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Rival_IOS.iOS">
+      <UniqueIdentifier>{588912c5-0f9a-441a-b95f-b2baf5268122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rival_IOS.iOS\Images.xcassets">
+      <UniqueIdentifier>{95cd260f-7db4-41c8-86ba-d740595a8b96}</UniqueIdentifier>
+      <Extensions>Rival_IOS.iOS\Images.xcassets\*</Extensions>
+    </Filter>
+    <Filter Include="Rival_IOS.iOS\Images.xcassets\AppIcon.appiconset">
+      <UniqueIdentifier>{c9593472-7cdd-48d1-a9f1-4ba92848e448}</UniqueIdentifier>
+      <Extensions>Rival_IOS.iOS\Images.xcassets\AppIcon.appiconset\*</Extensions>
+    </Filter>
+    <Filter Include="Rival_IOS.iOS\Supporting Files">
+      <UniqueIdentifier>{0b0ea652-e5a2-4003-b98e-97212275e186}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Rival_IOS.iOS\AppDelegate.mm">
+      <Filter>Rival_IOS.iOS</Filter>
+    </ClCompile>
+    <ClCompile Include="Rival_IOS.iOS\GameViewController.mm">
+      <Filter>Rival_IOS.iOS</Filter>
+    </ClCompile>
+    <ClCompile Include="Rival_IOS.iOS\main.mm">
+      <Filter>Rival_IOS.iOS\Supporting Files</Filter>
+    </ClCompile>
+    <ClInclude Include="Rival_IOS.iOS\AppDelegate.h">
+      <Filter>Rival_IOS.iOS</Filter>
+    </ClInclude>
+    <ClInclude Include="Rival_IOS.iOS\GameViewController.h">
+      <Filter>Rival_IOS.iOS</Filter>
+    </ClInclude>
+    <Content Include="Rival_IOS.iOS\Base.lproj\Main.storyboard">
+      <Filter>Rival_IOS.iOS</Filter>
+    </Content>
+    <Content Include="Rival_IOS.iOS\Images.xcassets\AppIcon.appiconset\Contents.json">
+      <Filter>Rival_IOS.iOS\Images.xcassets\AppIcon.appiconset</Filter>
+    </Content>
+    <InfoPlist Include="Rival_IOS.iOS\Info.plist">
+      <Filter>Rival_IOS.iOS\Supporting Files</Filter>
+    </InfoPlist>
+  </ItemGroup>
+</Project>
