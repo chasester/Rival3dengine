@@ -42,8 +42,12 @@ bin/tesseract.pdb
 source/vcpp/Release
 source/vcpp/Debug
 source/vcpp/ipch
+source/win_login/ipch
+source/win_login/Debug
+source/win_login/Release
 >>>>>>> origin/Serial_rewrite
 *.exe
 source/win_log/Release
 source/win_log/Debug
-projects/DEV_TEST/
+projects/RIVAL_DEV_DEBUG/
+projects/RIVAL_DEV_RELEASE/

@@ -1,0 +1,59 @@
+﻿Added Rival mobile fixing up some structure issues also added things to the ignore list
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch Serial_rewrite
+# Your branch is up-to-date with 'origin/Serial_rewrite'.
+#
+# Changes to be committed:
+#	modified:   .gitmodules
+#	deleted:    source/extralib/bullet3
+#
+# Changes not staged for commit:
+#	modified:   .gitignore
+#	modified:   source/shared/tools.h
+#	deleted:    source/vcpp/AS_DEBUG/stats.txt
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.Shared/MathHelper.h
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.Shared/Rival_IOS.Shared.vcxitems
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.Shared/SimpleRenderer.cpp
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.Shared/SimpleRenderer.h
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.Shared/pch.h
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS.Application.iosproj
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS.Application.iosproj.filters
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS.Application.xcodeproj/project.pbxproj
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS/AppDelegate.h
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS/AppDelegate.mm
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS/Base.lproj/Main.storyboard
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS/GameViewController.h
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS/GameViewController.mm
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS/Images.xcassets/AppIcon.appiconset/Contents.json
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS/Info.plist
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/Rival_IOS.iOS/main.mm
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.Application/vcreference.xcconfig
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.StaticLibrary/Rival_IOS.iOS.StaticLibrary.vcxproj
+#	deleted:    source/vcpp/Rival_IOS/Rival_IOS.iOS.StaticLibrary/Rival_IOS.iOS.StaticLibrary.vcxproj.filters
+#	modified:   source/vcpp/Rival_Mobil/Rival_Mobil.Android.NativeActivity/Rival_Mobil.Android.NativeActivity.vcxproj
+#	modified:   source/vcpp/Rival_Mobil/Rival_Mobil.Android.NativeActivity/Rival_Mobil.Android.NativeActivity.vcxproj.filters
+#	deleted:    source/vcpp/Rival_Mobil/Rival_Mobil.Android.NativeActivity/main.cpp
+#	deleted:    source/vcpp/Rival_Mobil/Rival_Mobil.Android.StaticLibrary/Rival_Mobil.Android.StaticLibrary.vcxproj
+#	deleted:    source/vcpp/Rival_Mobil/Rival_Mobil.Android.StaticLibrary/Rival_Mobil.Android.StaticLibrary.vcxproj.filters
+#	modified:   source/vcpp/Rival_Mobil/Rival_Mobil.Shared/Rival_Mobil.Shared.vcxitems
+#	modified:   source/vcpp/Rival_Mobil/Rival_Mobil.Shared/SimpleRenderer.h
+#	modified:   source/vcpp/rival.sln
+#	modified:   source/win_login/Release/Win32/Start.tlog/link.command.1.tlog
+#	modified:   source/win_login/Release/Win32/Start.tlog/link.write.1.tlog
+#	modified:   source/win_login/Release/Win32/Win32Project1.log
+#	modified:   source/win_login/Release/Win32/main.obj
+#	modified:   source/win_login/Win32Project1.vcxproj
+#	modified:   source/win_login/main.cpp
+#
+# Untracked files:
+#	source/vcpp/Rival_Mobil/Rival_Mobil.Android.NativeActivity/MathHelper.h
+#	source/vcpp/Rival_Mobil/Rival_Mobil.Android.NativeActivity/SimpleRenderer.cpp
+#	source/vcpp/Rival_Mobil/Rival_Mobil.Android.NativeActivity/SimpleRenderer.h
+#	source/vcpp/Rival_Mobil/Rival_Mobil.Android.NativeActivity/include/
+#	source/vcpp/Rival_Mobil/Rival_Mobil.Android.NativeActivity/main.c
+#	source/vcpp/Rival_Mobil/Rival_Mobil.Shared/Rival_Mobil.Shared.vcxitems.filters
+#	source/vcpp/Rival_Mobil/Rival_Mobile.txt
+#	source/vcpp/Rival_Mobil/glew-1.11.0/
+#
+

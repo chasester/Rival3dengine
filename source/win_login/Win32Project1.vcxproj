@@ -87,11 +87,11 @@
     <OutDir>..\..\</OutDir>
     <IntDir>.\$(Configuration)\$(Platform)\</IntDir>
     <GenerateManifest>false</GenerateManifest>
-    <TargetName>$(ProjectName)_Force_x86</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(ProjectName)_Force_x86</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
     <OutDir>..\..\</OutDir>
     <IntDir>.\$(Configuration)\$(Platform)\</IntDir>
     <ExecutablePath>$(VC_ExecutablePath_x86);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);</ExecutablePath>

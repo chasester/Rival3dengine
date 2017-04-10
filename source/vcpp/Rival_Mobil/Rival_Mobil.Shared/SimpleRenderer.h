@@ -8,7 +8,7 @@
 
 #include <OpenGLES/ES2/gl.h>
 #else // __ANDROID__ or _WIN32
-#include <GLES2/gl2.h>
+#include "SDL_opengles2.h"
 #endif
 
 class SimpleRenderer

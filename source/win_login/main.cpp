@@ -149,7 +149,7 @@ int CALLBACK WinMain(
 	
 	bool cont;
 	//change the message based on building 64 bit is posible or not
-	LPCWSTR Errmsg = !force32 && IsWow64() ? L"Could not find Rival.exe. Make sure that\nRival.exe exist in one of the following:\n    bin\\Rival.exe\n    bin\\x86\\Rival.exe\n    bin\\x64\\Rival.exe\n" : L"Could not find Rival.exe.Make sure that\nRival.exe exist in one of the following : \n    bin\\Rival.exe\n    bin\\x86\\Rival.exe\n";
+	LPCWSTR Errmsg = !force32 && IsWow64() ? L"Could not find Rival.exe. Make sure that\nRival.exe exists in one of the following:\n    bin\\Rival.exe\n    bin\\x86\\Rival.exe\n    bin\\x64\\Rival.exe\n" : L"Could not find Rival.exe.Make sure that\nRival.exe exists in one of the following : \n    bin\\Rival.exe\n    bin\\x86\\Rival.exe\n";
 	LPCWSTR Titmsg = !force32 && IsWow64() ? L"Rival - EXE Path Error" : L"Rival - EXE Path Error - x86 only";
 	do {
 		cont = !trytoopen();

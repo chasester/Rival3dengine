@@ -537,9 +537,10 @@ template<class T> struct isclass
 };
 
 static inline uint hthash(const char *key)
-{
+{ 
     uint h = 5381;
-    for(int i = 0, k; (k = key[i]); i++) h = ((h<<5)+h)^k;    // bernstein k=33 xor
+	int k = 0;
+    for(int i = 0; (k = key[i]); i++) h = ((h<<5)+h)^k;    // bernstein k=33 xor
     return h;
 }
 

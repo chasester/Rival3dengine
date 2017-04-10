@@ -153,6 +153,8 @@
       <CompileAs>CompileAsCpp</CompileAs>
       <CppLanguageStandard>c++11</CppLanguageStandard>
       <ExceptionHandling>Enabled</ExceptionHandling>
+      <PreprocessorDefinitions>__arm__</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include\;..\glew-1.11.0\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>%(LibraryDependencies);GLESv2;EGL;m</LibraryDependencies>
@@ -201,6 +203,7 @@
       <CompileAs>CompileAsCpp</CompileAs>
       <CppLanguageStandard>c++11</CppLanguageStandard>
       <ExceptionHandling>Enabled</ExceptionHandling>
+      <AdditionalIncludeDirectories>..\..\extralib\bullet3\src;..\Rival_Mobil.Shared;..\..\enet\include;..\..\include;..\..\engine;..\..\game;..\..\shared;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>%(LibraryDependencies);GLESv2;EGL;m</LibraryDependencies>
@@ -219,17 +222,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="android_native_app_glue.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="android_native_app_glue.c" />
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Rival_Mobil.Android.StaticLibrary\Rival_Mobil.Android.StaticLibrary.vcxproj">
-      <Project>{55167f44-e068-435f-8498-686b10335991}</Project>
-    </ProjectReference>
+    <ClCompile Include="main.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
