@@ -1,4 +1,4 @@
-CXXFLAGS= -g -O3 -fomit-frame-pointer -ffast-math
+CXXFLAGS= -g -O2 -fomit-frame-pointer -ffast-math
 override CXXFLAGS+= -Wall -fsigned-char -fno-rtti -fpermissive -std=c++11
 
 PLATFORM= $(shell uname -s)

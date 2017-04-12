@@ -20,11 +20,11 @@ typedef unsigned long long int ullong;
 #define GCC_DOUBLECONCATINATION_FIX1(fun,suffix,under)  GCC_DOUBLECONCATINATION_FIX2(fun,suffix,under)
 #define GCC_DOUBLECONCATINATION_FIX(fun,suffix,under) GCC_DOUBLECONCATINATION_FIX1(fun,suffix,under)
 
-#ifdef _DEBUG
-#define ASSERT(c) assert(c)
-#else
+//#ifdef _DEBUG
+//#define ASSERT(c) assert(c)
+//#else
 #define ASSERT(c) if(c) {}
-#endif
+//#endif
 
 #if defined(__GNUC__) || (defined(_MSC_VER) && _MSC_VER >= 1400)
 #define RESTRICT __restrict
@@ -539,7 +539,7 @@ template<class T> struct isclass
 static inline uint hthash(const char *key)
 {
     uint h = 5381;
-    for(int i = 0, k; (k = key[i]); i++) h = ((h<<5)+h)^k;    // bernstein k=33 xor
+    for(int i = 0, k = 0; (k = key[i]); i++) h = ((h<<5)+h)^k;    // bernstein k=33 xor
     return h;
 }
 
