@@ -1101,7 +1101,7 @@ int main(int argc, char **argv)
     atexit(enet_deinitialize);
     enet_time_set(0);
 
-	logoutf("init: Angel");
+    logoutf("init: angelscript");
 	asConfigureEngine();
 
     logoutf("init: game");
