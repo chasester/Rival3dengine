@@ -1120,8 +1120,8 @@ int main(int argc, char **argv)
     SDL_StopTextInput(); // workaround for spurious text-input events getting sent on first text input toggle?
 
     logoutf("init: gl");
-    gl_checkextensions();
     gl_init();
+    gl_checkextensions();
     notexture = textureload("media/texture/game/notexture.png");
     if(!notexture) fatal("could not find core textures");
 

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-BEGIN_AS_NAMESPACE
+//BEGIN_AS_NAMESPACE
 
 // This macro is used to avoid warnings about unused variables.
 // Usually where the variables are only used in debug mode.
@@ -1136,7 +1136,7 @@ void RegisterStdString(asIScriptEngine * engine)
 		RegisterStdString_Native(engine);
 }
 
-END_AS_NAMESPACE
+//END_AS_NAMESPACE
 
 
 

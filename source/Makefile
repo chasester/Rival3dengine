@@ -5,7 +5,7 @@ PLATFORM= $(shell uname -s)
 PLATFORM_ARCH= $(shell uname -m)
 PLATFORM_PREFIX= native
 
-INCLUDES= -Iangel/include -I/usr/include/SDL2 -Ishared -Iengine -Igame -Ienet/include -I/usr/include/bullet -I/usr/include -Iextralib/bullet3/src
+INCLUDES= -Iangel/include -I/usr/include/SDL2 -D_REENTRANT -Ishared -Iengine -Igame -Ienet/include -I/usr/include/bullet -I/usr/include -Iextralib/bullet3/src
 BULLET_LIB_PATH = extralib/bullet3/bin/
 STRIP=
 ifeq (,$(findstring -g,$(CXXFLAGS)))
@@ -47,7 +47,7 @@ CLIENT_INCLUDES= $(INCLUDES) -Iinclude
 STD_LIBS= -static-libgcc -static-libstdc++
 CLIENT_LIBS= -mwindows $(STD_LIBS) -L$(WINBIN) -L$(WINLIB) -lSDL2 -lSDL2_image -lSDL2_mixer -lzlib1 -lopengl32 -lenet -lws2_32 -lwinmm
 else
-CLIENT_INCLUDES= $(INCLUDES) -I/usr/X11R6/include -I/usr/local/include/SDL2 -I/usr/X11R6/include -D_THREAD_SAFE -D_REENTRANT
+CLIENT_INCLUDES= $(INCLUDES) -I/usr/X11R6/include -I/usr/local/include/SDL2 -D_REENTRANT -I/usr/X11R6/include -D_THREAD_SAFE
 CLIENT_LIBS= -Lenet -lenet -L/usr/X11R6/lib -lX11 -L/usr/local/lib -lSDL2 -L/usr/lib -lSDL2_image -L/usr/local/lib -lSDL2_mixer -Lextralib -langelscript -lz -lGL
 endif
 ifeq ($(PLATFORM),Linux)
@@ -78,6 +78,7 @@ CLIENT_OBJS= \
 	shared/weakref.o\
 	shared/wings.o\
 	shared/zip.o \
+        shared/scriptstdstring.o \
 	engine/aa.o \
 	engine/AJMPhys.o \
 	engine/bih.o \
@@ -269,9 +270,6 @@ shared/scripthandle.o: shared/iengine.h shared/igame.h
 shared/scripthelper.o: shared/cube.h shared/tools.h shared/geom.h shared/ents.h shared/node.h
 shared/scripthelper.o: shared/command.h shared/glexts.h shared/glemu.h
 shared/scripthelper.o: shared/iengine.h shared/igame.h
-shared/scriptdstring.o: shared/cube.h shared/tools.h shared/geom.h shared/ents.h shared/node.h
-shared/scriptdstring.o: shared/command.h shared/halo.h shared/glexts.h shared/glemu.h
-shared/scriptdstring.o: shared/iengine.h shared/igame.h
 shared/serializer.o: shared/cube.h shared/tools.h shared/geom.h shared/ents.h shared/node.h
 shared/serializer.o: shared/command.h shared/glexts.h shared/glemu.h
 shared/serializer.o: shared/iengine.h shared/igame.h
@@ -290,6 +288,9 @@ shared/wings.o: shared/iengine.h shared/igame.h shared/scriptstdstring.h shared/
 shared/zip.o: shared/cube.h shared/tools.h shared/geom.h shared/ents.h shared/node.h
 shared/zip.o: shared/command.h shared/glexts.h shared/glemu.h
 shared/zip.o: shared/iengine.h shared/igame.h
+shared/scriptstdstring.o: shared/cube.h shared/tools.h shared/geom.h shared/ents.h shared/node.h
+shared/scriptstdstring.o: shared/command.h shared/glexts.h shared/glemu.h
+shared/scriptstdstring.o: shared/iengine.h shared/igame.h shared/scriptstdstring.h shared/scriptbuilder.h shared/scripthandle.h shared/scriptarray.h shared/scripthelper.h shared/serializer.h
 engine/aa.o: engine/engine.h shared/cube.h shared/tools.h shared/geom.h
 engine/aa.o: shared/ents.h shared/node.h shared/command.h shared/glexts.h shared/glemu.h
 engine/aa.o: shared/iengine.h shared/igame.h engine/world.h engine/octa.h
