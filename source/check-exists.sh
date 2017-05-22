@@ -13,5 +13,5 @@
 for line in $(cat $1); {
     #echo "Testing: \"$line\""
     [ "$(grep $line $2)" ] ||
-        echo "\"$line\" not found.."
+        echo "\"$line\" not found in $2.."
 }

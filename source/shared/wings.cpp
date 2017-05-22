@@ -357,7 +357,7 @@ void config(asIScriptEngine *asEngine){
 	r = asEngine->RegisterGlobalFunction("void print(float)", asFUNCTIONPR(print, (float), void), asCALL_CDECL); asFATAL(r);
 	r = asEngine->RegisterGlobalFunction("void print(double)", asFUNCTIONPR(print, (double), void), asCALL_CDECL); asFATAL(r);
 	r = asEngine->RegisterGlobalFunction("void print()", asFUNCTIONPR(print, (void), void), asCALL_CDECL); asFATAL(r);
-    r = asEngine->RegisterGlobalFunction("void print(string)", asFUNCTIONPR(print, (str), void), asCALL_CDECL); asFATAL(r);
+    //r = asEngine->RegisterGlobalFunction("void print(string)", asFUNCTIONPR(print, (str), void), asCALL_CDECL); asFATAL(r);
 	r = asEngine->RegisterGlobalFunction("void print(const vec &in)", asFUNCTIONPR(print, (vec&), void), asCALL_CDECL); asFATAL(r);
 	r = asEngine->RegisterGlobalFunction("int randomint(int i)", asFUNCTIONPR(randomint, (int), int), asCALL_CDECL); asFATAL(r);
 	//r = asEngine->RegisterGlobalFunction("void print(array)", )
@@ -431,7 +431,7 @@ Assertion failed: (r >= 0), function config, file shared/wings.cpp, line 421.
     r = asEngine->RegisterObjectBehaviour("rigidbody", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DeConstructor<rigidbody>), asCALL_GENERIC); assert(r >= 0);
     r = asEngine->RegisterObjectMethod("rigidbody", "void aabbfrommodel(int index)", asMETHOD(rigidbody, rigidbody::aabbfrommodel), asCALL_THISCALL); assert(r >= 0);
     r = asEngine->RegisterGlobalFunction("void addrigidbody(const rigidbody &in, const node @+ to)", asFUNCTIONPR(addrigidbody, (rigidbody&, node*), void), asCALL_CDECL); asFATAL(r);
-    r = asEngine->RegisterGlobalFunction("void createobject(string s, const vec &in, const vec &in)", asFUNCTIONPR(createobject, (str, vec&, vec&), void), asCALL_CDECL); asFATAL(r);
+    //r = asEngine->RegisterGlobalFunction("void createobject(string s, const vec &in, const vec &in)", asFUNCTIONPR(createobject, (str, vec&, vec&), void), asCALL_CDECL); asFATAL(r);
 	asEngine->ClearMessageCallback();
 }
 END_AS_NAMESPACE
