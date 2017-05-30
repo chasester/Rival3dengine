@@ -41,3 +41,4 @@ bin/tesseract.pdb
 bin/tesseract.exp
 bin/tesseract.map
 *.BAK
+source/include/bullet3
