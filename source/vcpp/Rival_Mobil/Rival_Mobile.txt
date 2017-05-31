@@ -1,0 +1,14 @@
+Rival mobil
+Will use opengl es 2.0 (maybe a later version though sdl 2.0 seems to only suport this version) 
+This is mostly temory code and doesnt work very well will need to look into it.
+
+If you build with vs, you need to first:
+click the arrow next to no devices availible then click on Android Virtual Device Configuration
+Either create a new device with your own setting or just highlight and click start on the default device.
+A window will pop up. Wait for this to fully boot. (unforantately this takes serveal mins)
+When you get to a lock screen unlock the device
+Now you need to deploy your project, so just simply right click on your project and select deploy (this will build your project first then install it on your device (the other window))
+Assuming you dont get any errors your device window will switch to your app and start up automatically. A new log dialog box will pop up which is very helpful for debuging.
+In theory this should work seemlessly, but at this point it only displays a pic rather than the game engine. Later we will have to dumb down the engine for android devices. 
+It mostly will be force turning off settings and simply adding suport for android level inputs (rather than keyboard and mouse) and also replacing gl calls with gles calls and the equivalent
+glext and glesext etc.

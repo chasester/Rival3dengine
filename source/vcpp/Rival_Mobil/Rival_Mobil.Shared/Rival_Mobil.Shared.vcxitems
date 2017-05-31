@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{946dc386-041e-4876-9868-9d4ce92661de}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\AJMPhys.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\angelscript.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\animmodel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\bih.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\engine.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\explosion.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\halo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\hitzone.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\iqm.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\lensflare.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\light.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\lightning.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\md2.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\md3.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\md5.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\model.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\mpr.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\obj.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\octa.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\ragdoll.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\scale.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\skelmodel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\smd.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\textedit.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\texture.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\vertmodel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\engine\world.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\game\ai.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\game\aiman.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\game\ctf.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\game\extinfo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\game\game.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\command.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\cube.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\ents.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\geom.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\glemu.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\glexts.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\iengine.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\igame.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\node.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\scriptarray.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\scriptbuilder.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\scripthandle.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\scripthelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\scriptstdstring.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\serializer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\tools.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\shared\weakref.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\aa.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\AJMPhys.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\bih.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\blend.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\client.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\command.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\console.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\dynlight.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\grass.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\light.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\main.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\master.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\material.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\menus.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\movie.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\normal.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\octa.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\octaedit.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\octarender.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\ovr.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\pch.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\physics.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\pvs.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\rendergl.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\renderlights.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\rendermodel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\renderparticles.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\rendersky.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\rendertext.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\renderva.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\server.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\serverbrowser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\shader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\sound.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\stain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\texture.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\ui.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\water.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\world.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\engine\worldio.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\ai.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\AJMmovable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\client.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\entities.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\game.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\movable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\pch.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\render.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\scoreboard.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\server.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\waypoint.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\game\weapon.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\crypto.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\geom.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\glemu.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\node.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\pch.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\scriptarray.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\scriptbuilder.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\scripthandle.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\scripthelper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\scriptstdstring.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\serializer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\stream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\tessfont.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\tools.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\weakref.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\wings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\shared\zip.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\engine\physics.cpp_orig" />
+  </ItemGroup>
+</Project>

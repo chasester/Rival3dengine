@@ -312,8 +312,7 @@ void CSerializedValue::load()
 			{
 				m_restorePtr = asScript->asEngine->CreateUninitializedScriptObject(ot);
 				asIScriptObject *a = static_cast<asIScriptObject *> (m_restorePtr);
-
-				loopi(min(m_children.size(), a->GetPropertyCount()))
+				loopi(m_children.size() < a->GetPropertyCount() ? m_children.size() : a->GetPropertyCount())
 				{
 					try
 					{

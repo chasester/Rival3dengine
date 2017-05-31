@@ -3,4 +3,17 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource1.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Start.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\vcpp\rival.ico" />
+    <Image Include="..\..\..\..\..\Downloads\rival_logo-04-noback.png" />
+    <Image Include="C:\Users\Owner\Downloads\rival_logo_04_36A_icon.ico" />
+    <Image Include="C:\Users\Owner\Downloads\rival_logo_04_agG_icon.ico" />
+    <Image Include="..\vcpp\main.ico" />
+  </ItemGroup>
 </Project>

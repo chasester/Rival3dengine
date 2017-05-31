@@ -1,0 +1,45 @@
+class Object : IController
+{ 
+
+	private node @self;
+	int index;
+	//array<int> cool;
+	//string hello;
+	void Create()
+	{
+		self.rot = 0;
+		do { index = randomint(12); } while(index == 1);
+		self.seteditbox(index);
+		
+		//cool.resize(5);
+		
+		//for(int i=0; i < cool.length(); i++) cool[i] = randomint(12);
+		//print(cool.length());
+		//hello = "im cool";
+		
+	}
+
+	void Awake()
+	{
+		ridgidbody r;
+		r.aabbfrommodel(index);
+		r.friction = 0.2;
+		r.ldamp = 0.1;
+		r.rot = vec(0.f);
+		addridgidbody(r, @self);
+		self.seteditbox(index);
+		//print(int(cool.length()));
+		//for(int i=0; i < cool.length(); i++) print(cool[i]);
+		//print(hello);
+
+	}
+	void Update()
+	{
+		//if(lastmillis % 1000 < 100) index = randomint(10);
+	}
+
+	void Render() 
+	{
+		rendermapmodel(index , 0, self.o, self.rot);
+	}
+}
