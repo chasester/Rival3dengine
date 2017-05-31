@@ -42,3 +42,4 @@ bin/tesseract.exp
 bin/tesseract.map
 *.BAK
 source/include/bullet3
+*.ogz
