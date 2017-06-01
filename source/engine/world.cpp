@@ -1904,6 +1904,7 @@ node *newasent(str name, vec o, bool addnode)
 void nodechangename(const char *name)
 {
 	vector<node *> nodes = curworld->getselnodes();
+	if (nodes.length() == 0) return;
 	node *g = nodes[0];
 	if (!g)return;
 	g->name = str(name);
