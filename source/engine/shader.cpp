@@ -711,10 +711,17 @@ void Shader::bindprograms()
 
 bool Shader::compile()
 {
+    logoutf("Entering Shader::compile...");
     if(!vsstr) vsobj = !reusevs || reusevs->invalid() ? 0 : reusevs->vsobj;
-    else compileglslshader(*this, GL_VERTEX_SHADER,   vsobj, vsstr, name, dbgshader || !variantshader);
+    else {
+        logoutf("Compiling GLSL vertex shader...");
+        compileglslshader(*this, GL_VERTEX_SHADER,   vsobj, vsstr, name, dbgshader || !variantshader);
+    }
     if(!psstr) psobj = !reuseps || reuseps->invalid() ? 0 : reuseps->psobj;
-    else compileglslshader(*this, GL_FRAGMENT_SHADER, psobj, psstr, name, dbgshader || !variantshader);
+    else {
+        logoutf("Compiling GLSL fragment shader...");
+        compileglslshader(*this, GL_FRAGMENT_SHADER, psobj, psstr, name, dbgshader || !variantshader);
+    }
     linkglslprogram(*this, !variantshader);
     return program!=0;
 }
@@ -822,6 +829,7 @@ Shader *newshader(int type, const char *name, const char *vs, const char *ps, Sh
     {
         s.cleanup(true);
         if(variant) shaders.remove(rname);
+        logoutf("Failed compiling GLSL shader %s", name);
         return NULL;
     }
     if(variant) variant->addvariant(row, &s);
@@ -992,6 +1000,7 @@ void setupshaders()
     else mintexrectoffset = maxtexrectoffset = 0;
 
     standardshaders = true;
+
     nullshader = newshader(0, "<init>null",
         "attribute vec4 vvertex;\n"
         "void main(void) {\n"
@@ -1057,7 +1066,11 @@ void setupshaders()
         "}\n");
     standardshaders = false;
 
-    if(!nullshader || !hudshader || !hudtextshader || !hudnotextureshader) fatal("failed to setup shaders");
+    //if(!nullshader || !hudshader || !hudtextshader || !hudnotextureshader) fatal("failed to setup shaders");
+    if(!nullshader)fatal("failed to setup nullshader");
+    if(!hudshader)fatal("failed to setup hudshader");
+    if(!hudnotextureshader)fatal("failed to setup hudnotextureshader");
+    if(!hudtextshader)fatal("failed to setup hudtextshader");
 
     dummyslot.shader = nullshader;
 }
