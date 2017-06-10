@@ -93,7 +93,6 @@ struct IController
     node *self;
 };
 
-//<<<<<<< HEAD
 struct ScriptManager  //handles all interfacing between asEngine and corisponding parts (user input, script file loading, and serializer)
 {
 private:

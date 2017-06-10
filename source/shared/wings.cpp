@@ -396,9 +396,6 @@ void config(asIScriptEngine *asEngine){
 	//set up the game object temperary varible for test later replace with entity
 	r = asEngine->RegisterObjectType("node", 0, asOBJ_REF ); assert(r >= 0);
 	asScript->serializer->AddUserType(new CSerialnode(r), "node");
-	
-
-	
 
 	r = asEngine->RegisterInterface("IController");
 
