@@ -1053,7 +1053,7 @@ void gencubeedges(cube &c, const ivec &co, int size)
     }
 }
 
-void gencubeedges(cube *c = worldroot, const ivec &co = ivec(0, 0, 0), int size = worldsize>>1)
+void gencubeedges(cube *c = worldeditor::editroot, const ivec &co = ivec(0,0,0), int size = worldsize>>1)
 {
     progress("fixing t-joints...");
     neighbourstack[++neighbourdepth] = c;
@@ -1253,12 +1253,12 @@ void updatevabbs(bool force)
     if(force)
     {
         worldmin = nogimin = ivec(worldsize, worldsize, worldsize);
-        worldmax = nogimax = ivec(0, 0, 0);
+		worldmax = nogimax = ivec(0,0,0);
         loopv(varoot) updatevabb(varoot[i], true);
         if(worldmin.x >= worldmax.x)
         {
-            worldmin = ivec(0, 0, 0);
-            worldmax = ivec(worldsize, worldsize, worldsize);
+			worldmin = ivec(0,0,0);
+            worldmax = ivec(worldsize+ivec(0,0,0).x, worldsize+ ivec(0,0,0).y, worldsize+ ivec(0,0,0).z);
         }
     }
     else loopv(varoot) updatevabb(varoot[i]);
@@ -1661,15 +1661,18 @@ void findtjoints()
     cubeedges.setsize(0);
     edgegroups.clear();
 }
-
+cube *worldme = newcubes(F_SOLID);
+ICOMMAND(HOTSWAPOCTA, "", (), { cube * temp = worldme; worldme = worldeditor::editroot; worldeditor::editroot = temp; allchanged(); });
 void octarender()                               // creates va s for all leaf cubes that don't already have them
 {
     int csi = 0;
     while(1<<csi < worldsize) csi++;
-
     recalcprogress = 0;
     varoot.setsize(0);
-    updateva(worldroot, ivec(0, 0, 0), worldsize/2, csi-1);
+    updateva(worldeditor::editroot, ivec(0,0,0), worldsize/2, csi-1);
+	updateva(worldme, ivec(0, 0, 0), worldsize / 2, csi - 1);
+	//loopv(valist)varoot[i]->o.add(ivec(0,0,0));
+	//updateva(worldme, ivec(100, 100, 100), worldsize / 2, csi - 1);
     loadprogress = 0;
     flushvbo();
 
@@ -1677,6 +1680,7 @@ void octarender()                               // creates va s for all leaf cub
     loopv(valist)
     {
         vtxarray *va = valist[i];
+		
         explicitsky += va->sky;
     }
 
@@ -1714,14 +1718,15 @@ void precachetextures()
 void allchanged(bool load)
 {
     renderprogress(0, "clearing vertex arrays...");
-    clearvas(worldroot);
+    clearvas(worldeditor::editroot);
     resetqueries();
     resetclipplanes();
     if(load) initenvmaps();
     entitiesinoctanodes();
     tjoints.setsize(0);
+	
     if(filltjoints) findtjoints();
-    octarender();
+	octarender();
     if(load) precachetextures();
     setupmaterials();
     clearshadowcache();

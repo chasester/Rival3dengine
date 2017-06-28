@@ -253,7 +253,7 @@ void calcnormals(bool lerptjoints)
     usetnormals = lerptjoints;
     if(usetnormals) findtjoints();
     normalprogress = 1;
-    loopi(8) addnormals(worldroot[i], ivec(i, ivec(0, 0, 0), worldsize/2), worldsize/2);
+    loopi(8) addnormals(worldeditor::editroot[i], ivec(i, ivec(0,0,0), worldsize/2), worldsize/2);
 }
 
 void clearnormals()

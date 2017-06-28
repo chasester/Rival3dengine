@@ -3397,10 +3397,10 @@ void collectlights()
 	if (PartyTime) {
 		static int lastdonehere = 0;
 		static bool shoulddeletenext = false;
-
+		//vector<light *> lits = curworld->getlights();
 		if (lastdonehere < lastmillis)
 		{
-			curworld->lights.deletecontents();
+			//curworld->lights.deletecontents();
 			loopi(20) curworld->addlight(vec((rand() % 400) - 200 + 512, (rand() % 400) - 200 + 512, (rand() % 200) + 512), vec(rand() % 200, rand() % 200, rand() % 200), (rand() % 100) + 200, 0);
 			lastdonehere = lastmillis + 500;
 			shoulddeletenext = true;
@@ -3694,7 +3694,7 @@ static inline bool rendernogi(cube *c, const ivec &o, int size, const ivec &bbmi
 
 static inline void rendernogi(const ivec &bbmin, const ivec &bbmax, int minsize)
 {
-    if(rendernogi(worldroot, ivec(0, 0, 0), worldsize>>1, ivec(bbmin).max(nogimin), ivec(bbmax).min(nogimax), minsize))
+    if(rendernogi(worldeditor::editroot, ivec(0, 0, 0), worldsize>>1, ivec(bbmin).max(nogimin), ivec(bbmax).min(nogimax), minsize))
         nogiquad(0, 0, worldsize, worldsize);
 }
 

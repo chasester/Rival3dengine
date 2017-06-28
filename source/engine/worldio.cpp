@@ -680,7 +680,7 @@ bool save_world(const char *mname, bool nolms)
 #pragma endregion
 
 #pragma region Save Octtree
-	savec(worldroot, ivec(0, 0, 0), worldsize >> 1, f, nolms);
+	savec(worldeditor::editroot, ivec(0, 0, 0), worldsize >> 1, f, nolms);
 
 	if (!nolms)
 	{
@@ -731,8 +731,8 @@ bool load_world(const char *mname, const char *cname)        // still supports a
 #pragma endregion
    
 #pragma region Create Octtree
-	freeocta(worldroot);
-	worldroot = NULL;
+	freeocta(worldeditor::editroot);
+	worldeditor::editroot = NULL;
 
 	setvar("mapsize", hdr.worldsize, true, false);
 	int worldscale = 0;
@@ -880,11 +880,11 @@ bool load_world(const char *mname, const char *cname)        // still supports a
 #pragma region Load Octtree
 	renderprogress(0, "loading octree...");
 	bool failed = false;
-	worldroot = loadchildren(f, ivec(0, 0, 0), hdr.worldsize >> 1, failed);
+	worldeditor::editroot = loadchildren(f, ivec(0, 0, 0), hdr.worldsize >> 1, failed);
 	if (failed) conoutf(CON_ERROR, "garbage in map");
 
 	renderprogress(0, "validating...");
-	validatec(worldroot, hdr.worldsize >> 1);
+	validatec(worldeditor::editroot, hdr.worldsize >> 1);
 
 	if (!failed)
 	{

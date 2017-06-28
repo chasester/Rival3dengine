@@ -877,20 +877,20 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="backforthmover.halo" />
-    <None Include="blank.halo" />
-    <None Include="light.halo" />
-    <None Include="model.halo" />
-    <None Include="object.halo" />
-    <None Include="spawner.halo" />
-    <None Include="timespawner.halo" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="rival.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\Downloads\rival_logo-04-noback.png" />
     <Image Include="rival.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\projects\default\halo\backforthmover.halo" />
+    <None Include="..\..\projects\default\halo\blank.halo" />
+    <None Include="..\..\projects\default\halo\light.halo" />
+    <None Include="..\..\projects\default\halo\model.halo" />
+    <None Include="..\..\projects\default\halo\object.halo" />
+    <None Include="..\..\projects\default\halo\spawner.halo" />
+    <None Include="..\..\projects\default\halo\timespawner.halo" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

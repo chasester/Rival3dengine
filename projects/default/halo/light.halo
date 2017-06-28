@@ -5,10 +5,21 @@ class model : IController
 	int red;
 	int green;
 	int blue;
-
-	void Render()
+	void Create()
+	{
+	self.seteditbox(5);
+	red = 100;
+	blue = 100;
+	green = 100;
+	radius = 1000;
+	}
+	void Awake()
 	{
 		vec color = vec( red ,green ,blue );
-		addlight(self.o, color, radius, 0);
+		addlight(self.o, color, radius, 0);	
+	}
+	void Render()
+	{
+		
 	}
 }

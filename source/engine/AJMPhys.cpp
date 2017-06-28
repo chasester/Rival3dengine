@@ -42,7 +42,7 @@ void buildLevelTriCol()
     int VertexCount = 0;
     if (m_dynamicsWorld){//////dont build if phyics arent running
       
-    renderprogress(0, "computing levelCollision...");
+    //renderprogress(0, "computing levelCollision...");
 
     //from the writeobj function
     //with a couple of additions and subtreactions from me
@@ -91,7 +91,7 @@ void buildLevelTriCol()
     //fill in our Vertices locations
     vec center(-(bbmax.x + bbmin.x)/2, -(bbmax.y + bbmin.y)/2, -bbmin.z);
     //conoutf("adding vert locations");
-    renderprogress(0, "adding vert locations %d verts", VertexCount);
+   //renderprogress(0, "adding vert locations %d verts", VertexCount);
     
     loopv(verts)
     {
@@ -108,7 +108,7 @@ void buildLevelTriCol()
     //works great until you add another material to the mix:( <<<<<<<< i think this is fixed :)
     //have to run 2 searches, in someone can do this in a more simple maner, please share.
 
-    usedmtl.sort();
+    //usedmtl.sort();
     int IndexCount = 0;//counter to keep track of indices while they are being filled
     int TriCount = 0;//amount of total triangles
     int* Indices = 0;//final indice array
@@ -128,7 +128,7 @@ void buildLevelTriCol()
     Indices = new int[TriCount*3];
     //now we fill our Indeces
     //conoutf("adding tri indices");
-    renderprogress(0, "adding tri indices %d triangles", TriCount);
+    //renderprogress(0, "adding tri indices %d triangles", TriCount);
     loopv(usedmtl)
     {
         vector<ivec2> &keys = mtls[usedmtl[i]];
@@ -141,7 +141,7 @@ void buildLevelTriCol()
         }
     }
     //conoutf("data collected, adding it to the array");
-    renderprogress(0, "data collected, adding it to the array");// %d verts, %d triangles", VertexCount,TriCount);
+   // renderprogress(0, "data collected, adding it to the array");// %d verts, %d triangles", VertexCount,TriCount);
 	m_indexVertexArrays = new btTriangleIndexVertexArray(TriCount,
 		Indices,
 		indexStride,
@@ -196,7 +196,7 @@ void buildLevelTriCol()
 		m_dynamicsWorld->addRigidBody(body);
 	}
 	
-    renderprogress(0, "Level Collision mesh primed and ready");
+   // renderprogress(0, "Level Collision mesh primed and ready");
     }
     else {}
 
@@ -422,7 +422,7 @@ void btmoveplayer(physent *pl, int curenttime){
 	}
 
 }
-void PHYSInit(){
+void PHYSInit() {
 	m_collisionConfiguration = new btDefaultCollisionConfiguration();
 	m_dispatcher = new	btCollisionDispatcher(m_collisionConfiguration);
 
@@ -434,16 +434,16 @@ void PHYSInit(){
 
 	m_solver = new btSequentialImpulseConstraintSolver();
 
-	
-	m_dynamicsWorld = new btDiscreteDynamicsWorld(m_dispatcher,m_broadphase,m_solver,m_collisionConfiguration);
 
-	
-	
-	m_dynamicsWorld->setGravity(btVector3(0,-15,0));//make this level independent
-	
+	m_dynamicsWorld = new btDiscreteDynamicsWorld(m_dispatcher, m_broadphase, m_solver, m_collisionConfiguration);
+
+
+
+	m_dynamicsWorld->setGravity(btVector3(0, -15, 0));//make this level independent
+
 	////////temp borrow
-        m_debugDrawer = new SauerDebugDrawer();
-        m_debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	m_debugDrawer = new SauerDebugDrawer();
+	m_debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe|btIDebugDraw::DBG_DrawAabb|btIDebugDraw::DBG_DrawContactPoints);
         m_dynamicsWorld->setDebugDrawer(m_debugDrawer);
 	////////temp borrow^^^^^
 	

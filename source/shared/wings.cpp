@@ -320,7 +320,7 @@ void wrapper_rendermapmodel(int ind, int ani, vec &o, vec &rot)
 
 void createobject(str s, vec &o, vec &rot)
 {
-	node *g  = newasent(s, o, false);
+	node *g  = newnode(s, o, false);
 	if (!g) return;
 }
 

@@ -2025,7 +2025,7 @@ void bindminimap()
     glBindTexture(GL_TEXTURE_2D, minimaptex);
 }
 
-void clipminimap(ivec &bbmin, ivec &bbmax, cube *c = worldroot, const ivec &co = ivec(0, 0, 0), int size = worldsize>>1)
+void clipminimap(ivec &bbmin, ivec &bbmax, cube *c = worldeditor::editroot, const ivec &co = ivec(0, 0, 0), int size = worldsize>>1)
 {
     loopi(8)
     {

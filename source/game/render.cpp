@@ -360,7 +360,7 @@ namespace game
 	//angelo phys bullet
 		renderbulletmovables();
 	//angelo phys bullet
-        curworld->rendernodes();
+        curworld->dorender();
         renderbouncers();
         renderprojectiles();
         if(cmode) cmode->rendergame();

@@ -66,7 +66,7 @@ static bool mergepvsnodes(pvsnode &p, pvsnode *children)
     return true;
 }
 
-static void genpvsnodes(cube *c, int parent = 0, const ivec &co = ivec(0, 0, 0), int size = worldsize/2)
+static void genpvsnodes(cube *c, int parent = 0, const ivec &co = ivec(0,0,0), int size = worldsize/2)
 {
     int index = origpvsnodes.length();
     loopi(8)
@@ -309,7 +309,7 @@ struct pvsworker
     {
         curlevel = worldscale;
         levels[curlevel] = &pvsnodes[0];
-        origin = ivec(0, 0, 0);
+        origin = ivec(0,0,0);
     }
 
     int hasvoxel(const ivec &p, int coord, int dir, int ocoord = 0, int odir = 0, int *omin = NULL)
@@ -1072,7 +1072,7 @@ void testpvs(int *vcsize)
     memset(root.edges.v, 0xFF, 3);
     root.flags = 0;
     root.children = 0;
-    genpvsnodes(worldroot);
+    genpvsnodes(worldeditor::editroot);
 
     genpvs_canceled = false;
     check_genpvs_progress = false;
@@ -1118,9 +1118,9 @@ void genpvs(int *viewcellsize)
     memset(root.edges.v, 0xFF, 3);
     root.flags = 0;
     root.children = 0;
-    genpvsnodes(worldroot);
+    genpvsnodes(worldeditor::editroot);
 
-    totalviewcells = countviewcells(worldroot, ivec(0, 0, 0), worldsize>>1, *viewcellsize>0 ? *viewcellsize : 32);
+    totalviewcells = countviewcells(worldeditor::editroot, ivec(0, 0, 0), worldsize>>1, *viewcellsize>0 ? *viewcellsize : 32);
     numviewcells = 0;
     genpvs_canceled = false;
     check_genpvs_progress = false;
@@ -1132,7 +1132,7 @@ void genpvs(int *viewcellsize)
         timer = SDL_AddTimer(500, genpvs_timer, NULL);
     }
     viewcells = new viewcellnode;
-    genviewcells(*viewcells, worldroot, ivec(0, 0, 0), worldsize>>1, *viewcellsize>0 ? *viewcellsize : 32);
+    genviewcells(*viewcells, worldeditor::editroot, ivec(0, 0, 0), worldsize>>1, *viewcellsize>0 ? *viewcellsize : 32);
     if(numthreads<=1)
     {
         SDL_RemoveTimer(timer);

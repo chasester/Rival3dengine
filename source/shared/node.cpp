@@ -142,7 +142,7 @@ void node::moveto(vec _o)
 {
 	if (b)
 		b->moveto(_o);
-	o = o;
+	o = _o;
 }
 node::~node()
 {
@@ -177,49 +177,3 @@ node::~node()
 //void setupbulletfromaabb(vec offset, vec size, float friction = 0.3f, float elasticity = 0.8f){} // add more properties later
 //void setupbulletfromcylender(vec offset, float radius, float height, float friction = 0.3f, float elasticity = 0.8f){}
 
-
-
-node * world::nodemgr::newnode()
-{
-	return nullptr;
-}
-
-uint world::nodemgr::newnode(node * n)
-{
-	return uint();
-}
-
-bool world::nodemgr::removenode(uint id)
-{
-	return false;
-}
-
-bool world::nodemgr::removenode(node * n)
-{
-	return false;
-}
-
-node * world::nodemgr::getnode(uint id)
-{
-	return nullptr;
-}
-
-uint world::nodemgr::getnode(node * n)
-{
-	return uint();
-}
-
-uint world::nodemgr::search(uint id)
-{
-	return uint();
-}
-
-uint world::nodemgr::search(node * n)
-{
-	return uint();
-}
-
-vector<node*> world::nodemgr::nodes()
-{
-	return vector<node*>();
-}

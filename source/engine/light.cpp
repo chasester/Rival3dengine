@@ -565,7 +565,7 @@ static bool previewblends(cube *c, const ivec &co, int size, const ivec &bo, con
 void previewblends(const ivec &bo, const ivec &bs)
 {
     updateblendtextures(bo.x, bo.y, bo.x+bs.x, bo.y+bs.y);
-    if(previewblends(worldroot, ivec(0, 0, 0), worldsize/2, bo, bs))
+    if(previewblends(worldeditor::editroot, ivec(0, 0, 0), worldsize/2, bo, bs))
         commitchanges(true);
 }
 
@@ -583,14 +583,14 @@ void calclight()
     remip();
     optimizeblendmap();
     clearlightcache();
-    clearsurfaces(worldroot);
+    clearsurfaces(worldeditor::editroot);
     lightprogress = 0;
     calclight_canceled = false;
     check_calclight_progress = false;
     SDL_TimerID timer = SDL_AddTimer(250, calclighttimer, NULL);
     Uint32 start = SDL_GetTicks();
     calcnormals(filltjoints > 0);
-    calcsurfaces(worldroot, ivec(0, 0, 0), worldsize >> 1);
+    calcsurfaces(worldeditor::editroot, ivec(0,0,0), worldsize >> 1);
     clearnormals();
     Uint32 end = SDL_GetTicks();
     if(timer) SDL_RemoveTimer(timer);

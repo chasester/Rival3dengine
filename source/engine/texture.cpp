@@ -1699,7 +1699,7 @@ int compactvslots(bool cull)
             if(!vs.changed && vs.index < 0) { markingvslots = true; break; }
         }
     }
-    compactvslots(worldroot);
+    compactvslots(worldeditor::editroot);
     int total = compactedvslots;
     compacteditvslots();
     loopv(vslots)
@@ -1732,7 +1732,7 @@ int compactvslots(bool cull)
                 vs.index = compactedvslots++;
             }
         }
-        compactvslots(worldroot);
+        compactvslots(worldeditor::editroot);
         total = compactedvslots;
         compacteditvslots();
     }
@@ -2134,7 +2134,7 @@ ICOMMAND(fixinsidefaces, "i", (int *tex),
 {
     extern int nompedit;
     if(noedit(true) || (nompedit && multiplayer())) return;
-    fixinsidefaces(worldroot, ivec(0, 0, 0), worldsize>>1, *tex && vslots.inrange(*tex) ? *tex : DEFAULT_GEOM);
+    fixinsidefaces(worldeditor::editroot, ivec(0, 0, 0), worldsize>>1, *tex && vslots.inrange(*tex) ? *tex : DEFAULT_GEOM);
     allchanged();
 });
 

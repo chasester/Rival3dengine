@@ -679,7 +679,7 @@ extern float shadowray(const vec &o, const vec &ray, float radius, int mode, ext
 
 extern vector<int> outsideents;
 
-extern node *newasent(str name, vec o, bool addeditnode = true);
+extern node *newnode(str name, vec o, bool addeditnode = true);
 extern void rendernodeselection(const vec &o, const vec &ray, bool nodemoving);
 extern void entcancel();
 extern void entitiesinoctanodes();

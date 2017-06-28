@@ -321,7 +321,7 @@ void rendereditcursor()
     hmapsel = false;
 
     if(moving)
-    {
+	{
         static vec dest, handle;
         if(editmoveplane(vec(sel.o), camdir, od, sel.o[D[od]]+odc*sel.grid*sel.s[D[od]], handle, dest, moving==1))
         {
@@ -337,12 +337,12 @@ void rendereditcursor()
             sel.o[C[od]] = o[C[od]];
         }
     }
-    else if(curworld->nodemoving)
+	else if (worldeditor::nodemoving)
     {
-        curworld->nodedrag(camdir);
+        worldeditor::nodedrag(camdir);
     }
     else
-    {
+	{
         ivec w;
         float sdist = 0, wdist = 0, t;
         int entorient = 0, ent = -1;
@@ -364,7 +364,7 @@ void rendereditcursor()
                 }
             }
 
-        if((hovering = curworld->hoveringonnode(hidecursor ? -1 : ent, entorient)))
+        if(ent > -1 && !hidecursor && (hovering = worldeditor::hoveringonnode(ent, entorient))) //look at me
         {
            if(!havesel)
            {
@@ -444,7 +444,7 @@ void rendereditcursor()
             sel.corner = (cor[R[d]]-(lu[R[d]]*2)/gridsize)+(cor[C[d]]-(lu[C[d]]*2)/gridsize)*2;
             selchildcount = 0;
             selchildmat = -1;
-            countselchild(worldroot, ivec(0, 0, 0), worldsize/2);
+            countselchild(worldeditor::editroot, ivec(0, 0, 0), worldsize/2);
             if(mag>=1 && selchildcount==1)
             {
                 selchildmat = c->material;
@@ -459,7 +459,7 @@ void rendereditcursor()
     // cursors
 
     ldrnotextureshader->set();
-	curworld->rendernodeselection(player->o, camdir, curworld->nodemoving != 0);
+	rendernodeselection(player->o, camdir, worldeditor::nodemoving != 0);
     //renderentselection(player->o, camdir, entmoving!=0);
 	//curworld->renderentselection(player->o, camdir, entmoving != 0);
 
@@ -569,7 +569,7 @@ void commitchanges(bool force)
 
 void changed(const ivec &bbmin, const ivec &bbmax, bool commit)
 {
-    readychanges(bbmin, bbmax, worldroot, ivec(0, 0, 0), worldsize/2);
+    readychanges(bbmin, bbmax, worldeditor::editroot, ivec(0,0,0), worldsize/2);
     haschanged = true;
 
     if(commit) commitchanges();
@@ -578,7 +578,7 @@ void changed(const ivec &bbmin, const ivec &bbmax, bool commit)
 void changed(const block3 &sel, bool commit)
 {
     if(sel.s.iszero()) return;
-    readychanges(ivec(sel.o).sub(1), ivec(sel.s).mul(sel.grid).add(sel.o).add(1), worldroot, ivec(0, 0, 0), worldsize/2);
+    readychanges(ivec(sel.o).sub(1), ivec(sel.s).mul(sel.grid).add(sel.o).add(1), worldeditor::editroot, ivec(0,0,0), worldsize/2);
     haschanged = true;
 
     if(commit) commitchanges();
@@ -1349,10 +1349,10 @@ void genprefabmesh(prefab &p)
     block3 b = *p.copy;
     b.o = ivec(0, 0, 0);
 
-    cube *oldworldroot = worldroot;
+    cube *oldworldroot = worldeditor::editroot;
     int oldworldscale = worldscale, oldworldsize = worldsize;
 
-    worldroot = newcubes();
+    worldeditor::editroot = newcubes();
     worldscale = 1;
     worldsize = 2;
     while(worldsize < max(max(b.s.x, b.s.y), b.s.z)*b.grid)
@@ -1365,14 +1365,14 @@ void genprefabmesh(prefab &p)
     loopxyz(b, b.grid, if(!isempty(*s) || s->children) pastecube(*s, c); s++);
 
     prefabmesh r;
-    neighbourstack[++neighbourdepth] = worldroot;
-    loopi(8) genprefabmesh(r, worldroot[i], ivec(i, ivec(0, 0, 0), worldsize/2), worldsize/2);
+    neighbourstack[++neighbourdepth] = worldeditor::editroot;
+    loopi(8) genprefabmesh(r, worldeditor::editroot[i], ivec(i, ivec(0, 0, 0), worldsize/2), worldsize/2);
     --neighbourdepth;
     r.setup(p);
 
-    freeocta(worldroot);
+    freeocta(worldeditor::editroot);
 
-    worldroot = oldworldroot;
+    worldeditor::editroot = oldworldroot;
     worldscale = oldworldscale;
     worldsize = oldworldsize;
 
@@ -2493,7 +2493,7 @@ void mpreplacetex(int oldtex, int newtex, bool insel, selinfo &sel, bool local)
     }
     else
     {
-        loopi(8) replacetexcube(worldroot[i], oldtex, newtex);
+        loopi(8) replacetexcube(worldeditor::editroot[i], oldtex, newtex);
     }
     allchanged();
 }

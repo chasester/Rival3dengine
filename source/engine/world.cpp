@@ -11,8 +11,6 @@ VARNR(emptymap, _emptymap, 1, 0, 0);
 VAR(octaentsize, 0, 64, 1024);
 VAR(entselradius, 0, 2, 10);
 
-#define getnodesvec vector<node *> &nodes = curscene->getnodes();
-
 
 
 static inline void transformbb(const entity &e, vec &center, vec &radius)
@@ -228,7 +226,7 @@ static bool modifyoctaent(int flags, int id, extentity &e)
         while(leafsize < limit) leafsize *= 2;
         int diff = ~(leafsize-1) & ((o.x^r.x)|(o.y^r.y)|(o.z^r.z));
         if(diff && (limit > octaentsize/2 || diff < leafsize*2)) leafsize *= 2;
-        modifyoctaentity(flags, id, e, worldroot, ivec(0, 0, 0), worldsize>>1, o, r, leafsize);
+        modifyoctaentity(flags, id, e, worldeditor::editroot, ivec(0, 0, 0), worldsize>>1, o, r, leafsize);
     }
     e.flags ^= EF_OCTA;
     switch(e.type)
@@ -307,10 +305,10 @@ void findents(int low, int high, bool notspawned, const vec &pos, const vec &rad
         scale = worldscale-1;
     if(diff&~((1<<scale)-1) || uint(bo.x|bo.y|bo.z|br.x|br.y|br.z) >= uint(worldsize))
     {
-        findents(worldroot, ivec(0, 0, 0), 1<<scale, bo, br, low, high, notspawned, pos, invradius, found);
+        findents(worldeditor::editroot, ivec(0, 0, 0), 1<<scale, bo, br, low, high, notspawned, pos, invradius, found);
         return;
     }
-    cube *c = &worldroot[octastep(bo.x, bo.y, bo.z, scale)];
+    cube *c = &worldeditor::editroot[octastep(bo.x, bo.y, bo.z, scale)];
     if(c->ext && c->ext->ents) findents(*c->ext->ents, low, high, notspawned, pos, invradius, found);
     scale--;
     while(c->children && !(diff&(1<<scale)))
@@ -341,12 +339,12 @@ int entlooplevel = 0;
 int efocus = -1, enthover = -1, entorient = -1, oldhover = -1;
 bool undonext = true;
 
-VARF(entediting, 0, 0, 1, { if(!entediting) { entcancel(); efocus = enthover = -1; } });
+VARF(entediting, 0, 0, 1, { if (!entediting) { entcancel(); efocus = enthover = -1; } worldeditor::nodeediting = entediting; });
 
 bool nonodeedit()
 {
     if(!editmode) { conoutf(CON_ERROR, "operation only allowed in edit mode"); return true; }
-    return !entediting;
+    return !worldeditor::nodeediting;
 }
 
 bool pointinsel(const selinfo &sel, const vec &o)
@@ -368,14 +366,13 @@ bool haveselent()
 
 void entcancel()
 {
-	curworld->nodeselect.shrink(0);
-    entgroup.shrink(0);
+	worldeditor::nodecancelselect();
 }
 
 void entadd(int id)
 {
     undonext = true;
-    curworld->nodeselect.add(id);
+	worldeditor::nodeselectionadd(id);
 }
 
 undoblock *newundoent()
@@ -488,13 +485,13 @@ void attachentities()
 #define groupeditundo(f){ makeundoent(); groupeditpure(f); }
 #define groupedit(f)    { addimplicit(groupeditundo(f)); }
 
-vec getselpos()
-{
-    vector<extentity *> &ents = entities::getents();
-    if(entgroup.length() && ents.inrange(entgroup[0])) return ents[entgroup[0]]->o;
-    if(ents.inrange(enthover)) return ents[enthover]->o;
-    return vec(sel.o);
-}
+//vec getselpos()
+//{
+//    vector<extentity *> &ents = entities::getents();
+//    if(entgroup.length() && ents.inrange(entgroup[0])) return ents[entgroup[0]]->o;
+//    if(ents.inrange(enthover)) return ents[enthover]->o;
+//    return vec(sel.o);
+//}
 
 undoblock *copyundoents(undoblock *u)
 {
@@ -892,13 +889,15 @@ void renderentselection(const vec &o, const vec &ray, bool entmoving)
 
 bool enttoggle(int id)
 {
-    undonext = true;
+ /*   undonext = true;
     int i = curworld->nodeselect.find(id);
     if(i < 0)
         entadd(id);
     else
         curworld->nodeselect.remove(i);
-    return i < 0;
+    return i < 0;*/
+	conoutf("HELLO MAN");
+	return worldeditor::nodetoggleselect(id);
 }
 
 bool hoveringonent(int ent, int orient)
@@ -916,36 +915,37 @@ VAR(entitysurf, 0, 0, 1);
 
 ICOMMAND(entadd, "", (),
 {
-    if(curworld->nodeselect.length() >= 0 && !curworld->nonodeedit())
+    if(nonodeedit())
     {
-        if(curworld->nodeselect.find(curworld->nodehover) < 0) entadd(curworld->nodehover);
-        if(curworld->nodemoving > 1) curworld->nodemoving = 1;
+		worldeditor::nodeselectionadd();
+        if(worldeditor::nodemoving > 1) worldeditor::nodemoving = 1;
     }
 });
 
 ICOMMAND(enttoggle, "", (),
 {
-    if(curworld->nodehover < 0 || curworld->nonodeedit() || !enttoggle(curworld->nodehover)) { curworld->nodemoving = 0; intret(0); }
-	else { if (curworld->nodemoving > 1) curworld->nodemoving = 1; intret(1); }
+    if(worldeditor::nodehavehover() || nonodeedit() || !enttoggle(worldeditor::gethovernodeid())) { worldeditor::nodemoving = 0; intret(0); }
+	else { if (worldeditor::nodemoving > 1) worldeditor::nodemoving = 1; intret(1); }
 });
 
 ICOMMAND(entmoving, "b", (int *n),
 {
     if(*n >= 0)
     {
-		if (!*n || curworld->nodehover < 0 || curworld->nonodeedit()) curworld->nodemoving = 0;
-        else
-        {
-			if (entgroup.find(curworld->nodehover) < 0) { entadd(curworld->nodehover); curworld->nodemoving = 1; }
-			else if (!curworld->nodemoving) curworld->nodemoving = 1;
+		if (!*n || !worldeditor::nodehavehover() || nonodeedit()) worldeditor::nodemoving = 0;
+		else
+		{
+			//if (entgroup.find(worldeditor::nodehover) < 0) { entadd(curworld->worldeditor::nodehover); worldeditor::nodemoving = 1; }
+			if (!worldeditor::nodeisselected()) { worldeditor::nodeselectionadd(); worldeditor::nodemoving = 1; }
+			else if (!worldeditor::nodemoving) worldeditor::nodemoving = 1;
         }
     }
-	intret(curworld->nodemoving);
+	intret(worldeditor::nodemoving);
 });
 
 void entpush(int *dir)
 {
-    if(nonodeedit()) return;
+   // if(nonodeedit()) return;
     int d = dimension(entorient);
     int s = dimcoord(entorient) ? -*dir : *dir;
     if(entmoving)
@@ -1225,10 +1225,12 @@ void printent(extentity &e, char *buf, int len)
 
 void nearestent()
 {
-    if(nonodeedit()) return;
+    //if(nonodeedit()) return;
     int closest = -1;
     float closedist = 1e16f;
-	vector<node *> nodes = curworld->curscene->getnodes();
+	return;
+	vector<node *> nodes;
+	worldeditor::geteditablenodes(nodes);
     loopv(nodes)
     {
 		node *e = nodes[i];
@@ -1243,19 +1245,19 @@ void nearestent()
     if(closest >= 0) entadd(closest);
 }
 
-#define nodefocusv(i,f, v) { int n = curworld->nfocus = int(i); if (n >= 0) { node *e = v[n]; f; } }
+//#define nodefocusv(i,f, v) { node *e = worldeditor::getnfocus(); f; } }
 
-#define addimplicitnode(f) { if(curworld->nodeselect.empty() && curworld->nodehover>=0) { curworld->nodeseladd(enthover); /*undonext = (enthover != oldhover);*/ f; curworld->nodeselect.drop(); } else f; }
-#define addgroupnodes(exp) { vector<node *> nodes = curworld->curscene->getnodes(); loopv(nodes) nodefocusv( i, if (exp) curworld->nodeseladd(i) , nodes); }
+#define addimplicitnode(f) { if(!worldeditor::nodehaveselection() && worldeditor::gethovernode()) { worldeditor::nodeselectionadd(); /*undonext = (enthover != oldhover);*/ f; /*curworld->nodeselect.drop(); */} else f; }
+//#define addgroupnodes(exp) { vector<node *> nodes = worldeditor::geteditablenodes(); loopv(nodes) nodefocusv( i, if (exp) worldeditor::nodeselectionadd(i) , nodes); }
 #define groupnodeloop(e, s) ;
-#define nodefocus (n, f) entfocusv(i, f, curworld->curscene->getnodes())
+//#define nodefocus (n, f) entfocusv(i, f, curworld->curscene->getnodes())
 
-ICOMMAND(enthavesel, "", (), addimplicitnode(curworld->nodeselect.length());); //addimplicit(intret(curworld->nodeselect.length())));
-ICOMMAND(entselect, "e", (uint *body), if (!nonodeedit()) addgroupnodes(e && curworld->nodeselect.find(n)<0 && executebool(body)));
+ICOMMAND(enthavesel, "", (), { worldeditor::nodehaveselection(); }); //addimplicit(intret(curworld->nodeselect.length())));
+ICOMMAND(entselect, "e", (uint *body), { worldeditor::nodeselectionadd(); });
 ICOMMAND(entloop, "e", (uint *body), if (!nonodeedit()) addimplicitnode(groupnodeloop(((void)e, execute(body)))););
 ICOMMAND(insel, "", (), entfocus(efocus, intret(pointinsel(sel, e.o))));
 ICOMMAND(entget, "", (), entfocus(efocus, cubestr s; printent(e, s, sizeof(s)); result(s)));
-ICOMMAND(entindex, "", (), intret(curworld->nfocus));
+ICOMMAND(entindex, "", (), intret(worldeditor::getnfocusid()));
 COMMAND(entset, "siiiii");
 COMMAND(nearestent, "");
 
@@ -1432,11 +1434,11 @@ bool emptymap(int scale, bool force, const char *mname, bool usecfg)    // main 
     setvar("emptymap", 1, true, false);
 
     texmru.shrink(0);
-    freeocta(worldroot);
-    worldroot = newcubes(F_EMPTY);
-    loopi(4) solidfaces(worldroot[i]);
+    freeocta(worldeditor::editroot);
+    worldeditor::editroot = newcubes(F_EMPTY);
+    loopi(4) solidfaces(worldeditor::editroot[i]);
 
-    if(worldsize > 0x1000) splitocta(worldroot, worldsize>>1);
+    if(worldsize > 0x1000) splitocta(worldeditor::editroot, worldsize>>1);
 
     clearmainmenu();
 
@@ -1469,11 +1471,11 @@ bool enlargemap(bool force)
     worldscale++;
     worldsize *= 2;
     cube *c = newcubes(F_EMPTY);
-    c[0].children = worldroot;
+    c[0].children = worldeditor::editroot;
     loopi(3) solidfaces(c[i+1]);
-    worldroot = c;
+    worldeditor::editroot = c;
 
-    if(worldsize > 0x1000) splitocta(worldroot, worldsize>>1);
+    if(worldsize > 0x1000) splitocta(worldeditor::editroot, worldsize>>1);
 
     enlargeblendmap();
 
@@ -1496,7 +1498,7 @@ void shrinkmap()
     if(worldsize <= 1<<10) return;
 
     int octant = -1;
-    loopi(8) if(!isallempty(worldroot[i]))
+    loopi(8) if(!isallempty(worldeditor::editroot[i]))
     {
         if(octant >= 0) return;
         octant = i;
@@ -1505,11 +1507,11 @@ void shrinkmap()
 
     while(outsideents.length()) removeentity(outsideents.pop());
 
-    if(!worldroot[octant].children) subdividecube(worldroot[octant], false, false);
-    cube *root = worldroot[octant].children;
-    worldroot[octant].children = NULL;
-    freeocta(worldroot);
-    worldroot = root;
+    if(!worldeditor::editroot[octant].children) subdividecube(worldeditor::editroot[octant], false, false);
+    cube *root = worldeditor::editroot[octant].children;
+    worldeditor::editroot[octant].children = NULL;
+    freeocta(worldeditor::editroot);
+    worldeditor::editroot = root;
     worldscale--;
     worldsize /= 2;
 
@@ -1568,29 +1570,30 @@ void mpeditent(int i, const vec &o, int type, int attr1, int attr2, int attr3, i
 int getworldsize() { return worldsize; }
 int getmapversion() { return mapversion; }
 
-#define getnodesvec vector<node *> &nodes = curscene->getnodes();
 
-	world::world(scenegraph *s) : curscene(s), nodehover(-1), nodeorient(-1), nfocus(-1), oldhover(-1){}
-
-	inline bool world::nonodeedit() { if (!editmode) { conoutf(CON_ERROR, "operation only allowed in edit mode"); return true; } return !nodeediting; }
-
-	bool world::haveselnode(){ return nodeselect.length() > 0; }
-	void world::nodeselcancel(){ nodeselect.shrink(0); }
-	void world::nodeseladd(int id){ nodeselect.add(id); }//undonext = true; } add undo later
-	vec world::getselpos()
+bool haveselnode() { return worldeditor::nodehaveselection(); }
+	void nodeselcancel() { worldeditor::nodecancelselect(); }
+	//void nodeseladd(int id) { worldeditor::nodeselectionadd(id); }//undonext = true; } add undo later
+	vec getselpos()
 	{
-		getnodesvec
-		if (nodeselect.length() && nodes.inrange(nodeselect[0])) return nodes[nodeselect[0]]->o;
-		if (nodes.inrange(nodehover)) return nodes[nodehover]->o;
+		vector<node *> nds;
+		worldeditor::getselnodes(nds);
+		node *n = worldeditor::getnfocus();
+		if (nds.length()) if (n) return n->o; else if (nds[0]) return nds[0]->o;
+		n = worldeditor::gethovernode();
+		if (n) return n->o;
 		return vec(sel.o);
 	}
 
-	void world::rendernodeselection(const vec &o, const vec &ray, bool moving)
+	void rendernodeselection(const vec &o, const vec &ray, bool moving)
 	{
-		if (nonodeedit())return;// || (entgroup.empty() && enthover < 0)) return;
+		if (nonodeedit())return;
 		vec eo, es;
-		getnodesvec
-			gle::colorub(0, 30, 0);
+		vector<node *> nodes;
+		worldeditor::geteditablenodes(nodes);
+		
+		if (!nodes.length()) return;
+		gle::colorub(0, 80, 0);
 		gle::defvertex();
 		gle::begin(GL_LINES, nodes.length() * 24);
 		loopv(nodes){
@@ -1603,32 +1606,31 @@ int getmapversion() { return mapversion; }
 			renderentbox(o.sub(e->radius), vec(e->radius).mul(2));
 		}
 		xtraverts += gle::end();
-		if (nodeselect.empty() && nodehover < 0) return;
-		if (nodeselect.length())
+		node *hover = worldeditor::gethovernode();
+		vector<node *> nodesel;
+		worldeditor::getselnodes(nodesel);
+		if (nodesel.length())
 		{
 			gle::colorub(0, 50, 0);
 			gle::defvertex();
-			gle::begin(GL_LINES, nodeselect.length() * 24);
-			loopv(nodeselect){
-				if (!nodes.inrange(nodeselect[i]))continue; // if the node is outside the range of nodes ignore it
-				node *e = nodes[nodeselect[i]];
-				vec o(e->o);
-				//o.z += e->radius.z;
-				renderentbox(o.sub(e->radius), vec(e->radius).mul(2));
+			gle::begin(GL_LINES, nodesel.length() * 24);
+			loopv(nodesel){
+				node *n = nodesel[i];
+				vec o(n->o);
+				renderentbox(o.sub(n->radius), vec(n->radius).mul(2));
 			}
 			xtraverts += gle::end();
 		}
-		if (nodehover >= 0 && nodes.inrange(nodehover) && nodes[nodehover])
+		if (hover)
 		{
-			node *n = nodes[nodehover];
-			gle::colorub(0, 40, 0);
+			gle::colorub(0, 120, 0);
 			 // also ensures enthover is back in focus
-			eo = vec(n->o); es = (n->radius*2);
+			eo = vec(hover->o); es = (hover->radius);
 			eo -= es; es.mul(2);
 			boxs3D(eo, es, 1);
-			if (nodemoving && entmovingshadow == 1)
+			if (worldeditor::nodemoving && entmovingshadow == 1)
 			{
-				int plane = dimension(nodeorient); //do not render if can not move in that direction
+				int plane = dimension(worldeditor::nodeorient); //do not render if can not move in that direction
 				vec a, b;
 				gle::colorub(40, 20, 20);
 				(a = eo).x = eo.x - fmod(eo.x, worldsize); (b = es).x = a.x + worldsize; if (plane != 0){ boxs3D(a, b, 1); } //on x plane
@@ -1639,7 +1641,7 @@ int getmapversion() { return mapversion; }
 			}
 			
 			gle::colorub(200, 0, 0);
-			boxs(nodeorient, eo, es);
+			boxs(worldeditor::nodeorient, eo, es);
 		}
 
 		/*if (showentradius)
@@ -1655,192 +1657,14 @@ int getmapversion() { return mapversion; }
 		*/
 		gle::disable();
 	}
-	void world::rendernodes(){ curscene->rendernodes(); }
-	void world::serializedworld()
-	{
-		if (asScript->serializer) asScript->resetserializer();
-		else asScript->setupserializer(new CSerializer()); 
-		//loopk(scenes)
-		//scenegraph * cursn = sense[k];
-		curscene->store();
-		
-	}
-	void world::updateworld(){
-		if (!touched) { serializedworld(); curscene->doawake(); touched = true;  return; }
-		
-		curscene->updatenodes();
-	}
-	void world::addnodetoscene(node *g) { curscene->addobject(g); if (!paused) conoutf("there are %d objects in the world",curscene->nodes.length()); }
-	uint world::getnumnodes(){ /*uint num; loopv(scenes) num += scenes[i]->getnumnodes(); return num + worldnodes.length();*/ return uint(curscene->getnodes().length()); }
-	//undo add later
-	//undoblock *newundoent();
-	//void makeundoent();
-	//undoblock *copyundoents(undoblock *u);
-	//void pasteundoent(int idx, const entity &ue);
-	//void pasteundoents(undoblock *u)
 
-	//nessary functions that need recoded
-	//void detachentity(extentity &e);
-	//void entflip();
-	//void entrotate(int *cw);
-	//void startmap(const char *name)
-	//bool emptymap(int scale, bool force, const char *mname, bool usecfg) 
-	//bool enlargemap(bool force)
-	//void entautoview(int *dir);
-
-	/*bool world::pointinsel(const selinfo &sel, const vec &o)
-	{
-		return(o.x <= sel.o.x + sel.s.x*sel.grid && o.x >= sel.o.x && o.y <= sel.o.y + sel.s.y*sel.grid && o.y >= sel.o.y && o.z <= sel.o.z + sel.s.z*sel.grid && o.z >= sel.o.z);
-	}*/
-
-	//bool world::editmoveplane(const vec &o, const vec &ray, int d, float off, vec &handle, vec &dest, bool first)
-	//{
-	//	plane pl(d, off);
-	//	float dist = 0.0f;
-	//	//if (!pl.rayintersect(camera1->o, ray, dist))
-	//		//return false;
-
-	//	dest = vec(ray).mul(dist).add(camera1->o);
-	//	if (first) handle = vec(dest).sub(o);
-	//	dest.sub(handle);
-	//	return true;
-	//}
-	float world::getnearestent(const vec &o, const vec &ray, float radius, int mode, int &hitnode)
-	{
-		vec eo, es;
-		int orient;
-		float dist = radius, f = 0.0f;
-		nodeorient = -1;
-		nodehover = -1;
-		getnodesvec;
-		loopv(nodes)
-		{
-			node *e = nodes[i];
-			if (!e)continue;
-			eo = vec(e->o);
-			eo.sub(e->radius); eo.z += e->radius.z;
-			es = vec(e->radius).mul(2);
-			if (!rayboxintersect(eo, es, o, ray, f, orient)) continue;
-			if (f<dist && f > 0)
-			{
-				nodeorient = orient;
-				nodehover = i;
-				return f;
-			}
-		}
-		return dist;
-	}
-	void world::clearworld(bool force){ if(touched || force) curscene->resetworld(); touched = false; }
-
-
-	void world::nodedrag(const vec &ray)
-	{
-		if (nonodeedit() || !haveselnode()) return;
-		getnodesvec
-		float r = 0, c = 0;
-		static vec dest, handle;
-		vec eo, es;
-		int d = dimension(nodeorient),
-			dc = dimcoord(nodeorient);
-
-		int n = curworld->nfocus = nodeselect.last();
-		if (n >= 0 && nodes.inrange(n) && nodes[n]) {
-
-			node &e = *nodes[n];
-			eo = vec(e.o); es = vec(e.radius);
-			es.mul(2);
-			if (!editmoveplane(e.o, ray, d, eo[d] + (dc ? es[d] : 0), handle, dest, entmoving == 1))
-				return;
-			ivec g = dest;
-			int z = g[d] & (~(sel.grid - 1));
-			g.add(sel.grid / 2).mask(~(sel.grid - 1));
-			g[d] = z;
-
-			r = (entselsnap ? g[R[d]] : dest[R[d]]) - e.o[R[d]];
-			c = (entselsnap ? g[C[d]] : dest[C[d]]) - e.o[C[d]];
-			loopv(nodeselect){ nodes[nodeselect[i]]->o[R[d]] += r; nodes[nodeselect[i]]->o[C[d]] += c; nodes[nodeselect[i]]->moveto(nodes[nodeselect[i]]->o); }
-		}
-		entmoving = 2;
-		//if (entmoving == 1) makeundoent();
-		
-	}
-	void world::addctrltonode(str name, bool first)
-	{
-	
-	}
-	bool world::hoveringonnode(int node, int orient)
-	{
-		if (nonodeedit()) return false;
-		//nodeorient = orient;
-		if ((nodehover) >= 0)
-			return true;
-		nfocus = nodeselect.empty() ? -1 : nodeselect.last();
-		nodehover = -1;
-		return false;
-	}
-	void world::resetmap()
-	{
-		clearoverrides();
-		clearmapsounds();
-		resetblendmap();
-		clearlights();
-		clearpvs();
-		clearslots();
-		clearparticles();
-		clearstains();
-		clearsleep();	
-		cancelsel();
-		pruneundos();
-		clearmapcrc();
-		curscene->clearworld();
-		PHYSrebuildLevel();
-		//outsideents.setsize(0);
-		spotlights = 0;
-		volumetriclights = 0;
-	}
-	vector<node *> world::getselnodes()
-	{
-		vector<node *> n;
-		vector<node *> an;
-		loopv(nodeselect)
-		{
-			n.add(curscene->nodes[nodeselect[i]]);
-		}
-		return n;
-	}
-	void world::saveworld(stream *f)
-	{
-		//loopv(scences)
-		{
-			//curscence = scences[i];
-			vector<node *> ns = curscene->getnodes();
-			//f->putstring(curscene->name);
-			//f->putlil<uint>(ns.length());
-			curscene->savescene(f);
-		}
-	}
-	vector<light *> world::getlights()
-	{
-		vector<light *> li;
-		loopv(lights)
-			li.add(lights.pop());
-		return li;
-	}
-	void world::addlight(vec o, vec c, int r, char ty)
-	{
-		light *l = new light();
-		l->color = c;
-		l->type = ty;
-		l->o = o;
-		l->radius = r;
-		lights.add(l);
-	}
-	world *curworld = new world(new scenegraph());
+	world *curworld = new world();
+	worldroot *worldeditor::editworldroot = NULL;
 	
 	void editnodeattr(const char *input, int *v)
 	{
-		vector<node *> n = curworld->getselnodes();
-		if (n.length() == 0) conoutf("nothing selected");
+		vector<node *> n;
+			worldeditor::getselnodes(n);
 		asIScriptObject *c;
 		loopv(n) 
 		{
@@ -1872,19 +1696,13 @@ int getmapversion() { return mapversion; }
 
 	}COMMAND(runnodecode, "s");
 	VARR(maxnodes, 0, 700, 100000);
-node *newasent(str name, vec o, bool addnode)
+node *newnode(str name, vec o, bool addnode)
 {
 	//move this code to the scene graph
 	//create the game object and contrler from the scriptmgr, then check to make sure the ctrl exist and it compiled correctly
-	if (curworld->curscene->nodes.length() >= maxnodes) return NULL;
-	node *g = new node(vec(o), name);
-	asIScriptObject *obj = asScript->CreateController(name, g);
-	if (!obj)
-	{
-		delete g;  
-		return NULL;
-	}
-	g->ctrl.add(obj);
+	//if (curworld->curscene->nodes.length() >= maxnodes) return NULL;
+	node *g = curworld->newnode(o,vec(0), name);
+	if (!g)return nullptr;
 
 	//create the edit entity object as the begining reference point
 	//makeundoent();
@@ -1894,44 +1712,853 @@ node *newasent(str name, vec o, bool addnode)
 
 	if (addnode)g->store();
 	else g->doawake();
-	//if(en) en->name = name;
-	curworld->addnodetoscene(g);
-	
-	//assign a reference to the edit entity
+	g->name = str(name);
+
 	return g;
 
-}
+}ICOMMAND(newnode, "s", (const char *n), { newnode(n, player->o); })
+
 void nodechangename(const char *name)
 {
-	vector<node *> nodes = curworld->getselnodes();
+	vector<node *> nodes;
+	worldeditor::getselnodes(nodes);
 	if (nodes.length() == 0) return;
-	node *g = nodes[0];
-	if (!g)return;
-	g->name = str(name);
+	loopv(nodes) nodes[i]->name = str(name);
 }COMMAND(nodechangename, "s");
+
 void nodeaddctrl (const char *name, int i)
 {
-	vector<node *> nodes = curworld->getselnodes();
-	node *g = nodes[0];
-	if (!g) return;
-	asIScriptObject *obj = asScript->CreateController(str(name), g);
-	if (!obj) return;
-	if (i < 1) g->ctrl.add(obj);
-	else g->ctrl.insert(0, obj);
-	asScript->doCreate(obj);
-} COMMAND(nodeaddctrl, "si");
-void world::delnode()
-{
-	
-	loopv(nodeselect)
-
+	vector<node *> nodes;
+	worldeditor::getselnodes(nodes);
+	if (!nodes.length()) return;
+	loopv(nodes) 
 	{
-		curscene->nodes.remove(nodeselect[i]);
+		node *g = nodes[i];
+		asIScriptObject *obj = asScript->CreateController(str(name), g);
+		if (!obj) return;
+		if (i < 1) g->ctrl.add(obj);
+		else g->ctrl.insert(0, obj);
+		asScript->doCreate(obj);
 	}
-}
+} COMMAND(nodeaddctrl, "si");
 void delnode()
 {
-	curworld->delnode();
-}COMMAND(delnode, "");
+	//curworld->removenode(worldeditor::getselecnodesid());
+}
+COMMAND(delnode, "");
 
-ICOMMAND(newasent, "s", (char *s), {if(!nonodeedit()) newasent(str(s), player->o, true); });
+
+inline bool worldeditor::nonodeedit() { if (!editmode) { conoutf(CON_ERROR, "operation only allowed in edit mode"); return true; } return !worldeditor::nodeediting; }
+
+bool worldeditor::nodehaveselection()
+{
+	return !nodeselect.empty();
+}
+
+bool worldeditor::nodehavehover()
+{
+	return nodehover > 0;
+}
+
+void worldeditor::getselecnodesid(vector<uint> &nodeids)
+{
+	loopv(nodeselect)
+		nodeids.add(nodeselect[i]);
+}
+
+void worldeditor::getselnodes(vector<node *> &nodes)
+{
+	curworld->getnodefromid(nodeselect, nodes);
+}
+
+node * worldeditor::getnfocus()
+{
+	return curworld->getnodefromid(nfocus);
+}
+
+int worldeditor::getnfocusid()
+{
+	return nfocus;
+}
+
+int worldeditor::gethovernodeid()
+{
+	return nodehover;
+}
+
+node * worldeditor::gethovernode()
+{
+	return curworld->getnodefromid(nodehover);
+}
+
+void worldeditor::nodecancelselect()
+{
+	nodeselect = vector<uint>();
+}
+
+void worldeditor::nodeselectionadd(int id)
+{
+	if (id == 0 )id = gethovernodeid();
+	if(curworld->getnodefromid(id)) nodeselect.add(id);
+}
+
+bool worldeditor::nodeisselected(int id)
+{
+	if (id == 0) id = gethovernodeid();
+	return nodeselect.find(id) > -1;
+}
+
+bool worldeditor::nodeisselected(node * n)
+{
+	if(n) return nodeselect.find(n->id) > -1;
+	else return false;
+}
+
+void worldeditor::geteditablenodes(vector<node *> &nodes)
+{
+	if (worldeditor::editworldroot)
+	{
+		worldeditor::editworldroot->getnodes(nodes);
+	}
+}
+
+void worldeditor::nodedrag(const vec &ray)
+{
+	if (nonodeedit() || !nodehaveselection() || !nodemoving) return;
+	//if (nodehavehover()) nodeselect.add(nodehover);
+	float r = 0, c = 0;
+	static vec dest, handle;
+	vec eo, es;
+	int d = dimension(worldeditor::nodeorient);
+	int dc = dimcoord(worldeditor::nodeorient);
+	vector<node *> nodes;
+	curworld->getnodefromid(worldeditor::nodeselect, nodes);
+	loopv(nodes) {
+		if (!editmoveplane(nodes[i]->o, ray, d, nodes[i]->o[d] + (dc ? nodes[i]->radius[d] : 0), handle, dest, worldeditor::nodemoving == 1))
+			return;
+
+		ivec g = dest;
+		int z = g[d] & (~(sel.grid - 1));
+		g.add(sel.grid / 2).mask(~(sel.grid - 1));
+		g[d] = z;
+
+		r = (nodeselsnap ? g[R[d]] : dest[R[d]]) - nodes[i]->o[R[d]];
+		c = (nodeselsnap ? g[C[d]] : dest[C[d]]) - nodes[i]->o[C[d]];
+	}
+
+	if (worldeditor::nodemoving == 1);// makeundonode();
+	if (nodes.length() < 1)nodes.add(curworld->getnodefromid(worldeditor::nfocus));
+	//makeundonode();
+	loopv(nodes)
+	{
+		nodes[i]->o[R[d]] += r;
+		nodes[i]->o[C[d]] += c;
+	}
+	worldeditor::nodemoving = 2;
+}
+
+bool worldeditor::hoveringonnode(uint node, int orient)
+{
+	if (nonodeedit()) return false;
+	worldeditor::nodeorient = orient;
+	if ((worldeditor::nfocus = worldeditor::nodehover = node) > 0)
+		return true;
+	worldeditor::nfocus = worldeditor::nodeselect.empty() ? 0 : worldeditor::nodeselect.last();
+	worldeditor::nodehover = 0;
+	return false;
+}
+
+bool worldeditor::nodetoggleselect(uint id)
+{
+	int find = nodeselect.find(id);
+	if (find > -1) nodeselect.remove(find);
+	else nodeselect.add(id);
+	return !find > -1;
+}
+
+float worldeditor::getnearestnode(const vec & o, const vec & ray, float radius, int mode, int & hitnode)
+{
+	vec no, ns;
+	int orient;
+	float dist = radius, f = 0.0f;
+	nodeorient = -1;
+	nodehover = 0;
+	vector<node *> nodes;
+		worldeditor::geteditablenodes(nodes);
+	loopv(nodes)
+	{
+	node *n = nodes[i];
+	if (!n)continue;
+	no = vec(n->o);
+	no.sub(n->radius); no.z += n->radius.z;
+	ns = vec(n->radius).mul(2);
+	if (!rayboxintersect(no, ns, o, ray, f, orient)) continue;
+	if (f<dist && f > 0)
+	{
+	nodeorient = orient;
+	nodehover = n->id;
+	return f;
+	}
+	}
+	return radius;
+}
+uint worldeditor::nodehover = 0; uint worldeditor::oldhover = 0; char worldeditor::nodeorient = 0;
+uint worldeditor::nfocus = 0; char worldeditor::nodemoving = -1;
+bool worldeditor::nodeselsnap = false; bool worldeditor::nodeediting = true;
+vector<uint> worldeditor::nodeselect = vector<uint>();
+
+#pragma region "world"
+#pragma region "Utility"
+world::world(uint maxnodes, ushort maxallocate, ushort maxallocateperround, worldroot *root)
+{
+	//scenes.add(s);
+	if (!root) root = new worldroot(this, worldsize);
+	worldroots.add(root);
+	nmgr.init(maxallocate, maxallocateperround);
+	//maxnodes not used right now
+}
+uint world::getnumnodes() { return nmgr.numofnodes(); }
+bool world::ispaused() { return paused; }
+#pragma endregion
+#pragma region "Updates/Reset"
+void world::doAwake() { loopv(worldroots) worldroots[i]->doawake(); }
+void world::dorender() { loopv(worldroots) worldroots[i]->dorender();}
+void world::serializedworld()
+{
+	conoutf("not serializing");
+	return;
+	if (asScript->serializer) asScript->resetserializer();
+	else asScript->setupserializer(new CSerializer());
+	//asScript->serializer->serializeworld(this);
+}
+void world::updateworld() {  if (!touched) { serializedworld();  doAwake();  touched = true;  return; }	 loopv(worldroots) worldroots[i]->doupdate(); }
+void world::clearworld(bool force) { if (touched || force) loopv(worldroots)worldroots[i]->resetworld(); touched = false; }
+void world::resetmap()
+{
+	clearoverrides();
+	clearmapsounds();
+	resetblendmap();
+	clearlights();
+	clearpvs();
+	clearslots();
+	clearparticles();
+	clearstains();
+	clearsleep();
+	cancelsel();
+	pruneundos();
+	clearmapcrc();
+	loopv(worldroots)
+		worldroots[i]->killworld();
+	PHYSrebuildLevel();
+	//outsideents.setsize(0);
+	spotlights = 0;
+	volumetriclights = 0;
+}
+void world::saveworld(stream *f)
+{
+	//world should send its self to the serializer and it should be able to serialize what it has
+	
+	//obsolete 
+	//loopv(scences)
+	{
+		//curscence = scences[i];
+		//vector<node *> ns = curscene->getnodes();
+		//f->putstring(curscene->name);
+		//f->putlil<uint>(ns.length());
+		//curscene->savescene(f);
+	}
+}
+void world::loadworld(stream *f) 
+{
+	//world should send its self to the serializer and be built from the file. will have to look at this for more robust open world approach later to determind what parts of the world, or which world do load and when. this maybe as simple as setting flags to the world roots and saving them or dividing into multiple worlds;
+}
+#pragma endregion
+#pragma region "AssetChanges"
+node * world::newnode(vec o, vec rot, str mod)
+{
+	node * n = nmgr.newnode();
+	if (!n) return nullptr;
+	asIScriptObject *aso = asScript->CreateController(mod, n);
+	if (!aso) { removenode(n->id); return nullptr; }
+	n->moveto(o); n->rotateto(rot); n->ctrl.add(aso);
+	worldeditor::editworldroot->addnode(n->id);
+	//conoutf("there are %d nodes", worldeditor::editworldroot->getnodesid().length());
+	return n;
+}
+node * world::newnode(asIScriptObject * aso)
+{
+	node *n = nmgr.newnode();
+	if (!n) return nullptr;
+	n->ctrl.add(aso);
+	//if(editing)
+	worldeditor::editworldroot->addnode(n->id);
+	//else
+	//some how determind where to add this
+	return n;
+}
+node * world::newnode(asITypeInfo * ast)
+{
+	if (!ast)return nullptr;
+	return newnode(vec(), vec(), str(ast->GetName()));
+}
+node * world::newnode(uint id, vec o, vec rot) //creates a new node keep in mind this uses the same controler ptr, this should only be used if you want to link the nodes with the same controllers (call the prefab if you want a instance)
+{
+	return newnode(*nmgr.getnodefromid(id), o, rot);
+}
+node * world::newnode(const node &on, vec o, vec rot)
+{
+	return nullptr;
+	//fix later;
+	node *n = new node(on);
+	n->moveto(o); n->rotateto(rot);
+	return n;
+}
+bool world::removenode(uint id) { return nmgr.removenode(id); }
+bool world::removenode(node *n) { return nmgr.removenode(n); }
+bool world::removenode(const vector<uint > &nodes) { if (nodes.length() < 1)return false; loopv(nodes)nmgr.removenode(nodes[i]); return true; }
+node *world::getnodefromid(uint id) { return nmgr.getnodefromid(id); }
+void world::getnodefromid( vector<uint> &nids, vector<node *> &nodes)
+{
+	node *n;
+	loopv(nids)
+	{
+		n = nmgr.getnodefromid(nids[i]);
+		if (!n) { nids.remove(i); i--; if (i == nids.length()) break; } //remove the malformed id then subtract to suport the remove then test to see it that was the last element // this should not happen ever, This is a last chance catch (because this is a very ineffenctent way to do this
+		else nodes.add(n);
+	}
+}
+octroot * world::newoctree(int worldsize, char flags)
+{
+	return omgr.newoctree(worldsize, flags);
+}
+void world::removeoctree(uint id)
+{
+	if (id == 0) return;
+	omgr.removeoctree(id - 1);
+}
+octroot * world::getoctreefromid(uint id)
+{
+	if (id == 0) return nullptr;
+	return omgr.getoctreefromid(id-1);
+}
+void world::getoctreefromid(vector<uint> &ids, vector<octroot *> &ors)
+{
+	octroot *or;
+	loopv(ids)
+	{
+		or = getoctreefromid(ids[i]);
+		if (!or ) { ids.remove(i); i--; if (i == ids.length()) break; } // last chance catch do not rely on
+		ors.add(or );
+	}
+}
+void world::addlight(vec o, vec color, int radius, char type)
+{
+	light *l = new light();
+	l->color = color;
+	l->type = type;
+	l->o = o;
+	l->radius = radius;
+	lights.add(l);
+}
+vector<light *> &world::getlights() { return lights; }
+
+bool world::nodevalidate(node *n, bool forcedestroy) //this function calls the nodemager validate which allows us to check the validity of a *n. This should be done periodically to see if a node is referenced by * but doesnt have an id
+{
+	uint id = nmgr.checkvalid(n);
+	if (id < 1 && forcedestroy) { delete n; return false; }
+	n->id = id;
+}
+void world::setnodealocation(uint num, ushort numpercall) { setnodealocation(num, numpercall); }
+world::~world()
+{
+	nmgr.setnodealocation(0, 0); //so when deleteing the worldroots nodes are sent directly for deletion rather than being added to the pool and later deleted by the nmgr
+	maxnodes = 0;
+	PHYSKill(); //fix later;
+	physicbodies.shrink(0);
+	lights.shrink(0);
+	worldroots.shrink(0);
+	nmgr.~nodemgr();
+	omgr.~octmgr();
+}
+#pragma endregion
+#pragma region "nodemgr"
+#define NODEALOCATEOVERLOADPERCENT 1.10f
+node *world::nodemgr::newnode()
+{
+	node *n = getnodefrompool();
+	uint indx = getnextopenid();
+	nodes[indx] = n;
+	n->id = indx+1;
+	return 	n;
+}
+node *world::nodemgr::getnodefromid(uint id)
+{
+	id--;
+	return id < nodes.length() ? nodes[id] : nullptr;
+}
+
+bool world::nodemgr::removenode(node *n)
+{
+	uint id = checkvalid(n);
+	if (id == 0) { delete n; return false; }
+	return removenode(id);
+}
+bool world::nodemgr::removenode(uint id)
+{
+	id--;
+	if (id >= nodes.length() || nodes[id] == nullptr) return false;
+	node *n = nodes[id];
+	nodes[id] = nullptr;
+	delete n;
+	openids.add(id);
+	return true;
+
+}
+void world::nodemgr::init(ushort maxalocate, ushort maxpertime) //keep in mind you can only init size of ushort to start with
+{
+	maxallocateatonce = maxpertime;
+	worldnodealocate = maxalocate;
+	allocatenodes(maxalocate);
+}
+void world::nodemgr::update()
+{
+	if (nodepool.length() < worldnodealocate) allocatenodes((nodepool.length() - worldnodealocate) % maxallocateatonce);
+	else if (nodepool.length() > int(worldnodealocate*NODEALOCATEOVERLOADPERCENT)) deallocatenodes((nodepool.length() - int(worldnodealocate*NODEALOCATEOVERLOADPERCENT)) % maxallocateatonce);
+}
+void world::nodemgr::kill()
+{ //kill all vectors to limit memory leaks or problems
+	nodes.shrink(0);
+	nodepool.shrink(0);
+	openids.shrink(0);
+	worldnodealocate = 0;
+	maxallocateatonce = 0;
+}
+uint world::nodemgr::checkvalid(node *n) // if return 0 this means the node needs removed because it does not actually exist other wise we return the correct id
+{
+	if (!n)return false; // make sure we are given a vaild pointer 
+	if (nodes[n->id] != n || (n->id == 0)) //to make sure we have this node has a valid id, and that the id given is not null
+	{
+		int id = 0; // nodes.find(*n);
+		if (id < 0) return 0;
+		return id;
+	}
+	return n->id;
+}
+const inline uint world::nodemgr::numofnodes() { return nodes.length() - openids.length(); }
+void world::nodemgr::setnodealocation(uint num, ushort numpercall) { worldnodealocate = num; maxallocateatonce = numpercall; }
+world::nodemgr::~nodemgr()
+{
+	nodes.deletecontents();
+	nodepool.shrink(0);
+}
+#pragma region "private"
+uint world::nodemgr::getnextopenid() { if (openids.length()) return openids.pop(); else { nodes.pad(1); return nodes.length() - 1; } }
+void world::nodemgr::allocatenodes(ushort amt)
+{
+	uint len = nodepool.length();
+	//nodepool.advance(amt);
+	loopi(amt) nodepool.add(new node());
+}
+void world::nodemgr::deallocatenodes(ushort amt) { nodepool.shrink(amt); }
+node *world::nodemgr::getnodefrompool() { if (nodepool.length()) return nodepool.pop(); else return new node(); }
+#pragma endregion
+#pragma endregion
+#pragma region "octmgr"
+octroot * world::octmgr::newoctree(int worldsize, char flags)
+{
+	cube *c = newcubes(F_SOLID); //change later to only fill half with solid half with empty like default map type;
+	octroot *or = new octroot(worldsize, c, flags);
+	uint opid = getnextopenid();
+	if (opid >= oroots.length())
+	{
+		opid = oroots.length();
+		oroots.add(or );
+	}
+	else oroots[opid] = or;
+	or->id = opid+1;
+	return or;
+}
+
+void world::octmgr::removeoctree(uint id)
+{
+	if (oroots[id] == nullptr) return;
+	octroot *n = oroots[id];
+	oroots[id] = nullptr;
+	delete n;
+}
+
+octroot * world::octmgr::getoctreefromid(uint id)
+{
+	if (oroots[id] == nullptr) return nullptr;
+	else return oroots[id];
+}
+void world::octmgr::kill()
+{
+	oroots.shrink(0);
+}
+world::octmgr::~octmgr()
+{
+	oroots.deletecontents();
+}
+uint world::octmgr::getnextopenid() { loopv(oroots) if (!oroots[i]) return i; return oroots.length(); }
+#pragma endregion
+#pragma endregion
+
+#pragma region octroot
+bool octroot::lock(bool force) //do later
+{
+	return false;
+}
+
+bool octroot::unlock(bool force) //do later
+{
+	return false;
+}
+
+bool octroot::toggglelock(bool force) //do later
+{
+	return false;
+}
+
+vector<vtxarray*> octroot::rendervaocts()
+{
+	return vector<vtxarray*>();
+}
+
+void octroot::buildtricolisionmesh() 
+{
+//	int VertexCount = 0;
+//	//if (!m_dynamicsWorld) return;
+//		//from the writeobj function
+//		//with a couple of additions and subtreactions from me
+//		extern vector<vtxarray *> valist;
+//		vector<vec> verts, texcoords;
+//		hashtable<vec, int> shareverts(1 << 16), sharetc(1 << 16);
+//		hashtable<int, vector<ivec2> > mtls(1 << 8);
+//		vector<int> usedmtl;
+//		vec bbmin(1e16f, 1e16f, 1e16f), bbmax(-1e16f, -1e16f, -1e16f);//might need these for the aabbMax/aabbMin below ?
+//		loopv(valist)
+//		{
+//			vtxarray &va = *valist[i];
+//			if (!va.edata || !va.vdata) continue;
+//			ushort *edata = va.edata + va.eoffset;
+//			vertex *vdata = va.vdata;
+//			ushort *idx = edata;
+//			loopj(va.texs)
+//			{
+//				elementset &es = va.texelems[j];
+//				if (usedmtl.find(es.texture) < 0) usedmtl.add(es.texture);
+//				vector<ivec2> &keys = mtls[es.texture];
+//				loopk(es.length)
+//				{
+//					const vertex &v = vdata[idx[k]];
+//					const vec &pos = v.pos;
+//					const vec &tc = v.tc;
+//					ivec2 &key = keys.add();
+//					key.x = shareverts.access(pos, verts.length());
+//					if (key.x == verts.length())
+//					{
+//						verts.add(pos);
+//						bbmin.min(pos);
+//						bbmax.max(pos);
+//						VertexCount += 1;//get vert count 
+//					}
+//					key.y = sharetc.access(tc, texcoords.length());
+//					if (key.y == texcoords.length()) texcoords.add(tc);
+//				}
+//				idx += es.length;
+//			}
+//		}
+//		int vertStride = sizeof(btVector3);
+//		int indexStride = 3 * sizeof(int);
+//		//conoutf("Level VertexCount %d\r\n", VertexCount);
+//		btVector3* Vertices = new btVector3[VertexCount];
+//		//fill in our Vertices locations
+//		vec center(-(bbmax.x + bbmin.x) / 2, -(bbmax.y + bbmin.y) / 2, -bbmin.z);
+//		//conoutf("adding vert locations");
+//		renderprogress(0, "adding vert locations %d verts", VertexCount);
+//
+//		loopv(verts)
+//		{
+//			vec v = verts[i];
+//			v.add(center);
+//			if (v.y != floor(v.y)) Vertices[i][0] = -v.y; else Vertices[i][0] = int(-v.y);
+//			if (v.z != floor(v.z)) Vertices[i][1] = v.z; else Vertices[i][1] = int(v.z);
+//			if (v.x != floor(v.x)) Vertices[i][2] = v.x; else Vertices[i][2] = int(v.x);
+//			//conoutf("Level verts %.3f/%.3f/%.3f\r\n", Vertices[i][0],Vertices[i][1],Vertices[i][2]);
+//		}
+//
+//		//this first count seems silly but for now its how i get my size for the index container
+//		//it runs fast enough that i am not going to worry with it for now
+//		//works great until you add another material to the mix:( <<<<<<<< i think this is fixed :)
+//		//have to run 2 searches, in someone can do this in a more simple maner, please share.
+//
+//		//usedmtl.sort();
+//		int IndexCount = 0;//counter to keep track of indices while they are being filled
+//		int TriCount = 0;//amount of total triangles
+//		int* Indices = 0;//final indice array
+//
+//							//count tris from each material
+//							//conoutf("counting tris");
+//		loopv(usedmtl)
+//		{
+//			vector<ivec2> &keys = mtls[usedmtl[i]];
+//			for (int tc = 0; tc < keys.length(); tc += 3)
+//			{
+//				TriCount += 1;//amount of total triangles to send to the indices array
+//			}
+//		}
+//		//conoutf("Level TriCount %d\r\n", TriCount);
+//
+//		Indices = new int[TriCount * 3];
+//		//now we fill our Indeces
+//		//conoutf("adding tri indices");
+//		renderprogress(0, "adding tri indices %d triangles", TriCount);
+//		loopv(usedmtl)
+//		{
+//			vector<ivec2> &keys = mtls[usedmtl[i]];
+//			for (int ic = 0; ic < keys.length(); ic += 1)
+//			{
+//				//Indices[i] = keys[ic].x;//+1;//indeces should start at 0?//yes, yes they should
+//				Indices[IndexCount] = keys[ic].x;
+//				//conoutf("Level Indice %d\r\n", Indices[IndexCount]);
+//				IndexCount += 1;//simple yet elegent :)
+//			}
+//		}
+//		//conoutf("data collected, adding it to the array");
+//		renderprogress(0, "data collected, adding it to the array");// %d verts, %d triangles", VertexCount,TriCount);
+//		m_indexVertexArrays = new btTriangleIndexVertexArray(TriCount,
+//			Indices,
+//			indexStride,
+//			VertexCount, (btScalar*) &Vertices[0].x(), vertStride);
+//
+//		bool useQuantizedAabbCompression = true;
+//
+//		//btVector3 aabbMin(1e16f, 1e16f, 1e16f), aabbMax(-1e16f, -1e16f, -1e16f);//nonono dont use there will beno collision
+//		btVector3 aabbMin(-1000, -1000, -1000), aabbMax(1000, 1000, 1000);
+//		trimeshShape = new btBvhTriangleMeshShape(m_indexVertexArrays, useQuantizedAabbCompression, aabbMin, aabbMax);
+//
+//		btCollisionShape* groundShape = trimeshShape;
+//		groundShape->setLocalScaling(btVector3(0.058825, 0.058825, 0.058825));//scaling from bullet obj to cube TODO:make this easier
+//
+//																				//btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(25.),btScalar(5.),btScalar(25.)));//used to make sure bullet was running
+//																				//m_collisionShapes.push_back(groundShape);//it dont like this when we try to clean up :(
+//
+//		btTransform groundTransform;
+//		groundTransform.setIdentity();
+//
+//		groundTransform.setOrigin(btVector3(center.y*-0.058825, center.z*-0.058825, center.x*-0.058825));//put col mesh in proper location
+//																											//conoutf("center %.3f/%.3f/%.3f\r\n", center.y*-0.058825,center.z*-0.058825,center.x*-0.058825);
+//		groundTransform.setRotation(btQuaternion(0, 1, 0, 1));//done in radians not degrees?very wierd 1 = 90.........
+//																/*
+//																btCollisionObject* fixedGround = new btCollisionObject();
+//																fixedGround->setCollisionShape(groundShape);
+//																fixedGround->setWorldTransform(groundTransform);
+//																m_dynamicsWorld->addCollisionObject(fixedGround);
+//																*/
+//
+//																///may need to add as rigid body?
+//																//We can also use DemoApplication::localCreateRigidBody, but for clarity it is provided here:
+//		{
+//			btScalar mass(0.f);
+//
+//			//rigidbody is dynamic if and only if mass is non zero, otherwise static
+//			bool isDynamic = (mass != 0.f);
+//
+//			btVector3 localInertia(0, 0, 0);
+//			if (isDynamic)
+//				groundShape->calculateLocalInertia(mass, localInertia);
+//
+//			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+//			btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
+//			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, groundShape, localInertia);
+//			btRigidBody* body = new btRigidBody(rbInfo);
+//			body->setFriction(0.8f);
+//			body->setRestitution(0.001f);
+//			body->setAngularFactor(0.5f);
+//			body->setLinearFactor(btVector3(0.8f, 0.8f, 0.8f));
+//			//add the body to the dynamics world
+//			m_dynamicsWorld->addRigidBody(body);
+//		}
+//
+//		renderprogress(0, "Level Collision mesh primed and ready");
+//	}
+//	else {}
+//
+//
+//
+}
+
+uint octroot::getoctid(){ return id; }
+cube * octroot::getroot(){ return root; }
+octroot::~octroot()
+{
+	delete root;
+}
+octroot::octroot(int _worldsize, cube * _cube, char _flags) : flags(_flags), root(_cube), worldsize(_worldsize) { if (!root) root = newcubes(F_EMPTY); }
+#pragma endregion
+#pragma region "worldroot"
+uint worldroot::newoctroot(char flags) //id 0 is a null every id is one less then its index, this is to preserve the uint for best optimization
+{
+	if (!this->m_world) if (!curworld) return 0; else m_world = curworld; //a lil condom
+	octroot *or = m_world->newoctree(this->worldsize);
+	if(or) return or->getoctid();
+	return 0;
+}
+
+void worldroot::seteditoct(uint id)
+{
+	octroot *or = m_world->getoctreefromid(id);
+	if (!or ) { conoutf("ERROR retriving octree - this id will be removed from the worldroot"); uint ind = rootsid.find(id); if (ind > -1) rootsid.remove(id); } //search and destroy an malformed root (this means something deleted it withough letting the world root know, this is bad coding and should be fix if this happens
+	worldeditor::editroot = or->getroot();
+}
+
+void worldroot::setposition(vec pos)
+{
+	//addlater
+}
+
+void worldroot::setrotation(vec pos)
+{
+	//addlater
+}
+
+void worldroot::setscale(vec pos)
+{
+	//addlater(may use world size here)
+}
+
+void worldroot::changeworldsize(uint size)
+{
+	//addlater not sure how worldsize works
+}
+
+worldroot::worldroot(world * w, int worldsize, matrix4 worldmatrix, vector<uint>& nodeid, vector<uint>& rootid) : m_world(w), worldsize(worldsize), worldmatrix(worldmatrix)
+{
+	if (nodeid.length()) this->nodeid = vector<uint>(nodeid);
+	if (rootid.length()) this->rootsid = vector<uint>(rootid);
+	worldeditor::editworldroot = this;
+	octroot *r;
+	if (rootsid.length() > 0) { r = m_world->getoctreefromid(rootsid[0]); }
+	else { r = m_world->newoctree(worldsize); rootsid.add(r->getoctid()); }
+	if (!r)return;
+	worldeditor::editroot = r->getroot();
+}
+
+void worldroot::addnode(uint id) //should be called by world only because they add the worlds to existance;
+{
+	if(id > 0)
+	nodeid.add(id);
+}
+
+worldroot::~worldroot()
+{
+	loopv(nodeid) m_world->removenode(nodeid[i]);
+	loopv(rootsid) m_world->removeoctree(rootsid[i]);
+}
+
+node *worldroot::getnode(uint id)
+{
+	return m_world->getnodefromid(id);
+}
+
+void worldroot::dorender()
+{
+	vector<vector<vtxarray *>> vtx;
+	vector<octroot *> roots;
+	m_world->getoctreefromid(rootsid,roots);
+	vector<node *> nodes;
+	m_world->getnodefromid(nodeid,nodes);
+	loopv(roots)
+	{
+		if (roots[i]->flags &= OCTROOT_ACTIVE & OCTROOT_RENDER)
+			vtx.add(roots[i]->rendervaocts());
+	}
+	loopv(vtx); //add them to the va list
+	loopv(nodes)
+	{
+		//if (nodes[i]->flags &= (NODE_ACTIVE) & (NODE_RENDER))
+			nodes[i]->dorender();
+	}
+}
+
+void worldroot::doawake()
+{
+	vector<octroot *> roots;
+	m_world->getoctreefromid(rootsid,roots);
+	vector<node *> nodes;
+	m_world->getnodefromid(nodeid,nodes);
+	bool flag = false;
+	loopv(roots)
+	{
+		//if (roots[i]->flags&OCTROOT_ACTIVE && roots[i]->flags&OCTROOT_PHYSICS && roots[i]->flags &OCTROOT_CHANGED)
+			roots[i]->buildtricolisionmesh(); //figure out how to build in some more setting here
+		//if (roots[i]->flags&OCTROOT_ACTIVE && roots[i]->flags&OCTROOT_OCCO && !flag);
+			//registar as oct nodes root
+	}
+	loopv(nodes)
+	{
+		//if (nodes[i]->flags&NODE_ACTIVE && roots[i]->flags &NODE_START_ON_RESET && !roots[i]->flags &NODE_CHANGED)
+			nodes[i]->doawake();
+		//roots[i]-> |= !NODE_CHANGED;
+	}
+}
+
+void worldroot::doupdate()
+{
+	vector<octroot *> roots;
+	m_world->getoctreefromid(rootsid,roots);
+	vector<node *> nodes;
+	m_world->getnodefromid(nodeid,nodes);
+	loopv(roots); //add if i find a reson to update the octroots
+	loopv(nodes) nodes[i]->updatefrombullet();
+	loopv(nodes)
+	{
+		if (nodes[i]->flags &NODE_ACTIVE)
+			nodes[i]->doupdate();
+	}
+}
+
+void worldroot::getnodes(vector<node *> &nodes)
+{
+	m_world->getnodefromid(nodeid,nodes);
+}
+//may cache the nodes in the render and update frames that are used so they can be accessed (ofc this would be there ids);
+void worldroot::getupdatenodes(vector<node *> &nodes) // not used
+{
+	return;
+}
+
+void worldroot::getrendernodes(vector<node *> &nodes) // not used
+{
+	return;
+}
+
+void worldroot::getnodesid(vector<uint> &nodeids)
+{
+	loopv(nodeid)
+		nodeids.add(nodeid[i]);
+}
+
+void worldroot::getupdatenodesid(vector<uint> &nodeids) // not used
+{
+	loopv(nodeid)
+		if(true) //updtaable
+		nodeids.add(nodeid[i]);
+}
+
+void worldroot::getrendernodesid(vector<uint> &nodeids) // not used
+{
+	loopv(nodeid)
+		if (true) //renderable
+			nodeids.add(nodeid[i]);
+}
+void worldroot::killworld()
+{
+	loopv(nodeid) m_world->removenode(nodeid[i]);
+	loopv(rootsid) m_world->removenode(rootsid[i]);
+}
+void worldroot::resetworld()
+{
+}
+#pragma endregion

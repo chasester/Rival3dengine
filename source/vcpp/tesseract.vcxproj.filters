@@ -357,29 +357,6 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="backforthmover.halo">
-      <Filter>as\script</Filter>
-    </None>
-    <None Include="blank.halo">
-      <Filter>as\script</Filter>
-    </None>
-    <None Include="light.halo">
-      <Filter>as\script</Filter>
-    </None>
-    <None Include="model.halo">
-      <Filter>as\script</Filter>
-    </None>
-    <None Include="object.halo">
-      <Filter>as\script</Filter>
-    </None>
-    <None Include="spawner.halo">
-      <Filter>as\script</Filter>
-    </None>
-    <None Include="timespawner.halo">
-      <Filter>as\script</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="engine">
       <UniqueIdentifier>{7eeca7fc-640f-4ad0-9afc-f376405b9866}</UniqueIdentifier>
     </Filter>
@@ -402,5 +379,28 @@
   <ItemGroup>
     <Image Include="..\..\..\..\..\Downloads\rival_logo-04-noback.png" />
     <Image Include="rival.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\projects\default\halo\backforthmover.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\blank.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\light.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\model.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\object.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\spawner.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\timespawner.halo">
+      <Filter>as\script</Filter>
+    </None>
   </ItemGroup>
 </Project>

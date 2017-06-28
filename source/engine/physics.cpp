@@ -12,7 +12,7 @@ static int clipcacheversion = -2;
 
 static inline clipplanes &getclipplanes(const cube &c, const ivec &o, int size, bool collide = true, int offset = 0)
 {
-    clipplanes &p = clipcache[int(&c - worldroot)&(MAXCLIPPLANES-1)];
+    clipplanes &p = clipcache[int(&c - worldeditor::editroot)&(MAXCLIPPLANES-1)];
     if(p.owner != &c || p.version != clipcacheversion+offset)
     {
         p.owner = &c;
@@ -203,7 +203,7 @@ static float shadowent(octaentities *oc, const vec &o, const vec &ray, float rad
     float dist = 0, dent = radius > 0 ? radius : 1e16f; \
     vec v(o), invray(ray.x ? 1/ray.x : 1e16f, ray.y ? 1/ray.y : 1e16f, ray.z ? 1/ray.z : 1e16f); \
     cube *levels[20]; \
-    levels[worldscale] = worldroot; \
+    levels[worldscale] = worldeditor::editroot; \
     int lshift = worldscale, elvl = mode&RAY_BB ? worldscale : 0; \
     ivec lsizemask(invray.x>0 ? 1 : 0, invray.y>0 ? 1 : 0, invray.z>0 ? 1 : 0); \
 
@@ -373,7 +373,7 @@ float rayent(const vec &o, const vec &ray, float radius, int mode, int size, int
     float dist = raycube(o, ray, radius, mode, size);
     if((mode&RAY_ENTS) == RAY_ENTS)
     {
-		float dent = curworld->getnearestent(o, ray, dist < 0 ? 1e16f : dist, mode, hitnode);
+		float dent = worldeditor::getnearestnode(o, ray, dist < 0 ? 1e16f : dist, mode, hitnode);
         //float dent = disttooutsideent(o, ray, dist < 0 ? 1e16f : dist, mode, NULL);
         if(dent < 1e15f && (dist < 0 || dent < dist)) dist = dent;
     }
@@ -1131,8 +1131,8 @@ static inline bool octacollide(physent *d, const vec &dir, float cutoff, const i
     int diff = (bo.x^bs.x) | (bo.y^bs.y) | (bo.z^bs.z),
         scale = worldscale-1;
     if(diff&~((1<<scale)-1) || uint(bo.x|bo.y|bo.z|bs.x|bs.y|bs.z) >= uint(worldsize))
-       return octacollide(d, dir, cutoff, bo, bs, worldroot, ivec(0, 0, 0), worldsize>>1);
-    const cube *c = &worldroot[octastep(bo.x, bo.y, bo.z, scale)];
+       return octacollide(d, dir, cutoff, bo, bs, worldeditor::editroot, ivec(0, 0, 0), worldsize>>1);
+    const cube *c = &worldeditor::editroot[octastep(bo.x, bo.y, bo.z, scale)];
     if(c->ext && c->ext->ents && mmcollide(d, dir, cutoff, *c->ext->ents)) return true;
     scale--;
     while(c->children && !(diff&(1<<scale)))

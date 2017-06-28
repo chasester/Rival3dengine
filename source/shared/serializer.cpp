@@ -238,7 +238,7 @@ void CSerializer::load(stream *f)
 	namespaces.shrink(0);
 	saveddata.shrink(0);
 	curworld->clearworld();
-	curworld->curscene->nodes.shrink(0);
+	curworld->clearworld(true);
 	PULLLILVECTOR(namespaces);
 	PULLLILVECTOR(types);
 	PULLLILVECTOR(names);
@@ -973,9 +973,9 @@ void CSerialnode::Create(CSerializedValue *val)
 	//now lets create the object
 	node *n;
 	if (val->m_children.size() < 2)
-		n = new node(vec(), vec());
+		n = curworld->newnode(vec(0),vec(0),str(""));
 	else {
-		n = new node(*(vec *) val->m_children[0]->m_restorePtr, *(vec *) val->m_children[1]->m_restorePtr);
+		n = curworld->newnode(*(vec *) val->m_children[0]->m_restorePtr, *(vec *) val->m_children[1]->m_restorePtr,str(""));
 	}
 	if (val->m_children.size() > 2)
 	{
@@ -1004,7 +1004,6 @@ void CSerialnode::Create(CSerializedValue *val)
 			if(!flag)  conoutf("error assigning Self %s", typeidtoname(c->GetTypeId())); //class had no declared self @node we need to remove this object from the node;
 		}
 	}
-	curworld->addnodetoscene(n);
 }
 void CSerialnode::Store(CSerializedValue *val, void *ptr)
 {

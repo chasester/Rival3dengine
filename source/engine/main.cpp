@@ -15,7 +15,7 @@ void cleanup()
     SDL_SetRelativeMouseMode(SDL_FALSE);
     if(screen) SDL_SetWindowGrab(screen, SDL_FALSE);
     cleargamma();
-    freeocta(worldroot);
+    freeocta(worldeditor::editroot);
     UI::cleanup();
     extern void clear_command(); clear_command();
     extern void clear_console(); clear_console();

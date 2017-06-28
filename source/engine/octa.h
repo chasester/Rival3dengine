@@ -238,7 +238,7 @@ struct undoblock // undo header, all data sits in payload
     undoent *ents() { return (undoent *)(this + 1); }
 };
 
-extern cube *worldroot;             // the world data. only a ptr to 8 cubes (ie: like cube.children above)
+// cube *worldeditor::editroot;             // the world data. only a ptr to 8 cubes (ie: like cube.children above)
 extern int wtris, wverts, vtris, vverts, glde, gbatches, rplanes;
 extern int allocnodes, allocva, selchildcount, selchildmat;
 

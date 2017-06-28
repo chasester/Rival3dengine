@@ -16,7 +16,7 @@ static struct emptycube : cube
     }
 } emptycube;
 
-cube *worldroot = newcubes(F_SOLID);
+cube *worldeditor::editroot = newcubes(F_SOLID);
 int allocnodes = 0;
 
 cubeext *growcubeext(cubeext *old, int maxverts)
@@ -186,11 +186,11 @@ COMMAND(printcube, "");
 bool isvalidcube(const cube &c)
 {
     clipplanes p;
-    genclipplanes(c, ivec(0, 0, 0), 256, p);
+    genclipplanes(c, ivec(0,0,0), 256, p);
     loopi(8) // test that cube is convex
     {
         vec v;
-        calcvert(c, ivec(0, 0, 0), 256, v, i);
+        calcvert(c, ivec(0,0,0), 256, v, i);
         if(!pointincube(p, v))
             return false;
     }
@@ -238,7 +238,7 @@ cube &lookupcube(const ivec &to, int tsize, ivec &ro, int &rsize)
         ty = clamp(to.y, 0, worldsize-1),
         tz = clamp(to.z, 0, worldsize-1);
     int scale = worldscale-1, csize = abs(tsize);
-    cube *c = &worldroot[octastep(tx, ty, tz, scale)];
+    cube *c = &worldeditor::worldeditor::editroot[octastep(tx, ty, tz, scale)];
     if(!(csize>>scale)) do
     {
         if(!c->children)
@@ -264,7 +264,7 @@ int lookupmaterial(const vec &v)
     ivec o(v);
     if(!insideworld(o)) return MAT_AIR;
     int scale = worldscale-1;
-    cube *c = &worldroot[octastep(o.x, o.y, o.z, scale)];
+    cube *c = &worldeditor::editroot[octastep(o.x, o.y, o.z, scale)];
     while(c->children)
     {
         scale--;
@@ -285,7 +285,7 @@ const cube &neighbourcube(const cube &c, int orient, const ivec &co, int size, i
     diff ^= n[dim];
     if(diff >= uint(worldsize)) { ro = n; rsize = size; return emptycube; }
     int scale = worldscale;
-    const cube *nc = worldroot;
+    const cube *nc = worldeditor::editroot;
     if(neighbourdepth >= 0)
     {
         scale -= neighbourdepth + 1;
@@ -571,8 +571,8 @@ void remip()
     remiptotal = allocnodes;
     loopi(8)
     {
-        ivec o(i, ivec(0, 0, 0), worldsize>>1);
-        remip(worldroot[i], o, worldsize>>2);
+        ivec o(i, ivec(0,0,0), worldsize>>1);
+        remip(worldeditor::editroot[i], o, worldsize>>2);
     }
     calcmerges();
 }
@@ -1438,7 +1438,7 @@ bool genpoly(cube &cu, int orient, const ivec &o, int size, int vis, ivec &n, in
     genfaceverts(cu, orient, v);
     if(flataxisface(cu, orient))
     {
-         n = ivec(0, 0, 0);
+         n = ivec(0,0,0);
          n[dim] = coord ? 1 : -1;
     }
     else
@@ -1700,7 +1700,7 @@ struct cfpolys
 
 static hashtable<cfkey, cfpolys> cpolys;
 
-void genmerges(cube *c = worldroot, const ivec &o = ivec(0, 0, 0), int size = worldsize>>1)
+void genmerges(cube *c = worldeditor::editroot, const ivec &o = ivec(0,0,0), int size = worldsize>>1)
 {
     if((genmergeprogress++&0xFFF)==0) renderprogress(float(genmergeprogress)/allocnodes, "merging faces...");
     neighbourstack[++neighbourdepth] = c;
@@ -1713,7 +1713,7 @@ void genmerges(cube *c = worldroot, const ivec &o = ivec(0, 0, 0), int size = wo
         {
             cfkey k;
             poly p;
-            if(size < 1<<maxmerge && c != worldroot)
+            if(size < 1<<maxmerge && c != worldeditor::editroot)
             {
                 if(genpoly(c[i], j, co, size, vis, k.n, k.offset, p))
                 {
@@ -1734,7 +1734,7 @@ void genmerges(cube *c = worldroot, const ivec &o = ivec(0, 0, 0), int size = wo
             }
             clearmerge(c[i], j);
         }
-        if((size == 1<<maxmerge || c == worldroot) && cpolys.numelems)
+        if((size == 1<<maxmerge || c == worldeditor::editroot) && cpolys.numelems)
         {
             enumeratekt(cpolys, cfkey, key, cfpolys, val,
             {
