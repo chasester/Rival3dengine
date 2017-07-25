@@ -643,7 +643,7 @@ void resetgl()
        !reloadtexture("media/interface/mapshot_frame.png") ||
        !reloadtexture("media/interface/loading_frame.png") ||
        !reloadtexture("media/interface/loading_bar.png"))
-        fatal("failed to reload core texture");
+        fatal("failed to reload core textures");
     reloadfonts();
     inbetweenframes = true;
     renderbackground("initializing...");
