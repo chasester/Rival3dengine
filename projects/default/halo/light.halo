@@ -15,11 +15,12 @@ class model : IController
 	}
 	void Awake()
 	{
-		vec color = vec( red ,green ,blue );
-		addlight(self.o, color, radius, 0);	
+		
+		
 	}
 	void Render()
 	{
-		
+		vec color = vec( red ,green ,blue );
+		addlight(self.o, color, radius, 0);	
 	}
 }

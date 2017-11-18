@@ -3694,7 +3694,7 @@ static inline bool rendernogi(cube *c, const ivec &o, int size, const ivec &bbmi
 
 static inline void rendernogi(const ivec &bbmin, const ivec &bbmax, int minsize)
 {
-    if(rendernogi(worldeditor::editroot, ivec(0, 0, 0), worldsize>>1, ivec(bbmin).max(nogimin), ivec(bbmax).min(nogimax), minsize))
+    if(rendernogi(worldeditor::editroot, octaoffset, worldsize>>1, ivec(bbmin).max(nogimin), ivec(bbmax).min(nogimax), minsize))
         nogiquad(0, 0, worldsize, worldsize);
 }
 

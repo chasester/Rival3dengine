@@ -1044,7 +1044,7 @@ static void regularsplash(int type, int color, int radius, int num, int fade, co
 
 bool canaddparticles()
 {
-    return !minimized;
+	return true;
 }
 
 void regular_particle_splash(int type, int num, int fade, const vec &p, int color, float size, int radius, int gravity, int delay)
@@ -1391,7 +1391,7 @@ void updateparticles()
 {
     if(regenemitters) addparticleemitters();
 
-    if(minimized) { canemit = false; return; }
+    //if(minimized) { canemit = false; return; }
 
     if(lastmillis - lastemitframe >= emitmillis)
     {

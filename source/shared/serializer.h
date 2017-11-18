@@ -47,9 +47,7 @@ struct CUserType
 CSERIALDeclare(node);
 CSERIALDeclare(vec);
 CSERIALDeclare(string);
-CSERIALDeclare(vector);
-
-
+CSERIALDeclare(array);
 
 struct SaveType
 {
@@ -74,6 +72,9 @@ public:
 	CSerializedValue();
 	CSerializedValue(CSerializedValue *parent, const std::string &name, const std::string &nameSpace, void *ref, int typeId);
 	~CSerializedValue();
+
+	//restarts the object similar to the constructor but with out needing a new object;
+	void Restart(CSerializedValue *parent, const std::string &name, const std::string &nameSpace, void *ref, int typeId);
 
 	//Create the data from a saved file
 	void Create(void *ref, int refTypeId);
@@ -225,7 +226,7 @@ public:
 	// Return new pointer to restored object
 	void *GetPointerToRestoredObject(void *originalObject);
 
-	CSerializedValue *storenode(node *n);
+	void storenode(node * n, CSerializedValue *c, bool force = false);
 	void ClearRoot();
 
 	void print();

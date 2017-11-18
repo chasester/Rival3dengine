@@ -84,8 +84,9 @@ asILockableSharedBool *node::getweakflagref()
 }
 void node::store()
 {
-	//if (c)	conoutf(" C not Stored");
-	c = asScript->serializer->storenode(this);
+	bool force = false;
+	if (!c) { c = new CSerializedValue(); force = true; }
+	asScript->serializer->storenode(this, c, force);
 }
 //void node::seteditbox(vec &rad)
 //{
@@ -122,7 +123,6 @@ bool node::restore()
 		return false;
 	}
 	c->Restore(this, CSerialnode::getID());
-	this->store();
 	if (!this) {conoutf("no THis"); return false;}
 	return true;
 }
@@ -133,6 +133,7 @@ void node::restart()
 }
 void node::doawake()
 {
+	//if(c)this->store();
 	loopv(ctrl) if (ctrl[i])asScript->doAwake(ctrl[i]); else ctrl.remove(i);
 }
 

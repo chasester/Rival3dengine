@@ -204,7 +204,7 @@ void CSerializer::save(stream *f)
 	//conoutf("%d", saveddata.length());
 	loopv(saveddata) {
 		saveddata[i]->write(f);
-		//saveddata[i]->print();
+		saveddata[i]->print();
 	}
 }
 
@@ -237,8 +237,7 @@ void CSerializer::load(stream *f)
 	types.shrink(0);
 	namespaces.shrink(0);
 	saveddata.shrink(0);
-	curworld->clearworld();
-	curworld->clearworld(true);
+	//curworld->restartworld(true);
 	PULLLILVECTOR(namespaces);
 	PULLLILVECTOR(types);
 	PULLLILVECTOR(names);
@@ -256,7 +255,7 @@ void CSerializer::load(stream *f)
 	if (!m_root.m_serializer) { conoutf("failed to init serializer, map will not load nodes."); return; }
 	index = -1; //this is to avoid a compile time error that causes the function to add extra number to index
 	m_root.load();
-	curworld->serializedworld();
+	//curworld->serializedworld();
 	return;
 }
 #define CALLCONSTRUCTOR(n) new n();
@@ -401,12 +400,11 @@ void CSerializer::AddUserType(CUserType *ref, const std::string &name)
 	m_userTypes[name] = ref;
 }
 
-CSerializedValue * CSerializer::storenode(node * n)
+void CSerializer::storenode(node * n, CSerializedValue *c, bool newobj)
 {
-	if (!m_engine)return NULL;
-	CSerializedValue *c = new CSerializedValue(&m_root, "SERIAL_OBJECT" , "", n, CSerialnode::getID());
-	m_root.m_children.push_back(c);
-	return c;
+	if (!m_engine)return;
+	if (newobj)  m_root.m_children.push_back(c); //add to the parent if not there
+	c->Restart(&m_root, "SerialObject", "", n, CSerialnode::getID());
 }
 
 void CSerializer::ClearRoot(){ m_root.ClearChildren(); }
@@ -561,7 +559,15 @@ CSerializedValue::CSerializedValue(CSerializedValue *parent, const std::string &
 	if (parent) m_serializer = parent->m_serializer;
 	Store(ref, typeId);
 }
-
+void CSerializedValue::Restart(CSerializedValue *parent, const std::string &name, const std::string &nameSpace, void *ref, int typeId)
+{
+	Uninit();
+	Init();
+	m_name = name;
+	m_nameSpace = nameSpace;
+	if (parent) m_serializer = parent->m_serializer;
+	Store(ref, typeId);
+}
 void CSerializedValue::Init()
 {
 	m_handlePtr   = 0;
@@ -957,7 +963,7 @@ void CSerialnode::Create(CSerializedValue *val)
 			}
 
 			else; //some asobject got corrupted. so lets just remove it cuz we dont know whats wrong (probably just missing the file)
-			//we will let this go for now and catch it later
+				  //we will let this go for now and catch it later
 		}
 		//now we check to make sure that the objects are the correct thing we need
 		if (i < 2) {
@@ -971,24 +977,34 @@ void CSerialnode::Create(CSerializedValue *val)
 				val->m_children[i]->m_restorePtr = 0;
 	}
 	//now lets create the object
-	node *n;
-	if (val->m_children.size() < 2)
-		n = curworld->newnode(vec(0),vec(0),str(""));
-	else {
-		n = curworld->newnode(*(vec *) val->m_children[0]->m_restorePtr, *(vec *) val->m_children[1]->m_restorePtr,str(""));
+	node *n = curworld->newnode(vec(0), vec(0));
+	if (!n || n == nullptr) { conoutf("node create error"); return;	}
+	if (val->m_children.size() >= 2) {
+		vec *o = (vec *) val->m_children[0]->m_restorePtr;
+		vec *rot = (vec *) val->m_children[1]->m_restorePtr;
+		if (o) n->o = *o;
+		if (rot) n->rot = *rot;
 	}
 	if (val->m_children.size() > 2)
 	{
-		n->name = *(std::string*)val->m_children[2]->GetUserData();
-		
+		n->name = "NAME ERROR";
+		if (val->m_children[2]->GetUserData()) 
+		{
+			conoutf("my name is %s", (*(str *) val->m_children[2]->GetUserData()).c_str());
+			n->name = str((*(str *) val->m_children[2]->GetUserData()).c_str());
+		}
+			//n->name = *(str *) val->m_children[2]->GetUserData();
+		conoutf("myname is %s", n->name.c_str());
+		//if () conoutf("hello");
+		//else n->name = *(str *) val->m_children[2]->m_restorePtr;
 	}
 	if (val->m_children.size() > 3)
 	{
-		loopk(val->m_children.size() - 3) 
+		loopk(val->m_children.size() - 3)
 		{
 			bool flag = false;
-			asIScriptObject *c = (asIScriptObject *) val->m_children[k+3]->m_restorePtr;
-			if(c) for (int i = 0; i < c->GetPropertyCount(); i++)
+			asIScriptObject *c = (asIScriptObject *) val->m_children[k + 3]->m_restorePtr;
+			if (c) for (int i = 0; i < c->GetPropertyCount(); i++)
 			{
 				if (str(c->GetPropertyName(i)) == str("self"))
 				{
@@ -1001,24 +1017,26 @@ void CSerialnode::Create(CSerializedValue *val)
 					flag = true;
 				}
 			}
-			if(!flag)  conoutf("error assigning Self %s", typeidtoname(c->GetTypeId())); //class had no declared self @node we need to remove this object from the node;
+			if (!flag)  conoutf("error assigning Self %s", typeidtoname(c->GetTypeId())); //class had no declared self @node we need to remove this object from the node;
 		}
 	}
+	n->store();
 }
 void CSerialnode::Store(CSerializedValue *val, void *ptr)
 {
-	node *g = new node(*((const node *) ptr));
-	val->m_children.push_back(new CSerializedValue(val, "pos", "", new vec(g->o), CSerialvec::getID())); //store vec o
+	node *g = (node *) ptr;
+	vec *o = new vec(g->o);
+	val->m_children.push_back(new CSerializedValue(val, "pos", "", o, CSerialvec::getID())); //store vec o
 	val->m_children.push_back(new CSerializedValue(val, "rot", "", new vec(g->rot), CSerialvec::getID())); // store vec rot
 	val->m_children.push_back(new CSerializedValue(val, "name", "", new str(g->name), CSerialstring::getID())); //store the name
-	loopv(g->ctrl) if(g->ctrl[i]) val->m_children.push_back(new CSerializedValue(val, "ctrl", "", g->ctrl[i], g->ctrl[i]->GetTypeId()));
+	loopv(g->ctrl) if (g->ctrl[i]) val->m_children.push_back(new CSerializedValue(val, "ctrl", "", g->ctrl[i], g->ctrl[i]->GetTypeId()));
 	//if(g->ctrl) val->m_children.push_back(new CSerializedValue(val, "ctrl", "", g->ctrl, g->ctrl->GetTypeId())); //store the controler for this element
 }
 void CSerialnode::Restore(CSerializedValue *val, void *ptr)
 {
 	node *g = (node *) ptr;
 	val->m_children[0]->Restore(&g->o, CSerialvec::getID());
-	val->m_children[1]->Restore(&g->rot, CSerialvec::getID()); 
+	val->m_children[1]->Restore(&g->rot, CSerialvec::getID());
 	val->m_children[2]->Restore(&g->name, CSerialstring::getID());
 	g->ctrl.growbuf(val->m_children.size() - 3);
 	loopi(g->ctrl.length()) val->m_children[2]->Restore(g->ctrl[i], g->ctrl[i]->GetTypeId());
@@ -1038,7 +1056,7 @@ int CSerialnode::serialID = -1;
 void CSerialvec::Create(CSerializedValue *val)
 {
 	vec v(0);
-	
+
 	loopi(val->m_children.size())
 	{
 		if (i >= 3) break;
@@ -1050,16 +1068,16 @@ void CSerialvec::Create(CSerializedValue *val)
 
 void CSerialvec::Store(CSerializedValue *val, void *ptr)
 {
-	vec *o = new vec(*(vec *) ptr);
-	vec *p = (vec *) ptr;
+	vec *o = (vec *) ptr;
 	val->m_children.push_back(new CSerializedValue(val, "x", "", &o->x, asTYPEID_FLOAT));
 	val->m_children.push_back(new CSerializedValue(val, "y", "", &o->y, asTYPEID_FLOAT));
 	val->m_children.push_back(new CSerializedValue(val, "z", "", &o->z, asTYPEID_FLOAT));
+	
 }
 
 void CSerialvec::Restore(CSerializedValue *val, void *ptr)
 {
-	vec *o = (vec *)ptr;
+	vec *o = (vec *) ptr;
 	val->m_children[0]->Restore(&o->x, asTYPEID_FLOAT);
 	val->m_children[1]->Restore(&o->y, asTYPEID_FLOAT);
 	val->m_children[2]->Restore(&o->z, asTYPEID_FLOAT);
@@ -1073,12 +1091,18 @@ int CSerialvec::serialID = -1;
 
 void CSerialstring::Create(CSerializedValue *val)
 {
-	str buffer = str();
-	buffer.resize(val->m_mem.size());
+	//val->m_restorePtr = new str("");
+	val->SetUserData(new str());
+	str *buffer = (str *) val->GetUserData();
+	buffer->resize(val->m_mem.size());
 	memcpy(&buffer[0], &val->m_mem[0], val->m_mem.size());
-	val->m_restorePtr = new str(buffer);
+	//buffer = "hello world";
+	val->SetUserData(buffer);
 	//std::string *buffer = (std::string*)val->m_restorePtr;
-	val->SetUserData(val->m_restorePtr);
+	
+	conoutf("%s buff", buffer->c_str());
+	conoutf("%s ptr", ((str *) val->GetUserData())->c_str());
+	//val->SetUserData(&val->m_restorePtr);
 }
 
 void CSerialstring::Store(CSerializedValue *val, void *ptr)
@@ -1092,12 +1116,12 @@ void CSerialstring::Restore(CSerializedValue *val, void *ptr)
 	*(std::string*)ptr = *buffer;
 }
 
-void CSerialstring::CleanupUserData(CSerializedValue *val) 
+void CSerialstring::CleanupUserData(CSerializedValue *val)
 {
 }
 int CSerialstring::serialID = -1;
 
-void CSerialvector::Create(CSerializedValue *val)
+void CSerialarray::Create(CSerializedValue *val)
 {
 	CScriptArray *buffer = CScriptArray::Create(val->m_children[0]->GetType(), val->m_children.size());
 	val->m_restorePtr = buffer;
@@ -1106,14 +1130,14 @@ void CSerialvector::Create(CSerializedValue *val)
 		val->m_children[i]->Restore(buffer->At(asUINT(i)), buffer->GetElementTypeId());
 }
 
-void CSerialvector::Store(CSerializedValue *val, void *ptr)
+void CSerialarray::Store(CSerializedValue *val, void *ptr)
 {
 	CScriptArray *arr = (CScriptArray*) ptr;
 	for (unsigned int i = 0; i < arr->GetSize(); i++)
 		val->m_children.push_back(new CSerializedValue(val, "", "", arr->At(i), arr->GetElementTypeId()));
 }
 
-void CSerialvector::Restore(CSerializedValue *val, void *ptr)
+void CSerialarray::Restore(CSerializedValue *val, void *ptr)
 {
 	CScriptArray *arr = (CScriptArray*) ptr;
 	arr->Resize(asUINT(val->m_children.size()));
@@ -1121,9 +1145,9 @@ void CSerialvector::Restore(CSerializedValue *val, void *ptr)
 		val->m_children[i]->Restore(arr->At(asUINT(i)), arr->GetElementTypeId());
 }
 
-void CSerialvector::CleanupUserData(CSerializedValue *val) 
+void CSerialarray::CleanupUserData(CSerializedValue *val)
 {
 }
-int CSerialvector::serialID = -1;
+int CSerialarray::serialID = -1;
 
 END_AS_NAMESPACE

@@ -271,6 +271,7 @@ struct viewcellrequest
 static vector<viewcellrequest> viewcellrequests;
 
 static bool genpvs_canceled = false;
+bool iscalcpvs = false;
 static int numviewcells = 0;
 
 VAR(maxpvsblocker, 1, 512, 1<<16);
@@ -382,7 +383,7 @@ struct pvsworker
         if(p.edges.x!=0xFF) p.flags |= PVS_HIDE_GEOM;
     }
 
-    void shaftcullpvs(shaft &s, pvsnode &p, const ivec &co = ivec(0, 0, 0), int size = worldsize)
+    void shaftcullpvs(shaft &s, pvsnode &p, const ivec &co = octaoffset, int size = worldsize)
     {
         if(p.flags&PVS_HIDE_BB) return;
         shaftbb bb(co, size);
@@ -416,7 +417,7 @@ struct pvsworker
         cullorder(int index, int dist) : index(index), dist(dist) {}
     };
 
-    void cullpvs(pvsnode &p, const ivec &co = ivec(0, 0, 0), int size = worldsize)
+    void cullpvs(pvsnode &p, const ivec &co = octaoffset, int size = worldsize)
     {
         if(p.flags&(PVS_HIDE_BB | PVS_HIDE_GEOM) || genpvs_canceled) return;
         if(p.children && !(p.flags&PVS_HIDE_BB))
@@ -1095,7 +1096,7 @@ void testpvs(int *vcsize)
 }
 
 COMMAND(testpvs, "i");
-
+static Uint32 startpvs = 0;
 void genpvs(int *viewcellsize)
 {
     if(worldsize > 1<<15)
@@ -1104,11 +1105,12 @@ void genpvs(int *viewcellsize)
         return;
     }
 
-    renderbackground("generating PVS (esc to abort)");
+	//renderbackground("generating PVS (esc to abort)");
     genpvs_canceled = false;
-    Uint32 start = SDL_GetTicks();
+	iscalcpvs = true;
+    startpvs = SDL_GetTicks();
 
-    renderprogress(0, "finding view cells");
+	//renderprogress(0, "finding view cells");
 
     clearpvs();
     calcpvsbounds();
@@ -1120,7 +1122,7 @@ void genpvs(int *viewcellsize)
     root.children = 0;
     genpvsnodes(worldeditor::editroot);
 
-    totalviewcells = countviewcells(worldeditor::editroot, ivec(0, 0, 0), worldsize>>1, *viewcellsize>0 ? *viewcellsize : 32);
+    totalviewcells = countviewcells(worldeditor::editroot, octaoffset, worldsize>>1, *viewcellsize>0 ? *viewcellsize : 32);
     numviewcells = 0;
     genpvs_canceled = false;
     check_genpvs_progress = false;
@@ -1128,27 +1130,31 @@ void genpvs(int *viewcellsize)
     int numthreads = pvsthreads > 0 ? pvsthreads : numcpus;
     if(numthreads<=1)
     {
+		renderbackground("generating PVS (esc to abort)");
+		renderprogress(0, "finding view cells");
         pvsworkers.add(new pvsworker);
         timer = SDL_AddTimer(500, genpvs_timer, NULL);
     }
     viewcells = new viewcellnode;
-    genviewcells(*viewcells, worldeditor::editroot, ivec(0, 0, 0), worldsize>>1, *viewcellsize>0 ? *viewcellsize : 32);
+    genviewcells(*viewcells, worldeditor::editroot, octaoffset, worldsize>>1, *viewcellsize>0 ? *viewcellsize : 32);
     if(numthreads<=1)
     {
         SDL_RemoveTimer(timer);
     }
     else
     {
-        renderprogress(0, "creating threads");
+        //renderprogress(0, "creating threads");
         if(!pvsmutex) pvsmutex = SDL_CreateMutex();
         if(!viewcellmutex) viewcellmutex = SDL_CreateMutex();
-        loopi(numthreads)
+        loopi(numthreads-1)
         {
             pvsworker *w = pvsworkers.add(new pvsworker);
             w->thread = SDL_CreateThread(pvsworker::run, "pvs worker", w);
         }
-        show_genpvs_progress(0, 0);
-        while(!genpvs_canceled)
+		show_genpvs_progress(0, 0);
+		return;
+
+        /*while(!genpvs_canceled)
         {
             SDL_Delay(500);
             SDL_LockMutex(viewcellmutex);
@@ -1160,7 +1166,7 @@ void genpvs(int *viewcellsize)
         SDL_LockMutex(viewcellmutex);
         viewcellrequests.setsize(0);
         SDL_UnlockMutex(viewcellmutex);
-        loopv(pvsworkers) SDL_WaitThread(pvsworkers[i]->thread, NULL);
+        loopv(pvsworkers) SDL_WaitThread(pvsworkers[i]->thread, NULL);*/
     }
     pvsworkers.deletecontents();
 
@@ -1174,10 +1180,46 @@ void genpvs(int *viewcellsize)
         conoutf("genpvs aborted");
     }
     else conoutf("generated %d unique view cells totaling %.1f kB and averaging %d B (%.1f seconds)",
-            pvs.length(), pvsbuf.length()/1024.0f, pvsbuf.length()/max(pvs.length(), 1), (end - start) / 1000.0f);
+            pvs.length(), pvsbuf.length()/1024.0f, pvsbuf.length()/max(pvs.length(), 1), (end - startpvs) / 1000.0f);
 }
 
 COMMAND(genpvs, "i");
+static Uint32 lastupdatepvs = 0;
+void checkpvs()
+{
+	if (startpvs - lastupdatepvs < 0 && !genpvs_canceled) return;
+	lastupdatepvs = startpvs + 500;
+	if (!genpvs_canceled) //did we stop doing pvs?
+	{
+		SDL_LockMutex(viewcellmutex);
+		int unique = pvs.length(), processed = numviewcells, remaining = viewcellrequests.length();
+		SDL_UnlockMutex(viewcellmutex);
+		//conoutf("%d%% - %d of %d view cells (%d unique)", int((float(processed) / float(totalviewcells > 0 ? totalviewcells : 1)) * 100), processed, totalviewcells, unique);
+		//show_genpvs_progress(unique, processed);
+		if (remaining) return; //are we done with pvs?
+	}
+	SDL_LockMutex(viewcellmutex);
+	viewcellrequests.setsize(0);
+	SDL_UnlockMutex(viewcellmutex);
+	loopv(pvsworkers) SDL_WaitThread(pvsworkers[i]->thread, NULL);
+	pvsworkers.deletecontents();
+	origpvsnodes.setsize(0);
+	pvscompress.clear();
+	
+	Uint32 end = SDL_GetTicks();
+	iscalcpvs = false;
+	lastupdatepvs = 0;
+	if (genpvs_canceled)
+	{
+		clearpvs();
+		conoutf("genpvs aborted");
+	}
+	else conoutf("generated %d unique view cells totaling %.1f kB and averaging %d B (%.1f seconds)",
+		pvs.length(), pvsbuf.length() / 1024.0f, pvsbuf.length() / max(pvs.length(), 1), (end - startpvs) / 1000.0f);
+	
+}
+
+ICOMMAND(cancelpvs, "", (), { genpvs_canceled = true; });
 
 void pvsstats()
 {

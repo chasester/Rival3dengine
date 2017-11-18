@@ -2713,7 +2713,8 @@ static const uint *runcode(const uint *code, tagval &result)
                 int callargs = (op>>8)&0x1F, offset = numargs-callargs;
                 if(id->flags&IDF_UNKNOWN)
                 {
-                    debugcode("unknown command: %s", id->name);
+					//use this space to call angel script message handle system
+					debugcode("unknown command: %s", id->name);
                     FORCERESULT;
                 }
                 CALLALIAS;

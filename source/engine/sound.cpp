@@ -528,7 +528,8 @@ void updatesounds()
 {
     updatemumble();
     if(nosound) return;
-    if(minimized) stopsounds();
+	if (false);
+   // if(minimized) stopsounds();
     else
     {
         reclaimchannels();
@@ -569,7 +570,7 @@ void preloadmapsounds()
 
 int playsound(int n, const vec *loc, extentity *ent, int flags, int loops, int fade, int chanid, int radius, int expire)
 {
-    if(nosound || !soundvol || minimized) return -1;
+    if(nosound || !soundvol ) return -1;
 
     soundtype &sounds = ent || flags&SND_MAP ? mapsounds : gamesounds;
     if(!sounds.configs.inrange(n)) { conoutf(CON_WARN, "unregistered sound: %d", n); return -1; }

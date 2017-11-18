@@ -780,27 +780,34 @@ void checkinput()
 
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-                if(keyrepeatmask || !event.key.repeat)
-                    processkey(event.key.keysym.sym, event.key.state==SDL_PRESSED);
+				if (keyrepeatmask || !event.key.repeat) 
+				{
+
+					processkey(event.key.keysym.sym, event.key.state == SDL_PRESSED);
+					processkeymap(event.key.keysym.sym, event.key.state == SDL_PRESSED); //new one;
+				}
                 break;
 
             case SDL_WINDOWEVENT:
                 switch(event.window.event)
                 {
                     case SDL_WINDOWEVENT_CLOSE:
-                        quit();
+						quit();
                         break;
 
                     case SDL_WINDOWEVENT_FOCUS_GAINED:
                         shouldgrab = true;
+						minimized = false;
                         break;
                     case SDL_WINDOWEVENT_ENTER:
                         inputgrab(grabinput = true);
+						minimized = false;
                         break;
 
                     case SDL_WINDOWEVENT_LEAVE:
                     case SDL_WINDOWEVENT_FOCUS_LOST:
                         inputgrab(grabinput = false);
+						minimized = true;
                         break;
 
                     case SDL_WINDOWEVENT_MINIMIZED:
@@ -860,6 +867,7 @@ void checkinput()
         }
     }
     if(mousemoved) resetmousemotion();
+	firekeymaps();
 }
 
 void swapbuffers(bool overlay)
@@ -868,12 +876,13 @@ void swapbuffers(bool overlay)
     SDL_GL_SwapWindow(screen);
 }
 
+VARP(renderminimized, 0, 1, 1);
 VAR(menufps, 0, 60, 1000);
 VARP(maxfps, 0, 125, 1000);
 
 void limitfps(int &millis, int curmillis)
 {
-    int limit = (mainmenu || minimized) && menufps ? (maxfps ? min(maxfps, menufps) : menufps) : maxfps;
+    int limit = (mainmenu || (minimized && !renderminimized)) && menufps ? (maxfps ? min(maxfps, menufps) : menufps) : maxfps;
     if(!limit) return;
     static int fpserror = 0;
     int delay = 1000/limit - (millis-curmillis);
@@ -1020,10 +1029,11 @@ int getclockmillis()
 
 VAR(numcpus, 1, 1, 16);
 
+
 int main(int argc, char **argv)
 {
     #ifdef WIN32
-    //atexit((void (__cdecl *)(void))_CrtDumpMemoryLeaks);
+   // atexit((void (__cdecl *)(void))_CrtDumpMemoryLeaks);
     #ifndef _DEBUG
     #ifndef __GNUC__
     __try {
@@ -1142,6 +1152,7 @@ int main(int argc, char **argv)
     logoutf("init: sound");
     initsound();
 
+	initbindmap();
     logoutf("init: cfg");
     initing = INIT_LOAD;
     execfile("config/keymap.cfg");
@@ -1214,6 +1225,7 @@ int main(int argc, char **argv)
         totalmillis = millis;
         updatetime();
 
+		if (iscalcpvs)checkpvs();
         checkinput();
         ovr::update();
         UI::update();
@@ -1233,8 +1245,7 @@ int main(int argc, char **argv)
         recomputecamera();
         updateparticles();
         updatesounds();
-
-        if(minimized) continue;
+        if(minimized && !renderminimized) continue;
 
         gl_setupframe(!mainmenu);
 

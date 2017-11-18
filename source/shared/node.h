@@ -10,6 +10,7 @@ struct savenode;
 struct light;
 struct cube;
 struct vtxarray;
+struct CSerialworld;
 //list includes
 #include "AJMPhys.h"
 
@@ -66,12 +67,14 @@ struct scriptinterface
 struct node
 {
 	friend world;
+	friend poolidmgr<node *>;
 	asILockableSharedBool *weakRefFlag;
 	uint parent;
 	vector<uint> children;
 	str name, tags; //instance name, tag to classify data, set on a per object basis, allows it to search by these break tags up by space
 	int refcount; //for weak reference
 	uint id;
+	ushort sceneid;
 	uint flags;
 	vector<asIScriptObject *> ctrl; //link to the script functions on* funcitons
 									// position or start origin of the object
@@ -79,12 +82,12 @@ struct node
 	vec o, rot, radius; //readius should not be changed, this is used to get a general idea of the bounds of the visual reprentation
 	vec old_o, old_rot; //store the data before we move it
 	CSerializedValue *c; //stored game data for said object;
-						 //editnode *en;
+	bool touched = false; //editnode *en;
 	void store();
 	bool restore();
 	//private: make private later
-	node() {}
-	node(const node &n) {};
+	node(){}
+	node(const node &n) : radius(vec(2.5f))  {};
 	node(vec pos, str name = "unnamed", str tags = "");
 	node(vec pos, vec rotation);
 public:
@@ -254,6 +257,7 @@ struct octroot //keeps track of the purpose and goals of a particular octree, Th
 {
 	
 	friend world;
+	friend idoctmgr_REPLACE<octroot *>;
 	//basic lock functions
 	bool lock(bool force = false);
 	bool unlock(bool force = false);
@@ -298,17 +302,23 @@ struct worldroot
 	void getupdatenodesid(vector<uint>& nodeids);
 	void getrendernodesid(vector<uint>& nodeids);
 
-	void killworld();
-	void resetworld();
+	void serializeworld(vector<uint> &ids);
+	void clearnodes(); //removes nodes so we can concatinate;
+	void clearworld();
+	void restartworld();
+	void saveworld(stream *f);
+	void loadworld(stream *f);
 
 private:
-	worldroot(world *w, int worldsize, matrix4 worldmatrix = matrix4(), vector<uint> &nodeid = vector<uint>(), vector<uint> &rootid=vector<uint>());
+	worldroot(world *w, int worldsize, ushort id, matrix4 worldmatrix = matrix4(), vector<uint> &nodeid = vector<uint>(), vector<uint> &rootid=vector<uint>());
 	void addnode(uint id); //add to private cuz only world and worldroot should use this functionality; this may later be changed to allow things in other worldroots to be changed (but this probably will be done through the world any way);
 	world *m_world;
+	bool touched = false;
 	vector<uint> rootsid;
 	vector<uint> nodeid;
 	int worldsize;
 	matrix4 worldmatrix;
+	ushort id;
 	~worldroot(); //destroy all roots and nodes by telling the world DONOT DELETE m_world it will delete its self;
 };
 
@@ -344,6 +354,7 @@ private:
 
 struct world
 {
+	friend CSerialworld;
 public:
 	//utilitycalls (get sets and checks)
 	world(uint maxnodes = 2000, ushort maxallocate = 200, ushort maxalocateperround = 20, worldroot *root = NULL);
@@ -355,8 +366,8 @@ public:
 	void dorender();
 	void serializedworld();
 	void updateworld();
-	void clearworld(bool force = false);
-	void resetmap();
+	void restartworld(bool force = false);
+	void clearmap();
 	void saveworld(stream *f);
 	void loadworld(stream *f);
 
@@ -364,13 +375,16 @@ public:
 	node *newnode(vec o = vec(0), vec rot = vec(0), str mod = ""); //create a new node from script name
 	node *newnode(asIScriptObject *aso = NULL); //create a new node from premade object
 	node *newnode(asITypeInfo *ast = NULL); //create a new node from a type
-	node *newnode(uint id, vec o = vec(0), vec rot = vec(0)); //create a new node from a reference copy
+//	node *newnode(node *n, vec o = vec(0), vec rot = vec(0)); //create a new node from a reference copy //obsolete use below
 	node *newnode(const node &on, vec o = vec(0), vec rot = vec(0)); //create a new node from a pointer
+	node *newnode(uint id); //used by serializer to create a new node for loading and unloading forceing a particular id;
+
 	bool removenode(uint id);
 	bool removenode(node *n);
 	bool removenode(const vector<uint > &nodes);
 	node *getnodefromid(uint id);
 	void getnodefromid(vector<uint> &nids, vector<node *> &nodes); //pass as reference so world can fix any out of date ids (this should not be relied on and objects should tell the scene when they are removed);
+	void clearlights();
 
 	octroot *newoctree(int worldsize, char flags=0);
 	void removeoctree(uint id);
@@ -390,45 +404,11 @@ public:
 	bool paused = false;
 	scenegraph *curscene;
 private:
-	struct nodemgr
-	{
-		void init(ushort maxalocate, ushort maxpertime);
-		void update();
-		node *newnode();
-		node *getnodefromid(uint id);
-		bool removenode(node *n);
-		bool removenode(uint id);
-		void kill();
-		const inline uint numofnodes();
-		uint checkvalid(node *n);
-		void setnodealocation(uint num, ushort numpercall);
-		~nodemgr(); //release all vectors, the pool and the list of nodes, everything else will self dealocate;
-	private:
-		uint getnextopenid();
-		void allocatenodes(ushort amt);
-		void deallocatenodes(ushort amt);
-		node *getnodefrompool();
-		vector<node *> nodes;
-		vector<node *> nodepool;
-		vector<uint> openids;
-		ushort maxallocateatonce;
-		uint worldnodealocate;
-		
-	};
-	struct octmgr
-	{
-		octroot *newoctree(int worldsize, char flags =0);
-		void removeoctree(uint id);
-		octroot *getoctreefromid(uint id);
-		void kill(); //removes all octrees for resets and loading different maps  // this is not a destroy this is just a hard reset// we do this if we load a new map to save on time and building allocation. We can save all pooled nodes but not active nodes (they can be moved to the pool if there is room);
-		~octmgr(); //remove all octroots, this should only be called if the world is destroyed;
-	private:
-		uint getnextopenid(); 
-		vector<octroot *> oroots;
-		
-	};
-	nodemgr nmgr;
-	octmgr omgr;
+	vector<node *> &concatinatenodes();
+	poolidmgr<node *> nmgr;
+	poolidmgr<CSerializedValue *> serialobjects;
+	//poolmgr<btRigidBody *> physicbodies;
+	idoctmgr_REPLACE<octroot *> omgr;
 	
 	vector<uint> physicbodies;
 	vector<light *> lights;

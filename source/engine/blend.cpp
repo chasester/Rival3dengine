@@ -1,5 +1,4 @@
 #include "engine.h"
-
 enum
 {
     BM_BRANCH = 0,
@@ -1042,13 +1041,13 @@ ICOMMAND(invertblendmap, "", (),
 {
     if(noedit(false) || (nompedit && multiplayer())) return;
     invertblendmap(0, 0, worldsize>>BM_SCALE, worldsize>>BM_SCALE);
-    previewblends(ivec(0, 0, 0), ivec(worldsize, worldsize, worldsize));
+    previewblends(octaoffset, ivec(worldsize, worldsize, worldsize));
 });
 
 void showblendmap()
 {
     if(noedit(true) || (nompedit && multiplayer())) return;
-    previewblends(ivec(0, 0, 0), ivec(worldsize, worldsize, worldsize));
+    previewblends(octaoffset, ivec(worldsize, worldsize, worldsize));
 }
 
 COMMAND(showblendmap, "");

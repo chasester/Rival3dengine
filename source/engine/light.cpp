@@ -565,7 +565,7 @@ static bool previewblends(cube *c, const ivec &co, int size, const ivec &bo, con
 void previewblends(const ivec &bo, const ivec &bs)
 {
     updateblendtextures(bo.x, bo.y, bo.x+bs.x, bo.y+bs.y);
-    if(previewblends(worldeditor::editroot, ivec(0, 0, 0), worldsize/2, bo, bs))
+    if(previewblends(worldeditor::editroot, octaoffset, worldsize/2, bo, bs))
         commitchanges(true);
 }
 

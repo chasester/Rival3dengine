@@ -16,6 +16,7 @@
 extern dynent *player;
 extern camera *camera1;                // special ent that acts as camera, same object as player1 in FPS mode
 
+extern ivec octaoffset;
 extern int worldscale, worldsize;
 extern int mapversion;
 extern char *maptitle;
@@ -115,6 +116,8 @@ extern void setviewcell(const vec &p);
 extern void savepvs(stream *f);
 extern void loadpvs(stream *f, int numpvs);
 extern int getnumviewcells();
+extern bool iscalcpvs;
+extern void checkpvs();
 
 static inline bool pvsoccluded(const ivec &bborigin, int size)
 {

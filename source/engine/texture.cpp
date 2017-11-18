@@ -2134,7 +2134,7 @@ ICOMMAND(fixinsidefaces, "i", (int *tex),
 {
     extern int nompedit;
     if(noedit(true) || (nompedit && multiplayer())) return;
-    fixinsidefaces(worldeditor::editroot, ivec(0, 0, 0), worldsize>>1, *tex && vslots.inrange(*tex) ? *tex : DEFAULT_GEOM);
+    fixinsidefaces(worldeditor::editroot, octaoffset, worldsize>>1, *tex && vslots.inrange(*tex) ? *tex : DEFAULT_GEOM);
     allchanged();
 });
 

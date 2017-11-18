@@ -557,7 +557,7 @@ bool bboccluded(const ivec &bo, const ivec &br)
     int diff = (bo.x^br.x) | (bo.y^br.y) | (bo.z^br.z);
     if(diff&~((1<<worldscale)-1)) return false;
     int scale = worldscale-1;
-    if(diff&(1<<scale)) return bboccluded(bo, br, worldeditor::editroot, ivec(0, 0, 0), 1<<scale);
+    if(diff&(1<<scale)) return bboccluded(bo, br, worldeditor::editroot, octaoffset, 1<<scale);
     cube *c = &worldeditor::editroot[octastep(bo.x, bo.y, bo.z, scale)];
     if(c->ext && c->ext->va)
     {

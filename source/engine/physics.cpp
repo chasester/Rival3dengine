@@ -1131,7 +1131,7 @@ static inline bool octacollide(physent *d, const vec &dir, float cutoff, const i
     int diff = (bo.x^bs.x) | (bo.y^bs.y) | (bo.z^bs.z),
         scale = worldscale-1;
     if(diff&~((1<<scale)-1) || uint(bo.x|bo.y|bo.z|bs.x|bs.y|bs.z) >= uint(worldsize))
-       return octacollide(d, dir, cutoff, bo, bs, worldeditor::editroot, ivec(0, 0, 0), worldsize>>1);
+       return octacollide(d, dir, cutoff, bo, bs, worldeditor::editroot, octaoffset, worldsize>>1);
     const cube *c = &worldeditor::editroot[octastep(bo.x, bo.y, bo.z, scale)];
     if(c->ext && c->ext->ents && mmcollide(d, dir, cutoff, *c->ext->ents)) return true;
     scale--;

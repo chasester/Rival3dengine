@@ -21,6 +21,7 @@ class Object : IController
 
 	void Awake()
 	{
+		//print("hello");
 		ridgidbody r;
 		r.aabbfrommodel(index);
 		r.friction = 0.2;
@@ -35,7 +36,7 @@ class Object : IController
 	}
 	void Update()
 	{
-		//if(lastmillis % 1000 < 100) index = randomint(10);
+		if(lastmillis % 1000 < 100) index = randomint(10);
 	}
 
 	void Render() 

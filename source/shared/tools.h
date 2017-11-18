@@ -3,6 +3,13 @@
 #ifndef _TOOLS_H
 #define _TOOLS_H
 
+#include <unordered_map> //std::unordered_map is a basic has table to replace hash_table by stl defined below
+
+////requires c++ 11;
+//template<class N>
+//struct dictionary : unordered_map<std::string, N> {};
+
+
 #ifdef NULL
 #undef NULL
 #endif
@@ -130,6 +137,30 @@ static inline int bitscan(uint mask)
 #define loopjrev(m) looprev(j,m)
 #define loopkrev(m) looprev(k,m)
 #define looplrev(m) looprev(l,m)
+
+//loopmid works like loop but allows you to go from x to y or from y to x for reverse verions rather than being force to only go to 0
+#define loopmid(v,m,e) for(int v = int(m); v < int(e); ++v)
+#define loopmidi(m,e) loopmid(i,m,e)
+#define loopmidj(m,e) loopmid(j,m,e)
+#define loopmidk(m,e) loopmid(k,m,e)
+#define loopmidl(m,e) loopmid(l,m,e)
+#define loopmidrev(v,m,e) for(int v = int(m); --v >= int(e);)
+#define loopmidirev(m,e) loopmidrev(i,m,e)
+#define loopmidjrev(m,e) loopmidrev(j,m,e)
+#define loopmidkrev(m,e) loopmidrev(k,m,e)
+#define loopmidlrev(m,e) loopmidrev(l,m,e)
+
+//loopinc works like loop but you start at m and move i spaces the reverse starts at m and moves back i spaces
+#define loopinc(v,m,i) for(int v = int(m); v < int(m) + int(i); ++v)
+#define loopinci(m,e) loopinc(i,m,e)
+#define loopincj(m,e) loopinc(j,m,e)
+#define loopinck(m,e) loopinc(k,m,e)
+#define loopincl(m,e) loopinc(l,m,e)
+#define loopincrev(v,m,i) for(int v = int(m); --v >= int(m) - int(i);)
+#define loopincirev(m,e) loopincrev(i,m,e)
+#define loopincjrev(m,e) loopincrev(j,m,e)
+#define loopinckrev(m,e) loopincrev(k,m,e)
+#define loopinclrev(m,e) loopincrev(l,m,e)
 
 #define DELETEP(p) if(p) { delete   p; p = 0; }
 #define DELETEA(p) if(p) { delete[] p; p = 0; }
@@ -1141,6 +1172,7 @@ template<class K, class T> struct hashtable : hashbase<hashtable<K, T>, hashtabl
 
 #define enumeratekt(ht,k,e,t,f,b) loopi((ht).size) for(void *ec = (ht).chains[i]; ec;) { k &e = (ht).enumkey(ec); t &f = (ht).enumdata(ec); ec = (ht).enumnext(ec); b; }
 #define enumerate(ht,t,e,b)       loopi((ht).size) for(void *ec = (ht).chains[i]; ec;) { t &e = (ht).enumdata(ec); ec = (ht).enumnext(ec); b; }
+#define stdenumerate(um, kt, dt, el, b)			   for (std::pair<kt, dt> element : um) {dt el = element.second; b }
 
 template <class T, int SIZE> struct queue
 {
@@ -1403,6 +1435,222 @@ struct ipmask
     void parse(const char *name);
     int print(char *buf) const;
     bool check(enet_uint32 host) const { return (host & mask) == ip; }
+};
+
+template<class T> struct idmgr //a simple manager to handle getting setting and creating ids for any particular class
+{
+
+	T newnode(uint id) // use to assign a spot in the list
+	{
+		if (!id) return;
+		uint inx = id - 1; //ids are one more then the element in the list
+		if (objects.length() >= inx)
+		{
+			if (objects[inx]) removenode(id); //remember to put the id not the index since we will subtract 1 again;
+		}
+		else {
+			uint len = objects.length();
+			objects.pad(inx - len);
+			loopioff(inx, len) openids.add(i);
+		}
+		T *n = new T;
+		n->id = indx + 1;
+		objects.add(n); //we should have padded all ids
+	}
+
+	T newnode()
+	{
+		T *n = new T;
+		uint indx = getnextopenid();
+		objects[indx] = n;
+		n->id = indx + 1;
+		return 	n;
+	}
+
+	T getnodefromid(uint id) { id--;	return id < objects.length() ? objects[id] : nullptr; }
+
+	bool removenode(T n)
+	{
+		uint id = checkvalid(n);
+		if (id == 0) { delete n; return false; }
+		return removenode(id);
+	}
+	bool removenode(uint id)
+	{
+		id--;
+		if (id >= objects.length() || objects[id] == nullptr) { conoutf("removeal overread"); return false; }
+		T n = objects[id];
+		objects[id] = nullptr;
+		delete n;
+		openids.add(id);
+		return true;
+	}
+	void kill()
+	{ //kill all vectors to limit memory leaks or problems
+		objects.deletecontents();
+		openids.shrink(0);
+	}
+	const inline uint numofnodes() { return objects.length() - openids.length(); }
+	vector<T *> &getallobjects() { return objects; }
+private:
+	~idmgr() { kill(); }
+	uint getnextopenid() { if (openids.length()) return openids.pop(); else { objects.pad(1); return objects.length() - 1; } } //look in openids before adding a new one to the end
+	vector<T *> objects;
+	vector<uint> openids;
+};
+
+template<class T> struct idoctmgr_REPLACE
+{
+	T newoctree(int worldsize, char flags = 0)
+	{
+		cube *c = newcubes(F_SOLID); //change later to only fill half with solid half with empty like default map type;
+		octroot * or = new octroot(worldsize, c, flags);
+		uint opid = getnextopenid();
+		if (opid >= oroots.length())
+		{
+			opid = oroots.length();
+			oroots.add(or );
+		}
+		else oroots[opid] = or ;
+		or ->id = opid + 1;
+		return or ;
+	}
+	void removeoctree(uint id)
+	{
+		if (oroots[id] == nullptr) return;
+		octroot *n = oroots[id];
+		oroots[id] = nullptr;
+		delete n;
+	}
+	void getallobjects(vector<T> &v) { return oroots; }
+	T getoctreefromid(uint id)
+	{
+		if (oroots[id] == nullptr) return nullptr;
+		else return oroots[id];
+	}
+	void kill()//removes all octrees for resets and loading different maps  // this is not a destroy this is just a hard reset// we do this if we load a new map to save on time and building allocation. We can save all pooled nodes but not active nodes (they can be moved to the pool if there is room);
+	{oroots.deletecontents();}
+	~idoctmgr_REPLACE() //remove all octroots, this should only be called if the world is destroyed;
+	{oroots.deletecontents();}
+
+private:
+	uint getnextopenid() { loopv(oroots) if (!oroots[i]) return i; return oroots.length(); }
+	vector<T> oroots;
+};
+
+template<class T> struct poolidmgr
+{
+	void init(ushort maxalocate, ushort maxpertime)
+	{
+		maxallocateatonce = maxpertime;
+		worldnodealocate = maxalocate;
+		allocatenodes(maxalocate);
+	}
+	void update()
+	{
+		if (objpool.length() < worldnodealocate) allocatenodes((objpool.length() - worldnodealocate) % maxallocateatonce);
+		else if (objpool.length() > int(worldnodealocate*NODEALOCATEOVERLOADPERCENT)) deallocatenodes((objpool.length() - int(worldnodealocate*NODEALOCATEOVERLOADPERCENT)) % maxallocateatonce);
+	}
+	T newnode(uint id) // use to assign a spot in the list
+	{
+		if (!id) return;
+		uint inx = id-1; //ids are one more then the element in the list
+		if (objects.length() >= inx)
+		{
+			if (objects[inx]) removenode(id); //remember to put the id not the index since we will subtract 1 again;
+		} else {
+			uint len = objects.length();
+			objects.pad(inx - len);
+			loopioff(inx, len) openids.add(i);
+		}
+		objects.add(getobjfrompool()); //we should have padded all ids
+	}
+	T newnode()
+	{
+		T n = getobjfrompool();
+		uint indx = getnextopenid();
+		objects[indx] = n;
+		n->id = indx + 1;
+		return 	n;
+	}
+	T getnodefromid(uint id) { id--;	return id < objects.length() ? objects[id] : nullptr; }
+
+	bool removenode(T n)
+	{
+		uint id = checkvalid(n);
+		if (id == 0) { delete n; return false; }
+		return removenode(id);
+	}
+	bool removenode(uint id)
+	{
+		id--;
+		if (id >= objects.length() || objects[id] == nullptr) { conoutf("removeal overread" ); return false; }
+		T n = objects[id];
+		objects[id] = nullptr;
+		delete n;
+		openids.add(id);
+		return true;
+	}
+	void kill()
+	{ //kill all vectors to limit memory leaks or problems
+		objects.deletecontents();
+		objpool.deletecontents();
+		openids.shrink(0);
+		worldnodealocate = 0;
+		maxallocateatonce = 0;
+	}
+	const inline uint numofnodes() { return objects.length() - openids.length(); }
+
+	uint checkvalid(T n)
+	{
+		//REMOVE
+		if (!n)return false; // make sure we are given a vaild pointer 
+		if (objects[n->id] != n || (n->id == 0)) //to make sure we have this node has a valid id, and that the id given is not null
+		{
+			int id = 0; // nodes.find(*n);
+			if (id < 0) return 0;
+			return id;
+		}
+		return n->id;
+	}
+	vector<T> &concatinate()
+	{
+		loopv(objects) { if (!objects[i])objects.remove(i--); }
+		openids.shrink(0);
+		return objects;
+	}
+	
+	void setnodealocation(uint maxnum = 0, ushort numpercall = 0, float overload = 1.0f)
+	{
+		worldnodealocate = maxnum ? maxnum : worldnodealocate;
+		maxallocateatonce = numpercall ? numpercall : maxallocateatonce;
+		allocateOverloadPercent = overload > 1.0f ? overload : allocateOverloadPercent;
+	}
+	vector<T> &getallobjects() { return objects; }
+	void setobjects(vector<T> &v) { kill(); objects = v; loopv(objects) { if (!objects[i])openids.add(i); } }
+	~poolidmgr() //release all vectors, the pool and the list of nodes, everything else will self dealocate;
+	{
+		kill();
+	}
+private:
+	uint getnextopenid() { if (openids.length()) return openids.pop(); else { objects.pad(1); return objects.length() - 1; } } //look in openids before adding a new one to the end
+	void allocatenodes(ushort amt)
+	{
+		uint len = objpool.length();
+		//nodepool.advance(amt;)
+		loopi(amt) objpool.add(new node());
+	}
+	void deallocatenodes(ushort amt) { objpool.shrink(amt); } //amount is in total nodes
+	T getobjfrompool() { if (objpool.length()) return objpool.pop(); else return *new T(); }//get from pool before giveing new
+
+	vector<T> objects;
+	vector<T> objpool;
+	vector<uint> openids;
+	ushort maxallocateatonce;
+	uint worldnodealocate;
+	float allocateOverloadPercent = 1.1f;
+
+
 };
 
 #endif

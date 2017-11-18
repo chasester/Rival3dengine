@@ -1,5 +1,6 @@
 struct vec;
 struct vec4;
+
 #define TEMPOPERATOR(c, o, op, func) template<class T> c operator##op (T a){ return o.##func(a); }
 #define SAUER_FACTOR 17.0f
 

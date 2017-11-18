@@ -562,7 +562,7 @@ bool save_world(const char *mname, bool nolms)
 {
 	//do a reset here
 	//change to save a game by serializing all the time.
-	if(!noedit(false, false))curworld->serializedworld();
+	//if(!noedit(false, false))curworld->serializedworld();
 #pragma region Set File
 	if (!*mname) mname = game::getclientmap();
 	setmapfilenames(*mname ? mname : "untitled");
@@ -680,7 +680,7 @@ bool save_world(const char *mname, bool nolms)
 #pragma endregion
 
 #pragma region Save Octtree
-	savec(worldeditor::editroot, ivec(0, 0, 0), worldsize >> 1, f, nolms);
+	savec(worldeditor::editroot, octaoffset, worldsize >> 1, f, nolms);
 
 	if (!nolms)
 	{
@@ -710,7 +710,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
 
 #pragma region clearmap
 	//clear world here or in file before
-	curworld->resetmap();
+	curworld->clearmap();
 #pragma endregion
 
 #pragma region Load Header
@@ -880,7 +880,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
 #pragma region Load Octtree
 	renderprogress(0, "loading octree...");
 	bool failed = false;
-	worldeditor::editroot = loadchildren(f, ivec(0, 0, 0), hdr.worldsize >> 1, failed);
+	worldeditor::editroot = loadchildren(f, octaoffset, hdr.worldsize >> 1, failed);
 	if (failed) conoutf(CON_ERROR, "garbage in map");
 
 	renderprogress(0, "validating...");

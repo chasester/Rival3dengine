@@ -410,3 +410,10 @@ inline void ident::getcval(tagval &v) const
 #define ICOMMAND(name, nargs, proto, b) ICOMMANDN(name, ICOMMANDNAME(name), nargs, proto, b)
 #define ICOMMANDS(name, nargs, proto, b) ICOMMANDNS(name, ICOMMANDSNAME, nargs, proto, b)
 
+
+
+//keymap
+extern void initbindmap();
+extern void firekeymaps();
+extern void processkeymap(int key, bool isdown);
+

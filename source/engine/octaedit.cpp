@@ -145,13 +145,14 @@ void toggleedit(bool force)
         if(player->state!=CS_ALIVE && player->state!=CS_DEAD && player->state!=CS_EDITING) return; // do not allow dead players to edit to avoid state confusion
         if(!game::allowedittoggle()) return;         // not in most multiplayer modes
     }
-    if(!(editmode = !editmode))
+    if(!(editmode = !editmode)) //leaving edit mode
     {
         player->state = player->editstate;
         player->o.z -= player->eyeheight;       // entinmap wants feet pos
         entinmap(player);                       // find spawn closest to current floating pos
+		curworld->serializedworld();
     }
-    else
+    else //entering editmode
     {
         game::resetgamestate();
         player->editstate = player->state;
@@ -370,7 +371,7 @@ void rendereditcursor()
            {
                selchildcount = 0;
                selchildmat = -1;
-               sel.s = ivec(0, 0, 0);
+               sel.s = octaoffset;
            }
         }
         else
@@ -444,7 +445,7 @@ void rendereditcursor()
             sel.corner = (cor[R[d]]-(lu[R[d]]*2)/gridsize)+(cor[C[d]]-(lu[C[d]]*2)/gridsize)*2;
             selchildcount = 0;
             selchildmat = -1;
-            countselchild(worldeditor::editroot, ivec(0, 0, 0), worldsize/2);
+            countselchild(worldeditor::editroot, octaoffset, worldsize/2);
             if(mag>=1 && selchildcount==1)
             {
                 selchildmat = c->material;
@@ -1347,7 +1348,7 @@ static void genprefabmesh(prefabmesh &r, cube &c, const ivec &co, int size)
 void genprefabmesh(prefab &p)
 {
     block3 b = *p.copy;
-    b.o = ivec(0, 0, 0);
+    b.o = octaoffset;
 
     cube *oldworldroot = worldeditor::editroot;
     int oldworldscale = worldscale, oldworldsize = worldsize;
@@ -1366,7 +1367,7 @@ void genprefabmesh(prefab &p)
 
     prefabmesh r;
     neighbourstack[++neighbourdepth] = worldeditor::editroot;
-    loopi(8) genprefabmesh(r, worldeditor::editroot[i], ivec(i, ivec(0, 0, 0), worldsize/2), worldsize/2);
+    loopi(8) genprefabmesh(r, worldeditor::editroot[i], ivec(i, octaoffset, worldsize/2), worldsize/2);
     --neighbourdepth;
     r.setup(p);
 

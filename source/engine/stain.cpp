@@ -430,7 +430,7 @@ struct stainrenderer
         }
 
         loopi(NUMSTAINBUFS) verts[i].lastvert = verts[i].endvert;
-        gentris(worldeditor::editroot, ivec(0, 0, 0), worldsize>>1);
+        gentris(worldeditor::editroot, octaoffset, worldsize>>1);
         loopi(NUMSTAINBUFS)
         {
             stainbuffer &buf = verts[i];

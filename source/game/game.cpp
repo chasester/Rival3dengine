@@ -100,7 +100,7 @@ namespace game
 	//angelo phys bullet
 	PHYSrebuildLevel();
 	//clearGameobject();
-	curworld->clearworld();
+	curworld->restartworld(true);
 	clearbulletmovables();
 	//angelo phys bullet
 	

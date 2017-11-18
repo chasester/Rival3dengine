@@ -2025,7 +2025,7 @@ void bindminimap()
     glBindTexture(GL_TEXTURE_2D, minimaptex);
 }
 
-void clipminimap(ivec &bbmin, ivec &bbmax, cube *c = worldeditor::editroot, const ivec &co = ivec(0, 0, 0), int size = worldsize>>1)
+void clipminimap(ivec &bbmin, ivec &bbmax, cube *c = worldeditor::editroot, const ivec &co = octaoffset, int size = worldsize>>1)
 {
     loopi(8)
     {
@@ -2503,7 +2503,7 @@ float damagedirs[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 void damagecompass(int n, const vec &loc)
 {
-    if(!usedamagecompass || minimized) return;
+    if(!usedamagecompass) return;
     vec delta(loc);
     delta.sub(camera1->o);
     float yaw = 0, pitch;
@@ -2568,7 +2568,7 @@ VARP(damagescreenmax, 1, 100, 1000);
 
 void damageblend(int n)
 {
-    if(!damagescreen || minimized) return;
+    if(!damagescreen) return;
     if(lastmillis > damageblendmillis) damageblendmillis = lastmillis;
     damageblendmillis += clamp(n, damagescreenmin, damagescreenmax)*damagescreenfactor;
 }

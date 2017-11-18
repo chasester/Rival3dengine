@@ -1661,27 +1661,25 @@ void findtjoints()
     cubeedges.setsize(0);
     edgegroups.clear();
 }
-cube *worldme = newcubes(F_SOLID);
-ICOMMAND(HOTSWAPOCTA, "", (), { cube * temp = worldme; worldme = worldeditor::editroot; worldeditor::editroot = temp; allchanged(); });
+cube *worldme = newcubes(F_EMPTY);
+ivec octaoffset = ivec(0, 0, 0);
+//ICOMMAND(HOTSWAPOCTA, "", (), { cube * temp = worldme; worldme = worldeditor::editroot; worldeditor::editroot = temp; allchanged(); });
+//ICOMMAND(OCTAOFFSET, "iii", (int *x, int *y, int *z), { octaoffset = ivec(*x,*y,*z); })
 void octarender()                               // creates va s for all leaf cubes that don't already have them
 {
     int csi = 0;
     while(1<<csi < worldsize) csi++;
     recalcprogress = 0;
     varoot.setsize(0);
-    updateva(worldeditor::editroot, ivec(0,0,0), worldsize/2, csi-1);
-	updateva(worldme, ivec(0, 0, 0), worldsize / 2, csi - 1);
-	//loopv(valist)varoot[i]->o.add(ivec(0,0,0));
-	//updateva(worldme, ivec(100, 100, 100), worldsize / 2, csi - 1);
+    updateva(worldeditor::editroot,octaoffset, worldsize/2, csi-1);
     loadprogress = 0;
     flushvbo();
 
     explicitsky = 0;
     loopv(valist)
     {
-        vtxarray *va = valist[i];
-		
-        explicitsky += va->sky;
+       vtxarray *va = valist[i];
+       explicitsky += va->sky;
     }
 
     extern vtxarray *visibleva;

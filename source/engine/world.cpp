@@ -226,7 +226,7 @@ static bool modifyoctaent(int flags, int id, extentity &e)
         while(leafsize < limit) leafsize *= 2;
         int diff = ~(leafsize-1) & ((o.x^r.x)|(o.y^r.y)|(o.z^r.z));
         if(diff && (limit > octaentsize/2 || diff < leafsize*2)) leafsize *= 2;
-        modifyoctaentity(flags, id, e, worldeditor::editroot, ivec(0, 0, 0), worldsize>>1, o, r, leafsize);
+        modifyoctaentity(flags, id, e, worldeditor::editroot, octaoffset, worldsize>>1, o, r, leafsize);
     }
     e.flags ^= EF_OCTA;
     switch(e.type)
@@ -305,7 +305,7 @@ void findents(int low, int high, bool notspawned, const vec &pos, const vec &rad
         scale = worldscale-1;
     if(diff&~((1<<scale)-1) || uint(bo.x|bo.y|bo.z|br.x|br.y|br.z) >= uint(worldsize))
     {
-        findents(worldeditor::editroot, ivec(0, 0, 0), 1<<scale, bo, br, low, high, notspawned, pos, invradius, found);
+        findents(worldeditor::editroot, octaoffset, 1<<scale, bo, br, low, high, notspawned, pos, invradius, found);
         return;
     }
     cube *c = &worldeditor::editroot[octastep(bo.x, bo.y, bo.z, scale)];
@@ -1515,7 +1515,7 @@ void shrinkmap()
     worldscale--;
     worldsize /= 2;
 
-    ivec offset(octant, ivec(0, 0, 0), worldsize);
+    ivec offset(octant, octaoffset, worldsize);
     vector<extentity *> &ents = entities::getents();
     loopv(ents) ents[i]->o.sub(vec(offset));
 
@@ -1686,7 +1686,8 @@ bool haveselnode() { return worldeditor::nodehaveselection(); }
 
 				}
 			}
-		n[i]->doawake();
+			n[i]->store();
+			n[i]->doawake();
 		}
 		
 	}COMMAND(editnodeattr, "si");
@@ -1709,11 +1710,9 @@ node *newnode(str name, vec o, bool addnode)
 	//entedit(idx, e.type = ET_EMPTY);
 	//commitchanges();
 	loopv(g->ctrl)asScript->doCreate(g->ctrl[i]);
-
+	g->name = str(name);
 	if (addnode)g->store();
 	else g->doawake();
-	g->name = str(name);
-
 	return g;
 
 }ICOMMAND(newnode, "s", (const char *n), { newnode(n, player->o); })
@@ -1723,7 +1722,7 @@ void nodechangename(const char *name)
 	vector<node *> nodes;
 	worldeditor::getselnodes(nodes);
 	if (nodes.length() == 0) return;
-	loopv(nodes) nodes[i]->name = str(name);
+	loopv(nodes) {nodes[i]->name = str(name); nodes[i]->store(); }
 }COMMAND(nodechangename, "s");
 
 void nodeaddctrl (const char *name, int i)
@@ -1846,7 +1845,7 @@ void worldeditor::nodedrag(const vec &ray)
 		c = (nodeselsnap ? g[C[d]] : dest[C[d]]) - nodes[i]->o[C[d]];
 	}
 
-	if (worldeditor::nodemoving == 1);// makeundonode();
+	if (worldeditor::nodemoving == 1);
 	if (nodes.length() < 1)nodes.add(curworld->getnodefromid(worldeditor::nfocus));
 	//makeundonode();
 	loopv(nodes)
@@ -1870,6 +1869,7 @@ bool worldeditor::hoveringonnode(uint node, int orient)
 
 bool worldeditor::nodetoggleselect(uint id)
 {
+	node *n;
 	int find = nodeselect.find(id);
 	if (find > -1) nodeselect.remove(find);
 	else nodeselect.add(id);
@@ -1912,7 +1912,7 @@ vector<uint> worldeditor::nodeselect = vector<uint>();
 world::world(uint maxnodes, ushort maxallocate, ushort maxallocateperround, worldroot *root)
 {
 	//scenes.add(s);
-	if (!root) root = new worldroot(this, worldsize);
+	if (!root) root = new worldroot(this, worldsize, worldroots.length());
 	worldroots.add(root);
 	nmgr.init(maxallocate, maxallocateperround);
 	//maxnodes not used right now
@@ -1922,18 +1922,22 @@ bool world::ispaused() { return paused; }
 #pragma endregion
 #pragma region "Updates/Reset"
 void world::doAwake() { loopv(worldroots) worldroots[i]->doawake(); }
-void world::dorender() { loopv(worldroots) worldroots[i]->dorender();}
+void world::dorender() { this->clearlights(); loopv(worldroots) worldroots[i]->dorender();}
 void world::serializedworld()
 {
-	conoutf("not serializing");
-	return;
-	if (asScript->serializer) asScript->resetserializer();
-	else asScript->setupserializer(new CSerializer());
-	//asScript->serializer->serializeworld(this);
+	////conoutf("not serializing");
+	////return;
+	//if (asScript->serializer) asScript->resetserializer();
+	//else asScript->setupserializer(new CSerializer());
+	//asScript->serializer->ClearRoot();
+	vector<node *> nds = nmgr.getallobjects();
+	//conoutf("all objecs %d", nds.length());
+	loopv(nds)nds[i]->store();
+	////asScript->serializer->serializeworld(this);
 }
-void world::updateworld() {  if (!touched) { serializedworld();  doAwake();  touched = true;  return; }	 loopv(worldroots) worldroots[i]->doupdate(); }
-void world::clearworld(bool force) { if (touched || force) loopv(worldroots)worldroots[i]->resetworld(); touched = false; }
-void world::resetmap()
+void world::updateworld() {   if (!touched) { doAwake();  touched = true;  return; }	 loopv(worldroots) worldroots[i]->doupdate(); }
+void world::restartworld(bool force) { if (touched || force) loopv(worldroots)worldroots[i]->restartworld(); touched = false; }
+void world::clearmap()
 {
 	clearoverrides();
 	clearmapsounds();
@@ -1948,7 +1952,7 @@ void world::resetmap()
 	pruneundos();
 	clearmapcrc();
 	loopv(worldroots)
-		worldroots[i]->killworld();
+		worldroots[i]->clearworld();
 	PHYSrebuildLevel();
 	//outsideents.setsize(0);
 	spotlights = 0;
@@ -1956,6 +1960,25 @@ void world::resetmap()
 }
 void world::saveworld(stream *f)
 {
+	//restartworld(true); //we restart if we arent saving a snapshot (say like a save game, in a save game we serialize everything including spawned nodes)
+//	vector<node *> &nd = concatinatenodes(); //skrink the node pool to only include objects that are not null (aka no openids)
+	//conoutf("nodes are $#@ %d", nd.length());
+	//if (!nd.length()) conoutf("no nodes in save");
+	//loopv(nd)nd[i]->store();
+	//store oct root data first;
+	//concate octroot idmgr then store the data
+	
+	//call the worldroots and have them store the ids that they own (both node and octree)
+	f->putlil<int>(worldroots.length());
+	loopv(worldroots)
+	{
+		worldroots[i]->saveworld(f);
+	}
+
+	//store serialized data of nodes last so if there is something wrong we at least get the mesh of the map 
+	asScript->serializer->save(f);
+
+	//obsolete
 	//world should send its self to the serializer and it should be able to serialize what it has
 	
 	//obsolete 
@@ -1967,10 +1990,19 @@ void world::saveworld(stream *f)
 		//f->putlil<uint>(ns.length());
 		//curscene->savescene(f);
 	}
+
 }
 void world::loadworld(stream *f) 
 {
-	//world should send its self to the serializer and be built from the file. will have to look at this for more robust open world approach later to determind what parts of the world, or which world do load and when. this maybe as simple as setting flags to the world roots and saving them or dividing into multiple worlds;
+	//clearmap();
+	uint len = f->getlil<int>();
+
+	loopi(len)
+	{
+		//	worldroots.add(new worldroot(this, 0, worldroots.length())); //set the data in loadworld of worldroot
+			worldroots[i]->loadworld(f);
+	}
+	asScript->serializer->load(f);
 }
 #pragma endregion
 #pragma region "AssetChanges"
@@ -1979,7 +2011,7 @@ node * world::newnode(vec o, vec rot, str mod)
 	node * n = nmgr.newnode();
 	if (!n) return nullptr;
 	asIScriptObject *aso = asScript->CreateController(mod, n);
-	if (!aso) { removenode(n->id); return nullptr; }
+	if (!aso && mod != "") { removenode(n->id); return nullptr; }
 	n->moveto(o); n->rotateto(rot); n->ctrl.add(aso);
 	worldeditor::editworldroot->addnode(n->id);
 	//conoutf("there are %d nodes", worldeditor::editworldroot->getnodesid().length());
@@ -2001,10 +2033,13 @@ node * world::newnode(asITypeInfo * ast)
 	if (!ast)return nullptr;
 	return newnode(vec(), vec(), str(ast->GetName()));
 }
-node * world::newnode(uint id, vec o, vec rot) //creates a new node keep in mind this uses the same controler ptr, this should only be used if you want to link the nodes with the same controllers (call the prefab if you want a instance)
-{
-	return newnode(*nmgr.getnodefromid(id), o, rot);
-}
+//obsolete use below
+//node * world::newnode(node *n, vec o, vec rot) //creates a new node keep in mind this uses the same controler ptr, this should only be used if you want to link the nodes with the same controllers (call the prefab if you want a instance)
+//{
+//	//if (!n)return;
+//	//return newnode(n, o, rot);
+//	return nullptr;
+//}
 node * world::newnode(const node &on, vec o, vec rot)
 {
 	return nullptr;
@@ -2017,6 +2052,12 @@ bool world::removenode(uint id) { return nmgr.removenode(id); }
 bool world::removenode(node *n) { return nmgr.removenode(n); }
 bool world::removenode(const vector<uint > &nodes) { if (nodes.length() < 1)return false; loopv(nodes)nmgr.removenode(nodes[i]); return true; }
 node *world::getnodefromid(uint id) { return nmgr.getnodefromid(id); }
+void world::clearlights()
+{
+	this->lights.shrink(0);
+	this->spotlights = 0;
+	this->volumetriclights = 0;
+}
 void world::getnodefromid( vector<uint> &nids, vector<node *> &nodes)
 {
 	node *n;
@@ -2069,6 +2110,13 @@ bool world::nodevalidate(node *n, bool forcedestroy) //this function calls the n
 	n->id = id;
 }
 void world::setnodealocation(uint num, ushort numpercall) { setnodealocation(num, numpercall); }
+vector<node*>& world::concatinatenodes()
+{
+	vector<node *> &nd = nmgr.concatinate();
+	if (!nd.length()) conoutf("no nodes left");
+	loopv(nd) if (!nd[i] || nd[i]->sceneid >= worldroots.length()) conoutf("concatinate error %d", !nd[i] ? 0 : nd[i]->sceneid); else worldroots[nd[i]->sceneid]->addnode(nd[i]->id); //this reassigns the scene ids after a concatination so that we are back on the same page
+	return nd;
+}
 world::~world()
 {
 	nmgr.setnodealocation(0, 0); //so when deleteing the worldroots nodes are sent directly for deletion rather than being added to the pool and later deleted by the nmgr
@@ -2077,130 +2125,9 @@ world::~world()
 	physicbodies.shrink(0);
 	lights.shrink(0);
 	worldroots.shrink(0);
-	nmgr.~nodemgr();
-	omgr.~octmgr();
+	nmgr.~poolidmgr();
+	omgr.~idoctmgr_REPLACE();
 }
-#pragma endregion
-#pragma region "nodemgr"
-#define NODEALOCATEOVERLOADPERCENT 1.10f
-node *world::nodemgr::newnode()
-{
-	node *n = getnodefrompool();
-	uint indx = getnextopenid();
-	nodes[indx] = n;
-	n->id = indx+1;
-	return 	n;
-}
-node *world::nodemgr::getnodefromid(uint id)
-{
-	id--;
-	return id < nodes.length() ? nodes[id] : nullptr;
-}
-
-bool world::nodemgr::removenode(node *n)
-{
-	uint id = checkvalid(n);
-	if (id == 0) { delete n; return false; }
-	return removenode(id);
-}
-bool world::nodemgr::removenode(uint id)
-{
-	id--;
-	if (id >= nodes.length() || nodes[id] == nullptr) return false;
-	node *n = nodes[id];
-	nodes[id] = nullptr;
-	delete n;
-	openids.add(id);
-	return true;
-
-}
-void world::nodemgr::init(ushort maxalocate, ushort maxpertime) //keep in mind you can only init size of ushort to start with
-{
-	maxallocateatonce = maxpertime;
-	worldnodealocate = maxalocate;
-	allocatenodes(maxalocate);
-}
-void world::nodemgr::update()
-{
-	if (nodepool.length() < worldnodealocate) allocatenodes((nodepool.length() - worldnodealocate) % maxallocateatonce);
-	else if (nodepool.length() > int(worldnodealocate*NODEALOCATEOVERLOADPERCENT)) deallocatenodes((nodepool.length() - int(worldnodealocate*NODEALOCATEOVERLOADPERCENT)) % maxallocateatonce);
-}
-void world::nodemgr::kill()
-{ //kill all vectors to limit memory leaks or problems
-	nodes.shrink(0);
-	nodepool.shrink(0);
-	openids.shrink(0);
-	worldnodealocate = 0;
-	maxallocateatonce = 0;
-}
-uint world::nodemgr::checkvalid(node *n) // if return 0 this means the node needs removed because it does not actually exist other wise we return the correct id
-{
-	if (!n)return false; // make sure we are given a vaild pointer 
-	if (nodes[n->id] != n || (n->id == 0)) //to make sure we have this node has a valid id, and that the id given is not null
-	{
-		int id = 0; // nodes.find(*n);
-		if (id < 0) return 0;
-		return id;
-	}
-	return n->id;
-}
-const inline uint world::nodemgr::numofnodes() { return nodes.length() - openids.length(); }
-void world::nodemgr::setnodealocation(uint num, ushort numpercall) { worldnodealocate = num; maxallocateatonce = numpercall; }
-world::nodemgr::~nodemgr()
-{
-	nodes.deletecontents();
-	nodepool.shrink(0);
-}
-#pragma region "private"
-uint world::nodemgr::getnextopenid() { if (openids.length()) return openids.pop(); else { nodes.pad(1); return nodes.length() - 1; } }
-void world::nodemgr::allocatenodes(ushort amt)
-{
-	uint len = nodepool.length();
-	//nodepool.advance(amt);
-	loopi(amt) nodepool.add(new node());
-}
-void world::nodemgr::deallocatenodes(ushort amt) { nodepool.shrink(amt); }
-node *world::nodemgr::getnodefrompool() { if (nodepool.length()) return nodepool.pop(); else return new node(); }
-#pragma endregion
-#pragma endregion
-#pragma region "octmgr"
-octroot * world::octmgr::newoctree(int worldsize, char flags)
-{
-	cube *c = newcubes(F_SOLID); //change later to only fill half with solid half with empty like default map type;
-	octroot *or = new octroot(worldsize, c, flags);
-	uint opid = getnextopenid();
-	if (opid >= oroots.length())
-	{
-		opid = oroots.length();
-		oroots.add(or );
-	}
-	else oroots[opid] = or;
-	or->id = opid+1;
-	return or;
-}
-
-void world::octmgr::removeoctree(uint id)
-{
-	if (oroots[id] == nullptr) return;
-	octroot *n = oroots[id];
-	oroots[id] = nullptr;
-	delete n;
-}
-
-octroot * world::octmgr::getoctreefromid(uint id)
-{
-	if (oroots[id] == nullptr) return nullptr;
-	else return oroots[id];
-}
-void world::octmgr::kill()
-{
-	oroots.shrink(0);
-}
-world::octmgr::~octmgr()
-{
-	oroots.deletecontents();
-}
-uint world::octmgr::getnextopenid() { loopv(oroots) if (!oroots[i]) return i; return oroots.length(); }
 #pragma endregion
 #pragma endregion
 
@@ -2233,7 +2160,8 @@ void octroot::buildtricolisionmesh()
 //		//with a couple of additions and subtreactions from me
 //		extern vector<vtxarray *> valist;
 //		vector<vec> verts, texcoords;
-//		hashtable<vec, int> shareverts(1 << 16), sharetc(1 << 16);
+//		
+	//<vec, int> shareverts(1 << 16), sharetc(1 << 16);
 //		hashtable<int, vector<ivec2> > mtls(1 << 8);
 //		vector<int> usedmtl;
 //		vec bbmin(1e16f, 1e16f, 1e16f), bbmax(-1e16f, -1e16f, -1e16f);//might need these for the aabbMax/aabbMin below ?
@@ -2433,7 +2361,7 @@ void worldroot::changeworldsize(uint size)
 	//addlater not sure how worldsize works
 }
 
-worldroot::worldroot(world * w, int worldsize, matrix4 worldmatrix, vector<uint>& nodeid, vector<uint>& rootid) : m_world(w), worldsize(worldsize), worldmatrix(worldmatrix)
+worldroot::worldroot(world * w, int worldsize, ushort id, matrix4 worldmatrix, vector<uint>& nodeid, vector<uint>& rootid) : m_world(w), worldsize(worldsize), worldmatrix(worldmatrix), id(id)
 {
 	if (nodeid.length()) this->nodeid = vector<uint>(nodeid);
 	if (rootid.length()) this->rootsid = vector<uint>(rootid);
@@ -2447,8 +2375,10 @@ worldroot::worldroot(world * w, int worldsize, matrix4 worldmatrix, vector<uint>
 
 void worldroot::addnode(uint id) //should be called by world only because they add the worlds to existance;
 {
-	if(id > 0)
+	node *n = curworld->getnodefromid(id);
+	if (!n)return;
 	nodeid.add(id);
+	n->sceneid = id-1;
 }
 
 worldroot::~worldroot()
@@ -2506,6 +2436,7 @@ void worldroot::doawake()
 
 void worldroot::doupdate()
 {
+	touched = true;
 	vector<octroot *> roots;
 	m_world->getoctreefromid(rootsid,roots);
 	vector<node *> nodes;
@@ -2553,12 +2484,43 @@ void worldroot::getrendernodesid(vector<uint> &nodeids) // not used
 		if (true) //renderable
 			nodeids.add(nodeid[i]);
 }
-void worldroot::killworld()
+void worldroot::serializeworld(vector<uint> &ids)
+{
+	return;//latter add a system that only serializes moved and new nodes.
+}
+void worldroot::clearnodes()
+{
+	nodeid.shrink(0); //lose all references to nodes;
+}
+void worldroot::clearworld()
 {
 	loopv(nodeid) m_world->removenode(nodeid[i]);
 	loopv(rootsid) m_world->removenode(rootsid[i]);
 }
-void worldroot::resetworld()
+void worldroot::saveworld(stream * f)
 {
+	return;
+	f->putlil<int>(worldsize);
+	f->putlil<int>(nodeid.length());
+	loopv(nodeid)f->putlil<uint>(nodeid[i]);
+	conoutf("%d nodes in worldroot", nodeid.length());
+}
+void worldroot::loadworld(stream *f)
+{
+	//clearworld();
+	touched = false; //make sure we dont kill these ids when we restart the world;
+	return;
+	worldsize = f->getlil<int>();
+	int len = f->getlil<int>();
+	loopi(len) nodeid.add(f->getlil<uint>());
+}
+void worldroot::restartworld()
+{
+	loopv(nodeid)
+	{
+		node *n = m_world->getnodefromid(nodeid[i]);
+		if (!n || !n->restore()) m_world->removenode(nodeid.remove(i--));
+	}
+	//asScript->serializer->ClearRoot();
 }
 #pragma endregion
