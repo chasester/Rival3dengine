@@ -1,45 +1,31 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-#*.obj needs to be here for models
+#Rival git ignore list. Most of these files are just vs build files
 
-# Precompiled Headers
-*.gch
-#*.pch
+#vcpp folders -- ignore all the build files (because they are client dependent)
+src/vcpp/Release/x86/build/
+src/vcpp/Debug/x86/build/
+src/vcpp/Profile/x86/build/
+src/vcpp/Server/x86/build/
+src/vcpp/Master/x86/build/
+src/vcpp/Release/x64/build/
+src/vcpp/Debug/x64/build/
+src/vcpp/Profile/x64/build/
+src/vcpp/Server/x64/build/
+src/vcpp/Master/x64/build/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-#*.dll
+#vcpp files -- ignore all build helpers (because they are client dependent and very large)
+src/vcpp/tesseract.manifest
+src/vcpp/tesseract.VC.db
+src/vcpp/tesseract.VC.VC.opendb
+src/vcpp/ipch/
+src/vcpp/.vs/
 
-# Fortran module files
-*.mod
-*.smod
+#project folders -- ignore all debuging projects because they are not nessary
+Rival_Engine/projects/x64_Debug_TESTER/
+Rival_Engine/projects/x86_Debug_TESTER/
+Rival_Engine/projects/x64_Release_TESTER/
+Rival_Engine/projects/x86_Release_TESTER/
+src/vcpp/tesseract.VC.db
+src/vcpp/Rival.VC.VC.opendb
+src/vcpp/rival.aps
+src/vcpp/Rival.VC.db
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-#*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-#VS build files
-*.pdb
-*.map
-*.exp
-*.ogz #map files which we dont need right now
-*.bak #we dont ever need bak files
-bin/tesseract.lib
-source/vcpp/Release
-source/vcpp/Debug
-source/vcpp/ipch
-bin/tesseract.pdb
-bin/tesseract.exp
-bin/tesseract.map
-*.BAK
-source/include/bullet3
-*.ogz
