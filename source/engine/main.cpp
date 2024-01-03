@@ -1032,6 +1032,7 @@ VAR(numcpus, 1, 1, 16);
 
 int main(int argc, char **argv)
 {
+    printf("Entering main() function!");
     #ifdef WIN32
    // atexit((void (__cdecl *)(void))_CrtDumpMemoryLeaks);
     #ifndef _DEBUG

@@ -150,9 +150,13 @@ namespace game
 	//}
 	void updatebulletmovables(vec tmpvec, vec tmprot, int j)
 	{
+		printf("Updating bullet movables, count: %d\n", bulletmovables.length());
 		loopv(bulletmovables){
 			bulletmovable *m = bulletmovables[i];
-			if (!m->body || !m->body->getMotionState()) continue;
+			if (!m->body || !m->body->getMotionState()) {
+				printf("Skipping bullet movable %d due to null body or motion state\n", i);
+				continue;
+			}
 			vec tmpvec;
 			vec tmprot;
 			btTransform trans;
