@@ -355,6 +355,7 @@
       <Filter>shared</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="..\engine\TreadMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
