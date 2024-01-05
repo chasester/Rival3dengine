@@ -4,6 +4,8 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rival", "tesseract.vcxproj", "{06594C6D-6DA9-49DC-9A91-8F47221DDCFD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Start", "..\win_login\Win32Project1.vcxproj", "{F575D06A-9010-4F85-9B94-455B27FDC8A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -29,6 +31,22 @@ Global
 		{06594C6D-6DA9-49DC-9A91-8F47221DDCFD}.Release|Win32.Build.0 = Release|Win32
 		{06594C6D-6DA9-49DC-9A91-8F47221DDCFD}.Release|x64.ActiveCfg = Release|x64
 		{06594C6D-6DA9-49DC-9A91-8F47221DDCFD}.Release|x64.Build.0 = Release|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Debug|ARM.ActiveCfg = Debug|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Debug|ARM.Build.0 = Debug|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Debug|ARM64.ActiveCfg = Debug|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Debug|ARM64.Build.0 = Debug|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Debug|Win32.Build.0 = Debug|Win32
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Debug|x64.ActiveCfg = Debug|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Debug|x64.Build.0 = Debug|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Release|ARM.ActiveCfg = Release|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Release|ARM.Build.0 = Release|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Release|ARM64.ActiveCfg = Release|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Release|ARM64.Build.0 = Release|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Release|Win32.ActiveCfg = Release|Win32
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Release|Win32.Build.0 = Release|Win32
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Release|x64.ActiveCfg = Release|x64
+		{F575D06A-9010-4F85-9B94-455B27FDC8A6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
