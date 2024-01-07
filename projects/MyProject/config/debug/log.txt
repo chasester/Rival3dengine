@@ -15,3 +15,6 @@ init: sound
 init: cfg
 init: render
 init: mainloop
+game mode is Edit
+Cooperative Editing:
+Edit maps with multiple players simultaneously.

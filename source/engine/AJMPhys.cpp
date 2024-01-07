@@ -424,7 +424,8 @@ void btmoveplayer(physent *pl, int curenttime){
 	}
 
 }
-void PHYSInit() {
+void PHYSInit() 
+{
 	m_collisionConfiguration = new btDefaultCollisionConfiguration();
 	m_dispatcher = new	btCollisionDispatcher(m_collisionConfiguration);
 
@@ -446,7 +447,7 @@ void PHYSInit() {
 	////////temp borrow
 	m_debugDrawer = new SauerDebugDrawer();
 	m_debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe|btIDebugDraw::DBG_DrawAabb|btIDebugDraw::DBG_DrawContactPoints);
-        m_dynamicsWorld->setDebugDrawer(m_debugDrawer);
+    m_dynamicsWorld->setDebugDrawer(m_debugDrawer);
 	////////temp borrow^^^^^
 	
 	m_indexVertexArrays = NULL;
