@@ -12,7 +12,7 @@ namespace game
                 conoutf(CON_ERROR, "unknown command-line option: %s", args[i]);
     }
 
-    const char *gameident() { return "Tesseract"; }
+    const char *gameident() { return "Rival"; }
 }
 
 extern ENetAddress masteraddress;
@@ -1162,8 +1162,8 @@ namespace server
         else
         {
             lilswap(&hdr.version, 2);
-            if(hdr.version!=DEMO_VERSION) formatstring(msg, "demo \"%s\" requires an %s version of Tesseract", file, hdr.version<DEMO_VERSION ? "older" : "newer");
-            else if(hdr.protocol!=PROTOCOL_VERSION) formatstring(msg, "demo \"%s\" requires an %s version of Tesseract", file, hdr.protocol<PROTOCOL_VERSION ? "older" : "newer");
+            if(hdr.version!=DEMO_VERSION) formatstring(msg, "demo \"%s\" requires an %s version of Rival", file, hdr.version<DEMO_VERSION ? "older" : "newer");
+            else if(hdr.protocol!=PROTOCOL_VERSION) formatstring(msg, "demo \"%s\" requires an %s version of Rival", file, hdr.protocol<PROTOCOL_VERSION ? "older" : "newer");
         }
         if(msg[0])
         {
