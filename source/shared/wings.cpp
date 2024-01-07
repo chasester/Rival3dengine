@@ -428,7 +428,7 @@ void config(asIScriptEngine *asEngine){
 }
 END_AS_NAMESPACE
 
-void asEngineShutdown(){ ASEngine->ShutDownAndRelease(); } //shutdown asEngine called in main::shutdown
+void asEngineShutdown(){if(ASEngine) ASEngine->ShutDownAndRelease(); } //shutdown asEngine called in main::shutdown
 
 void asConfigureEngine() {
 	ASEngine = asCreateScriptEngine(ANGELSCRIPT_VERSION); if (ASEngine) config(ASEngine); else conoutf("asengine didnt build");
@@ -438,6 +438,14 @@ void asConfigureEngine() {
 ScriptManager::ScriptManager() : asEngine(NULL), serializer(NULL){ }
 
 ScriptManager::ScriptControler *ScriptManager::getctrlscript(const str &script, bool checkctrl){
+	if (!asEngine)
+	{
+		print("Angel script was not porperly set up, this will remove its functionality.");
+			ASSERT("Engine is not initalized");
+		return NULL;
+
+	}
+		
 		//if we allready made the module then lets try  and find it	
 		if (checkctrl) loopv(ctrls)
 		if (ctrls[i]->module == script) return ctrls[i];

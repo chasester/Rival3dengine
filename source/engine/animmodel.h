@@ -70,7 +70,7 @@ struct animmodel : model
 
     struct linkedpart;
     struct mesh;
-/*
+
     struct shaderparams
     {
         float spec, gloss, glow, glowdelta, glowpulse, fullbright, envmapmin, envmapmax, scrollu, scrollv, alphatest;
@@ -78,7 +78,8 @@ struct animmodel : model
 
         shaderparams() : spec(1.0f), gloss(1), glow(3.0f), glowdelta(0), glowpulse(0), fullbright(0), envmapmin(0), envmapmax(0), scrollu(0), scrollv(0), alphatest(0.9f), color(1, 1, 1) {}
     };
-*/
+
+/*
 //angelo parallax
     struct shaderparams
     {
@@ -89,6 +90,7 @@ struct animmodel : model
         shaderparams() : spec(1.0f), gloss(1), glow(3.0f), glowdelta(0), glowpulse(0), fullbright(0), envmapmin(0), envmapmax(0), scrollu(0), scrollv(0), alphatest(0.9f), color(1, 1, 1),parascale(0.05, 10, 0) {}
     };
 //angelo parallax
+*/
     struct shaderparamskey
     {
         static hashtable<shaderparams, shaderparamskey> keys;
@@ -120,21 +122,29 @@ struct animmodel : model
 
     struct skin : shaderparams
     {
+        enum
+        {
+            DITHER       = 1<<0,
+            CULL_FACE    = 1<<1,
+            DOUBLE_SIDED = 1<<2
+        };
+
         part *owner;
-        //Texture *tex, *decal, *masks, *envmap, *normalmap;
-        Texture *tex, *decal, *masks, *envmap, *normalmap, *paramap;//angelo parallax
+        Texture *tex, *decal, *masks, *envmap, *normalmap;
         Shader *shader, *rsmshader;
-        bool cullface;
+        int flags;
         shaderparamskey *key;
 
-        skin() : owner(0), tex(notexture), decal(NULL), masks(notexture), envmap(NULL), normalmap(NULL), shader(NULL), rsmshader(NULL), cullface(true), key(NULL) {}
+        skin() : owner(0), tex(notexture), decal(NULL), masks(notexture), envmap(NULL), normalmap(NULL), shader(NULL), rsmshader(NULL), flags(CULL_FACE), key(NULL) {}
 
         bool masked() const { return masks != notexture; }
         bool envmapped() const { return envmapmax>0; }
         bool bumpmapped() const { return normalmap != NULL; }
-        bool paramapped() const { return paramap != NULL; }//angelo parallax
         bool alphatested() const { return alphatest > 0 && tex->type&Texture::ALPHA; }
+        bool dithered() const { return (flags&DITHER) != 0; }
         bool decaled() const { return decal != NULL; }
+        bool shouldcullface() const { return (flags&CULL_FACE) != 0; }
+        bool doublesided() const { return (flags&DOUBLE_SIDED) != 0; }
 
         void setkey()
         {
@@ -143,6 +153,7 @@ struct animmodel : model
 
         void setshaderparams(mesh &m, const animstate *as, bool skinned = true)
         {
+            if(!Shader::lastshader) return;
             if(key->checkversion() && Shader::lastshader->owner == key) return;
             Shader::lastshader->owner = key;
 
@@ -166,7 +177,6 @@ struct animmodel : model
             }
             LOCALPARAMF(maskscale, spec, gloss, curglow);
             if(envmapped()) LOCALPARAMF(envmapscale, envmapmin-envmapmax, envmapmax);
-	    if(paramapped()) LOCALPARAMF(parallaxscale, parascale.x, parascale.y, parascale.z);//angelo parallax
         }
 
         Shader *loadshader()
@@ -187,7 +197,7 @@ struct animmodel : model
                 cubestr opts;
                 int optslen = 0;
                 if(alphatested()) opts[optslen++] = 'a';
-                if(!cullface) opts[optslen++] = 'c';
+                if(doublesided()) opts[optslen++] = 'c';
                 opts[optslen++] = '\0';
 
                 defformatstring(name, "rsmmodel%s", opts);
@@ -199,13 +209,16 @@ struct animmodel : model
 
             cubestr opts;
             int optslen = 0;
-            if(alphatested()) opts[optslen++] = 'a';
+            if(alphatested())
+            {
+                opts[optslen++] = 'a';
+                if(dithered()) opts[optslen++] = 'u';
+            }
             if(decaled()) opts[optslen++] = decal->type&Texture::ALPHA ? 'D' : 'd';
             if(bumpmapped()) opts[optslen++] = 'n';
-            if(paramapped()) opts[optslen++] = 'p';//angelo parallax 
             if(envmapped()) { opts[optslen++] = 'm'; opts[optslen++] = 'e'; }
             else if(masked()) opts[optslen++] = 'm';
-            if(!cullface) opts[optslen++] = 'c';
+            if(doublesided()) opts[optslen++] = 'c';
             opts[optslen++] = '\0';
 
             defformatstring(name, "model%s", opts);
@@ -232,13 +245,16 @@ struct animmodel : model
 
         void setshader(mesh &m, const animstate *as)
         {
-            m.setshader(loadshader(), !shadowmapping && colorscale.a < 1 ? 1 : 0);
+            m.setshader(loadshader(), transparentlayer ? 1 : 0);
         }
 
         void bind(mesh &b, const animstate *as)
         {
-            if(!cullface && enablecullface) { glDisable(GL_CULL_FACE); enablecullface = false; }
-            else if(cullface && !enablecullface) { glEnable(GL_CULL_FACE); enablecullface = true; }
+            if(shouldcullface())
+            {
+                if(!enablecullface) { glEnable(GL_CULL_FACE); enablecullface = true; }
+            }
+            else if(enablecullface) { glDisable(GL_CULL_FACE); enablecullface = false; }
 
             if(as->cur.anim&ANIM_NOSKIN)
             {
@@ -331,7 +347,15 @@ struct animmodel : model
             if(cancollide) m.flags |= BIH::MESH_COLLIDE;
             if(s.alphatested()) m.flags |= BIH::MESH_ALPHA;
             if(noclip) m.flags |= BIH::MESH_NOCLIP;
+            if(s.shouldcullface()) m.flags |= BIH::MESH_CULLFACE;
             genBIH(m);
+            while(bih.last().numtris > BIH::mesh::MAXTRIS)
+            {
+                BIH::mesh &overflow = bih.dup();
+                overflow.tris += BIH::mesh::MAXTRIS;
+                overflow.numtris -= BIH::mesh::MAXTRIS;
+                bih[bih.length()-2].numtris = BIH::mesh::MAXTRIS;
+            }
         }
 
         virtual void genshadowmesh(vector<triangle> &tris, const matrix4x3 &m) {}
@@ -445,7 +469,7 @@ struct animmodel : model
         template<class V, class TC, class T> void calctangents(V *verts, TC *tcverts, int numverts, T *tris, int numtris, bool areaweight)
         {
             vec *tangent = new vec[2*numverts], *bitangent = tangent+numverts;
-            memset(tangent, 0, 2*numverts*sizeof(vec));
+            memclear(tangent, 2*numverts);
             loopi(numtris)
             {
                 const T &t = tris[i];
@@ -560,12 +584,12 @@ struct animmodel : model
         {
             if(lastebuf!=ebuf)
             {
-                glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, ebuf);
+                gle::bindebo(ebuf);
                 lastebuf = ebuf;
             }
             if(lastvbuf!=vbuf)
             {
-                glBindBuffer_(GL_ARRAY_BUFFER, vbuf);
+                gle::bindvbo(vbuf);
                 if(!lastvbuf) gle::enablevertex();
                 gle::vertexpointer(stride, v, type, size);
                 lastvbuf = vbuf;
@@ -896,7 +920,7 @@ struct animmodel : model
             vec oaxis, oforward, oo, oray;
             matrixstack[matrixpos].transposedtransformnormal(axis, oaxis);
             float pitchamount = pitchscale*pitch + pitchoffset;
-            if(pitchmin || pitchmax) pitchamount = clamp(pitchamount, pitchmin, pitchmax);
+            if((pitchmin || pitchmax) && pitchmin <= pitchmax) pitchamount = clamp(pitchamount, pitchmin, pitchmax);
             if(as->cur.anim&ANIM_NOPITCH || (as->interp < 1 && as->prev.anim&ANIM_NOPITCH))
                 pitchamount *= (as->cur.anim&ANIM_NOPITCH ? 0 : as->interp) + (as->interp < 1 && as->prev.anim&ANIM_NOPITCH ? 0 : 1-as->interp);
             if(pitchamount)
@@ -905,7 +929,7 @@ struct animmodel : model
                 matrixstack[matrixpos] = matrixstack[matrixpos-1];
                 matrixstack[matrixpos].rotate(pitchamount*RAD, oaxis);
             }
-            if(!index && !model->translate.iszero())
+            if(this == model->parts[0] && !model->translate.iszero())
             {
                 if(oldpos == matrixpos)
                 {
@@ -928,7 +952,7 @@ struct animmodel : model
                 {
                     linkedpart &link = links[i];
                     if(!link.p) continue;
-                    link.matrix.translate(links[i].translate, resize);
+                    link.matrix.translate(link.translate, resize);
 
                     matrixpos++;
                     matrixstack[matrixpos].mul(matrixstack[matrixpos-1], link.matrix);
@@ -991,7 +1015,7 @@ struct animmodel : model
                 matrixstack[matrixpos] = matrixstack[matrixpos-1];
                 matrixstack[matrixpos].rotate(pitchamount*RAD, oaxis);
             }
-            if(!index && !model->translate.iszero())
+            if(this == model->parts[0] && !model->translate.iszero())
             {
                 if(oldpos == matrixpos)
                 {
@@ -1027,7 +1051,7 @@ struct animmodel : model
                 loopv(links)
                 {
                     linkedpart &link = links[i];
-                    link.matrix.translate(links[i].translate, resize);
+                    link.matrix.translate(link.translate, resize);
 
                     matrixpos++;
                     matrixstack[matrixpos].mul(matrixstack[matrixpos-1], link.matrix);
@@ -1061,7 +1085,7 @@ struct animmodel : model
             if(animpart<0 || animpart>=MAXANIMPARTS || num<0 || num>=game::numanims()) return;
             if(frame<0 || range<=0 || !meshes || !meshes->hasframes(frame, range))
             {
-                conoutf("invalid frame %d, range %d in model %s", frame, range, model->name);
+                conoutf(CON_ERROR, "invalid frame %d, range %d in model %s", frame, range, model->name);
                 return;
             }
             if(!anims[animpart]) anims[animpart] = new vector<animspec>[game::numanims()];
@@ -1372,8 +1396,11 @@ struct animmodel : model
         loopv(parts) parts[i]->cleanup();
     }
 
+    virtual void flushpart() {}
+
     part &addpart()
     {
+        flushpart();
         part *p = new part(this, parts.length());
         parts.add(p);
         return *p;
@@ -1478,8 +1505,26 @@ struct animmodel : model
         return false;
     }
 
-    virtual bool loaddefaultparts()
+    virtual bool flipy() const { return false; }
+    virtual bool loadconfig() { return false; }
+    virtual bool loaddefaultparts() { return false; }
+    virtual void startload() {}
+    virtual void endload() {}
+
+    bool load()
     {
+        startload();
+        bool success = loadconfig() && parts.length(); // configured model, will call the model commands below
+        if(!success)
+            success = loaddefaultparts(); // model without configuration, try default tris and skin
+        flushpart();
+        endload();
+        if(flipy()) translate.y = -translate.y;
+
+        if(!success) return false;
+        loopv(parts) if(!parts[i]->meshes) return false;
+
+        loaded();
         return true;
     }
 
@@ -1544,16 +1589,34 @@ struct animmodel : model
         loopv(parts) loopvj(parts[i]->skins) parts[i]->skins[j].alphatest = alphatest;
     }
 
+    void setdither(bool val)
+    {
+        if(parts.empty()) loaddefaultparts();
+        loopv(parts) loopvj(parts[i]->skins)
+        {
+            skin &s = parts[i]->skins[j];
+            if(val) s.flags |= skin::DITHER;
+            else s.flags &= ~skin::DITHER;
+        }
+    }
+
     void setfullbright(float fullbright)
     {
         if(parts.empty()) loaddefaultparts();
         loopv(parts) loopvj(parts[i]->skins) parts[i]->skins[j].fullbright = fullbright;
     }
 
-    void setcullface(bool cullface)
+    void setcullface(int cullface)
     {
         if(parts.empty()) loaddefaultparts();
-        loopv(parts) loopvj(parts[i]->skins) parts[i]->skins[j].cullface = cullface;
+        loopv(parts) loopvj(parts[i]->skins)
+        {
+            skin &s = parts[i]->skins[j];
+            if(cullface > 0) s.flags |= skin::CULL_FACE;
+            else s.flags &= ~skin::CULL_FACE;
+            if(!cullface) s.flags |= skin::DOUBLE_SIDED;
+            else s.flags &= ~skin::DOUBLE_SIDED;
+        }
     }
 
     void setcolor(const vec &color)
@@ -1561,13 +1624,7 @@ struct animmodel : model
         if(parts.empty()) loaddefaultparts();
         loopv(parts) loopvj(parts[i]->skins) parts[i]->skins[j].color = color;
     }
-//angelo parallax
-    void setparascale(const vec &parascale)
-    {
-        if(parts.empty()) loaddefaultparts();
-        loopv(parts) loopvj(parts[i]->skins) parts[i]->skins[j].parascale = parascale;
-    }
-//angelo parallax 
+
     void calcbb(vec &center, vec &radius)
     {
         if(parts.empty()) return;
@@ -1642,9 +1699,12 @@ struct animmodel : model
 
     static void disablevbo()
     {
-        glBindBuffer_(GL_ARRAY_BUFFER, 0);
-        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, 0);
-        gle::disablevertex();
+        if(lastebuf) gle::clearebo();
+        if(lastvbuf)
+        {
+            gle::clearvbo();
+            gle::disablevertex();
+        }
         if(enabletc) disabletc();
         if(enabletangents) disabletangents();
         if(enablebones) disablebones();
@@ -1685,18 +1745,41 @@ static inline bool htcmp(const animmodel::shaderparams &x, const animmodel::shad
 hashtable<animmodel::shaderparams, animmodel::shaderparamskey> animmodel::shaderparamskey::keys;
 int animmodel::shaderparamskey::firstversion = 0, animmodel::shaderparamskey::lastversion = 1;
 
-template<class MDL> struct modelloader
+template<class MDL, class BASE> struct modelloader : BASE
 {
     static MDL *loading;
     static cubestr dir;
 
+    modelloader(const char *name) : BASE(name) {}
+
     static bool cananimate() { return true; }
     static bool multiparted() { return true; }
     static bool multimeshed() { return true; }
+
+    void startload()
+    {
+        loading = (MDL *)this;
+    }
+
+    void endload()
+    {
+        loading = NULL;
+    }
+
+    bool loadconfig()
+    {
+        formatstring(dir, "media/model/%s", BASE::name);
+        defformatstring(cfgname, "media/model/%s/%s.cfg", BASE::name, MDL::formatname());
+
+        identflags &= ~IDF_PERSIST;
+        bool success = execfile(cfgname, false);
+        identflags |= IDF_PERSIST;
+        return success;
+    }
 };
 
-template<class MDL> MDL *modelloader<MDL>::loading = NULL;
-template<class MDL> cubestr modelloader<MDL>::dir = {'\0'}; // crashes clang if "" is used here
+template<class MDL, class BASE> MDL *modelloader<MDL, BASE>::loading = NULL;
+template<class MDL, class BASE> cubestr modelloader<MDL, BASE>::dir = {'\0'}; // crashes clang if "" is used here
 
 template<class MDL, class MESH> struct modelcommands
 {
@@ -1705,12 +1788,12 @@ template<class MDL, class MESH> struct modelcommands
 
     static void setdir(char *name)
     {
-        if(!MDL::loading) { conoutf("not loading an %s", MDL::formatname()); return; }
+        if(!MDL::loading) { conoutf(CON_ERROR, "not loading an %s", MDL::formatname()); return; }
         formatstring(MDL::dir, "media/model/%s", name);
     }
 
     #define loopmeshes(meshname, m, body) do { \
-        if(!MDL::loading || MDL::loading->parts.empty()) { conoutf("not loading an %s", MDL::formatname()); return; } \
+        if(!MDL::loading || MDL::loading->parts.empty()) { conoutf(CON_ERROR, "not loading an %s", MDL::formatname()); return; } \
         part &mdl = *MDL::loading->parts.last(); \
         if(!mdl.meshes) return; \
         loopv(mdl.meshes->meshes) \
@@ -1761,21 +1844,25 @@ template<class MDL, class MESH> struct modelcommands
         loopskins(meshname, s, s.alphatest = max(0.0f, min(1.0f, *cutoff)));
     }
 
+    static void setdither(char *meshname, int *dither)
+    {
+        loopskins(meshname, s, { if(*dither) s.flags |= skin::DITHER; else s.flags &= ~skin::DITHER; });
+    }
+
     static void setcullface(char *meshname, int *cullface)
     {
-        loopskins(meshname, s, s.cullface = *cullface!=0);
+        loopskins(meshname, s,
+        {
+            if(*cullface > 0) s.flags |= skin::CULL_FACE; else s.flags &= ~skin::CULL_FACE;
+            if(!*cullface) s.flags |= skin::DOUBLE_SIDED; else s.flags &= ~skin::DOUBLE_SIDED;
+        });
     }
 
     static void setcolor(char *meshname, float *r, float *g, float *b)
     {
         loopskins(meshname, s, s.color = vec(*r, *g, *b));
     }
-//angelo parallax
-    static void setparascale(char *meshname, float *x, float *y, float *z)
-    {
-        loopskins(meshname, s, s.parascale = vec(*x, *y, *z));
-    }
-//angelo parallax 
+
     static void setenvmap(char *meshname, char *envmap)
     {
         Texture *tex = cubemapload(envmap);
@@ -1787,11 +1874,7 @@ template<class MDL, class MESH> struct modelcommands
         Texture *normalmaptex = textureload(makerelpath(MDL::dir, normalmapfile), 0, true, false);
         loopskins(meshname, s, s.normalmap = normalmaptex);
     }
-    static void setparamap(char *meshname, char *paramapfile)//angelo parallax
-    {
-        Texture *paramaptex = textureload(makerelpath(MDL::dir, paramapfile), 0, true, false);
-        loopskins(meshname, s, s.paramap = paramaptex);
-    }//angelo parallax
+
     static void setdecal(char *meshname, char *decal)
     {
         loopskins(meshname, s,
@@ -1830,15 +1913,15 @@ template<class MDL, class MESH> struct modelcommands
 
     static void setlink(int *parent, int *child, char *tagname, float *x, float *y, float *z)
     {
-        if(!MDL::loading) { conoutf("not loading an %s", MDL::formatname()); return; }
-        if(!MDL::loading->parts.inrange(*parent) || !MDL::loading->parts.inrange(*child)) { conoutf("no models loaded to link"); return; }
-        if(!MDL::loading->parts[*parent]->link(MDL::loading->parts[*child], tagname, vec(*x, *y, *z))) conoutf("could not link model %s", MDL::loading->name);
+        if(!MDL::loading) { conoutf(CON_ERROR, "not loading an %s", MDL::formatname()); return; }
+        if(!MDL::loading->parts.inrange(*parent) || !MDL::loading->parts.inrange(*child)) { conoutf(CON_ERROR, "no models loaded to link"); return; }
+        if(!MDL::loading->parts[*parent]->link(MDL::loading->parts[*child], tagname, vec(*x, *y, *z))) conoutf(CON_ERROR, "could not link model %s", MDL::loading->name);
     }
 
     template<class F> void modelcommand(F *fun, const char *suffix, const char *args)
     {
         defformatstring(name, "%s%s", MDL::formatname(), suffix);
-        addcommand(newstring(name), (identfun)fun, args);
+        addcommand(newstring(name), fun, args);
     }
 
     modelcommands()
@@ -1851,12 +1934,11 @@ template<class MDL, class MESH> struct modelcommands
             modelcommand(setgloss, "gloss", "si");
             modelcommand(setglow, "glow", "sfff");
             modelcommand(setalphatest, "alphatest", "sf");
+            modelcommand(setdither, "dither", "si");
             modelcommand(setcullface, "cullface", "si");
             modelcommand(setcolor, "color", "sfff");
             modelcommand(setenvmap, "envmap", "ss");
             modelcommand(setbumpmap, "bumpmap", "ss");
-            modelcommand(setparamap, "paramap", "ss");	//angelo parallax 
-            modelcommand(setparascale, "parascale", "sfff");//angelo parallax		    
             modelcommand(setdecal, "decal", "ss");
             modelcommand(setfullbright, "fullbright", "sf");
             modelcommand(setshader, "shader", "ss");

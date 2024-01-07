@@ -66,7 +66,7 @@ namespace ai
 
         if(dist <= mdist)
         {
-            float x = fmod(fabs(asin((q.z-o.z)/dist)/RAD-pitch), 360);
+            float x = fmod(fabs((dist > 0 ? asin((q.z-o.z)/dist)/RAD : 0) - pitch), 360);
             float y = fmod(fabs(-atan2(q.x-o.x, q.y-o.y)/RAD-yaw), 360);
             if(min(x, 360-x) <= fovx && min(y, 360-y) <= fovy) return raycubelos(o, q, v);
         }
@@ -153,7 +153,7 @@ namespace ai
         bool resetthisguy = false;
         if(!d->name[0])
         {
-            if(aidebug) conoutf("%s assigned to %s at skill %d", colorname(d, name), o ? colorname(o) : "?", sk);
+            if(aidebug) conoutf(CON_DEBUG, "%s assigned to %s at skill %d", colorname(d, name), o ? colorname(o) : "?", sk);
             else conoutf("\f0join:\f7 %s", colorname(d, name));
             resetthisguy = true;
         }
@@ -161,10 +161,10 @@ namespace ai
         {
             if(d->ownernum != ocn)
             {
-                if(aidebug) conoutf("%s reassigned to %s", colorname(d, name), o ? colorname(o) : "?");
+                if(aidebug) conoutf(CON_DEBUG, "%s reassigned to %s", colorname(d, name), o ? colorname(o) : "?");
                 resetthisguy = true;
             }
-            if(d->skill != sk && aidebug) conoutf("%s changed skill to %d", colorname(d, name), sk);
+            if(d->skill != sk && aidebug) conoutf(CON_DEBUG, "%s changed skill to %d", colorname(d, name), sk);
         }
 
         copystring(d->name, name, MAXNAMELEN+1);
@@ -434,7 +434,7 @@ namespace ai
         loopv(entities::ents)
         {
             extentity &e = *(extentity *)entities::ents[i];
-            if(!e.spawned() || !d->canpickup(e.type)) continue;
+            if(!e.spawned() || e.nopickup() || !d->canpickup(e.type)) continue;
             tryitem(d, e, i, b, interests, force);
         }
     }
@@ -668,7 +668,7 @@ namespace ai
                 if(entities::ents.inrange(b.target))
                 {
                     extentity &e = *(extentity *)entities::ents[b.target];
-                    if(!e.spawned() || !validitem(e.type)) return 0;
+                    if(!e.spawned() || e.nopickup() || !validitem(e.type)) return 0;
                     //if(d->feetpos().squaredist(e.o) <= CLOSEDIST*CLOSEDIST)
                     //{
                     //    b.idle = 1;
@@ -894,20 +894,20 @@ namespace ai
     {
         if(full)
         {
-            while(pitch < -180.0f) pitch += 360.0f;
-            while(pitch >= 180.0f) pitch -= 360.0f;
-            while(roll < -180.0f) roll += 360.0f;
-            while(roll >= 180.0f) roll -= 360.0f;
+            if(pitch < -180.0f) pitch = 180.0f - fmodf(-180.0f - pitch, 360.0f);
+            else if(pitch >= 180.0f) pitch = fmodf(pitch + 180.0f, 360.0f) - 180.0f;
+            if(roll < -180.0f) roll = 180.0f - fmodf(-180.0f - roll, 360.0f);
+            else if(roll >= 180.0f) roll = fmodf(roll + 180.0f, 360.0f) - 180.0f;
         }
         else
         {
             if(pitch > 89.9f) pitch = 89.9f;
-            if(pitch < -89.9f) pitch = -89.9f;
+            else if(pitch < -89.9f) pitch = -89.9f;
             if(roll > 89.9f) roll = 89.9f;
-            if(roll < -89.9f) roll = -89.9f;
+            else if(roll < -89.9f) roll = -89.9f;
         }
-        while(yaw < 0.0f) yaw += 360.0f;
-        while(yaw >= 360.0f) yaw -= 360.0f;
+        if(yaw < 0.0f) yaw = 360.0f - fmodf(-yaw, 360.0f);
+        else if(yaw >= 360.0f) yaw = fmodf(yaw, 360.0f);
     }
 
     void fixrange(float &yaw, float &pitch)
@@ -920,7 +920,7 @@ namespace ai
     {
         float dist = from.dist(pos);
         yaw = -atan2(pos.x-from.x, pos.y-from.y)/RAD;
-        pitch = asin((pos.z-from.z)/dist)/RAD;
+        pitch = dist > 0 ? asin((pos.z-from.z)/dist)/RAD : 0;
     }
 
     void scaleyawpitch(float &yaw, float &pitch, float targyaw, float targpitch, float frame, float scale)
@@ -1068,8 +1068,7 @@ namespace ai
         if(d->ai->becareful && d->physstate == PHYS_FALL)
         {
             float offyaw, offpitch;
-            vec v = vec(d->vel).normalize();
-            vectoyawpitch(v, offyaw, offpitch);
+            vectoyawpitch(d->vel, offyaw, offpitch);
             offyaw -= d->yaw; offpitch -= d->pitch;
             if(fabs(offyaw)+fabs(offpitch) >= 135) d->ai->becareful = false;
             else if(d->ai->becareful) d->ai->dontmove = true;
@@ -1091,8 +1090,8 @@ namespace ai
                 {  1, 1, 315 }
             };
             float yaw = d->ai->targyaw-d->yaw;
-            while(yaw < 0.0f) yaw += 360.0f;
-            while(yaw >= 360.0f) yaw -= 360.0f;
+            if(yaw < 0.0f) yaw = 360.0f - fmodf(-yaw, 360.0f);
+            else if(yaw >= 360.0f) yaw = fmodf(yaw, 360.0f);
             int r = clamp(((int)floor((yaw+22.5f)/45.0f))&7, 0, 7);
             const aimdir &ad = aimdirs[r];
             d->move = ad.move;
@@ -1264,7 +1263,7 @@ namespace ai
                 c.override = false;
                 cleannext = false;
             }
-            if(d->state == CS_DEAD && d->respawned!=d->lifesequence && (!cmode || cmode->respawnwait(d) <= 0) && lastmillis - d->lastpain >= 500)
+            if(d->state == CS_DEAD && d->respawned!=d->lifesequence && (!cmode || cmode->respawnwait(d, 250) <= 0) && lastmillis - d->lastpain >= 500)
             {
                 addmsg(N_TRYSPAWN, "rc", d);
                 d->respawned = d->lifesequence;

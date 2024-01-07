@@ -52,8 +52,15 @@ void applychanges()
 COMMAND(applychanges, "");
 ICOMMAND(pendingchanges, "b", (int *idx), { if(needsapply.inrange(*idx)) result(needsapply[*idx].desc); else if(*idx < 0) intret(needsapply.length()); });
 
+static int lastmainmenu = -1;
+
 void menuprocess()
 {
+    if(lastmainmenu != mainmenu)
+    {
+        lastmainmenu = mainmenu;
+        execident("mainmenutoggled");
+    }    
     if(mainmenu && !isconnected(true) && !UI::hascursor()) UI::showui("main");
 }
 

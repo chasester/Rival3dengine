@@ -258,7 +258,7 @@ struct ctfclientmode : clientmode
     {
         if(notgotflags || !flags.inrange(i) || ci->state.state!=CS_ALIVE || !ci->team) return;
         flag &f = flags[i];
-        if(!validteam(f.team) || f.owner>=0 || f.version != version || (f.droptime && f.dropper == ci->clientnum && f.dropcount >= 1)) return;
+        if(!validteam(f.team) || f.owner>=0 || f.version != version || (f.droptime && f.dropper == ci->clientnum && f.dropcount >= 3)) return;
         if(f.team!=ci->team)
         {
             loopvj(flags) if(flags[j].owner==ci->clientnum) return;
@@ -418,9 +418,7 @@ struct ctfclientmode : clientmode
             int wait = respawnwait(d);
             if(wait>=0)
             {
-                pushhudmatrix();
-                hudmatrix.scale(2, 2, 1);
-                flushhudmatrix();
+                pushhudscale(2);
                 bool flash = wait>0 && d==player1 && lastspawnattempt>=d->lastpain && lastmillis < lastspawnattempt+100;
                 draw_textf("%s%d", (x+s/2)/2-(wait>=10 ? 28 : 16), (y+s/2)/2-32, flash ? "\f3" : "", wait);
                 pophudmatrix();
@@ -521,7 +519,8 @@ struct ctfclientmode : clientmode
                 flag &f = flags[i];
                 f.version = version;
                 f.owner = owner>=0 ? (owner==player1->clientnum ? player1 : newclient(owner)) : NULL;
-                f.droptime = dropped;
+                f.owntime = owner>=0 ? lastmillis : 0;
+                f.droptime = dropped ? lastmillis : 0;
                 f.droploc = dropped ? droploc : f.spawnloc;
                 f.interptime = 0;
 
@@ -552,7 +551,7 @@ struct ctfclientmode : clientmode
         f.version = version;
         f.interploc = interpflagpos(f, f.interpangle);
         f.interptime = lastmillis;
-        dropflag(i, droploc, d->yaw, 1);
+        dropflag(i, droploc, d->yaw, lastmillis);
         d->flagpickup |= 1<<f.id;
         if(!droptofloor(f.droploc.addz(4), 4, 0))
         {
@@ -560,7 +559,7 @@ struct ctfclientmode : clientmode
             f.interptime = 0;
         }
         conoutf(CON_GAMEINFO, "%s dropped %s", teamcolorname(d), teamcolorflag(f));
-        playsound(S_FLAGDROP);
+        teamsound(d, S_FLAGDROP);
     }
 
     void flagexplosion(int i, int team, const vec &loc)
@@ -594,7 +593,7 @@ struct ctfclientmode : clientmode
         f.interptime = 0;
         returnflag(i);
         conoutf(CON_GAMEINFO, "%s returned %s", teamcolorname(d), teamcolorflag(f));
-        playsound(S_FLAGRETURN);
+        teamsound(d, S_FLAGRETURN);
     }
 
     void resetflag(int i, int version)
@@ -606,7 +605,7 @@ struct ctfclientmode : clientmode
         f.interptime = 0;
         returnflag(i);
         conoutf(CON_GAMEINFO, "%s reset", teamcolorflag(f));
-        playsound(S_FLAGRESET);
+        teamsound(f.team == player1->team, S_FLAGRESET);
     }
 
     void scoreflag(gameent *d, int relay, int relayversion, int goal, int goalversion, int team, int score, int dflags)
@@ -645,20 +644,39 @@ struct ctfclientmode : clientmode
         if(f.droptime) conoutf(CON_GAMEINFO, "%s picked up %s", teamcolorname(d), teamcolorflag(f));
         else conoutf(CON_GAMEINFO, "%s stole %s", teamcolorname(d), teamcolorflag(f));
         ownflag(i, d, lastmillis);
-        playsound(S_FLAGPICKUP);
+        teamsound(d, S_FLAGPICKUP);
     }
 
     void checkitems(gameent *d)
     {
+        if(d->state!=CS_ALIVE) return;
         vec o = d->feetpos();
+        bool tookflag = false;
         loopv(flags)
         {
             flag &f = flags[i];
-            if(!validteam(f.team) || f.owner || (f.droptime && f.droploc.x<0)) continue;
+            if(!validteam(f.team) || f.team==player1->team || f.owner || (f.droptime && f.droploc.x<0)) continue;
             const vec &loc = f.droptime ? f.droploc : f.spawnloc;
             if(o.dist(loc) < FLAGRADIUS)
             {
                 if(d->flagpickup&(1<<f.id)) continue;
+                if((lookupmaterial(o)&MATF_CLIP) != MAT_GAMECLIP && (lookupmaterial(loc)&MATF_CLIP) != MAT_GAMECLIP)
+                {
+                    tookflag = true;
+                    addmsg(N_TAKEFLAG, "rcii", d, i, f.version);
+                }
+                d->flagpickup |= 1<<f.id;
+            }
+            else d->flagpickup &= ~(1<<f.id);
+        }
+        loopv(flags)
+        {
+            flag &f = flags[i];
+            if(!validteam(f.team) || f.team!=player1->team || f.owner || (f.droptime && f.droploc.x<0)) continue;
+            const vec &loc = f.droptime ? f.droploc : f.spawnloc;
+            if(o.dist(loc) < FLAGRADIUS)
+            {
+                if(!tookflag && d->flagpickup&(1<<f.id)) continue;
                 if((lookupmaterial(o)&MATF_CLIP) != MAT_GAMECLIP && (lookupmaterial(loc)&MATF_CLIP) != MAT_GAMECLIP)
                     addmsg(N_TAKEFLAG, "rcii", d, i, f.version);
                 d->flagpickup |= 1<<f.id;
@@ -679,9 +697,9 @@ struct ctfclientmode : clientmode
        }
     }
 
-    int respawnwait(gameent *d)
+    int respawnwait(gameent *d, int delay = 0)
     {
-        return max(0, RESPAWNSECS-(lastmillis-d->lastpain)/1000);
+        return d->respawnwait(RESPAWNSECS, delay);
     }
 
     bool aihomerun(gameent *d, ai::aistate &b)

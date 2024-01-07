@@ -1,4 +1,5 @@
 #include "engine.h"
+
 enum
 {
     BM_BRANCH = 0,
@@ -959,9 +960,9 @@ ICOMMAND(rotateblendbrush, "i", (int *val),
 {
     if(!canpaintblendmap()) return;
 
-    int numrots = *val < 0 ? 3 : clamp(*val, 1, 5);
     BlendBrush *brush = brushes[curbrush];
-    brush->reorient(numrots>=2 && numrots<=4, numrots<=2 || numrots==5, (numrots&5)==1);
+    const texrotation &r = texrotations[*val < 0 ? 3 : clamp(*val, 1, 7)];
+    brush->reorient(r.flipx, r.flipy, r.swapxy);
 });
 
 void paintblendmap(bool msg)
@@ -1041,13 +1042,13 @@ ICOMMAND(invertblendmap, "", (),
 {
     if(noedit(false) || (nompedit && multiplayer())) return;
     invertblendmap(0, 0, worldsize>>BM_SCALE, worldsize>>BM_SCALE);
-    previewblends(octaoffset, ivec(worldsize, worldsize, worldsize));
+    previewblends(ivec(0, 0, 0), ivec(worldsize, worldsize, worldsize));
 });
 
 void showblendmap()
 {
     if(noedit(true) || (nompedit && multiplayer())) return;
-    previewblends(octaoffset, ivec(worldsize, worldsize, worldsize));
+    previewblends(ivec(0, 0, 0), ivec(worldsize, worldsize, worldsize));
 }
 
 COMMAND(showblendmap, "");

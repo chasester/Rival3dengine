@@ -15,17 +15,13 @@
 #endif
 #define NULL 0
 
+typedef signed char schar;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
 typedef unsigned long ulong;
 typedef signed long long int llong;
 typedef unsigned long long int ullong;
-
-//fix for double concatination on gcc compilers
-#define GCC_DOUBLECONCATINATION_FIX2(fun,suffix,under) fun ## suffix ## under
-#define GCC_DOUBLECONCATINATION_FIX1(fun,suffix,under)  GCC_DOUBLECONCATINATION_FIX2(fun,suffix,under)
-#define GCC_DOUBLECONCATINATION_FIX(fun,suffix,under) GCC_DOUBLECONCATINATION_FIX1(fun,suffix,under)
 
 #ifdef _DEBUG
 #define ASSERT(c) assert(c)
@@ -45,12 +41,12 @@ typedef unsigned long long int ullong;
 #define UNUSED
 #endif
 ////////new and delete get included with bullet
-/*
-inline void *operator new(size_t, void *p) { return p; }
-inline void *operator new[](size_t, void *p) { return p; }
-inline void operator delete(void *, void *) {}
-inline void operator delete[](void *, void *) {}
-*/
+//can mode this into its own name space, or move it into a header that is manually included rather than globally included.
+//inline void *operator new(size_t, void *p) { return p; }
+//inline void *operator new[](size_t, void *p) { return p; }
+//inline void operator delete(void *, void *) {}
+//inline void operator delete[](void *, void *) {}
+
 
 #ifdef swap
 #undef swap
@@ -165,6 +161,7 @@ static inline int bitscan(uint mask)
 #define DELETEP(p) if(p) { delete   p; p = 0; }
 #define DELETEA(p) if(p) { delete[] p; p = 0; }
 
+// Optimize math by making constants rather then making defines which are operational constants.
 #define PI (3.14159265358979f)
 const float pi = PI;
 #define SQRT2 (1.4142135623731f)
@@ -273,6 +270,11 @@ template<size_t N> inline bool matchstring(const char *s, size_t len, const char
     return len == N-1 && !memcmp(s, d, N-1);
 }
 
+inline bool matchstring(const char *s, size_t len, const char *d, size_t len2)
+{
+    return len == len2 && !memcmp(s, d, len);
+}
+
 inline char *newstring(size_t l)                { return new char[l+1]; }
 inline char *newstring(const char *s, size_t l) { return copystring(newstring(l), s, l+1); }
 inline char *newstring(const char *s)           { size_t l = strlen(s); char *d = newstring(l); memcpy(d, s, l+1); return d; }
@@ -291,6 +293,10 @@ inline char *newconcatstring(const char *s, const char *t)
 #define loopvj(v)   for(int j = 0; j<(v).length(); j++)
 #define loopvk(v)   for(int k = 0; k<(v).length(); k++)
 #define loopvrev(v) for(int i = (v).length()-1; i>=0; i--)
+
+template<class T> inline void memclear(T *p, size_t n) { memset((void *)p, 0, n * sizeof(T)); }
+template<class T> inline void memclear(T &p) { memset((void *)&p, 0, sizeof(T)); }
+template<class T, size_t N> inline void memclear(T (&p)[N]) { memset((void *)p, 0, N * sizeof(T)); }
 
 template <class T>
 struct databuf
@@ -743,22 +749,21 @@ template <class T> struct vector
     void growbuf(int sz)
     {
         int olen = alen;
-        if(!alen) alen = max(MINSIZE, sz);
+        if(alen <= 0) alen = max(MINSIZE, sz);
         else while(alen < sz) alen += alen/2;
         if(alen <= olen) return;
         uchar *newbuf = new uchar[alen*sizeof(T)];
         if(olen > 0)
         {
-            //if(ulen > 0) memcpy(newbuf, (void *)buf, ulen*sizeof(T));
-            memcpy(newbuf, (void *)buf, olen*sizeof(T));
-	    delete[] (uchar *)buf;
+            if(ulen > 0) memcpy(newbuf, (void *)buf, ulen*sizeof(T));
+            delete[] (uchar *)buf;
         }
         buf = (T *)newbuf;
     }
 
     databuf<T> reserve(int sz)
     {
-        if(ulen+sz > alen) growbuf(ulen+sz);
+        if(alen-ulen < sz) growbuf(ulen+sz);
         return databuf<T>(&buf[ulen], sz);
     }
 
@@ -822,26 +827,26 @@ template <class T> struct vector
         if(find(o) < 0) add(o);
     }
 
-    void removeobj(const T &o)
+    bool removeobj(const T &o)
     {
         loopi(ulen) if(buf[i] == o)
         {
             int dst = i;
             for(int j = i+1; j < ulen; j++) if(!(buf[j] == o)) buf[dst++] = buf[j];
             setsize(dst);
-            break;
+            return true;
         }
+        return false;
     }
 
-    void replacewithlast(const T &o)
+    bool replacewithlast(const T &o)
     {
-        if(!ulen) return;
-        loopi(ulen-1) if(buf[i]==o)
+        loopi(ulen) if(buf[i]==o)
         {
-            buf[i] = buf[ulen-1];
-            break;
+            buf[i] = buf[--ulen];
+            return true;
         }
-        ulen--;
+        return false;
     }
 
     T &insert(int i, const T &e)
@@ -854,7 +859,7 @@ template <class T> struct vector
 
     T *insert(int i, const T *e, int n)
     {
-        if(ulen+n>alen) growbuf(ulen+n);
+        if(alen-ulen < n) growbuf(ulen+n);
         loopj(n) add(T());
         for(int p = ulen-1; p>=i+n; p--) buf[p] = buf[p-n];
         loopj(n) buf[i+j] = e[j];
@@ -1131,6 +1136,12 @@ template<class T> struct hashset : hashbase<hashset<T>, T, T, T>
     static inline const T &getkey(const T &elem) { return elem; }
     static inline T &getdata(T &elem) { return elem; }
     template<class K> static inline void setkey(T &elem, const K &key) {}
+
+    template<class V>
+    T &add(const V &elem)
+    {
+        return basetype::access(elem, elem);
+    }
 };
 
 template<class T> struct hashnameset : hashbase<hashnameset<T>, T, const char *, T>
@@ -1143,6 +1154,12 @@ template<class T> struct hashnameset : hashbase<hashnameset<T>, T, const char *,
     template<class U> static inline const char *getkey(U *elem) { return elem->name; }
     static inline T &getdata(T &elem) { return elem; }
     template<class K> static inline void setkey(T &elem, const K &key) {}
+
+    template<class V>
+    T &add(const V &elem)
+    {
+        return basetype::access(getkey(elem), elem);
+    }
 };
 
 template<class K, class T> struct hashtableentry
@@ -1183,6 +1200,7 @@ template <class T, int SIZE> struct queue
 
     void clear() { head = tail = len = 0; }
 
+    int capacity() const { return SIZE; }
     int length() const { return len; }
     bool empty() const { return !len; }
     bool full() const { return len == SIZE; }
@@ -1204,6 +1222,25 @@ template <class T, int SIZE> struct queue
     }
     T &add(const T &e) { return add() = e; }
 
+    databuf<T> reserve(int sz)
+    {
+        if(!len) head = tail = 0;
+        return databuf<T>(&data[tail], min(sz, SIZE-tail));
+    }
+
+    void advance(int sz)
+    {
+        if(len + sz > SIZE) sz = SIZE - len;
+        tail += sz;
+        if(tail >= SIZE) tail -= SIZE;
+        len += sz;
+    }
+
+    void addbuf(const databuf<T> &p)
+    {
+        advance(p.length());
+    }
+
     T &pop()
     {
         tail--;
@@ -1221,6 +1258,23 @@ template <class T, int SIZE> struct queue
         if(head >= SIZE) head -= SIZE;
         len--;
         return t;
+    }
+
+    T remove(int offset)
+    {
+        T val = removing(offset);
+        if(head+offset >= SIZE) for(int i = head+offset - SIZE + 1; i < tail; i++) data[i-1] = data[i];
+        else if(head < tail) for(int i = head+offset + 1; i < tail; i++) data[i-1] = data[i];
+        else
+        {
+            for(int i = head+offset + 1; i < SIZE; i++) data[i-1] = data[i];
+            data[SIZE-1] = data[0];
+            for(int i = 1; i < tail; i++) data[i-1] = data[i];
+        }
+        tail--;
+        if(tail < 0) tail += SIZE;
+        len--;
+        return val;
     }
 
     T &operator[](int offset) { return removing(offset); }
@@ -1262,6 +1316,14 @@ template<class T> inline void endiansame(T *buf, size_t len) {}
 #define lilswap endianswap
 #define bigswap endiansame
 #endif
+#elif defined(__BYTE_ORDER__)
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define lilswap endiansame
+#define bigswap endianswap
+#else
+#define lilswap endianswap
+#define bigswap endiansame 
+#endif
 #else
 template<class T> inline T lilswap(T n) { return islittleendian() ? n : endianswap(n); }
 template<class T> inline void lilswap(T *buf, size_t len) { if(!islittleendian()) endianswap(buf, len); }
@@ -1280,7 +1342,7 @@ template<class T> inline void bigswap(T *buf, size_t len) { if(islittleendian())
 struct stream
 {
 #ifdef WIN32
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__MINGW32__)
     typedef off64_t offset;
 #else
     typedef __int64 offset;
@@ -1304,12 +1366,6 @@ struct stream
     virtual bool putchar(int n) { uchar c = n; return write(&c, 1) == 1; }
     virtual bool getline(char *str, size_t len);
     virtual bool putstring(const char *str) { size_t len = strlen(str); return write(str, len) == len; }
-	/*virtual bool putstring(str str, int maxsz = -1) { 
-		const char *s = str.c_str(); uint size = strlen(s); size_t len = size; 
-		if (maxsz >= 0){ len = len > maxsz ? maxsz : len; } 
-		write(s, len); 
-		if (len == size) return true; 
-		else seek(maxsz > len ? maxsz - size : 0, SEEK_CUR); return false;}*/
     virtual bool putline(const char *str) { return putstring(str) && putchar('\n'); }
     virtual size_t printf(const char *fmt, ...) PRINTFARGS(2, 3);
     virtual uint getcrc() { return 0; }
@@ -1360,6 +1416,7 @@ static inline int iscubealpha(uchar c) { return cubectype[c]&CT_ALPHA; }
 static inline int iscubealnum(uchar c) { return cubectype[c]&(CT_ALPHA|CT_DIGIT); }
 static inline int iscubelower(uchar c) { return cubectype[c]&CT_LOWER; }
 static inline int iscubeupper(uchar c) { return cubectype[c]&CT_UPPER; }
+static inline int iscubepunct(uchar c) { return cubectype[c] == CT_PRINT; }
 static inline int cube2uni(uchar c)
 {
     extern const int cube2unichars[256];
@@ -1383,6 +1440,11 @@ static inline uchar cubeupper(uchar c)
 }
 extern size_t decodeutf8(uchar *dst, size_t dstlen, const uchar *src, size_t srclen, size_t *carry = NULL);
 extern size_t encodeutf8(uchar *dstbuf, size_t dstlen, const uchar *srcbuf, size_t srclen, size_t *carry = NULL);
+extern int cubecasecmp(const char *s1, const char *s2, int n = INT_MAX);
+static inline bool cubecaseequal(const char *s1, const char *s2, int n = INT_MAX) { return !cubecasecmp(s1, s2, n); }
+extern char *cubecasefind(const char *haystack, const char *needle);
+
+extern cubestr homedir;
 
 extern char *makerelpath(const char *dir, const char *file, const char *prefix = NULL, const char *cmd = NULL);
 extern char *path(char *s);

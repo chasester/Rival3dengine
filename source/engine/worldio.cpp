@@ -2,6 +2,25 @@
 
 #include "engine.h"
 
+void validmapname(char *dst, const char *src, const char *prefix = NULL, const char *alt = "untitled", size_t maxlen = 100)
+{
+    if(prefix) while(*prefix) *dst++ = *prefix++;
+    const char *start = dst;
+    if(src) loopi(maxlen)
+    {
+        char c = *src++;
+        if(iscubealnum(c) || c == '_' || c == '-' || c == '/' || c == '\\') *dst++ = c;
+        else break;
+    }
+    if(dst > start) *dst = '\0';
+    else if(dst != alt) copystring(dst, alt, maxlen);
+}
+
+void fixmapname(char *name)
+{
+    validmapname(name, name, NULL, "");
+}
+
 static void fixent(entity &e, int version)
 {
     if(version <= 0)
@@ -37,7 +56,7 @@ static bool loadmapheader(stream *f, const char *ogzname, mapheader &hdr, octahe
         hdr.blendmap = ohdr.blendmap;
         hdr.numvars = ohdr.numvars;
         hdr.numvslots = ohdr.numvslots;
-	 }
+    }
     else { conoutf(CON_ERROR, "map %s uses an unsupported map type", ogzname); return false; }
 
     return true;
@@ -45,7 +64,9 @@ static bool loadmapheader(stream *f, const char *ogzname, mapheader &hdr, octahe
 
 bool loadents(const char *fname, vector<entity> &ents, uint *crc)
 {
-    defformatstring(ogzname, "media/map/%s.ogz", fname);
+    cubestr name;
+    validmapname(name, fname);
+    defformatstring(ogzname, "media/map/%s.ogz", name);
     path(ogzname);
     stream *f = opengzfile(ogzname, "rb");
     if(!f) return false;
@@ -120,18 +141,22 @@ VARP(savebak, 0, 2, 2);
 
 void setmapfilenames(const char *fname, const char *cname = NULL)
 {
-    formatstring(ogzname, "media/map/%s.ogz", fname);
-    if(savebak==1) formatstring(bakname, "media/map/%s.BAK", fname);
+    cubestr name;
+    validmapname(name, fname);
+    formatstring(ogzname, "media/map/%s.ogz", name);
+    formatstring(picname, "media/map/%s.png", name);
+    if(savebak==1) formatstring(bakname, "media/map/%s.BAK", name);
     else
     {
         cubestr baktime;
         time_t t = time(NULL);
         size_t len = strftime(baktime, sizeof(baktime), "%Y-%m-%d_%H.%M.%S", localtime(&t));
         baktime[min(len, sizeof(baktime)-1)] = '\0';
-        formatstring(bakname, "media/map/%s_%s.BAK", fname, baktime);
+        formatstring(bakname, "media/map/%s_%s.BAK", name, baktime);
     }
-    formatstring(cfgname, "media/map/%s.cfg", cname ? cname : fname);
-    formatstring(picname, "media/map/%s.png", fname);
+
+    validmapname(name, cname ? cname : fname);
+    formatstring(cfgname, "media/map/%s.cfg", name);
 
     path(ogzname);
     path(bakname);
@@ -142,9 +167,9 @@ void setmapfilenames(const char *fname, const char *cname = NULL)
 void mapcfgname()
 {
     const char *mname = game::getclientmap();
-    if(!*mname) mname = "untitled";
-
-    defformatstring(cfgname, "media/map/%s.cfg", mname);
+    cubestr name;
+    validmapname(name, mname);
+    defformatstring(cfgname, "media/map/%s.cfg", name);
     path(cfgname);
     result(cfgname);
 }
@@ -315,7 +340,7 @@ void loadc(stream *f, cube &c, const ivec &co, int size, bool &failed)
     {
         int surfmask, totalverts;
         surfmask = f->getchar();
-        totalverts = f->getchar();
+        totalverts = max(f->getchar(), 0);
         newcubeext(c, totalverts, false);
         memset(c.ext->surfaces, 0, sizeof(c.ext->surfaces));
         memset(c.ext->verts(), 0, totalverts*sizeof(vertinfo));
@@ -508,7 +533,7 @@ void loadvslot(stream *f, VSlot &vs, int changed)
         }
     }
     if(vs.changed & (1<<VSLOT_SCALE)) vs.scale = f->getlil<float>();
-    if(vs.changed & (1<<VSLOT_ROTATION)) vs.rotation = f->getlil<int>();
+    if(vs.changed & (1<<VSLOT_ROTATION)) vs.rotation = clamp(f->getlil<int>(), 0, 7);
     if(vs.changed & (1<<VSLOT_OFFSET))
     {
         loopk(2) vs.offset[k] = f->getlil<int>();
@@ -537,7 +562,8 @@ void loadvslot(stream *f, VSlot &vs, int changed)
 
 void loadvslots(stream *f, int numvslots)
 {
-    int *prev = new int[numvslots];
+    int *prev = new (false) int[numvslots];
+    if(!prev) return;
     memset(prev, -1, numvslots*sizeof(int));
     while(numvslots > 0)
     {
@@ -560,138 +586,108 @@ void loadvslots(stream *f, int numvslots)
 
 bool save_world(const char *mname, bool nolms)
 {
-	//do a reset here
-	//change to save a game by serializing all the time.
-	//if(!noedit(false, false))curworld->serializedworld();
-#pragma region Set File
-	if (!*mname) mname = game::getclientmap();
-	setmapfilenames(*mname ? mname : "untitled");
-	if (savebak) backup(ogzname, bakname);
-	stream *f = opengzfile(ogzname, "wb");
-	if (!f) { conoutf(CON_WARN, "could not write map to %s", ogzname); return false; }
+    if(!*mname) mname = game::getclientmap();
+    setmapfilenames(*mname ? mname : "untitled");
+    if(savebak) backup(ogzname, bakname);
+    stream *f = opengzfile(ogzname, "wb");
+    if(!f) { conoutf(CON_WARN, "could not write map to %s", ogzname); return false; }
 
-	int numvslots = vslots.length();
-	if (!nolms && !multiplayer(false))
-	{
-		numvslots = compactvslots();
-		allchanged();
-	}
+    int numvslots = vslots.length();
+    if(!nolms && !multiplayer(false))
+    {
+        numvslots = compactvslots();
+        allchanged();
+    }
 
-	savemapprogress = 0;
-	renderprogress(0, "saving map...");
-#pragma endregion
+    savemapprogress = 0;
+    renderprogress(0, "saving map...");
 
-#pragma region Save Header
-	mapheader hdr;
-	memcpy(hdr.magic, "TMAP", 4);
-	hdr.version = MAPVERSION;
-	hdr.headersize = sizeof(hdr);
-	hdr.worldsize = worldsize;
-	hdr.numents = curworld->getnumnodes();
-	//const vector<extentity *> &ents = entities::getents();
-	//loopv(ents) if(ents[i]->type!=ET_EMPTY || nolms) hdr.numents++;
-	hdr.numpvs = nolms ? 0 : getnumviewcells();
-	hdr.blendmap = shouldsaveblendmap();
-	hdr.numvars = 0;
-	hdr.numvslots = numvslots;
-	enumerate(idents, ident, id,
-	{
-		if ((id.type == ID_VAR || id.type == ID_FVAR || id.type == ID_SVAR) && id.flags&IDF_OVERRIDE && !(id.flags&IDF_READONLY) && id.flags&IDF_OVERRIDDEN) hdr.numvars++;
-	});
-	lilswap(&hdr.version, 8);
-	f->write(&hdr, sizeof(hdr));
+    mapheader hdr;
+    memcpy(hdr.magic, "TMAP", 4);
+    hdr.version = MAPVERSION;
+    hdr.headersize = sizeof(hdr);
+    hdr.worldsize = worldsize;
+    hdr.numents = 0;
+    const vector<extentity *> &ents = entities::getents();
+    loopv(ents) if(ents[i]->type!=ET_EMPTY || nolms) hdr.numents++;
+    hdr.numpvs = nolms ? 0 : getnumviewcells();
+    hdr.blendmap = shouldsaveblendmap();
+    hdr.numvars = 0;
+    hdr.numvslots = numvslots;
+    enumerate(idents, ident, id,
+    {
+        if((id.type == ID_VAR || id.type == ID_FVAR || id.type == ID_SVAR) && id.flags&IDF_OVERRIDE && !(id.flags&IDF_READONLY) && id.flags&IDF_OVERRIDDEN) hdr.numvars++;
+    });
+    lilswap(&hdr.version, 8);
+    f->write(&hdr, sizeof(hdr));
 
-#pragma endregion
+    enumerate(idents, ident, id,
+    {
+        if((id.type!=ID_VAR && id.type!=ID_FVAR && id.type!=ID_SVAR) || !(id.flags&IDF_OVERRIDE) || id.flags&IDF_READONLY || !(id.flags&IDF_OVERRIDDEN)) continue;
+        f->putchar(id.type);
+        f->putlil<ushort>(strlen(id.name));
+        f->write(id.name, strlen(id.name));
+        switch(id.type)
+        {
+            case ID_VAR:
+                if(dbgvars) conoutf(CON_DEBUG, "wrote var %s: %d", id.name, *id.storage.i);
+                f->putlil<int>(*id.storage.i);
+                break;
 
-#pragma region Save Cube Script
-	enumerate(idents, ident, id,
-	{
-		if ((id.type != ID_VAR && id.type != ID_FVAR && id.type != ID_SVAR) || !(id.flags&IDF_OVERRIDE) || id.flags&IDF_READONLY || !(id.flags&IDF_OVERRIDDEN)) continue;
-	f->putchar(id.type);
-	f->putlil<ushort>(strlen(id.name));
-	f->write(id.name, strlen(id.name));
-	switch (id.type)
-	{
-	case ID_VAR:
-		if (dbgvars) conoutf(CON_DEBUG, "wrote var %s: %d", id.name, *id.storage.i);
-		f->putlil<int>(*id.storage.i);
-		break;
+            case ID_FVAR:
+                if(dbgvars) conoutf(CON_DEBUG, "wrote fvar %s: %f", id.name, *id.storage.f);
+                f->putlil<float>(*id.storage.f);
+                break;
 
-	case ID_FVAR:
-		if (dbgvars) conoutf(CON_DEBUG, "wrote fvar %s: %f", id.name, *id.storage.f);
-		f->putlil<float>(*id.storage.f);
-		break;
+            case ID_SVAR:
+                if(dbgvars) conoutf(CON_DEBUG, "wrote svar %s: %s", id.name, *id.storage.s);
+                f->putlil<ushort>(strlen(*id.storage.s));
+                f->write(*id.storage.s, strlen(*id.storage.s));
+                break;
+        }
+    });
 
-	case ID_SVAR:
-		if (dbgvars) conoutf(CON_DEBUG, "wrote svar %s: %s", id.name, *id.storage.s);
-		f->putlil<ushort>(strlen(*id.storage.s));
-		f->write(*id.storage.s, strlen(*id.storage.s));
-		break;
-	}
-	});
+    if(dbgvars) conoutf(CON_DEBUG, "wrote %d vars", hdr.numvars);
 
-	if (dbgvars) conoutf(CON_DEBUG, "wrote %d vars", hdr.numvars);
+    f->putchar((int)strlen(game::gameident()));
+    f->write(game::gameident(), (int)strlen(game::gameident())+1);
+    f->putlil<ushort>(entities::extraentinfosize());
+    vector<char> extras;
+    game::writegamedata(extras);
+    f->putlil<ushort>(extras.length());
+    f->write(extras.getbuf(), extras.length());
 
-	f->putchar((int) strlen(game::gameident()));
-#pragma endregion
+    f->putlil<ushort>(texmru.length());
+    loopv(texmru) f->putlil<ushort>(texmru[i]);
+    char *ebuf = new char[entities::extraentinfosize()];
+    loopv(ents)
+    {
+        if(ents[i]->type!=ET_EMPTY || nolms)
+        {
+            entity tmp = *ents[i];
+            lilswap(&tmp.o.x, 3);
+            lilswap(&tmp.attr1, 5);
+            f->write(&tmp, sizeof(entity));
+            entities::writeent(*ents[i], ebuf);
+            if(entities::extraentinfosize()) f->write(ebuf, entities::extraentinfosize());
+        }
+    }
+    delete[] ebuf;
 
-#pragma region Out Dated
-	f->write(game::gameident(), (int) strlen(game::gameident()) + 1);
-	f->putlil<ushort>(entities::extraentinfosize());
-	vector<char> extras;
-	game::writegamedata(extras);
-	f->putlil<ushort>(extras.length());
-	f->write(extras.getbuf(), extras.length());
+    savevslots(f, numvslots);
 
-	f->putlil<ushort>(texmru.length());
-	loopv(texmru) f->putlil<ushort>(texmru[i]);
-#pragma endregion
-   
-#pragma region Save Entities
-	if (hdr.version < 666)
-	{
-		const vector<extentity *> &ents = entities::getents();
-		loopv(ents)
-			//{
-			continue;
-		/*if(ents[i]->type!=ET_EMPTY || nolms)
-		{
-		entity tmp = *ents[i];
-		lilswap(&tmp.o.x, 3);
-		lilswap(&tmp.attr1, 5);
-		f->write(&tmp, sizeof(entity));
-		char *ebuf = new char[entities::extraentinfosize()];
-		entities::writeent(*ents[i], ebuf);
-		if(entities::extraentinfosize()) f->write(ebuf, entities::extraentinfosize());
-		}*/
-		//}
-		//delete[] ebuf;
-	}
-	else
-	{
-		curworld->saveworld(f);
-	}
-#pragma endregion
-	
-#pragma region Save Slots
-	savevslots(f, numvslots);
+    renderprogress(0, "saving octree...");
+    savec(cuberoot, ivec(0, 0, 0), worldsize>>1, f, nolms);
 
-	renderprogress(0, "saving octree...");
-#pragma endregion
+    if(!nolms)
+    {
+        if(getnumviewcells()>0) { renderprogress(0, "saving pvs..."); savepvs(f); }
+    }
+    if(shouldsaveblendmap()) { renderprogress(0, "saving blendmap..."); saveblendmap(f); }
 
-#pragma region Save Octtree
-	savec(worldeditor::editroot, octaoffset, worldsize >> 1, f, nolms);
-
-	if (!nolms)
-	{
-		if (getnumviewcells()>0) { renderprogress(0, "saving pvs..."); savepvs(f); }
-	}
-	if (shouldsaveblendmap()) { renderprogress(0, "saving blendmap..."); saveblendmap(f); }
-	delete f;
-	conoutf("wrote map file %s", ogzname);
-#pragma endregion
-
-	return true;
+    delete f;
+    conoutf("wrote map file %s", ogzname);
+    return true;
 }
 
 static uint mapcrc = 0;
@@ -701,47 +697,35 @@ void clearmapcrc() { mapcrc = 0; }
 
 bool load_world(const char *mname, const char *cname)        // still supports all map formats that have existed since the earliest cube betas!
 {
-#pragma region load file
     int loadingstart = SDL_GetTicks();
     setmapfilenames(mname, cname);
     stream *f = opengzfile(ogzname, "rb");
     if(!f) { conoutf(CON_ERROR, "could not read map %s", ogzname); return false; }
-#pragma endregion
 
-#pragma region clearmap
-	//clear world here or in file before
-	curworld->clearmap();
-#pragma endregion
+    mapheader hdr;
+    octaheader ohdr;
+    memset(&ohdr, 0, sizeof(ohdr));
+    if(!loadmapheader(f, ogzname, hdr, ohdr)) { delete f; return false; }
 
-#pragma region Load Header
-	mapheader hdr;
-	octaheader ohdr;
-	memset(&ohdr, 0, sizeof(ohdr));
-	if (!loadmapheader(f, ogzname, hdr, ohdr)) { delete f; return false; }
-#pragma endregion
+    resetmap();
 
-#pragma region Create Load Screen
-	Texture *mapshot = textureload(picname, 3, true, false);
-	renderbackground("loading...", mapshot, mname, game::getmapinfo());
+    Texture *mapshot = textureload(picname, 3, true, false);
+    renderbackground("loading...", mapshot, mname, game::getmapinfo());
 
-	setvar("mapversion", hdr.version, true, false);
+    setvar("mapversion", hdr.version, true, false);
 
-	//LOOK HERE FOR LOAD SCREENS
-	renderprogress(0, "clearing world...");
-#pragma endregion
-   
-#pragma region Create Octtree
-	freeocta(worldeditor::editroot);
-	worldeditor::editroot = NULL;
+    renderprogress(0, "clearing world...");
 
-	setvar("mapsize", hdr.worldsize, true, false);
-	int worldscale = 0;
-	while (1 << worldscale < hdr.worldsize) worldscale++;
-	setvar("mapscale", worldscale, true, false);
-#pragma endregion
+    freeocta(cuberoot);
+    cuberoot = NULL;
 
-#pragma region LoadCubeCommands
-	renderprogress(0, "loading vars...");
+    int worldscale = 0;
+    while(1<<worldscale < hdr.worldsize) worldscale++;
+    setvar("mapsize", 1<<worldscale, true, false);
+    setvar("mapscale", worldscale, true, false);
+
+    renderprogress(0, "loading vars...");
+
     loopi(hdr.numvars)
     {
         int type = f->getchar(), ilen = f->getlil<ushort>();
@@ -797,145 +781,127 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     }
     if(dbgvars) conoutf(CON_DEBUG, "read %d vars", hdr.numvars);
 
-#pragma endregion
+    cubestr gametype;
+    bool samegame = true;
+    int len = f->getchar();
+    if(len >= 0) f->read(gametype, len+1);
+    gametype[max(len, 0)] = '\0';
+    if(strcmp(gametype, game::gameident())!=0)
+    {
+        samegame = false;
+        conoutf(CON_WARN, "WARNING: loading map from %s game, ignoring entities except for lights/mapmodels", gametype);
+    }
+    int eif = f->getlil<ushort>();
+    int extrasize = f->getlil<ushort>();
+    vector<char> extras;
+    f->read(extras.pad(extrasize), extrasize);
+    if(samegame) game::readgamedata(extras);
 
-#pragma region OutDataed
-	cubestr gametype;
-	bool samegame = true;
-	int len = f->getchar();
-	if (len >= 0) f->read(gametype, len + 1);
-	gametype[max(len, 0)] = '\0';
-	if (strcmp(gametype, game::gameident()) != 0)
-	{
-		samegame = false;
-		conoutf(CON_WARN, "WARNING: loading map from %s game, ignoring entities except for lights/mapmodels", gametype);
-	}
-	int eif = f->getlil<ushort>();
-	int extrasize = f->getlil<ushort>();
-	vector<char> extras;
-	f->read(extras.pad(extrasize), extrasize);
-	if (samegame) game::readgamedata(extras);
-	texmru.shrink(0);
-	ushort nummru = f->getlil<ushort>();
-	loopi(nummru) texmru.add(f->getlil<ushort>());
-#pragma endregion
+    texmru.shrink(0);
+    ushort nummru = f->getlil<ushort>();
+    loopi(nummru) texmru.add(f->getlil<ushort>());
 
-#pragma region Load Entities
-	renderprogress(0, "loading entities...");
+    renderprogress(0, "loading entities...");
 
-	vector<extentity *> &ents = entities::getents();
-	int einfosize = entities::extraentinfosize();
-	char *ebuf = einfosize > 0 ? new char[einfosize] : NULL;
-	loopi(min(hdr.numents, MAXENTS))
-	{
-	}
-	if (hdr.version < 666) {
-		loopi(min(hdr.numents, MAXENTS))
-		{
-			extentity &e = *entities::newentity();
-			ents.add(&e);
-			f->read(&e, sizeof(entity));
-			lilswap(&e.o.x, 3);
-			lilswap(&e.attr1, 5);
-			fixent(e, hdr.version);
-			if (samegame)
-			{
-				if (einfosize > 0) f->read(ebuf, einfosize);
-				entities::readent(e, ebuf, mapversion);
-			}
-			else
-			{
-				if (eif > 0) f->seek(eif, SEEK_CUR);
-				if (e.type >= ET_GAMESPECIFIC)
-				{
-					entities::deleteentity(ents.pop());
-					continue;
-				}
-			}
-			if (!insideworld(e.o))
-			{
-				if (e.type != ET_LIGHT && e.type != ET_SPOTLIGHT)
-				{
-					conoutf(CON_WARN, "warning: ent outside of world: enttype[%s] index %d (%f, %f, %f)", entities::entname(e.type), i, e.o.x, e.o.y, e.o.z);
-				}
-			}
-		}
-		if (ebuf) delete [] ebuf;
+    vector<extentity *> &ents = entities::getents();
+    int einfosize = entities::extraentinfosize();
+    char *ebuf = einfosize > 0 ? new char[einfosize] : NULL;
+    loopi(min(hdr.numents, MAXENTS))
+    {
+        extentity &e = *entities::newentity();
+        ents.add(&e);
+        f->read(&e, sizeof(entity));
+        lilswap(&e.o.x, 3);
+        lilswap(&e.attr1, 5);
+        fixent(e, hdr.version);
+        if(samegame)
+        {
+            if(einfosize > 0) f->read(ebuf, einfosize);
+            entities::readent(e, ebuf, mapversion);
+        }
+        else
+        {
+            if(eif > 0) f->seek(eif, SEEK_CUR);
+            if(e.type>=ET_GAMESPECIFIC)
+            {
+                entities::deleteentity(ents.pop());
+                continue;
+            }
+        }
+        if(!insideworld(e.o))
+        {
+            if(e.type != ET_LIGHT && e.type != ET_SPOTLIGHT)
+            {
+                conoutf(CON_WARN, "warning: ent outside of world: enttype[%s] index %d (%f, %f, %f)", entities::entname(e.type), i, e.o.x, e.o.y, e.o.z);
+            }
+        }
+    }
+    if(ebuf) delete[] ebuf;
 
-		if (hdr.numents > MAXENTS)
-		{
-			conoutf(CON_WARN, "warning: map has %d entities", hdr.numents);
-			f->seek((hdr.numents - MAXENTS)*(samegame ? sizeof(entity) + einfosize : eif), SEEK_CUR);
-		}
-	}
-	else 
-		curworld->loadworld(f); //new code all old code is ignored
-#pragma endregion
-  
-#pragma region Load Slots
-	renderprogress(0, "loading slots...");
-	loadvslots(f, hdr.numvslots);
-#pragma endregion
-    
-#pragma region Load Octtree
-	renderprogress(0, "loading octree...");
-	bool failed = false;
-	worldeditor::editroot = loadchildren(f, octaoffset, hdr.worldsize >> 1, failed);
-	if (failed) conoutf(CON_ERROR, "garbage in map");
+    if(hdr.numents > MAXENTS)
+    {
+        conoutf(CON_WARN, "warning: map has %d entities", hdr.numents);
+        f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entity) + einfosize : eif), SEEK_CUR);
+    }
 
-	renderprogress(0, "validating...");
-	validatec(worldeditor::editroot, hdr.worldsize >> 1);
+    renderprogress(0, "loading slots...");
+    loadvslots(f, hdr.numvslots);
 
-	if (!failed)
-	{
-		if (mapversion <= 0) loopi(ohdr.lightmaps)
-		{
-			int type = f->getchar();
-			if (type & 0x80)
-			{
-				f->getlil<ushort>();
-				f->getlil<ushort>();
-			}
-			int bpp = 3;
-			if (type&(1 << 4) && (type & 0x0F) != 2) bpp = 4;
-			f->seek(bpp*LM_PACKW*LM_PACKH, SEEK_CUR);
-		}
+    renderprogress(0, "loading octree...");
+    bool failed = false;
+    cuberoot = loadchildren(f, ivec(0, 0, 0), hdr.worldsize>>1, failed);
+    if(failed) conoutf(CON_ERROR, "garbage in map");
 
-		if (hdr.numpvs > 0) loadpvs(f, hdr.numpvs);
-		if (hdr.blendmap) loadblendmap(f, hdr.blendmap);
-	}
+    renderprogress(0, "validating...");
+    validatec(cuberoot, hdr.worldsize>>1);
 
-	mapcrc = f->getcrc();
-	delete f;
-#pragma endregion
-    
-#pragma region Preload
-	conoutf("read map %s (%.1f seconds)", ogzname, (SDL_GetTicks() - loadingstart) / 1000.0f);
+    if(!failed)
+    {
+        if(mapversion <= 0) loopi(ohdr.lightmaps)
+        {
+            int type = f->getchar();
+            if(type&0x80)
+            {
+                f->getlil<ushort>();
+                f->getlil<ushort>();
+            }
+            int bpp = 3;
+            if(type&(1<<4) && (type&0x0F)!=2) bpp = 4;
+            f->seek(bpp*LM_PACKW*LM_PACKH, SEEK_CUR);
+        }
 
-	clearmainmenu();
+        if(hdr.numpvs > 0) loadpvs(f, hdr.numpvs);
+        if(hdr.blendmap) loadblendmap(f, hdr.blendmap);
+    }
 
-	identflags |= IDF_OVERRIDDEN;
-	execfile("config/default_map_settings.cfg", false);
-	execfile(cfgname, false);
-	identflags &= ~IDF_OVERRIDDEN;
+    mapcrc = f->getcrc();
+    delete f;
 
-	preloadusedmapmodels(true);
+    conoutf("read map %s (%.1f seconds)", ogzname, (SDL_GetTicks()-loadingstart)/1000.0f);
 
-	game::preload();
-	flushpreloadedmodels();
+    clearmainmenu();
 
-	preloadmapsounds();
+    identflags |= IDF_OVERRIDDEN;
+    execfile("config/default_map_settings.cfg", false);
+    execfile(cfgname, false);
+    identflags &= ~IDF_OVERRIDDEN;
 
-	entitiesinoctanodes();
-	attachentities();
-	initlights();
-	allchanged(true);
-	renderbackground("loading...", mapshot, mname, game::getmapinfo());
+    preloadusedmapmodels(true);
 
-	if (maptitle[0] && strcmp(maptitle, "Untitled Map by Unknown")) conoutf(CON_ECHO, "%s", maptitle);
+    game::preload();
+    flushpreloadedmodels();
 
-	startmap(cname ? cname : mname);
-#pragma endregion
+    preloadmapsounds();
+
+    entitiesinoctanodes();
+    attachentities();
+    allchanged(true);
+
+    renderbackground("loading...", mapshot, mname, game::getmapinfo());
+
+    if(maptitle[0] && strcmp(maptitle, "Untitled Map by Unknown")) conoutf(CON_ECHO, "%s", maptitle);
+
+    startmap(cname ? cname : mname);
 
     return true;
 }
@@ -955,7 +921,6 @@ void writeobj(char *name)
     defformatstring(mtlname, "%s.mtl", name);
     path(mtlname);
     f->printf("mtllib %s\n\n", mtlname);
-    extern vector<vtxarray *> valist;
     vector<vec> verts, texcoords;
     hashtable<vec, int> shareverts(1<<16), sharetc(1<<16);
     hashtable<int, vector<ivec2> > mtls(1<<8);
@@ -1096,7 +1061,6 @@ void writecollideobj(char *name)
     xform.invert();
 
     ivec selmin = sel.o, selmax = ivec(sel.s).mul(sel.grid).add(sel.o);
-    extern vector<vtxarray *> valist;
     vector<vec> verts;
     hashtable<vec, int> shareverts;
     vector<int> tris;

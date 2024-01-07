@@ -1,11 +1,12 @@
 struct obj;
 
-struct obj : vertmodel, vertloader<obj>
+struct obj : vertloader<obj>
 {
-    obj(const char *name) : vertmodel(name) {}
+    obj(const char *name) : vertloader(name) {}
 
     static const char *formatname() { return "obj"; }
     static bool cananimate() { return false; }
+    bool flipy() const { return true; }
     int type() const { return MDL_OBJ; }
 
     struct objmeshgroup : vertmeshgroup
@@ -177,10 +178,10 @@ struct obj : vertmodel, vertloader<obj>
         Texture *tex, *masks;
         loadskin(name, pname, tex, masks);
         mdl.initskins(tex, masks);
-        if(tex==notexture) conoutf("could not load model skin for %s", name1);
+        if(tex==notexture) conoutf(CON_ERROR, "could not load model skin for %s", name1);
         return true;
     }
-
+/* Check This
     bool load()
     {
         formatstring(dir, "media/model/%s", name);
@@ -203,7 +204,7 @@ struct obj : vertmodel, vertloader<obj>
         translate.y = -translate.y;
         loaded();
         return true;
-    }
+    }*/
 };
 
 vertcommands<obj> objcommands;

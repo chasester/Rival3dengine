@@ -345,7 +345,7 @@ struct worldeditor
 
 	static char nodemoving, nodeorient;
 	static bool nodeselsnap, nodeediting;
-	static cube *editroot;
+	//static cube* editroot;
 	static worldroot *editworldroot;
 private:
 	static vector<uint> nodeselect;

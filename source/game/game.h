@@ -24,7 +24,7 @@ enum
 
 static const char * const animnames[] =
 {
-    "mapmodel", "trigger",
+    "mapmodel",
     "dead", "dying",
     "idle", "run N", "run NE", "run E", "run SE", "run S", "run SW", "run W", "run NW",
     "jump", "jump N", "jump NE", "jump E", "jump SE", "jump S", "jump SW", "jump W", "jump NW",
@@ -55,7 +55,7 @@ enum
 #define DMF 16.0f                // for world locations
 #define DNF 100.0f              // for normalized vectors
 #define DVELF 1.0f              // for playerspeed based velocity vectors
-/*
+
 enum                            // static entity types
 {
     NOTUSED = ET_EMPTY,         // entity slot not in use in map
@@ -76,57 +76,10 @@ enum                            // static entity types
     I_FIRST = 0,
     I_LAST = -1
 };
-*/
-//angelo sauer ents// must mach in order: const entnames[MAXENTTYPES] = in entities.cpp
-enum                            // static entity types
-{
-    NOTUSED = ET_EMPTY,         // entity slot not in use in map
-    LIGHT = ET_LIGHT,           // lightsource, attr1 = radius, attr2 = intensity
-    MAPMODEL = ET_MAPMODEL,     // attr1 = idx, attr2 = yaw, attr3 = pitch, attr4 = roll, attr5 = scale
-    PLAYERSTART,                // attr1 = angle, attr2 = team
-    ENVMAP = ET_ENVMAP,         // attr1 = radius
-    PARTICLES = ET_PARTICLES,
-    MAPSOUND = ET_SOUND,
-    SPOTLIGHT = ET_SPOTLIGHT,
-    DECAL = ET_DECAL,
-    TELEPORT,                   // attr1 = idx, attr2 = model, attr3 = tag
-    TELEDEST,                   // attr1 = angle, attr2 = idx
-    JUMPPAD,                    // attr1 = zpush, attr2 = ypush, attr3 = xpush
-    FLAG,                       // attr1 = angle, attr2 = team    
-    BOX,                        // attr1 = angle, attr2 = idx, attr3 = weight
-    BARREL,                     // attr1 = angle, attr2 = idx, attr3 = weight, attr4 = health
-    PLATFORM,                   // attr1 = angle, attr2 = idx, attr3 = tag, attr4 = speed
-    ELEVATOR,                   // attr1 = angle, attr2 = idx, attr3 = tag, attr4 = speed 
-    //angelo phys bullet
-    BULLETENT,                        // attr1 = angle, attr2 = idx, attr3 = weight    
-    //angelo phys bullet
-    
-   
-    MAXENTTYPES,
-
-    I_FIRST = 0,
-    I_LAST = -1
-};
-
-enum
-{
-    TRIGGER_RESET = 0,
-    TRIGGERING,
-    TRIGGERED,
-    TRIGGER_RESETTING,
-    TRIGGER_DISAPPEARED
-};
 
 struct gameentity : extentity
 {
-    int triggerstate, lasttrigger;
-    
-    gameentity() : triggerstate(TRIGGER_RESET), lasttrigger(0) {} 
 };
-//angelo sauer ents
-//struct gameentity : extentity
-//{
-//};
 
 enum { GUN_RAIL = 0, GUN_PULSE, NUMGUNS };
 enum { ACT_IDLE = 0, ACT_SHOOT, ACT_MELEE, NUMACTS };
@@ -140,7 +93,6 @@ enum
 {
     M_TEAM       = 1<<0,
     M_CTF        = 1<<1,
-    M_OVERTIME   = 1<<2,
     M_EDIT       = 1<<3,
     M_DEMO       = 1<<4,
     M_LOCAL      = 1<<5,
@@ -176,7 +128,6 @@ static struct gamemodeinfo
 
 #define m_ctf          (m_check(gamemode, M_CTF))
 #define m_teammode     (m_check(gamemode, M_TEAM))
-#define m_overtime     (m_check(gamemode, M_OVERTIME))
 #define isteam(a,b)    (m_teammode && a==b)
 #define m_rail         (m_check(gamemode, M_RAIL))
 #define m_pulse        (m_check(gamemode, M_PULSE))
@@ -257,7 +208,7 @@ static const int msgsizes[] =               // size inclusive message token, 0 f
     N_SERVMSG, 0, N_ITEMLIST, 0, N_RESUME, 0,
     N_EDITMODE, 2, N_EDITENT, 11, N_EDITF, 16, N_EDITT, 16, N_EDITM, 16, N_FLIP, 14, N_COPY, 14, N_PASTE, 14, N_ROTATE, 15, N_REPLACE, 17, N_DELCUBE, 14, N_CALCLIGHT, 1, N_REMIP, 1, N_EDITVSLOT, 16, N_UNDO, 0, N_REDO, 0, N_NEWMAP, 2, N_GETMAP, 1, N_SENDMAP, 0, N_EDITVAR, 0, 
     N_MASTERMODE, 2, N_KICK, 0, N_CLEARBANS, 1, N_CURRENTMASTER, 0, N_SPECTATOR, 3, N_SETMASTER, 0, N_SETTEAM, 0,
-    N_LISTDEMOS, 1, N_SENDDEMOLIST, 0, N_GETDEMO, 2, N_SENDDEMO, 0,
+    N_LISTDEMOS, 1, N_SENDDEMOLIST, 0, N_GETDEMO, 3, N_SENDDEMO, 0,
     N_DEMOPLAYBACK, 3, N_RECORDDEMO, 2, N_STOPDEMO, 1, N_CLEARDEMOS, 2,
     N_TAKEFLAG, 3, N_RETURNFLAG, 4, N_RESETFLAG, 3, N_TRYDROPFLAG, 1, N_DROPFLAG, 7, N_SCOREFLAG, 9, N_INITFLAGS, 0,
     N_SAYTEAM, 0,
@@ -454,6 +405,11 @@ struct gameent : dynent, gamestate
         lastnode = -1;
     }
 
+    int respawnwait(int secs, int delay = 0)
+    {
+        return max(0, secs - (::lastmillis - lastpain - delay)/1000);
+    }
+
     void startgame()
     {
         frags = flags = deaths = 0;
@@ -492,14 +448,7 @@ struct teaminfo
 
 namespace entities
 {
-#ifndef STANDALONE
-
-	struct gamemode{};
-
-	
-#endif
-	extern scenegraph *scene;
-	extern vector<extentity *> ents;
+    extern vector<extentity *> ents;
 
     extern const char *entmdlname(int type);
     extern const char *itemname(int i);
@@ -507,10 +456,6 @@ namespace entities
 
     extern void preloadentities();
     extern void renderentities();
-//angelo sauer ents
-    extern void resettriggers();
-    extern void checktriggers();
-//angelo sauer ents    
     extern void checkitems(gameent *d);
     extern void resetspawns();
     extern void spawnitems(bool force = false);
@@ -537,7 +482,7 @@ namespace game
         virtual void respawned(gameent *d) {}
         virtual void setup() {}
         virtual void checkitems(gameent *d) {}
-        virtual int respawnwait(gameent *d) { return 0; }
+        virtual int respawnwait(gameent *d, int delay = 0) { return 0; }
         virtual void pickspawn(gameent *d) { findplayerspawn(d, -1, m_teammode ? d->team : 0); }
         virtual void senditems(packetbuf &p) {}
         virtual void removeplayer(gameent *d) {}
@@ -572,9 +517,11 @@ namespace game
     extern const char *colorname(gameent *d, const char *name = NULL, const char *alt = NULL, const char *color = "");
     extern const char *teamcolorname(gameent *d, const char *alt = "you");
     extern const char *teamcolor(const char *prefix, const char *suffix, int team, const char *alt);
+    extern void teamsound(bool sameteam, int n, const vec *loc = NULL);
+    extern void teamsound(gameent *d, int n, const vec *loc = NULL);
     extern gameent *pointatplayer();
     extern gameent *hudplayer();
-    extern gameent *followingplayer();
+    extern gameent *followingplayer(gameent *fallback = NULL);
     extern void stopfollowing();
     extern void checkfollow();
     extern void nextfollow(int dir = 1);
@@ -611,30 +558,6 @@ namespace game
     extern void c2sinfo(bool force = false);
     extern void sendposition(gameent *d, bool reliable = false);
 
-//angelo sauer ents
-    // movable
-    struct movable;
-    extern vector<movable *> movables;
-
-    extern void clearmovables();
-    extern void stackmovable(movable *d, physent *o);
-    extern void updatemovables(int curtime);
-    extern void rendermovables();
-    extern void suicidemovable(movable *m);
-    extern void hitmovable(int damage, movable *m, gameent *at, const vec &vel, int gun);//concern may need to change to int atk
-//angelo sauer ents
-//angelo phys bullet
-// bulletmovable
-    struct bulletmovable;
-    extern vector<bulletmovable *> bulletmovables;
-
-    extern void clearbulletmovables();
-	//extern void stackbulletmovable(bulletmovable *d, physent *o);
-    extern void updatebulletmovables(vec tmpvec,vec tmprot,int j);
-    extern void renderbulletmovables();
-    //extern void suicidebulletmovable(bulletmovable *m);
-    //extern void hitbulletmovable(int damage, bulletmovable *m, gameent *at, const vec &vel, int gun);
-//angelo phys bullet    
     // weapon
     extern int getweapon(const char *name);
     extern void shoot(gameent *d, const vec &targ);
@@ -695,6 +618,8 @@ namespace server
     extern const char *mastermodename(int n, const char *unknown = "unknown");
     extern void startintermission();
     extern void stopdemo();
+    extern void timeupdate(int secs);
+    extern const char *getdemofile(const char *file, bool init);
     extern void forcemap(const char *map, int mode);
     extern void forcepaused(bool paused);
     extern void forcegamespeed(int speed);
@@ -703,25 +628,6 @@ namespace server
     extern bool serveroption(const char *arg);
     extern bool delayspawn(int type);
 }
-
-//VAR(nodeselsnap, 0, 0, 1);
-extern selinfo sel;
-extern bool havesel;
-extern int xtraverts;
-
-
-namespace entities{
-#define dimension(orient) ((orient)>>1)
-#define dimcoord(orient)  ((orient)&1)
-#define opposite(orient)  ((orient)^1)
-
-
-
-
-
-
-}
-
 
 #endif
 

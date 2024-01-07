@@ -55,7 +55,7 @@ struct ziparchive
 {
     char *name;
     FILE *data;
-    hashtable<const char *, zipfile> files;
+    hashnameset<zipfile> files;
     int openfiles;
     zipstream *owner;
 
@@ -115,8 +115,8 @@ VAR(dbgzip, 0, 0, 1);
 
 static bool readzipdirectory(const char *archname, FILE *f, int entries, int offset, uint size, vector<zipfile> &files)
 {
-    uchar *buf = new uchar[size], *src = buf;
-    if(fseek(f, offset, SEEK_SET) < 0 || fread(buf, 1, size, f) != size) { delete[] buf; return false; }
+    uchar *buf = new (false) uchar[size], *src = buf;
+    if(!buf || fseek(f, offset, SEEK_SET) < 0 || fread(buf, 1, size, f) != size) { delete[] buf; return false; }
     loopi(entries)
     {
         if(src + ZIP_FILE_SIZE > &buf[size]) break;
@@ -262,13 +262,28 @@ static void mountzip(ziparchive &arch, vector<zipfile> &files, const char *mount
     }
 }
 
+#ifdef STANDALONE
+VAR(forcezipext, 0, 1, 1);
+#else
+VARP(forcezipext, 0, 1, 1);
+#endif
+
+template<size_t N>
+static void fixzipname(char (&pname)[N])
+{
+    if(forcezipext)
+    {
+        size_t plen = strlen(pname);
+        if(plen < 4 || strcasecmp(&pname[plen-4], ".zip")) concatstring(pname, ".zip");
+    }
+}
+
 bool addzip(const char *name, const char *mount = NULL, const char *strip = NULL)
 {
     cubestr pname;
     copystring(pname, name);
     path(pname);
-    size_t plen = strlen(pname);
-    if(plen < 4 || !strchr(&pname[plen-4], '.')) concatstring(pname, ".zip");
+    fixzipname(pname);
 
     ziparchive *exists = findzip(pname);
     if(exists)
@@ -307,8 +322,7 @@ bool removezip(const char *name)
     cubestr pname;
     copystring(pname, name);
     path(pname);
-    int plen = (int)strlen(pname);
-    if(plen < 4 || !strchr(&pname[plen-4], '.')) concatstring(pname, ".zip");
+    fixzipname(pname);
     ziparchive *exists = findzip(pname);
     if(!exists)
     {
@@ -447,6 +461,7 @@ struct zipstream : stream
             zfile.next_in += zfile.avail_in;
             zfile.avail_in = 0;
             zfile.total_in = info->compressedsize;
+            zfile.total_out = info->size;
             arch->owner = NULL;
             ended = false;
             return true;
@@ -562,9 +577,13 @@ int listzipfiles(const char *dir, const char *ext, vector<char *> &files)
             if(strncmp(f.name, dir, dirsize)) continue;
             const char *name = f.name + dirsize;
             if(name[0] == PATHDIV) name++;
-            if(strchr(name, PATHDIV)) continue;
-            if(!ext) files.add(newstring(name));
-            else
+            const char *div = strchr(name, PATHDIV);
+            if(!ext)
+            {
+                if(!div) files.add(newstring(name));
+                else if(files.empty() || !matchstring(files.last(), strlen(files.last()), name, div - name)) files.add(newstring(name, div - name));
+            }
+            else if(!div)
             {
                 size_t namelen = strlen(name);
                 if(namelen > extsize)

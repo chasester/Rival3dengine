@@ -4,6 +4,36 @@ extern int outline;
 
 bool boxoutline = false;
 
+void boxs(int orient, vec o, const vec &s, float size)
+{   
+    int d = dimension(orient), dc = dimcoord(orient);
+    float f = boxoutline ? (dc>0 ? 0.2f : -0.2f) : 0;
+    o[D[d]] += dc * s[D[d]] + f;
+
+    vec r(0, 0, 0), c(0, 0, 0);
+    r[R[d]] = s[R[d]];
+    c[C[d]] = s[C[d]];
+
+    vec v1 = o, v2 = vec(o).add(r), v3 = vec(o).add(r).add(c), v4 = vec(o).add(c);
+
+    r[R[d]] = 0.5f*size;
+    c[C[d]] = 0.5f*size;
+
+    gle::defvertex();
+    gle::begin(GL_TRIANGLE_STRIP);
+    gle::attrib(vec(v1).sub(r).sub(c));
+        gle::attrib(vec(v1).add(r).add(c));
+    gle::attrib(vec(v2).add(r).sub(c));
+        gle::attrib(vec(v2).sub(r).add(c));
+    gle::attrib(vec(v3).add(r).add(c));
+        gle::attrib(vec(v3).sub(r).sub(c));
+    gle::attrib(vec(v4).sub(r).add(c));
+        gle::attrib(vec(v4).add(r).sub(c));
+    gle::attrib(vec(v1).sub(r).sub(c));
+        gle::attrib(vec(v1).add(r).add(c));
+    xtraverts += gle::end();
+}
+
 void boxs(int orient, vec o, const vec &s)
 {
     int d = dimension(orient), dc = dimcoord(orient);
@@ -71,11 +101,9 @@ extern int entediting;
 bool editmode = false;
 bool havesel = false;
 bool hmapsel = false;
-extern int horient = 0;
+int horient  = 0;
 
 extern int entmoving;
-
-
 
 VARF(dragging, 0, 0, 1,
     if(!dragging || cor[0]<0) return;
@@ -84,7 +112,6 @@ VARF(dragging, 0, 0, 1,
     sel.grid = gridsize;
     sel.orient = orient;
 );
-
 
 int moving = 0;
 ICOMMAND(moving, "b", (int *n),
@@ -128,15 +155,6 @@ void cancelsel()
     entcancel();
 }
 
-void sethor(vec o)
-{
-	cubecancel();
-	//sel.o = ivec(o);
-	//sel.grid = 4;
-	//sel.orient = orient;
-}
-
-
 void toggleedit(bool force)
 {
     if(!force)
@@ -150,7 +168,7 @@ void toggleedit(bool force)
         player->state = player->editstate;
         player->o.z -= player->eyeheight;       // entinmap wants feet pos
         entinmap(player);                       // find spawn closest to current floating pos
-		curworld->serializedworld();
+		//curworld->serializedworld(); // Old Rival serialization
     }
     else //entering editmode
     {
@@ -166,6 +184,8 @@ void toggleedit(bool force)
     execident("edittoggled");
 }
 
+VARP(editinview, 0, 1, 1);
+
 bool noedit(bool view, bool msg)
 {
     if(!editmode) { if(msg) conoutf(CON_ERROR, "operation only allowed in edit mode"); return true; }
@@ -175,8 +195,9 @@ bool noedit(bool view, bool msg)
     o.add(s);
     float r = max(s.x, s.y, s.z);
     bool viewable = (isvisiblesphere(r, o) != VFC_NOT_VISIBLE);
-    if(!viewable && msg) conoutf(CON_ERROR, "selection not in view");
-    return !viewable;
+    if(viewable || !editinview) return false;
+    if(msg) conoutf(CON_ERROR, "selection not in view");
+    return true;
 }
 
 void reorient()
@@ -216,6 +237,29 @@ ICOMMAND(selmoved, "", (), { if(noedit(true)) return; intret(sel.o != savedsel.o
 ICOMMAND(selsave, "", (), { if(noedit(true)) return; savedsel = sel; });
 ICOMMAND(selrestore, "", (), { if(noedit(true)) return; sel = savedsel; });
 ICOMMAND(selswap, "", (), { if(noedit(true)) return; swap(sel, savedsel); });
+
+ICOMMAND(getselpos, "", (),
+{
+    if(noedit(true)) return;
+    defformatstring(pos, "%d %d %d", sel.o.x, sel.o.y, sel.o.z);
+    result(pos);
+});
+
+void setselpos(int *x, int *y, int *z)
+{
+    if(noedit(moving!=0)) return;
+    havesel = true;
+    sel.o = ivec(*x, *y, *z).mask(~(gridsize-1));
+}
+COMMAND(setselpos, "iii");
+
+void movesel(int *dir, int *dim)
+{
+    if(noedit(moving!=0)) return;
+    if(*dim < 0 || *dim > 2) return;
+    sel.o[*dim] += *dir * sel.grid;
+}
+COMMAND(movesel, "ii");
 
 ///////// selection support /////////////
 
@@ -308,9 +352,9 @@ extern float rayent(const vec &o, const vec &ray, float radius, int mode, int si
 
 VAR(gridlookup, 0, 0, 1);
 VAR(passthroughcube, 0, 1, 1);
-
-
-
+VAR(passthroughent, 0, 1, 1);
+VARF(passthrough, 0, 0, 1, { passthroughsel = passthrough; entcancel(); });
+VARP(selectionoffset, 0, 1, 1);
 
 void rendereditcursor()
 {
@@ -322,7 +366,7 @@ void rendereditcursor()
     hmapsel = false;
 
     if(moving)
-	{
+    {
         static vec dest, handle;
         if(editmoveplane(vec(sel.o), camdir, od, sel.o[D[od]]+odc*sel.grid*sel.s[D[od]], handle, dest, moving==1))
         {
@@ -338,22 +382,21 @@ void rendereditcursor()
             sel.o[C[od]] = o[C[od]];
         }
     }
-	else if (worldeditor::nodemoving)
+    else if(entmoving)
     {
-        worldeditor::nodedrag(camdir);
+        entdrag(camdir);
     }
     else
-	{
+    {
         ivec w;
         float sdist = 0, wdist = 0, t;
         int entorient = 0, ent = -1;
 
         wdist = rayent(player->o, camdir, 1e16f,
                        (editmode && showmat ? RAY_EDITMAT : 0)   // select cubes first
-                       | (!dragging && entediting ? RAY_ENTS : 0)
+                       | (!dragging && entediting && (!passthrough || !passthroughent) ? RAY_ENTS : 0)
                        | RAY_SKIPFIRST
-                       | (passthroughcube==1 ? RAY_PASS : 0), gridsize, entorient, ent);
-
+                       | (passthroughcube || passthrough ? RAY_PASS : 0), gridsize, entorient, ent);
 
         if((havesel || dragging) && !passthroughsel && !hmapedit)     // now try selecting the selection
             if(rayboxintersect(vec(sel.o), vec(sel.s).mul(sel.grid), player->o, camdir, sdist, orient))
@@ -365,13 +408,13 @@ void rendereditcursor()
                 }
             }
 
-        if(ent > -1 && !hidecursor && (hovering = worldeditor::hoveringonnode(ent, entorient))) //look at me
+        if((hovering = hoveringonent(hidecursor ? -1 : ent, entorient)))
         {
            if(!havesel)
            {
                selchildcount = 0;
                selchildmat = -1;
-               sel.s = octaoffset;
+               sel.s = ivec(0, 0, 0);
            }
         }
         else
@@ -387,13 +430,13 @@ void rendereditcursor()
                     loopi(3) w[i] = clamp(player->o[i], 0.0f, float(worldsize));
                 }
             }
-            cube *c = &lookupcube(w);
+            cube *c = &lookupcube(ivec(w));
             if(gridlookup && !dragging && !moving && !havesel && hmapedit!=1) gridsize = lusize;
             int mag = lusize / gridsize;
-            normalizelookupcube(w);
+            normalizelookupcube(ivec(w));
             if(sdist == 0 || sdist > wdist) rayboxintersect(vec(lu), vec(gridsize), player->o, camdir, t=0, orient); // just getting orient
             cur = lu;
-            cor = vec(w).mul(2).div(gridsize);
+            cor = ivec(vec(w).mul(2).div(gridsize));
             od = dimension(orient);
             d = dimension(sel.orient);
 
@@ -445,7 +488,7 @@ void rendereditcursor()
             sel.corner = (cor[R[d]]-(lu[R[d]]*2)/gridsize)+(cor[C[d]]-(lu[C[d]]*2)/gridsize)*2;
             selchildcount = 0;
             selchildmat = -1;
-            countselchild(worldeditor::editroot, octaoffset, worldsize/2);
+            countselchild(cuberoot, ivec(0, 0, 0), worldsize/2);
             if(mag>=1 && selchildcount==1)
             {
                 selchildmat = c->material;
@@ -454,19 +497,25 @@ void rendereditcursor()
         }
     }
 
+    glDisable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE);
 
     // cursors
 
     ldrnotextureshader->set();
-	rendernodeselection(player->o, camdir, worldeditor::nodemoving != 0);
-    //renderentselection(player->o, camdir, entmoving!=0);
-	//curworld->renderentselection(player->o, camdir, entmoving != 0);
 
-    boxoutline = outline!=0;
+    renderentselection(player->o, camdir, entmoving!=0);
 
-    enablepolygonoffset(GL_POLYGON_OFFSET_LINE);
+    float offset = 1.0f;
+    if (outline!=0) {
+      if (selectionoffset) {
+        boxoutline = true;
+      } else {
+        offset = 2.0f;
+      }
+    }
+    enablepolygonoffset(GL_POLYGON_OFFSET_LINE, offset);
 
     if(!moving && !hovering && !hidecursor)
     {
@@ -478,7 +527,7 @@ void rendereditcursor()
     }
 
     // selections
-    if(havesel || moving )
+    if(havesel || moving)
     {
         d = dimension(sel.orient);
         gle::colorub(50,50,50);   // grid
@@ -504,9 +553,8 @@ void rendereditcursor()
 
     boxoutline = false;
 
-    gle::disable();
-
     glDisable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
 }
 
 void tryedit()
@@ -556,7 +604,6 @@ void commitchanges(bool force)
     if(!force && !haschanged) return;
     haschanged = false;
 
-    extern vector<vtxarray *> valist;
     int oldlen = valist.length();
     resetclipplanes();
     entitiesinoctanodes();
@@ -570,7 +617,7 @@ void commitchanges(bool force)
 
 void changed(const ivec &bbmin, const ivec &bbmax, bool commit)
 {
-    readychanges(bbmin, bbmax, worldeditor::editroot, ivec(0,0,0), worldsize/2);
+    readychanges(bbmin, bbmax, cuberoot, ivec(0, 0, 0), worldsize/2);
     haschanged = true;
 
     if(commit) commitchanges();
@@ -579,7 +626,7 @@ void changed(const ivec &bbmin, const ivec &bbmax, bool commit)
 void changed(const block3 &sel, bool commit)
 {
     if(sel.s.iszero()) return;
-    readychanges(ivec(sel.o).sub(1), ivec(sel.s).mul(sel.grid).add(sel.o).add(1), worldeditor::editroot, ivec(0,0,0), worldsize/2);
+    readychanges(ivec(sel.o).sub(1), ivec(sel.s).mul(sel.grid).add(sel.o).add(1), cuberoot, ivec(0, 0, 0), worldsize/2);
     haschanged = true;
 
     if(commit) commitchanges();
@@ -615,9 +662,9 @@ void blockcopy(const block3 &s, int rgrid, block3 *b)
 block3 *blockcopy(const block3 &s, int rgrid)
 {
     int bsize = sizeof(block3)+sizeof(cube)*s.size();
-    if(bsize <= 0 || bsize > (100<<20)) return 0;
-    block3 *b = (block3 *)new uchar[bsize];
-    blockcopy(s, rgrid, b);
+    if(bsize <= 0 || bsize > (100<<20)) return NULL;
+    block3 *b = (block3 *)new (false) uchar[bsize];
+    if(b) blockcopy(s, rgrid, b);
     return b;
 }
 
@@ -658,7 +705,7 @@ static inline int undosize(undoblock *u)
     {
         block3 *b = u->block();
         cube *q = b->c();
-        int size = b->size(), total = size*sizeof(int);
+        int size = b->size(), total = size;
         loopj(size) total += familysize(*q++)*sizeof(cube);
         return total;
     }
@@ -704,7 +751,7 @@ struct undolist
 };
 
 undolist undos, redos;
-VARP(undomegs, 0, 5, 100);                              // bounded by n megs
+VARP(undomegs, 0, 8, 100);                              // bounded by n megs
 int totalundos = 0;
 
 void pruneundos(int maxremain)                          // bound memory
@@ -734,7 +781,8 @@ undoblock *newundocube(const selinfo &s)
         selgridsize = ssize,
         blocksize = sizeof(block3)+ssize*sizeof(cube);
     if(blocksize <= 0 || blocksize > (undomegs<<20)) return NULL;
-    undoblock *u = (undoblock *)new uchar[sizeof(undoblock) + blocksize + selgridsize];
+    undoblock *u = (undoblock *)new (false) uchar[sizeof(undoblock) + blocksize + selgridsize];
+    if(!u) return NULL;
     u->numents = 0;
     block3 *b = u->block();
     blockcopy(s, -s.grid, b);
@@ -769,8 +817,8 @@ void makeundo()                        // stores state of selected cubes before 
 
 static inline int countblock(cube *c, int n = 8)
 {
-    int r = n;
-    loopi(n) if(c[i].children) r += countblock(c[i].children);
+    int r = 0;
+    loopi(n) if(c[i].children) r += countblock(c[i].children); else ++r;
     return r;
 }
                 
@@ -788,8 +836,9 @@ void swapundo(undolist &a, undolist &b, int op)
         {
             ++ops;
             n += u->numents ? u->numents : countblock(u->block());
-            if(ops > 10 || n > 500)
+            if(ops > 10 || n > 2500)
             {
+                conoutf(CON_WARN, "undo too big for multiplayer");
                 if(nompedit) { multiplayer(); return; }
                 op = -1;
                 break;
@@ -938,7 +987,8 @@ static bool unpackblock(block3 *&b, B &buf)
     lilswap(&hdr.grid, 1);
     lilswap(&hdr.orient, 1);
     if(hdr.size() > (1<<20) || hdr.grid <= 0 || hdr.grid > (1<<12)) return false;
-    b = (block3 *)new uchar[sizeof(block3)+hdr.size()*sizeof(cube)];
+    b = (block3 *)new (false) uchar[sizeof(block3)+hdr.size()*sizeof(cube)];
+    if(!b) return false;
     *b = hdr;
     cube *c = b->c();
     memset(c, 0, b->size()*sizeof(cube));
@@ -994,8 +1044,8 @@ static bool compresseditinfo(const uchar *inbuf, int inlen, uchar *&outbuf, int 
 {
     uLongf len = compressBound(inlen);
     if(len > (1<<20)) return false;
-    outbuf = new uchar[len];
-    if(compress2((Bytef *)outbuf, &len, (const Bytef *)inbuf, inlen, Z_BEST_COMPRESSION) != Z_OK || len > (1<<16))
+    outbuf = new (false) uchar[len];
+    if(!outbuf || compress2((Bytef *)outbuf, &len, (const Bytef *)inbuf, inlen, Z_BEST_COMPRESSION) != Z_OK || len > (1<<16))
     {
         delete[] outbuf;
         outbuf = NULL;
@@ -1009,8 +1059,8 @@ static bool uncompresseditinfo(const uchar *inbuf, int inlen, uchar *&outbuf, in
 {
     if(compressBound(outlen) > (1<<20)) return false;
     uLongf len = outlen;
-    outbuf = new uchar[len];
-    if(uncompress((Bytef *)outbuf, &len, (const Bytef *)inbuf, inlen) != Z_OK)
+    outbuf = new (false) uchar[len];
+    if(!outbuf || uncompress((Bytef *)outbuf, &len, (const Bytef *)inbuf, inlen) != Z_OK)
     {
         delete[] outbuf;
         outbuf = NULL;
@@ -1088,7 +1138,11 @@ bool unpackundo(const uchar *inbuf, int inlen, int outlen)
     uchar *outbuf = NULL;
     if(!uncompresseditinfo(inbuf, inlen, outbuf, outlen)) return false;
     ucharbuf buf(outbuf, outlen);
-    if(buf.remaining() < 2) return false;
+    if(buf.remaining() < 2)
+    {
+        delete[] outbuf;
+        return false;
+    }
     int numents = lilswap(*(const ushort *)buf.pad(2));
     if(numents)
     {
@@ -1291,15 +1345,15 @@ struct prefabmesh
 
         loopv(verts) verts[i].norm.flip();
         if(!p.vbo) glGenBuffers_(1, &p.vbo);
-        glBindBuffer_(GL_ARRAY_BUFFER, p.vbo);
+        gle::bindvbo(p.vbo);
         glBufferData_(GL_ARRAY_BUFFER, verts.length()*sizeof(vertex), verts.getbuf(), GL_STATIC_DRAW);
-        glBindBuffer_(GL_ARRAY_BUFFER, 0);
+        gle::clearvbo();
         p.numverts = verts.length();
 
         if(!p.ebo) glGenBuffers_(1, &p.ebo);
-        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, p.ebo);
+        gle::bindebo(p.ebo);
         glBufferData_(GL_ELEMENT_ARRAY_BUFFER, tris.length()*sizeof(ushort), tris.getbuf(), GL_STATIC_DRAW);
-        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, 0);
+        gle::clearebo();
         p.numtris = tris.length()/3;
     }
 
@@ -1334,7 +1388,7 @@ static void genprefabmesh(prefabmesh &r, cube &c, const ivec &co, int size)
             if(vis&2) pos[numverts++] = vec(v[(order+3)&3]).mul(size/8.0f).add(vo);
             guessnormals(pos, numverts, norm);
             int index[4];
-            loopj(numverts) index[j] = r.addvert(pos[j], norm[j]);
+            loopj(numverts) index[j] = r.addvert(pos[j], bvec(norm[j]));
             loopj(numverts-2) if(index[0]!=index[j+1] && index[j+1]!=index[j+2] && index[j+2]!=index[0])
             {
                 r.tris.add(index[0]);
@@ -1348,12 +1402,12 @@ static void genprefabmesh(prefabmesh &r, cube &c, const ivec &co, int size)
 void genprefabmesh(prefab &p)
 {
     block3 b = *p.copy;
-    b.o = octaoffset;
+    b.o = ivec(0, 0, 0);
 
-    cube *oldworldroot = worldeditor::editroot;
+    cube *oldworldroot = cuberoot;
     int oldworldscale = worldscale, oldworldsize = worldsize;
 
-    worldeditor::editroot = newcubes();
+    cuberoot = newcubes();
     worldscale = 1;
     worldsize = 2;
     while(worldsize < max(max(b.s.x, b.s.y), b.s.z)*b.grid)
@@ -1366,14 +1420,14 @@ void genprefabmesh(prefab &p)
     loopxyz(b, b.grid, if(!isempty(*s) || s->children) pastecube(*s, c); s++);
 
     prefabmesh r;
-    neighbourstack[++neighbourdepth] = worldeditor::editroot;
-    loopi(8) genprefabmesh(r, worldeditor::editroot[i], ivec(i, octaoffset, worldsize/2), worldsize/2);
+    neighbourstack[++neighbourdepth] = cuberoot;
+    loopi(8) genprefabmesh(r, cuberoot[i], ivec(i, ivec(0, 0, 0), worldsize/2), worldsize/2);
     --neighbourdepth;
     r.setup(p);
 
-    freeocta(worldeditor::editroot);
+    freeocta(cuberoot);
 
-    worldeditor::editroot = oldworldroot;
+    cuberoot = oldworldroot;
     worldscale = oldworldscale;
     worldsize = oldworldsize;
 
@@ -1402,8 +1456,8 @@ static void renderprefab(prefab &p, const vec &o, float yaw, float pitch, float 
     if(size > 0 && size != 1) m.scale(size);
     m.translate(vec(b.s).mul(-b.grid*0.5f));
 
-    glBindBuffer_(GL_ARRAY_BUFFER, p.vbo);
-    glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, p.ebo);
+    gle::bindvbo(p.vbo);
+    gle::bindebo(p.ebo);
     gle::enablevertex();
     gle::enablenormal();
     prefabmesh::vertex *v = (prefabmesh::vertex *)0;
@@ -1432,8 +1486,8 @@ static void renderprefab(prefab &p, const vec &o, float yaw, float pitch, float 
 
     gle::disablevertex();
     gle::disablenormal();
-    glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer_(GL_ARRAY_BUFFER, 0);
+    gle::clearebo();
+    gle::clearvbo();
 }
 
 void renderprefab(const char *name, const vec &o, float yaw, float pitch, float roll, float size, const vec &color)
@@ -1487,7 +1541,7 @@ void pastehilite()
 
 void paste()
 {
-    if(noedit()) return;
+    if(noedit(true)) return;
     mppaste(localedit, sel, true);
 }
 
@@ -1848,7 +1902,6 @@ namespace hmap
         }
         nz = worldsize-gridsize;
         mz = 0;
-		hundo.o = sel.o;
         hundo.s = ivec(d,1,1,5);
         hundo.orient = sel.orient;
         hundo.grid = gridsize;
@@ -1874,17 +1927,10 @@ namespace hmap
     }
 }
 
-void edithmap(int dir, int mode, bool force)
+void edithmap(int dir, int mode)
 {
-    if((nompedit && multiplayer()) || !hmapsel) if(!force) return;
-	if (force)
-	{
-		hmap::run(dir, mode);
-		hmap::run(dir, mode);
-		hmap::run(dir, mode);
-
-	}
-	else hmap::run(dir, mode);
+    if((nompedit && multiplayer()) || !hmapsel) return;
+    hmap::run(dir, mode);
 }
 
 ///////////// main cube edit ////////////////
@@ -2036,7 +2082,7 @@ void mpdelcube(selinfo &sel, bool local)
 
 void delcube()
 {
-    if(noedit()) return;
+    if(noedit(true)) return;
     mpdelcube(sel, true);
 }
 
@@ -2185,10 +2231,11 @@ void vrotate(int *n)
     if(noedit()) return;
     VSlot ds;
     ds.changed = 1<<VSLOT_ROTATION;
-    ds.rotation = usevdelta ? *n : clamp(*n, 0, 5);
+    ds.rotation = usevdelta ? *n : clamp(*n, 0, 7);
     mpeditvslot(usevdelta, ds, allfaces, sel, true);
 }
 COMMAND(vrotate, "i");
+ICOMMAND(getvrotate, "i", (int *tex), intret(lookupvslot(*tex, false).rotation));
 
 void voffset(int *x, int *y)
 {
@@ -2199,6 +2246,12 @@ void voffset(int *x, int *y)
     mpeditvslot(usevdelta, ds, allfaces, sel, true);
 }
 COMMAND(voffset, "ii");
+ICOMMAND(getvoffset, "i", (int *tex),
+{
+    VSlot &vslot = lookupvslot(*tex, false);
+    defformatstring(str, "%d %d", vslot.offset.x, vslot.offset.y);
+    result(str);
+});
 
 void vscroll(float *s, float *t)
 {
@@ -2209,6 +2262,12 @@ void vscroll(float *s, float *t)
     mpeditvslot(usevdelta, ds, allfaces, sel, true);
 }
 COMMAND(vscroll, "ff");
+ICOMMAND(getvscroll, "i", (int *tex),
+{
+    VSlot &vslot = lookupvslot(*tex, false);
+    defformatstring(str, "%s %s", floatstr(vslot.scroll.x), floatstr(vslot.scroll.y));
+    result(str);
+});
 
 void vscale(float *scale)
 {
@@ -2219,6 +2278,7 @@ void vscale(float *scale)
     mpeditvslot(usevdelta, ds, allfaces, sel, true);
 }
 COMMAND(vscale, "f");
+ICOMMAND(getvscale, "i", (int *tex), floatret(lookupvslot(*tex, false).scale));
 
 void vlayer(int *n)
 {
@@ -2234,6 +2294,7 @@ void vlayer(int *n)
     mpeditvslot(usevdelta, ds, allfaces, sel, true);
 }
 COMMAND(vlayer, "i");
+ICOMMAND(getvlayer, "i", (int *tex), intret(lookupvslot(*tex, false).layer));
 
 void vdetail(int *n)
 {
@@ -2249,6 +2310,7 @@ void vdetail(int *n)
     mpeditvslot(usevdelta, ds, allfaces, sel, true);
 }
 COMMAND(vdetail, "i");
+ICOMMAND(getvdetail, "i", (int *tex), intret(lookupvslot(*tex, false).detail));
 
 void valpha(float *front, float *back)
 {
@@ -2260,6 +2322,12 @@ void valpha(float *front, float *back)
     mpeditvslot(usevdelta, ds, allfaces, sel, true);
 }
 COMMAND(valpha, "ff");
+ICOMMAND(getvalpha, "i", (int *tex),
+{
+    VSlot &vslot = lookupvslot(*tex, false);
+    defformatstring(str, "%s %s", floatstr(vslot.alphafront), floatstr(vslot.alphaback));
+    result(str);
+});
 
 void vcolor(float *r, float *g, float *b)
 {
@@ -2270,6 +2338,12 @@ void vcolor(float *r, float *g, float *b)
     mpeditvslot(usevdelta, ds, allfaces, sel, true);
 }
 COMMAND(vcolor, "fff");
+ICOMMAND(getvcolor, "i", (int *tex),
+{
+    VSlot &vslot = lookupvslot(*tex, false);
+    defformatstring(str, "%s %s %s", floatstr(vslot.colorscale.r), floatstr(vslot.colorscale.g), floatstr(vslot.colorscale.b));
+    result(str);
+});
 
 void vrefract(float *k, float *r, float *g, float *b)
 {
@@ -2285,6 +2359,12 @@ void vrefract(float *k, float *r, float *g, float *b)
 
 }
 COMMAND(vrefract, "ffff");
+ICOMMAND(getvrefract, "i", (int *tex),
+{
+    VSlot &vslot = lookupvslot(*tex, false);
+    defformatstring(str, "%s %s %s %s", floatstr(vslot.refractscale), floatstr(vslot.refractcolor.r), floatstr(vslot.refractcolor.g), floatstr(vslot.refractcolor.b));
+    result(str);
+});
 
 void vreset()
 {
@@ -2307,6 +2387,33 @@ void vshaderparam(const char *name, float *x, float *y, float *z, float *w)
     mpeditvslot(usevdelta, ds, allfaces, sel, true);
 }
 COMMAND(vshaderparam, "sfFFf");
+ICOMMAND(getvshaderparam, "is", (int *tex, const char *name),
+{
+    VSlot &vslot = lookupvslot(*tex, false);
+    loopv(vslot.params)
+    {
+        SlotShaderParam &p = vslot.params[i];
+        if(!strcmp(p.name, name))
+        {
+            defformatstring(str, "%s %s %s %s", floatstr(p.val[0]), floatstr(p.val[1]), floatstr(p.val[2]), floatstr(p.val[3]));
+            result(str);
+            return;
+        }
+    }
+});
+ICOMMAND(getvshaderparamnames, "i", (int *tex),
+{
+    VSlot &vslot = lookupvslot(*tex, false);
+    vector<char> str;
+    loopv(vslot.params)
+    {
+        SlotShaderParam &p = vslot.params[i];
+        if(i) str.put(' ');
+        str.put(p.name, strlen(p.name));
+    }
+    str.add('\0');
+   cubestrret(newstring(str.getbuf(), str.length()-1));
+});
 
 void mpedittex(int tex, int allfaces, selinfo &sel, bool local)
 {
@@ -2478,6 +2585,7 @@ ICOMMAND(looptexmru, "re", (ident *id, uint *body),
 ICOMMAND(numvslots, "", (), intret(vslots.length()));
 ICOMMAND(numslots, "", (), intret(slots.length()));
 COMMAND(getslottex, "i");
+ICOMMAND(texloaded, "i", (int *tex), intret(slots.inrange(*tex) && slots[*tex]->loaded ? 1 : 0));
 
 void replacetexcube(cube &c, int oldtex, int newtex)
 {
@@ -2494,7 +2602,7 @@ void mpreplacetex(int oldtex, int newtex, bool insel, selinfo &sel, bool local)
     }
     else
     {
-        loopi(8) replacetexcube(worldeditor::editroot[i], oldtex, newtex);
+        loopi(8) replacetexcube(cuberoot[i], oldtex, newtex);
     }
     allchanged();
 }
@@ -2508,15 +2616,17 @@ bool mpreplacetex(int oldtex, int newtex, bool insel, selinfo &sel, ucharbuf &bu
     return true;
 }
 
-void replace(bool insel)
+void replace(bool insel, int oldtex, int newtex, const char *err)
 {
     if(noedit()) return;
-    if(reptex < 0) { conoutf(CON_ERROR, "can only replace after a texture edit"); return; }
-    mpreplacetex(reptex, lasttex, insel, sel, true);
+    if(!vslots.inrange(oldtex) || !vslots.inrange(newtex)) { conoutf(CON_ERROR, "%s", err); return; }
+    mpreplacetex(oldtex, newtex, insel, sel, true);
 }
 
-ICOMMAND(replace, "", (), replace(false));
-ICOMMAND(replacesel, "", (), replace(true));
+ICOMMAND(replace, "", (), replace(false, reptex, lasttex, "can only replace after a texture edit"));
+ICOMMAND(replacesel, "", (), replace(true, reptex, lasttex, "can only replace after a texture edit"));
+ICOMMAND(replacetex, "bb", (int *n, int *o), replace(false, *o, *n, "can only replace valid texture"));
+ICOMMAND(replacetexsel, "bb", (int *n, int *o), replace(true, *o, *n, "can only replace valid texture"));
 
 ////////// flip and rotate ///////////////
 static inline uint dflip(uint face) { return face==F_EMPTY ? face : 0x88888888 - (((face&0xF0F0F0F0)>>4) | ((face&0x0F0F0F0F)<<4)); }
@@ -2754,9 +2864,10 @@ void rendertexturepanel(int w, int h)
                 float xoff = vslot.offset.x, yoff = vslot.offset.y;
                 if(vslot.rotation)
                 {
-                    if((vslot.rotation&5) == 1) { swap(xoff, yoff); loopk(4) swap(tc[k].x, tc[k].y); }
-                    if(vslot.rotation >= 2 && vslot.rotation <= 4) { xoff *= -1; loopk(4) tc[k].x *= -1; }
-                    if(vslot.rotation <= 2 || vslot.rotation == 5) { yoff *= -1; loopk(4) tc[k].y *= -1; }
+                    const texrotation &r = texrotations[vslot.rotation];
+                    if(r.swapxy) { swap(xoff, yoff); loopk(4) swap(tc[k].x, tc[k].y); }
+                    if(r.flipx) { xoff *= -1; loopk(4) tc[k].x *= -1; }
+                    if(r.flipy) { yoff *= -1; loopk(4) tc[k].y *= -1; }
                 }
                 loopk(4) { tc[k].x = tc[k].x/sx - xoff/tex->xs; tc[k].y = tc[k].y/sy - yoff/tex->ys; }
                 glBindTexture(GL_TEXTURE_2D, tex->id);
@@ -2808,7 +2919,6 @@ void rendertexturepanel(int w, int h)
             y += s+gap;
         }
 
-        gle::disable();
         pophudmatrix(true, false);
         resethudshader();
     }

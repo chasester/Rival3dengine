@@ -1,5 +1,5 @@
 #include "engine.h"
-
+#if false
 #ifdef HAS_OVR
 #define __PLACEMENT_NEW_INLINE
 #include "OVR.h"
@@ -259,4 +259,4 @@ namespace ovr
     }
 #endif
 }
-
+#endif

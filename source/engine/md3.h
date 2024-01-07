@@ -44,11 +44,12 @@ struct md3meshheader
     int ofs_triangles, ofs_shaders, ofs_uv, ofs_vertices, meshsize; // offsets
 };
 
-struct md3 : vertmodel, vertloader<md3>
+struct md3 : vertloader<md3>
 {
-    md3(const char *name) : vertmodel(name) {}
+    md3(const char *name) : vertloader(name) {}
 
     static const char *formatname() { return "md3"; }
+    bool flipy() const { return true; }
     int type() const { return MDL_MD3; }
 
     struct md3meshgroup : vertmeshgroup
@@ -64,7 +65,7 @@ struct md3 : vertmodel, vertloader<md3>
             if(strncmp(header.id, "IDP3", 4) != 0 || header.version != 15) // header check
             {
                 delete f;
-                conoutf("md3: corrupted header");
+                conoutf(CON_ERROR, "md3: corrupted header");
                 return false;
             }
 
@@ -92,7 +93,11 @@ struct md3 : vertmodel, vertloader<md3>
                 loopj(m.numtris)
                 {
                     md3triangle tri;
-                    f->read(&tri, sizeof(md3triangle)); // read the triangles
+                    if(f->read(&tri, sizeof(md3triangle)) != sizeof(md3triangle)) // read the triangles
+                    {
+                        memclear(&m.tris[j], (m.numtris - j) * sizeof(tri));
+                        break;
+                    }
                     lilswap(tri.vertexindices, 3);
                     loopk(3) m.tris[j].vert[k] = (ushort)tri.vertexindices[k];
                 }
@@ -108,7 +113,11 @@ struct md3 : vertmodel, vertloader<md3>
                 loopj(numframes*m.numverts)
                 {
                     md3vertex v;
-                    f->read(&v, sizeof(md3vertex)); // read the vertices
+                    if(f->read(&v, sizeof(md3vertex)) != sizeof(md3vertex)) // read the vertices
+                    {
+                        memclear(&m.verts[j], (numframes*m.numverts - j) * sizeof(vert));
+                        break;
+                    }
                     lilswap(v.vertex, 4);
 
                     m.verts[j].pos = vec(v.vertex[0]/64.0f, -v.vertex[1]/64.0f, v.vertex[2]/64.0f);
@@ -132,7 +141,11 @@ struct md3 : vertmodel, vertloader<md3>
 
                 loopi(header.numframes*header.numtags)
                 {
-                    f->read(&tag, sizeof(md3tag));
+                    if(f->read(&tag, sizeof(md3tag)) != sizeof(md3tag))
+                    {
+                        memclear(&tags[i], (header.numframes*header.numtags - i) * sizeof(tag));
+                        break;
+                    }
                     lilswap(tag.translation, 12);
                     if(tag.name[0] && i<header.numtags) tags[i].name = newstring(tag.name);
                     matrix4x3 &m = tags[i].matrix;
@@ -170,10 +183,10 @@ struct md3 : vertmodel, vertloader<md3>
         Texture *tex, *masks;
         loadskin(name, pname, tex, masks);
         mdl.initskins(tex, masks);
-        if(tex==notexture) conoutf("could not load model skin for %s", name1);
+        if(tex==notexture) conoutf(CON_ERROR, "could not load model skin for %s", name1);
         return true;
     }
-
+/* Check This
     bool load()
     {
         formatstring(dir, "media/model/%s", name);
@@ -197,6 +210,7 @@ struct md3 : vertmodel, vertloader<md3>
         loaded();
         return true;
     }
+    */
 };
 
 vertcommands<md3> md3commands;

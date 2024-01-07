@@ -3,18 +3,10 @@
 
 #define _FILE_OFFSET_BITS 64
 
-#ifdef __GNUC__
-#define gamma __gamma
-#endif
-
 #ifdef WIN32
 #define _USE_MATH_DEFINES
 #endif
 #include <math.h>
-
-#ifdef __GNUC__
-#undef gamma
-#endif
 
 #include <string.h>
 #include <stdio.h>
@@ -57,9 +49,10 @@
 
 #ifndef STANDALONE
   #ifdef __APPLE__
-    #include "SDL2/SDL.h"
-    #include "SDL2/SDL_opengl.h"
-    #define main SDL_main
+    #include "SDL.h"
+    #define GL_GLEXT_LEGACY
+    #define __glext_h_
+    #include <OpenGL/gl.h>
   #else
     #include <SDL.h>
     #include <SDL_opengl.h>
@@ -75,7 +68,6 @@
 #include "halo.h"
 
 #include "ents.h"
-
 #include "command.h"
 
 #ifndef STANDALONE

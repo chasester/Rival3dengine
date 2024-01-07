@@ -45,7 +45,7 @@ enum
 
 enum { ID_VAR, ID_FVAR, ID_SVAR, ID_COMMAND, ID_ALIAS, ID_LOCAL, ID_DO, ID_DOARGS, ID_IF, ID_RESULT, ID_NOT, ID_AND, ID_OR };
 
-enum { IDF_PERSIST = 1<<0, IDF_OVERRIDE = 1<<1, IDF_HEX = 1<<2, IDF_READONLY = 1<<3, IDF_OVERRIDDEN = 1<<4, IDF_UNKNOWN = 1<<5, IDF_ARG = 1<<6 };
+enum { IDF_PERSIST = 1<<0, IDF_OVERRIDE = 1<<1, IDF_HEX = 1<<2, IDF_READONLY = 1<<3, IDF_OVERRIDDEN = 1<<4, IDF_UNKNOWN = 1<<5, IDF_ARG = 1<<6, IDF_EMUVAR = 1<<7 };
 
 struct ident;
 
@@ -142,16 +142,16 @@ struct ident
 
     ident() {}
     // ID_VAR
-    ident(int t, const char *n, int m, int x, int *s, void *f = NULL, int flags = 0)
-        : type(t), flags(flags | (m > x ? IDF_READONLY : 0)), name(n), minval(m), maxval(x), fun((identfun)f)
+    ident(int t, const char *n, int m, int x, int *s, identfun f = NULL, int flags = 0)
+        : type(t), flags(flags | (m > x ? IDF_READONLY : 0)), name(n), minval(m), maxval(x), fun(f)
     { storage.i = s; }
     // ID_FVAR
-    ident(int t, const char *n, float m, float x, float *s, void *f = NULL, int flags = 0)
-        : type(t), flags(flags | (m > x ? IDF_READONLY : 0)), name(n), minvalf(m), maxvalf(x), fun((identfun)f)
+    ident(int t, const char *n, float m, float x, float *s, identfun f = NULL, int flags = 0)
+        : type(t), flags(flags | (m > x ? IDF_READONLY : 0)), name(n), minvalf(m), maxvalf(x), fun(f)
     { storage.f = s; }
     // ID_SVAR
-    ident(int t, const char *n, char **s, void *f = NULL, int flags = 0)
-        : type(t), flags(flags), name(n), fun((identfun)f)
+    ident(int t, const char *n, char **s, identfun f = NULL, int flags = 0)
+        : type(t), flags(flags), name(n), fun(f)
     { storage.s = s; }
     // ID_ALIAS
     ident(int t, const char *n, char *a, int flags)
@@ -170,8 +170,8 @@ struct ident
         : type(t), valtype(v.type), flags(flags), name(n), code(NULL), stack(NULL)
     { val = v; }
     // ID_COMMAND
-    ident(int t, const char *n, const char *args, uint argmask, int numargs, void *f = NULL, int flags = 0)
-        : type(t), numargs(numargs), flags(flags), name(n), args(args), argmask(argmask), fun((identfun)f)
+    ident(int t, const char *n, const char *args, uint argmask, int numargs, identfun f = NULL, int flags = 0)
+        : type(t), numargs(numargs), flags(flags), name(n), args(args), argmask(argmask), fun(f)
     {}
 
     void changed() { if(fun) fun(this); }
@@ -188,11 +188,7 @@ struct ident
         val = v.val;
     }
 
-    void forcenull()
-    {
-        if(valtype==VAL_STR) delete[] val.s;
-        valtype = VAL_NULL;
-    }
+    void forcenull();
 
     float getfloat() const;
     int getint() const;
@@ -233,12 +229,12 @@ PARSEFLOAT(float, float)
 PARSEFLOAT(number, double)
 
 static inline void intformat(char *buf, int v, int len = 20) { nformatstring(buf, len, "%d", v); }
-static inline void floatformat(char *buf, float v, int len = 20) { nformatstring(buf, len, v==int(v) ? "%.1f" : "%.7g", v); }
+static inline void floatformat(char *buf, float v, int len = 20) { nformatstring(buf, len, v==int(v) ? "%.1f" : "%.6g", v); }
 static inline void numberformat(char *buf, double v, int len = 20)
 {
     int i = int(v);
     if(v == i) nformatstring(buf, len, "%d", i);
-    else nformatstring(buf, len, "%.7g", v);
+    else nformatstring(buf, len, "%.6g", v);
 }
 
 static inline const char *getstr(const identval &v, int type)
@@ -312,8 +308,8 @@ inline void ident::getcval(tagval &v) const
 //simple macro for adding angel script global functions
 
 // nasty macros for registering script functions, abuses globals to avoid excessive infrastructure
-#define KEYWORD(name, type) UNUSED static bool __dummy_##type = addcommand(#name, (identfun)NULL, NULL, type)
-#define COMMANDKN(name, type, fun, nargs) UNUSED static bool __dummy_##fun = addcommand(#name, (identfun)fun, nargs, type)
+#define KEYWORD(name, type) UNUSED static bool __dummy_##type = addcommand(#name, NULL, NULL, type)
+#define COMMANDKN(name, type, fun, nargs) UNUSED static bool __dummy_##fun = addcommand(#name, fun, nargs, type)
 #define COMMANDK(name, type, nargs) COMMANDKN(name, type, name, nargs)
 #define COMMANDN(name, fun, nargs) COMMANDKN(name, ID_COMMAND, fun, nargs)
 #define COMMAND(name, nargs) COMMANDN(name, name, nargs)
@@ -361,7 +357,7 @@ inline void ident::getcval(tagval &v) const
 #define CVAR0R(name, cur) _CVAR0(name, cur, , IDF_OVERRIDE)
 #define CVAR0FP(name, cur, body) _CVAR0(name, cur, body, IDF_PERSIST)
 #define CVAR0FR(name, cur, body) _CVAR0(name, cur, body, IDF_OVERRIDE)
-#define _CVAR1(name, cur, body, persist) _CVAR(name, cur, { if(_##name <= 255 ) _##name |= (_##name<<8) | (_##name<<16); }, body, persist)
+#define _CVAR1(name, cur, body, persist) _CVAR(name, cur, { if(_##name <= 255) _##name |= (_##name<<8) | (_##name<<16); }, body, persist)
 #define CVAR1P(name, cur) _CVAR1(name, cur, , IDF_PERSIST)
 #define CVAR1R(name, cur) _CVAR1(name, cur, , IDF_OVERRIDE)
 #define CVAR1FP(name, cur, body) _CVAR1(name, cur, body, IDF_PERSIST)
@@ -400,7 +396,7 @@ inline void ident::getcval(tagval &v) const
 // anonymous inline commands, uses nasty template trick with line numbers to keep names unique
 #define ICOMMANDNAME(name) _icmd_##name
 #define ICOMMANDSNAME _icmds_
-#define ICOMMANDKNS(name, type, cmdname, nargs, proto, b) template<int N> struct cmdname; template<> struct cmdname<__LINE__> { static bool init; static void run proto; }; bool cmdname<__LINE__>::init = addcommand(name, (identfun)cmdname<__LINE__>::run, nargs, type); void cmdname<__LINE__>::run proto \
+#define ICOMMANDKNS(name, type, cmdname, nargs, proto, b) template<int N> struct cmdname; template<> struct cmdname<__LINE__> { static bool init; static void run proto; }; bool cmdname<__LINE__>::init = addcommand(name, cmdname<__LINE__>::run, nargs, type); void cmdname<__LINE__>::run proto \
     { b; }
 #define ICOMMANDKN(name, type, cmdname, nargs, proto, b) ICOMMANDKNS(#name, type, cmdname, nargs, proto, b)
 #define ICOMMANDK(name, type, nargs, proto, b) ICOMMANDKN(name, type, ICOMMANDNAME(name), nargs, proto, b)
@@ -411,9 +407,10 @@ inline void ident::getcval(tagval &v) const
 #define ICOMMANDS(name, nargs, proto, b) ICOMMANDNS(name, ICOMMANDSNAME, nargs, proto, b)
 
 
-
+/*  Check This
 //keymap
 extern void initbindmap();
 extern void firekeymaps();
 extern void processkeymap(int key, bool isdown);
+*/
 
