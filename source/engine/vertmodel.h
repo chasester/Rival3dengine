@@ -167,6 +167,7 @@ struct vertmodel : animmodel
 
         void render(const animstate *as, skin &s, vbocacheentry &vc)
         {
+            if(!Shader::lastshader) return;
             glDrawRangeElements_(GL_TRIANGLES, minvert, maxvert, elen, GL_UNSIGNED_SHORT, &((vertmeshgroup *)group)->edata[eoffset]);
             glde++;
             xtravertsva += numverts;
@@ -297,7 +298,7 @@ struct vertmodel : animmodel
             else
             {
                 vertsize = sizeof(vvertg);
-                glBindBuffer_(GL_ARRAY_BUFFER, vc.vbuf);
+                gle::bindvbo(vc.vbuf);
                 #define GENVBO(type) \
                     do \
                     { \
@@ -314,13 +315,13 @@ struct vertmodel : animmodel
                 GENVBO(vvertg);
                 delete[] htdata;
                 #undef GENVBO
-                glBindBuffer_(GL_ARRAY_BUFFER, 0);
+                gle::clearvbo();
             }
 
             glGenBuffers_(1, &ebuf);
-            glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, ebuf);
+            gle::bindebo(ebuf);
             glBufferData_(GL_ELEMENT_ARRAY_BUFFER, idxs.length()*sizeof(ushort), idxs.getbuf(), GL_STATIC_DRAW);
-            glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, 0);
+            gle::clearebo();
         }
 
         template<class T>
@@ -398,7 +399,7 @@ struct vertmodel : animmodel
                     {
                         m.interpverts(*as, (vvert *)vdata, p->skins[i]);
                     });
-                    glBindBuffer_(GL_ARRAY_BUFFER, vc->vbuf);
+                    gle::bindvbo(vc->vbuf);
                     glBufferData_(GL_ARRAY_BUFFER, vlen*vertsize, vdata, GL_STREAM_DRAW);
                 }
                 vc->millis = lastmillis;
@@ -443,8 +444,9 @@ struct vertmodel : animmodel
     }
 };
 
-template<class MDL> struct vertloader : modelloader<MDL>
+template<class MDL> struct vertloader : modelloader<MDL, vertmodel>
 {
+    vertloader(const char *name) : modelloader<MDL, vertmodel>(name) {}
 };
 
 template<class MDL> struct vertcommands : modelcommands<MDL, struct MDL::vertmesh>
@@ -455,18 +457,18 @@ template<class MDL> struct vertcommands : modelcommands<MDL, struct MDL::vertmes
 
     static void loadpart(char *model, float *smooth)
     {
-        if(!MDL::loading) { conoutf("not loading an %s", MDL::formatname()); return; }
+        if(!MDL::loading) { conoutf(CON_ERROR, "not loading an %s", MDL::formatname()); return; }
         defformatstring(filename, "%s/%s", MDL::dir, model);
         part &mdl = MDL::loading->addpart();
         if(mdl.index) mdl.disablepitch();
         mdl.meshes = MDL::loading->sharemeshes(path(filename), *smooth > 0 ? cosf(clamp(*smooth, 0.0f, 180.0f)*RAD) : 2);
-        if(!mdl.meshes) conoutf("could not load %s", filename);
+        if(!mdl.meshes) conoutf(CON_ERROR, "could not load %s", filename);
         else mdl.initskins();
     }
 
     static void settag(char *tagname, float *tx, float *ty, float *tz, float *rx, float *ry, float *rz)
     {
-        if(!MDL::loading || MDL::loading->parts.empty()) { conoutf("not loading an %s", MDL::formatname()); return; }
+        if(!MDL::loading || MDL::loading->parts.empty()) { conoutf(CON_ERROR, "not loading an %s", MDL::formatname()); return; }
         part &mdl = *(part *)MDL::loading->parts.last();
         float cx = *rx ? cosf(*rx/2*RAD) : 1, sx = *rx ? sinf(*rx/2*RAD) : 0,
               cy = *ry ? cosf(*ry/2*RAD) : 1, sy = *ry ? sinf(*ry/2*RAD) : 0,
@@ -478,7 +480,7 @@ template<class MDL> struct vertcommands : modelcommands<MDL, struct MDL::vertmes
 
     static void setpitch(float *pitchscale, float *pitchoffset, float *pitchmin, float *pitchmax)
     {
-        if(!MDL::loading || MDL::loading->parts.empty()) { conoutf("not loading an %s", MDL::formatname()); return; }
+        if(!MDL::loading || MDL::loading->parts.empty()) { conoutf(CON_ERROR, "not loading an %s", MDL::formatname()); return; }
         part &mdl = *MDL::loading->parts.last();
 
         mdl.pitchscale = *pitchscale;
@@ -497,10 +499,10 @@ template<class MDL> struct vertcommands : modelcommands<MDL, struct MDL::vertmes
 
     static void setanim(char *anim, int *frame, int *range, float *speed, int *priority)
     {
-        if(!MDL::loading || MDL::loading->parts.empty()) { conoutf("not loading an %s", MDL::formatname()); return; }
+        if(!MDL::loading || MDL::loading->parts.empty()) { conoutf(CON_ERROR, "not loading an %s", MDL::formatname()); return; }
         vector<int> anims;
         game::findanims(anim, anims);
-        if(anims.empty()) conoutf("could not find animation %s", anim);
+        if(anims.empty()) conoutf(CON_ERROR, "could not find animation %s", anim);
         else loopv(anims)
         {
             MDL::loading->parts.last()->setanim(0, anims[i], *frame, *range, *speed, *priority);

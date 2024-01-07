@@ -121,7 +121,7 @@ namespace game
 				const char *mdlname = mapmodelname(e.attr1);
 				setcbfrommodel(vec(e.o), mdlname, vec(e.attr2 + 90.f, e.attr3, e.attr4), 0.f);
 			}
-            if(e.type!=BULLETENT ) continue;
+            //if(e.type!=BULLETENT ) continue;
             bulletmovable *m = new bulletmovable(e);
             bulletmovables.add(m);
             //m->o = e.o;
@@ -220,7 +220,7 @@ namespace game
 
 			const char *mdlname = mapmodelname(m.mapmodel);
             if(!mdlname) continue;
-			rendermodel(mdlname, ANIM_MAPMODEL|ANIM_LOOP, m.o, m.yaw, m.pitch, m.roll, MDL_CULL_VFC | MDL_CULL_DIST|MDL_CULL_OCCLUDED|MDL_CENTER_ALIGNED );
+			//rendermodel(mdlname, ANIM_MAPMODEL|ANIM_LOOP, m.o, m.yaw, m.pitch, m.roll, MDL_CULL_VFC | MDL_CULL_DIST|MDL_CULL_OCCLUDED|MDL_CENTER_ALIGNED );
 
         }
     }

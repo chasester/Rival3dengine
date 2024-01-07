@@ -117,9 +117,8 @@ enum
     PT_ICON      = 1<<19,
     PT_NOTEX     = 1<<20,
     PT_SHADER    = 1<<21,
-    PT_SWIZZLE   = 1<<22,
-    PT_NOLAYER   = 1<<23,
-    PT_COLLIDE   = 1<<24,
+    PT_NOLAYER   = 1<<22,
+    PT_COLLIDE   = 1<<23,
     PT_FLIP      = PT_HFLIP | PT_VFLIP | PT_ROT
 };
 
@@ -149,7 +148,7 @@ struct partvert
 {
     vec pos;
     bvec4 color;
-    float u, v;
+    vec2 tc;
 };
 
 #define COLLIDERADIUS 8.0f
@@ -250,8 +249,8 @@ struct partrenderer
         info[len-1] = info[len-1] == ',' ? ')' : '\0';
         if(texname)
         {
-            const char *title = strrchr(texname, '/')+1;
-            if(title) concformatstring(info, ": %s", title);
+            const char *title = strrchr(texname, '/');
+            if(title) concformatstring(info, ": %s", title+1);
         }
     }
 };
@@ -403,7 +402,6 @@ struct meterrenderer : listrenderer
 
     void endrender()
     {
-         gle::disable();
          glEnable(GL_BLEND);
     }
 
@@ -484,8 +482,6 @@ struct textrenderer : listrenderer
 
     void endrender()
     {
-        gle::disable();
-
         textshader = NULL;
 
         popfont();
@@ -728,14 +724,10 @@ struct varenderer : partrenderer
             { \
                 float u1 = u1c, u2 = u2c, v1 = v1c, v2 = v2c; \
                 body; \
-                vs[0].u = u1; \
-                vs[0].v = v1; \
-                vs[1].u = u2; \
-                vs[1].v = v1; \
-                vs[2].u = u2; \
-                vs[2].v = v2; \
-                vs[3].u = u1; \
-                vs[3].v = v2; \
+                vs[0].tc = vec2(u1, v1); \
+                vs[1].tc = vec2(u2, v1); \
+                vs[2].tc = vec2(u2, v2); \
+                vs[3].tc = vec2(u1, v2); \
             }
             if(type&PT_RND4)
             {
@@ -798,10 +790,10 @@ struct varenderer : partrenderer
         genverts();
 
         if(!vbo) glGenBuffers_(1, &vbo);
-        glBindBuffer_(GL_ARRAY_BUFFER, vbo);
+        gle::bindvbo(vbo);
         glBufferData_(GL_ARRAY_BUFFER, maxparts*4*sizeof(partvert), NULL, GL_STREAM_DRAW);
         glBufferSubData_(GL_ARRAY_BUFFER, 0, numparts*4*sizeof(partvert), verts);
-        glBindBuffer_(GL_ARRAY_BUFFER, 0);
+        gle::clearvbo();
     }
 
     void render()
@@ -810,11 +802,11 @@ struct varenderer : partrenderer
 
         glBindTexture(GL_TEXTURE_2D, tex->id);
 
-        glBindBuffer_(GL_ARRAY_BUFFER, vbo);
+        gle::bindvbo(vbo);
         const partvert *ptr = 0;
-        gle::vertexpointer(sizeof(partvert), &ptr->pos);
-        gle::texcoord0pointer(sizeof(partvert), &ptr->u);
-        gle::colorpointer(sizeof(partvert), &ptr->color);
+        gle::vertexpointer(sizeof(partvert), ptr->pos.v);
+        gle::texcoord0pointer(sizeof(partvert), ptr->tc.v);
+        gle::colorpointer(sizeof(partvert), ptr->color.v);
         gle::enablevertex();
         gle::enabletexcoord0();
         gle::enablecolor();
@@ -826,7 +818,7 @@ struct varenderer : partrenderer
         gle::disablevertex();
         gle::disabletexcoord0();
         gle::disablecolor();
-        glBindBuffer_(GL_ARRAY_BUFFER, 0);
+        gle::clearvbo();
     }
 };
 typedef varenderer<PT_PART> quadrenderer;
@@ -872,7 +864,7 @@ static partrenderer *parts[] =
     &flares                                                                                    // lens flares - must be done last
 };
 
-VARFP(maxparticles, 10, 4000, 1000000, initparticles());
+VARFP(maxparticles, 10, 4000, 10000, initparticles());
 VARFP(fewparticles, 10, 100, 10000, initparticles());
 
 void initparticles()
@@ -931,7 +923,6 @@ void renderparticles(int layer)
     uint lastflags = PT_LERP|PT_SHADER,
          flagmask = PT_LERP|PT_MOD|PT_BRIGHT|PT_NOTEX|PT_SOFT|PT_SHADER,
          excludemask = layer == PL_ALL ? ~0 : (layer != PL_NOLAYER ? PT_NOLAYER : 0);
-    int lastswizzle = -1;
 
     loopi(sizeof(parts)/sizeof(parts[0]))
     {
@@ -946,14 +937,12 @@ void renderparticles(int layer)
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             glActiveTexture_(GL_TEXTURE2);
-            if(msaasamples) glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, msdepthtex);
+            if(msaalight) glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, msdepthtex);
             else glBindTexture(GL_TEXTURE_RECTANGLE, gdepthtex);
             glActiveTexture_(GL_TEXTURE0);
         }
 
         uint flags = p->type & flagmask, changedbits = flags ^ lastflags;
-        int swizzle = p->tex ? p->tex->swizzle() : -1;
-        if(swizzle != lastswizzle) changedbits |= PT_SWIZZLE;
         if(changedbits)
         {
             if(changedbits&PT_LERP) { if(flags&PT_LERP) resetfogcolor(); else zerofogcolor(); }
@@ -965,17 +954,17 @@ void renderparticles(int layer)
             }
             if(!(flags&PT_SHADER))
             {
-                if(changedbits&(PT_LERP|PT_SOFT|PT_NOTEX|PT_SHADER|PT_SWIZZLE))
+                if(changedbits&(PT_LERP|PT_SOFT|PT_NOTEX|PT_SHADER))
                 {
                     if(flags&PT_SOFT && softparticles)
                     {
-                        particlesoftshader->setvariant(swizzle, 0);
+                        particlesoftshader->set();
                         LOCALPARAMF(softparams, -1.0f/softparticleblend, 0, 0);
                     }
                     else if(flags&PT_NOTEX) particlenotextureshader->set();
-                    else particleshader->setvariant(swizzle, 0);
+                    else particleshader->set();
                 }
-                if(changedbits&(PT_MOD|PT_BRIGHT|PT_SOFT|PT_NOTEX|PT_SHADER|PT_SWIZZLE))
+                if(changedbits&(PT_MOD|PT_BRIGHT|PT_SOFT|PT_NOTEX|PT_SHADER))
                 {
                     float colorscale = flags&PT_MOD ? 1 : ldrscale;
                     if(flags&PT_BRIGHT) colorscale *= particlebright;
@@ -983,7 +972,6 @@ void renderparticles(int layer)
                 }
             }
             lastflags = flags;
-            lastswizzle = swizzle;
         }
         p->render();
     }
@@ -1044,7 +1032,7 @@ static void regularsplash(int type, int color, int radius, int num, int fade, co
 
 bool canaddparticles()
 {
-	return true;
+    return !minimized;
 }
 
 void regular_particle_splash(int type, int num, int fade, const vec &p, int color, float size, int radius, int gravity, int delay)
@@ -1391,7 +1379,7 @@ void updateparticles()
 {
     if(regenemitters) addparticleemitters();
 
-    //if(minimized) { canemit = false; return; }
+    if(minimized) { canemit = false; return; }
 
     if(lastmillis - lastemitframe >= emitmillis)
     {

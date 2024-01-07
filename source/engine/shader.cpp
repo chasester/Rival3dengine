@@ -1,7 +1,6 @@
 // shader.cpp: OpenGL GLSL shader management
 
 #include "engine.h"
-#include <string>
 
 Shader *Shader::lastshader = NULL;
 
@@ -20,7 +19,8 @@ VAR(mintexoffset, 1, 0, 0);
 VAR(maxtexoffset, 1, 0, 0);
 VAR(mintexrectoffset, 1, 0, 0);
 VAR(maxtexrectoffset, 1, 0, 0);
-VAR(dbgshader, 0, 0, 2);
+//VAR(dbgshader, 0, 0, 2);
+VAR(dbgshader, 0, 1, 2);
 
 void loadshaders()
 {
@@ -36,7 +36,7 @@ void loadshaders()
     if(!nullshader || !hudshader || !hudtextshader || !hudnotextureshader || !stdworldshader) fatal("cannot find shader definitions");
 
     dummyslot.shader = stdworldshader;
-    dummydecalslot.shader = nullshader; // TODO: FIX!!!!
+    dummydecalslot.shader = nullshader;
 
     nocolorshader = lookupshaderbyname("nocolor");
     foggedshader = lookupshaderbyname("fogged");
@@ -748,7 +748,7 @@ void Shader::cleanup(bool full)
     owner = NULL;
 }
 
-//bool Shader::isnull(const Shader *s) { return !s; }
+bool Shader::isnull(const Shader *s) { return !s; }
 
 static void genattriblocs(Shader &s, const char *vs, const char *ps, Shader *reusevs, Shader *reuseps)
 {

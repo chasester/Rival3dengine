@@ -2,11 +2,14 @@
 
 #include "engine.h"
 
+#ifdef SDL_VIDEO_DRIVER_X11
+#include "SDL_syswm.h"
+#endif
+
 extern void cleargamma();
 
 void cleanup()
 {
-	
 	asEngineShutdown();
     recorder::stop();
     cleanupserver();
@@ -15,14 +18,13 @@ void cleanup()
     SDL_SetRelativeMouseMode(SDL_FALSE);
     if(screen) SDL_SetWindowGrab(screen, SDL_FALSE);
     cleargamma();
-    freeocta(worldeditor::editroot);
+    freeocta(cuberoot);
     UI::cleanup();
     extern void clear_command(); clear_command();
     extern void clear_console(); clear_console();
     extern void clear_models();  clear_models();
     extern void clear_sound();   clear_sound();
     closelogfile();
-    ovr::destroy();
     #ifdef __APPLE__
         if(screen) SDL_SetWindowFullscreen(screen, 0);
     #endif
@@ -114,10 +116,12 @@ void writeinitcfg()
     f->printf("screenw %d\n", scr_w);
     f->printf("screenh %d\n", scr_h);
     extern int sound, soundchans, soundfreq, soundbufferlen;
+    extern char *audiodriver;
     f->printf("sound %d\n", sound);
     f->printf("soundchans %d\n", soundchans);
     f->printf("soundfreq %d\n", soundfreq);
     f->printf("soundbufferlen %d\n", soundbufferlen);
+    if(audiodriver[0]) f->printf("audiodriver %s\n", escapestring(audiodriver));
     delete f;
 }
 
@@ -194,10 +198,7 @@ void renderbackgroundview(int w, int h, const char *caption, Texture *mapshot, c
         int tw = text_width(caption);
         float tsz = 0.04f*min(w, h)/FONTH,
               tx = 0.5f*(w - tw*tsz), ty = h - 0.075f*1.5f*min(w, h) - FONTH*tsz;
-        pushhudmatrix();
-        hudmatrix.translate(tx, ty, 0);
-        hudmatrix.scale(tsz, tsz, 1);
-        flushhudmatrix();
+        pushhudtranslate(tx, ty, tsz);
         draw_text(caption, 0, 0);
         pophudmatrix();
     }
@@ -224,31 +225,36 @@ void renderbackgroundview(int w, int h, const char *caption, Texture *mapshot, c
         if(mapname)
         {
             float tw = text_widthf(mapname), tsz = sz/(8*FONTH), tx = max(0.5f*(mw*msz - tw*tsz), 0.0f);
-            pushhudmatrix();
-            hudmatrix.translate(x+mx+tx, y, 0);
-            hudmatrix.scale(tsz, tsz, 1);
-            flushhudmatrix();
+            pushhudtranslate(x+mx+tx, y, tsz);
             draw_text(mapname, 0, 0);
             pophudmatrix();
             my = 1.5f*FONTH*tsz;
         }
         if(mapinfo)
         {
-            pushhudmatrix();
-            hudmatrix.translate(x+mx, y+my, 0);
-            hudmatrix.scale(msz, msz, 1);
-            flushhudmatrix();
+            pushhudtranslate(x+mx, y+my, msz);
             draw_text(mapinfo, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, -1, infowidth);
             pophudmatrix();
         }
     }
 
     glDisable(GL_BLEND);
-
-    gle::disable();
 }
 
 VAR(menumute, 0, 1, 1);
+
+void setbackgroundinfo(const char *caption = NULL, Texture *mapshot = NULL, const char *mapname = NULL, const char *mapinfo = NULL)
+{
+    renderedframe = false;
+    copystring(backgroundcaption, caption ? caption : "");
+    backgroundmapshot = mapshot;
+    copystring(backgroundmapname, mapname ? mapname : "");
+    if(mapinfo != backgroundmapinfo)
+    {
+        DELETEA(backgroundmapinfo);
+        if(mapinfo) backgroundmapinfo = newstring(mapinfo);
+    }
+}
 
 void renderbackground(const char *caption, Texture *mapshot, const char *mapname, const char *mapinfo, bool force)
 {
@@ -269,42 +275,20 @@ void renderbackground(const char *caption, Texture *mapshot, const char *mapname
 
     loopi(3)
     {
-        if(ovr::enabled)
-        {
-            aspect = forceaspect ? forceaspect : hudw/float(hudh);
-            for(viewidx = 0; viewidx < 2; viewidx++, hudx += hudw)
-            {
-                if(!i)
-                {
-                    glBindFramebuffer_(GL_FRAMEBUFFER, ovr::lensfbo[viewidx]);
-                    glViewport(0, 0, hudw, hudh);
-                    glClearColor(0, 0, 0, 0);
-                    glClear(GL_COLOR_BUFFER_BIT);
-                    renderbackgroundview(w, h, caption, mapshot, mapname, mapinfo);
-                }
-                ovr::warp();
-            }
-            viewidx = 0;
-            hudx = 0;
-        }
-        else renderbackgroundview(w, h, caption, mapshot, mapname, mapinfo);
+        renderbackgroundview(w, h, caption, mapshot, mapname, mapinfo);
         swapbuffers(false);
     }
 
-    renderedframe = false;
-    copystring(backgroundcaption, caption ? caption : "");
-    backgroundmapshot = mapshot;
-    copystring(backgroundmapname, mapname ? mapname : "");
-    if(mapinfo != backgroundmapinfo)
-    {
-        DELETEA(backgroundmapinfo);
-        if(mapinfo) backgroundmapinfo = newstring(mapinfo);
-    }
+    setbackgroundinfo(caption, mapshot, mapname, mapinfo);
 }
 
-void restorebackground(int w, int h)
+void restorebackground(int w, int h, bool force = false)
 {
-    if(renderedframe) return;
+    if(renderedframe)
+    {
+        if(!force) return;
+        setbackgroundinfo();
+    }
     renderbackgroundview(w, h, backgroundcaption[0] ? backgroundcaption : NULL, backgroundmapshot, backgroundmapname[0] ? backgroundmapname : NULL, backgroundmapinfo);
 }
 
@@ -347,65 +331,59 @@ void renderprogressview(int w, int h, float bar, const char *text)   // also use
         int tw = text_width(text);
         float tsz = bh*0.6f/FONTH;
         if(tw*tsz > mw) tsz = mw/tw;
-        pushhudmatrix();
-        hudmatrix.translate(bx+sw, by + (bh - FONTH*tsz)/2, 0);
-        hudmatrix.scale(tsz, tsz, 1);
-        flushhudmatrix();
+    
+        pushhudtranslate(bx+sw, by + (bh - FONTH*tsz)/2, tsz);
         draw_text(text, 0, 0);
         pophudmatrix();
     }
 
     glDisable(GL_BLEND);
-
-    gle::disable();
 }
+
+VAR(progressbackground, 0, 0, 1);
 
 void renderprogress(float bar, const char *text, bool background)   // also used during loading
 {
     if(!inbetweenframes || drawtex) return;
 
+    extern int menufps, maxfps;
+    int fps = menufps ? (maxfps ? min(maxfps, menufps) : menufps) : maxfps;
+    if(fps)
+    {
+        static int lastprogress = 0;
+        int ticks = SDL_GetTicks(), diff = ticks - lastprogress;
+        if(bar > 0 && diff >= 0 && diff < (1000 + fps-1)/fps) return;
+        lastprogress = ticks;
+    }
+
     clientkeepalive();      // make sure our connection doesn't time out while loading maps etc.
 
-    #ifdef __APPLE__
-    interceptkey(SDLK_UNKNOWN); // keep the event queue awake to avoid 'beachball' cursor
-    #endif
+    SDL_PumpEvents(); // keep the event queue awake to avoid 'beachball' cursor
 
     int w = hudw, h = hudh;
     if(forceaspect) w = int(ceil(h*forceaspect));
     getbackgroundres(w, h);
     gettextres(w, h);
 
-    if(ovr::enabled)
-    {
-        aspect = forceaspect ? forceaspect : hudw/float(hudh);
-        for(viewidx = 0; viewidx < 2; viewidx++, hudx += hudw)
-        {
-            glBindFramebuffer_(GL_FRAMEBUFFER, ovr::lensfbo[viewidx]);
-            glViewport(0, 0, hudw, hudh);
-            if(background)
-            {
-                glClearColor(0, 0, 0, 0);
-                glClear(GL_COLOR_BUFFER_BIT);
-                restorebackground(w, h);
-            }
-            renderprogressview(w, h, bar, text);
-            ovr::warp();
-        }
-        viewidx = 0;
-        hudx = 0;
-    }
-    else
-    {
-        if(background) restorebackground(w, h);
-        renderprogressview(w, h, bar, text);
-    }
+    extern int mesa_swap_bug, curvsync;
+    bool forcebackground = progressbackground || (mesa_swap_bug && (curvsync || totalmillis==1));
+    if(background || forcebackground) restorebackground(w, h, forcebackground);
+
+    renderprogressview(w, h, bar, text);
     swapbuffers(false);
 }
 
+#ifdef WIN32
+// SDL_WarpMouseInWindow behaves erratically on Windows, so force relative mouse instead.
+VARN(relativemouse, userelativemouse, 1, 1, 0);
+#else
 VARNP(relativemouse, userelativemouse, 0, 1, 1);
+#endif
 
 bool shouldgrab = false, grabinput = false, minimized = false, canrelativemouse = true, relativemouse = false;
 int keyrepeatmask = 0, textinputmask = 0;
+Uint32 textinputtime = 0;
+VAR(textinputfilter, 0, 5, 1000);
 
 void keyrepeat(bool on, int mask)
 {
@@ -417,18 +395,29 @@ void textinput(bool on, int mask)
 {
     if(on)
     {
-        if(!textinputmask) SDL_StartTextInput();
+        if(!textinputmask)
+        {
+            SDL_StartTextInput();
+            textinputtime = SDL_GetTicks();
+        }
         textinputmask |= mask;
     }
-    else
+    else if(textinputmask)
     {
         textinputmask &= ~mask;
         if(!textinputmask) SDL_StopTextInput();
     }
 }
 
-void inputgrab(bool on)
+#ifdef SDL_VIDEO_DRIVER_X11
+VAR(sdl_xgrab_bug, 0, 0, 1);
+#endif
+
+void inputgrab(bool on, bool delay = false)
 {
+#ifdef SDL_VIDEO_DRIVER_X11
+    bool wasrelativemouse = relativemouse;
+#endif
     if(on)
     {
         SDL_ShowCursor(SDL_FALSE);
@@ -452,12 +441,30 @@ void inputgrab(bool on)
         SDL_ShowCursor(SDL_TRUE);
         if(relativemouse)
         {
-            SDL_SetRelativeMouseMode(SDL_FALSE);
             SDL_SetWindowGrab(screen, SDL_FALSE);
+            SDL_SetRelativeMouseMode(SDL_FALSE);
             relativemouse = false;
         }
     }
-    shouldgrab = false;
+    shouldgrab = delay;
+
+#ifdef SDL_VIDEO_DRIVER_X11
+    if((relativemouse || wasrelativemouse) && sdl_xgrab_bug)
+    {
+        // Workaround for buggy SDL X11 pointer grabbing
+        union { SDL_SysWMinfo info; uchar buf[sizeof(SDL_SysWMinfo) + 128]; };
+        SDL_GetVersion(&info.version);
+        if(SDL_GetWindowWMInfo(screen, &info) && info.subsystem == SDL_SYSWM_X11)
+        {
+            if(relativemouse)
+            {
+                uint mask = ButtonPressMask | ButtonReleaseMask | PointerMotionMask | FocusChangeMask;
+                XGrabPointer(info.info.x11.display, info.info.x11.window, True, mask, GrabModeAsync, GrabModeAsync, info.info.x11.window, None, CurrentTime);
+            }
+            else XUngrabPointer(info.info.x11.display, CurrentTime);
+        }
+    }
+#endif
 }
 
 bool initwindowpos = false;
@@ -473,7 +480,6 @@ void setfullscreen(bool enable)
         if(initwindowpos)
         {
             int winx = SDL_WINDOWPOS_CENTERED, winy = SDL_WINDOWPOS_CENTERED;
-            if(ovr::enabled) winx = winy = 0;
             SDL_SetWindowPosition(screen, winx, winy);
             initwindowpos = false;
         }
@@ -494,8 +500,17 @@ void screenres(int w, int h)
     {
         scr_w = min(scr_w, desktopw);
         scr_h = min(scr_h, desktoph);
-        if(SDL_GetWindowFlags(screen) & SDL_WINDOW_FULLSCREEN) gl_resize();
-        else SDL_SetWindowSize(screen, scr_w, scr_h);
+        if(SDL_GetWindowFlags(screen) & SDL_WINDOW_FULLSCREEN)
+        {
+            gl_resize();
+            initwindowpos = true;
+        }
+        else
+        {
+            SDL_SetWindowSize(screen, scr_w, scr_h);
+            SDL_SetWindowPosition(screen, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+            initwindowpos = false;
+        }
     }
     else
     {
@@ -511,16 +526,17 @@ static void setgamma(int val)
 }
 
 static int curgamma = 100;
-VARFP(gamma, 30, 100, 300,
+VARFNP(gamma, reqgamma, 30, 100, 300,
 {
-    if(initing || gamma == curgamma) return;
-    curgamma = gamma;
+    if(initing || reqgamma == curgamma) return;
+    curgamma = reqgamma;
     setgamma(curgamma);
 });
 
 void restoregamma()
 {
-    if(initing || curgamma == 100) return;
+    if(initing || reqgamma == 100) return;
+    curgamma = reqgamma;
     setgamma(curgamma);
 }
 
@@ -529,11 +545,13 @@ void cleargamma()
     if(curgamma != 100 && screen) SDL_SetWindowBrightness(screen, 1.0f);
 }
 
+int curvsync = -1;
 void restorevsync()
 {
     if(initing || !glcontext) return;
     extern int vsync, vsynctear;
-    SDL_GL_SetSwapInterval(vsync ? (vsynctear ? -1 : 1) : 0);
+    if(!SDL_GL_SetSwapInterval(vsync ? (vsynctear ? -1 : 1) : 0))
+        curvsync = vsync;
 }
 
 VARFP(vsync, 0, 0, 1, restorevsync());
@@ -553,9 +571,10 @@ void setupscreen()
         SDL_DestroyWindow(screen);
         screen = NULL;
     }
+    curvsync = -1;
 
-    SDL_DisplayMode desktop;
-    if(SDL_GetDesktopDisplayMode(0, &desktop) < 0) fatal("failed querying desktop display mode: %s", SDL_GetError());
+    SDL_Rect desktop;
+    if(SDL_GetDisplayBounds(0, &desktop) < 0) fatal("failed querying desktop bounds: %s", SDL_GetError());
     desktopw = desktop.w;
     desktoph = desktop.h;
 
@@ -572,9 +591,14 @@ void setupscreen()
         flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
         initwindowpos = true;
     }
-    if(ovr::enabled) winx = winy = 0;
 
+    SDL_GL_ResetAttributes();
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+#if !defined(WIN32) && !defined(__APPLE__)
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+#endif
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 0);
     screen = SDL_CreateWindow("Tesseract", winx, winy, winw, winh, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS | flags);
@@ -583,23 +607,21 @@ void setupscreen()
     SDL_SetWindowMinimumSize(screen, SCR_MINW, SCR_MINH);
     SDL_SetWindowMaximumSize(screen, SCR_MAXW, SCR_MAXH);
 
-    static const struct { int major, minor; } coreversions[] = { { 4, 0 }, { 3, 3 }, { 3, 2 }, { 3, 1 }, { 3, 0 } };
-    loopi(sizeof(coreversions)/sizeof(coreversions[0]))
+#ifdef __APPLE__
+    static const int glversions[] = { 32, 20 };
+#else
+    static const int glversions[] = { 40, 33, 32, 31, 30, 20 };
+#endif
+    loopi(sizeof(glversions)/sizeof(glversions[0]))
     {
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, coreversions[i].major);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, coreversions[i].minor);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        glcompat = glversions[i] <= 30 ? 1 : 0;
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, glversions[i] / 10);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, glversions[i] % 10);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, glversions[i] >= 32 ? SDL_GL_CONTEXT_PROFILE_CORE : 0); 
         glcontext = SDL_GL_CreateContext(screen);
         if(glcontext) break;
     }
-    if(!glcontext)
-    {
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, 0);
-        glcontext = SDL_GL_CreateContext(screen);
-        if(!glcontext) fatal("failed to create OpenGL context: %s", SDL_GetError());
-    }
+    if(!glcontext) fatal("failed to create OpenGL context: %s", SDL_GetError());
 
     SDL_GetWindowSize(screen, &screenw, &screenh);
     renderw = min(scr_w, screenw);
@@ -651,20 +673,14 @@ void resetgl()
     initgbuffer();
     reloadshaders();
     reloadtextures();
-    initlights();
     allchanged(true);
 }
 
 COMMAND(resetgl, "");
 
-vector<SDL_Event> events;
+static queue<SDL_Event, 32> events;
 
-void pushevent(const SDL_Event &e)
-{
-    events.add(e);
-}
-
-static bool filterevent(const SDL_Event &event)
+static inline bool filterevent(const SDL_Event &event)
 {
     switch(event.type)
     {
@@ -683,41 +699,74 @@ static bool filterevent(const SDL_Event &event)
     return true;
 }
 
-static inline bool pollevent(SDL_Event &event)
+template <int SIZE> static inline bool pumpevents(queue<SDL_Event, SIZE> &events)
 {
-    while(SDL_PollEvent(&event))
+    while(events.empty())
     {
-        if(filterevent(event)) return true;
+        SDL_PumpEvents();
+        databuf<SDL_Event> buf = events.reserve(events.capacity());
+        int n = SDL_PeepEvents(buf.getbuf(), buf.remaining(), SDL_GETEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
+        if(n <= 0) return false;
+        loopi(n) if(filterevent(buf.buf[i])) buf.put(buf.buf[i]);
+        events.addbuf(buf);
     }
-    return false;
+    return true;
+}
+
+static int interceptkeysym = 0;
+
+static int interceptevents(void *data, SDL_Event *event)
+{
+    switch(event->type)
+    {
+        case SDL_MOUSEMOTION: return 0;
+        case SDL_KEYDOWN:
+            if(event->key.keysym.sym == interceptkeysym)
+            {
+                interceptkeysym = -interceptkeysym;
+                return 0;
+            }
+            break;
+    }
+    return 1;
+}
+
+static void clearinterceptkey()
+{
+    SDL_DelEventWatch(interceptevents, NULL);
+    interceptkeysym = 0;
 }
 
 bool interceptkey(int sym)
 {
-    static int lastintercept = SDLK_UNKNOWN;
-    int len = lastintercept == sym ? events.length() : 0;
-    SDL_Event event;
-    while(pollevent(event))
+    if(!interceptkeysym)
     {
-        switch(event.type)
+        interceptkeysym = sym;
+        SDL_FilterEvents(interceptevents, NULL);
+        if(interceptkeysym < 0)
         {
-            case SDL_MOUSEMOTION: break;
-            default: pushevent(event); break;
+            interceptkeysym = 0;
+            return true;
         }
+        SDL_AddEventWatch(interceptevents, NULL);
     }
-    lastintercept = sym;
-    if(sym != SDLK_UNKNOWN) for(int i = len; i < events.length(); i++)
+    else if(abs(interceptkeysym) != sym) interceptkeysym = sym;
+    SDL_PumpEvents();
+    if(interceptkeysym < 0)
     {
-        if(events[i].type == SDL_KEYDOWN && events[i].key.keysym.sym == sym) { events.remove(i); return true; }
+        clearinterceptkey();
+        interceptkeysym = sym;
+        SDL_FilterEvents(interceptevents, NULL);
+        interceptkeysym = 0;
+        return true;
     }
     return false;
 }
 
 static void ignoremousemotion()
 {
-    SDL_Event e;
     SDL_PumpEvents();
-    while(SDL_PeepEvents(&e, 1, SDL_GETEVENT, SDL_MOUSEMOTION, SDL_MOUSEMOTION));
+    SDL_FlushEvent(SDL_MOUSEMOTION);
 }
 
 static void resetmousemotion()
@@ -730,39 +779,27 @@ static void resetmousemotion()
 
 static void checkmousemotion(int &dx, int &dy)
 {
-    loopv(events)
+    while(pumpevents(events))
     {
-        SDL_Event &event = events[i];
-        if(event.type != SDL_MOUSEMOTION)
-        {
-            if(i > 0) events.remove(0, i);
-            return;
-        }
+        SDL_Event &event = events.removing();
+        if(event.type != SDL_MOUSEMOTION) return;
         dx += event.motion.xrel;
         dy += event.motion.yrel;
-    }
-    events.setsize(0);
-    SDL_Event event;
-    while(pollevent(event))
-    {
-        if(event.type != SDL_MOUSEMOTION)
-        {
-            events.add(event);
-            return;
-        }
-        dx += event.motion.xrel;
-        dy += event.motion.yrel;
+        events.remove();
     }
 }
 
 void checkinput()
 {
-    SDL_Event event;
+    if(interceptkeysym) clearinterceptkey();
     //int lasttype = 0, lastbut = 0;
     bool mousemoved = false;
-    while(events.length() || pollevent(event))
+    int focused = 0;
+    while(pumpevents(events))
     {
-        if(events.length()) event = events.remove(0);
+        SDL_Event &event = events.remove();
+
+        if(focused && event.type!=SDL_WINDOWEVENT) { if(grabinput != (focused>0)) inputgrab(grabinput = focused>0, shouldgrab); focused = 0; }
 
         switch(event.type)
         {
@@ -771,43 +808,39 @@ void checkinput()
                 return;
 
             case SDL_TEXTINPUT:
-            {
-                uchar buf[SDL_TEXTINPUTEVENT_TEXT_SIZE+1];
-                size_t len = decodeutf8(buf, sizeof(buf)-1, (const uchar *)event.text.text, strlen(event.text.text));
-                if(len > 0) { buf[len] = '\0'; processtextinput((const char *)buf, len); }
+                if(textinputmask && int(event.text.timestamp-textinputtime) >= textinputfilter)
+                {   
+                    uchar buf[SDL_TEXTINPUTEVENT_TEXT_SIZE+1];
+                    size_t len = decodeutf8(buf, sizeof(buf)-1, (const uchar *)event.text.text, strlen(event.text.text));
+                    if(len > 0) { buf[len] = '\0'; processtextinput((const char *)buf, len); }
+                }
                 break;
-            }
 
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-				if (keyrepeatmask || !event.key.repeat) 
-				{
-
-					processkey(event.key.keysym.sym, event.key.state == SDL_PRESSED);
-					processkeymap(event.key.keysym.sym, event.key.state == SDL_PRESSED); //new one;
-				}
+                if(keyrepeatmask || !event.key.repeat)
+                    processkey(event.key.keysym.sym, event.key.state==SDL_PRESSED, event.key.keysym.mod | SDL_GetModState());
                 break;
 
             case SDL_WINDOWEVENT:
                 switch(event.window.event)
                 {
                     case SDL_WINDOWEVENT_CLOSE:
-						quit();
+                        quit();
                         break;
 
                     case SDL_WINDOWEVENT_FOCUS_GAINED:
                         shouldgrab = true;
-						minimized = false;
                         break;
                     case SDL_WINDOWEVENT_ENTER:
-                        inputgrab(grabinput = true);
-						minimized = false;
+                        shouldgrab = false;
+                        focused = 1;
                         break;
 
                     case SDL_WINDOWEVENT_LEAVE:
                     case SDL_WINDOWEVENT_FOCUS_LOST:
-                        inputgrab(grabinput = false);
-						minimized = true;
+                        shouldgrab = false;
+                        focused = -1;
                         break;
 
                     case SDL_WINDOWEVENT_MINIMIZED:
@@ -855,6 +888,9 @@ void checkinput()
                     case SDL_BUTTON_RIGHT: processkey(-3, event.button.state==SDL_PRESSED); break;
                     case SDL_BUTTON_X1: processkey(-6, event.button.state==SDL_PRESSED); break;
                     case SDL_BUTTON_X2: processkey(-7, event.button.state==SDL_PRESSED); break;
+                    case SDL_BUTTON_X2 + 1: processkey(-10, event.button.state==SDL_PRESSED); break;
+                    case SDL_BUTTON_X2 + 2: processkey(-11, event.button.state==SDL_PRESSED); break;
+                    case SDL_BUTTON_X2 + 3: processkey(-12, event.button.state==SDL_PRESSED); break;
                 }
                 //lasttype = event.type;
                 //lastbut = event.button.button;
@@ -863,26 +899,28 @@ void checkinput()
             case SDL_MOUSEWHEEL:
                 if(event.wheel.y > 0) { processkey(-4, true); processkey(-4, false); }
                 else if(event.wheel.y < 0) { processkey(-5, true); processkey(-5, false); }
+                else if(event.wheel.x > 0) { processkey(-8, true); processkey(-8, false); }
+                else if(event.wheel.x < 0) { processkey(-9, true); processkey(-9, false); }
                 break;
         }
     }
+    if(focused) { if(grabinput != (focused>0)) inputgrab(grabinput = focused>0, shouldgrab); focused = 0; }
     if(mousemoved) resetmousemotion();
-	firekeymaps();
 }
 
 void swapbuffers(bool overlay)
 {
     recorder::capture(overlay);
+    gle::disable();
     SDL_GL_SwapWindow(screen);
 }
 
-VARP(renderminimized, 0, 1, 1);
-VAR(menufps, 0, 60, 1000);
+VARP(menufps, 0, 60, 1000);
 VARP(maxfps, 0, 125, 1000);
 
 void limitfps(int &millis, int curmillis)
 {
-    int limit = (mainmenu || (minimized && !renderminimized)) && menufps ? (maxfps ? min(maxfps, menufps) : menufps) : maxfps;
+    int limit = (mainmenu || minimized) && menufps ? (maxfps ? min(maxfps, menufps) : menufps) : maxfps;
     if(!limit) return;
     static int fpserror = 0;
     int delay = 1000/limit - (millis-curmillis);
@@ -902,6 +940,26 @@ void limitfps(int &millis, int curmillis)
         }
     }
 }
+
+#ifdef WIN32
+// Force Optimus setups to use the NVIDIA GPU
+extern "C"
+{
+#ifdef __GNUC__
+__attribute__((dllexport))    
+#else
+__declspec(dllexport)
+#endif
+    DWORD NvOptimusEnablement = 1;
+
+#ifdef __GNUC__
+__attribute__((dllexport))
+#else
+__declspec(dllexport)
+#endif
+    DWORD AmdPowerXpressRequestHighPerformance = 1;
+}
+#endif
 
 #if defined(WIN32) && !defined(_DEBUG) && !defined(__GNUC__)
 void stackdumper(unsigned int type, EXCEPTION_POINTERS *ep)
@@ -1029,12 +1087,10 @@ int getclockmillis()
 
 VAR(numcpus, 1, 1, 16);
 
-
 int main(int argc, char **argv)
 {
-    printf("Entering main() function!");
     #ifdef WIN32
-   // atexit((void (__cdecl *)(void))_CrtDumpMemoryLeaks);
+    //atexit((void (__cdecl *)(void))_CrtDumpMemoryLeaks);
     #ifndef _DEBUG
     #ifndef __GNUC__
     __try {
@@ -1048,35 +1104,32 @@ int main(int argc, char **argv)
     char *load = NULL, *initscript = NULL;
 
     initing = INIT_RESET;
-    for(int i = 1; i<argc; i++)
+    // set home dir first
+    for(int i = 1; i<argc; i++) if(argv[i][0]=='-' && argv[i][1] == 'u') { sethomedir(&argv[i][2]); break; }
+    // set log after home dir, but before anything else
+    for(int i = 1; i<argc; i++) if(argv[i][0]=='-' && argv[i][1] == 'g')
     {
-        if(argv[i][0]=='-') switch(argv[i][1])
-        {
-            case 'u':
-            {
-                const char *dir = sethomedir(&argv[i][2]);
-                if(dir) logoutf("Using home directory: %s", dir);
-                break;
-            }
-        }
+        const char *file = argv[i][2] ? &argv[i][2] : "log.txt";
+        setlogfile(file);
+        logoutf("Setting log file: %s", file);
+        break;
     }
-    execfile("config/init.cfg", false);
+    execfile("config/init.cfg", true);
     for(int i = 1; i<argc; i++)
     {
         if(argv[i][0]=='-') switch(argv[i][1])
         {
-            case 'u': /* parsed first */ break;
+            case 'u': if(homedir[0]) logoutf("Using home directory: %s", homedir); break;
             case 'k':
             {
                 const char *dir = addpackagedir(&argv[i][2]);
                 if(dir) logoutf("Adding package directory: %s", dir);
                 break;
             }
-            case 'g': logoutf("Setting log file: %s", &argv[i][2]); setlogfile(&argv[i][2]); break;
+            case 'g': break;
             case 'd': dedicated = atoi(&argv[i][2]); if(dedicated<=0) dedicated = 2; break;
             case 'w': scr_w = clamp(atoi(&argv[i][2]), SCR_MINW, SCR_MAXW); if(!findarg(argc, argv, "-h")) scr_h = -1; break;
             case 'h': scr_h = clamp(atoi(&argv[i][2]), SCR_MINH, SCR_MAXH); if(!findarg(argc, argv, "-w")) scr_w = -1; break;
-            case 'v': vsync = atoi(&argv[i][2]); if(vsync < 0) { vsynctear = 1; vsync = 1; } else vsynctear = 0; break;
             case 'f': fullscreen = atoi(&argv[i][2]); break;
             case 'l':
             {
@@ -1098,21 +1151,23 @@ int main(int argc, char **argv)
     {
         logoutf("init: sdl");
 
-        int par = 0;
-        #ifdef _DEBUG
-        par = SDL_INIT_NOPARACHUTE;
-        #endif
+        if(SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO|SDL_INIT_AUDIO)<0) fatal("Unable to initialize SDL: %s", SDL_GetError());
 
-        if(SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO|SDL_INIT_AUDIO|par)<0) fatal("Unable to initialize SDL: %s", SDL_GetError());
+#ifdef SDL_VIDEO_DRIVER_X11
+        SDL_version version;
+        SDL_GetVersion(&version);
+        if (SDL_VERSIONNUM(version.major, version.minor, version.patch) <= SDL_VERSIONNUM(2, 0, 12))
+            sdl_xgrab_bug = 1;
+#endif
     }
 
     logoutf("init: net");
     if(enet_initialize()<0) fatal("Unable to initialise network module");
     atexit(enet_deinitialize);
     enet_time_set(0);
-
-	logoutf("init: Angel");
-	asConfigureEngine();
+    
+    logoutf("init: summoning angels");
+    asConfigureEngine();
 
     logoutf("init: game");
     game::parseoptions(gameargs);
@@ -1136,8 +1191,8 @@ int main(int argc, char **argv)
     if(!notexture) fatal("could not find core textures");
 
     logoutf("init: console");
-    if(!execfile("config/stdlib.cfg", false)) fatal("cannot find data files (you are running from the wrong folder, try .bat file in the main folder)");   // this is the first file we load.
-    if(!execfile("config/font.cfg", false)) fatal("cannot find font definitions");
+    if (!execfile("config/stdlib.cfg", true)) fatal("cannot find data files (you are running from the wrong folder, try .bat file in the main folder)");   // this is the first file we load.
+    if (!execfile("config/font.cfg", true)) fatal("cannot find font definitions");
     if(!setfont("default")) fatal("no default font specified");
 
     UI::setup();
@@ -1146,14 +1201,12 @@ int main(int argc, char **argv)
     renderbackground("initializing...");
 
     logoutf("init: world");
-    player = game::iterdynents(0);
-	camera1->set(player);
+    camera1 = player = game::iterdynents(0);
     emptymap(0, true, NULL, false);
 
     logoutf("init: sound");
     initsound();
 
-	initbindmap();
     logoutf("init: cfg");
     initing = INIT_LOAD;
     execfile("config/keymap.cfg");
@@ -1226,9 +1279,7 @@ int main(int argc, char **argv)
         totalmillis = millis;
         updatetime();
 
-		if (iscalcpvs)checkpvs();
         checkinput();
-        ovr::update();
         UI::update();
         menuprocess();
         tryedit();
@@ -1246,7 +1297,8 @@ int main(int argc, char **argv)
         recomputecamera();
         updateparticles();
         updatesounds();
-        if(minimized && !renderminimized) continue;
+
+        if(minimized) continue;
 
         gl_setupframe(!mainmenu);
 

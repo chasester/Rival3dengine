@@ -11,8 +11,6 @@ VARNR(emptymap, _emptymap, 1, 0, 0);
 VAR(octaentsize, 0, 64, 1024);
 VAR(entselradius, 0, 2, 10);
 
-
-
 static inline void transformbb(const entity &e, vec &center, vec &radius)
 {
     if(e.attr5 > 0) { float scale = e.attr5/100.0f; center.mul(scale); radius.mul(scale); }
@@ -44,9 +42,7 @@ bool getentboundingbox(const extentity &e, ivec &o, ivec &r)
     switch(e.type)
     {
         case ET_EMPTY:
-			o = vec(e.o).sub(entselradius);
-			r = vec(e.o).add(entselradius + 1);
-			break;
+            return false;
         case ET_DECAL:
             {
                 DecalSlot &s = lookupdecalslot(e.attr1, false);
@@ -54,8 +50,8 @@ bool getentboundingbox(const extentity &e, ivec &o, ivec &r)
                 decalboundbox(e, s, center, radius);
                 center.add(e.o);
                 radius.max(entselradius);
-                o = vec(center).sub(radius);
-                r = vec(center).add(radius).add(1);
+                o = ivec(vec(center).sub(radius));
+                r = ivec(vec(center).add(radius).add(1));
                 break;
             }
         case ET_MAPMODEL:
@@ -65,14 +61,14 @@ bool getentboundingbox(const extentity &e, ivec &o, ivec &r)
                 mmboundbox(e, m, center, radius);
                 center.add(e.o);
                 radius.max(entselradius);
-                o = vec(center).sub(radius);
-                r = vec(center).add(radius).add(1);
+                o = ivec(vec(center).sub(radius));
+                r = ivec(vec(center).add(radius).add(1));
                 break;
             }
         // invisible mapmodels use entselradius
         default:
-            o = vec(e.o).sub(entselradius);
-            r = vec(e.o).add(entselradius+1);
+            o = ivec(vec(e.o).sub(entselradius));
+            r = ivec(vec(e.o).add(entselradius+1));
             break;
     }
     return true;
@@ -201,8 +197,9 @@ void modifyoctaentity(int flags, int id, extentity &e, cube *c, const ivec &cor,
     }
 }
 
+VAR(numoctaents, 1, 0, 0);
 vector<int> outsideents;
-int spotlights = 0, volumetriclights = 0;
+int spotlights = 0, volumetriclights = 0, nospeclights = 0, smalphalights = 0, volumetricsmalphalights = 0;
 
 static bool modifyoctaent(int flags, int id, extentity &e)
 {
@@ -226,12 +223,22 @@ static bool modifyoctaent(int flags, int id, extentity &e)
         while(leafsize < limit) leafsize *= 2;
         int diff = ~(leafsize-1) & ((o.x^r.x)|(o.y^r.y)|(o.z^r.z));
         if(diff && (limit > octaentsize/2 || diff < leafsize*2)) leafsize *= 2;
-        modifyoctaentity(flags, id, e, worldeditor::editroot, octaoffset, worldsize>>1, o, r, leafsize);
+        modifyoctaentity(flags, id, e, cuberoot, ivec(0, 0, 0), worldsize>>1, o, r, leafsize);
     }
     e.flags ^= EF_OCTA;
+    if(e.flags&EF_OCTA) ++numoctaents;
+    else --numoctaents;
     switch(e.type)
     {
-        case ET_LIGHT: clearlightcache(id); if(e.attr5&L_VOLUMETRIC) { if(flags&MODOE_ADD) volumetriclights++; else --volumetriclights; } break;
+        case ET_LIGHT:
+            if(e.attr5&L_VOLUMETRIC) { if(flags&MODOE_ADD) volumetriclights++; else --volumetriclights; }
+            if(e.attr5&L_NOSPEC) { if(!(flags&MODOE_ADD ? nospeclights++ : --nospeclights)) cleardeferredlightshaders(); }
+            if(e.attr5&L_SMALPHA)
+            {
+                if(!(flags&MODOE_ADD ?  smalphalights++ : --smalphalights)) cleardeferredlightshaders();
+                if(e.attr5&L_VOLUMETRIC) { if(!(flags&MODOE_ADD ?  volumetricsmalphalights++ : --volumetricsmalphalights)) cleanupvolumetric(); }
+            }
+            break;
         case ET_SPOTLIGHT: if(!(flags&MODOE_ADD ? spotlights++ : --spotlights)) { cleardeferredlightshaders(); cleanupvolumetric(); } break;
         case ET_PARTICLES: clearparticleemitters(); break;
         case ET_DECAL: if(flags&MODOE_CHANGED) changed(o, r, false); break;
@@ -299,16 +306,16 @@ static inline void findents(cube *c, const ivec &o, int size, const ivec &bo, co
 void findents(int low, int high, bool notspawned, const vec &pos, const vec &radius, vector<int> &found)
 {
     vec invradius(1/radius.x, 1/radius.y, 1/radius.z);
-    ivec bo = vec(pos).sub(radius).sub(1),
-         br = vec(pos).add(radius).add(1);
+    ivec bo(vec(pos).sub(radius).sub(1)),
+         br(vec(pos).add(radius).add(1));
     int diff = (bo.x^br.x) | (bo.y^br.y) | (bo.z^br.z) | octaentsize,
         scale = worldscale-1;
     if(diff&~((1<<scale)-1) || uint(bo.x|bo.y|bo.z|br.x|br.y|br.z) >= uint(worldsize))
     {
-        findents(worldeditor::editroot, octaoffset, 1<<scale, bo, br, low, high, notspawned, pos, invradius, found);
+        findents(cuberoot, ivec(0, 0, 0), 1<<scale, bo, br, low, high, notspawned, pos, invradius, found);
         return;
     }
-    cube *c = &worldeditor::editroot[octastep(bo.x, bo.y, bo.z, scale)];
+    cube *c = &cuberoot[octastep(bo.x, bo.y, bo.z, scale)];
     if(c->ext && c->ext->ents) findents(*c->ext->ents, low, high, notspawned, pos, invradius, found);
     scale--;
     while(c->children && !(diff&(1<<scale)))
@@ -339,12 +346,12 @@ int entlooplevel = 0;
 int efocus = -1, enthover = -1, entorient = -1, oldhover = -1;
 bool undonext = true;
 
-VARF(entediting, 0, 0, 1, { if (!entediting) { entcancel(); efocus = enthover = -1; } worldeditor::nodeediting = entediting; });
+VARF(entediting, 0, 0, 1, { if(!entediting) { entcancel(); efocus = enthover = -1; } });
 
-bool nonodeedit()
+bool noentedit()
 {
     if(!editmode) { conoutf(CON_ERROR, "operation only allowed in edit mode"); return true; }
-    return !worldeditor::nodeediting;
+    return !entediting;
 }
 
 bool pointinsel(const selinfo &sel, const vec &o)
@@ -366,13 +373,13 @@ bool haveselent()
 
 void entcancel()
 {
-	worldeditor::nodecancelselect();
+    entgroup.shrink(0);
 }
 
 void entadd(int id)
 {
     undonext = true;
-	worldeditor::nodeselectionadd(id);
+    entgroup.add(id);
 }
 
 undoblock *newundoent()
@@ -462,7 +469,7 @@ void attachentities()
 // e         entity, currently edited ent
 // n         int,    index to currently edited ent
 #define addimplicit(f)    { if(entgroup.empty() && enthover>=0) { entadd(enthover); undonext = (enthover != oldhover); f; entgroup.drop(); } else f; }
-#define entfocusv(i, f, v)
+#define entfocusv(i, f, v){ int n = efocus = (i); if(n>=0) { extentity &e = *v[n]; f; } }
 #define entfocus(i, f)    entfocusv(i, f, entities::getents())
 #define enteditv(i, f, v) \
 { \
@@ -485,13 +492,13 @@ void attachentities()
 #define groupeditundo(f){ makeundoent(); groupeditpure(f); }
 #define groupedit(f)    { addimplicit(groupeditundo(f)); }
 
-//vec getselpos()
-//{
-//    vector<extentity *> &ents = entities::getents();
-//    if(entgroup.length() && ents.inrange(entgroup[0])) return ents[entgroup[0]]->o;
-//    if(ents.inrange(enthover)) return ents[enthover]->o;
-//    return vec(sel.o);
-//}
+vec getselpos()
+{
+    vector<extentity *> &ents = entities::getents();
+    if(entgroup.length() && ents.inrange(entgroup[0])) return ents[entgroup[0]]->o;
+    if(ents.inrange(enthover)) return ents[enthover]->o;
+    return vec(sel.o);
+}
 
 undoblock *copyundoents(undoblock *u)
 {
@@ -522,7 +529,7 @@ void pasteundoents(undoblock *u)
 
 void entflip()
 {
-    if(nonodeedit()) return;
+    if(noentedit()) return;
     int d = dimension(sel.orient);
     float mid = sel.s[d]*sel.grid/2+sel.o[d];
     groupeditundo(e.o[d] -= (e.o[d]-mid)*2);
@@ -530,7 +537,7 @@ void entflip()
 
 void entrotate(int *cw)
 {
-    if(nonodeedit()) return;
+    if(noentedit()) return;
     int d = dimension(sel.orient);
     int dd = (*cw<0) == dimcoord(sel.orient) ? R[d] : C[d];
     float mid = sel.s[dd]*sel.grid/2+sel.o[dd];
@@ -581,6 +588,7 @@ void entselectionbox(const entity &e, vec &eo, vec &es)
 VAR(entselsnap, 0, 0, 1);
 VAR(entmovingshadow, 0, 1, 1);
 
+extern void boxs(int orient, vec o, const vec &s, float size);
 extern void boxs(int orient, vec o, const vec &s);
 extern void boxs3D(const vec &o, vec s, int g);
 extern bool editmoveplane(const vec &o, const vec &ray, int d, float off, vec &handle, vec &dest, bool first);
@@ -589,7 +597,7 @@ int entmoving = 0;
 
 void entdrag(const vec &ray)
 {
-    if(nonodeedit() || !haveselent()) return;
+    if(noentedit() || !haveselent()) return;
 
     float r = 0, c = 0;
     static vec dest, handle;
@@ -603,7 +611,7 @@ void entdrag(const vec &ray)
         if(!editmoveplane(e.o, ray, d, eo[d] + (dc ? es[d] : 0), handle, dest, entmoving==1))
             return;
 
-        ivec g = dest;
+        ivec g(dest);
         int z = g[d]&(~(sel.grid-1));
         g.add(sel.grid/2).mask(~(sel.grid-1));
         g[d] = z;
@@ -624,10 +632,10 @@ void renderentring(const extentity &e, float radius, int axis)
     if(radius <= 0) return;
     gle::defvertex();
     gle::begin(GL_LINE_LOOP);
-    loopi(15)
+    loopi(16)
     {
         vec p(e.o);
-        const vec2 &sc = sincos360[i*(360/15)];
+        const vec2 &sc = sincos360[(i*360+8)/16];
         p[axis>=2 ? 1 : 0] += radius*sc.x;
         p[axis>=1 ? 2 : 1] += radius*sc.y;
         gle::attrib(p);
@@ -654,7 +662,7 @@ void renderentattachment(const extentity &e)
 void renderentarrow(const extentity &e, const vec &dir, float radius)
 {
     if(radius <= 0) return;
-    float arrowsize = min(radius/2, 0.5f);
+    float arrowsize = min(radius/8, 0.5f);
     vec target = vec(dir).mul(radius).add(e.o), arrowbase = vec(dir).mul(radius - arrowsize).add(e.o), spoke;
     spoke.orthogonal(dir);
     spoke.normalize();
@@ -785,7 +793,7 @@ void renderentradius(extentity &e, bool color)
 
         case ET_PLAYERSTART:
         {
-            if(color) gle::colorf(0, 0, 1);
+            if(color) gle::colorf(0, 1, 1);
             entities::entradius(e, color);
             vec dir;
             vecfromyawpitch(e.attr1, 0, 1, 0, dir);
@@ -812,7 +820,7 @@ void renderentradius(extentity &e, bool color)
     }
 }
 
-void renderentbox(const vec &eo, vec es)
+static void renderentbox(const vec &eo, vec es)
 {
     es.add(eo);
 
@@ -837,11 +845,9 @@ void renderentbox(const vec &eo, vec es)
 
 void renderentselection(const vec &o, const vec &ray, bool entmoving)
 {
-	if (nonodeedit())return;// || (entgroup.empty() && enthover < 0)) return;
+    if(noentedit() || (entgroup.empty() && enthover < 0)) return;
     vec eo, es;
 
-	//xtraverts += entities::rendereditent();
-	if (entgroup.empty() && enthover < 0) return;
     if(entgroup.length())
     {
         gle::colorub(0, 40, 0);
@@ -853,8 +859,6 @@ void renderentselection(const vec &o, const vec &ray, bool entmoving)
         );
         xtraverts += gle::end();
     }
-
-	
 
     if(enthover >= 0)
     {
@@ -871,6 +875,7 @@ void renderentselection(const vec &o, const vec &ray, bool entmoving)
         }
         gle::colorub(200,0,0);
         boxs(entorient, eo, es);
+        boxs(entorient, eo, es, clamp(0.015f*camera1->o.dist(eo)*tan(fovy*0.5f*RAD), 0.1f, 1.0f));
     }
 
     if(showentradius)
@@ -883,26 +888,22 @@ void renderentselection(const vec &o, const vec &ray, bool entmoving)
         loopv(entgroup) entfocus(entgroup[i], renderentradius(e, true));
         if(enthover>=0) entfocus(enthover, renderentradius(e, true));
     }
-
-    gle::disable();
 }
 
 bool enttoggle(int id)
 {
- /*   undonext = true;
-    int i = curworld->nodeselect.find(id);
+    undonext = true;
+    int i = entgroup.find(id);
     if(i < 0)
         entadd(id);
     else
-        curworld->nodeselect.remove(i);
-    return i < 0;*/
-	conoutf("HELLO MAN");
-	return worldeditor::nodetoggleselect(id);
+        entgroup.remove(i);
+    return i < 0;
 }
 
 bool hoveringonent(int ent, int orient)
 {
-    if(nonodeedit()) return false;
+    if(noentedit()) return false;
     entorient = orient;
     if((efocus = enthover = ent) >= 0)
         return true;
@@ -915,37 +916,36 @@ VAR(entitysurf, 0, 0, 1);
 
 ICOMMAND(entadd, "", (),
 {
-    if(nonodeedit())
+    if(enthover >= 0 && !noentedit())
     {
-		worldeditor::nodeselectionadd();
-        if(worldeditor::nodemoving > 1) worldeditor::nodemoving = 1;
+        if(entgroup.find(enthover) < 0) entadd(enthover);
+        if(entmoving > 1) entmoving = 1;
     }
 });
 
 ICOMMAND(enttoggle, "", (),
 {
-    if(worldeditor::nodehavehover() || nonodeedit() || !enttoggle(worldeditor::gethovernodeid())) { worldeditor::nodemoving = 0; intret(0); }
-	else { if (worldeditor::nodemoving > 1) worldeditor::nodemoving = 1; intret(1); }
+    if(enthover < 0 || noentedit() || !enttoggle(enthover)) { entmoving = 0; intret(0); }
+    else { if(entmoving > 1) entmoving = 1; intret(1); }
 });
 
 ICOMMAND(entmoving, "b", (int *n),
 {
     if(*n >= 0)
     {
-		if (!*n || !worldeditor::nodehavehover() || nonodeedit()) worldeditor::nodemoving = 0;
-		else
-		{
-			//if (entgroup.find(worldeditor::nodehover) < 0) { entadd(curworld->worldeditor::nodehover); worldeditor::nodemoving = 1; }
-			if (!worldeditor::nodeisselected()) { worldeditor::nodeselectionadd(); worldeditor::nodemoving = 1; }
-			else if (!worldeditor::nodemoving) worldeditor::nodemoving = 1;
+        if(!*n || enthover < 0 || noentedit()) entmoving = 0;
+        else
+        {
+            if(entgroup.find(enthover) < 0) { entadd(enthover); entmoving = 1; }
+            else if(!entmoving) entmoving = 1;
         }
     }
-	intret(worldeditor::nodemoving);
+    intret(entmoving);
 });
 
 void entpush(int *dir)
 {
-   // if(nonodeedit()) return;
+    if(noentedit()) return;
     int d = dimension(entorient);
     int s = dimcoord(entorient) ? -*dir : *dir;
     if(entmoving)
@@ -987,7 +987,7 @@ COMMAND(entpush, "i");
 
 void delent()
 {
-    if(nonodeedit()) return;
+    if(noentedit()) return;
     groupedit(e.type = ET_EMPTY;);
     entcancel();
 }
@@ -1049,17 +1049,19 @@ bool dropentity(entity &e, int drop = -1)
 
 void dropent()
 {
-    if(nonodeedit()) return;
+    if(noentedit()) return;
     groupedit(dropentity(e));
 }
 
 void attachent()
 {
-    if(nonodeedit()) return;
+    if(noentedit()) return;
     groupedit(attachentity(e));
 }
 
 COMMAND(attachent, "");
+
+VARP(entcamdir, 0, 1, 1);
 
 static int keepents = 0;
 
@@ -1069,8 +1071,8 @@ extentity *newentity(bool local, const vec &o, int type, int v1, int v2, int v3,
     if(local)
     {
         idx = -1;
-       for(int i = keepents; i < ents.length(); i++) if(false && ents[i]->type == ET_EMPTY) { idx = i; break; }
-        if(idx < 0 && ents.length() >= MAXENTS) { conoutf("too many entities"); return NULL; }
+        for(int i = keepents; i < ents.length(); i++) if(ents[i]->type == ET_EMPTY) { idx = i; break; }
+        if(idx < 0 && ents.length() >= MAXENTS) { conoutf(CON_ERROR, "too many entities"); return NULL; }
     }
     else while(ents.length() < idx) ents.add(entities::newentity())->type = ET_EMPTY;
     extentity &e = *entities::newentity();
@@ -1084,26 +1086,26 @@ extentity *newentity(bool local, const vec &o, int type, int v1, int v2, int v3,
     e.reserved = 0;
     if(local && fix)
     {
-        switch(type)
+        if(entcamdir) switch(type)
         {
-                case ET_DECAL:
-                    if(!e.attr2 && !e.attr3 && !e.attr4)
-                    {
-                        e.attr2 = (int)camera1->yaw;
-                        e.attr3 = (int)camera1->pitch;
-                        e.attr4 = (int)camera1->roll;
-                    }
-                    break;
-                case ET_MAPMODEL:
-                    if(!e.attr2) e.attr2 = (int)camera1->yaw;
-                    break;
-                case ET_PLAYERSTART:
-                    e.attr5 = e.attr4;
-                    e.attr4 = e.attr3;
-                    e.attr3 = e.attr2;
-                    e.attr2 = e.attr1;
-                    e.attr1 = (int)camera1->yaw;
-                    break;
+            case ET_DECAL:
+                if(!e.attr2 && !e.attr3 && !e.attr4)
+                {
+                    e.attr2 = (int)camera1->yaw;
+                    e.attr3 = (int)camera1->pitch;
+                    e.attr4 = (int)camera1->roll;
+                }
+                break;
+            case ET_MAPMODEL:
+                if(!e.attr2) e.attr2 = (int)camera1->yaw;
+                break;
+            case ET_PLAYERSTART:
+                e.attr5 = e.attr4;
+                e.attr4 = e.attr3;
+                e.attr3 = e.attr2;
+                e.attr2 = e.attr1;
+                e.attr1 = (int)camera1->yaw;
+                break;
         }
         entities::fixentity(e);
     }
@@ -1127,19 +1129,18 @@ void newentity(int type, int a1, int a2, int a3, int a4, int a5, bool fix = true
 
 void newent(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
 {
-    if(nonodeedit()) return;
+    if(noentedit()) return;
     int type = findtype(what);
     if(type != ET_EMPTY)
         newentity(type, *a1, *a2, *a3, *a4, *a5);
 }
-
 
 int entcopygrid;
 vector<entity> entcopybuf;
 
 void entcopy()
 {
-    if(nonodeedit()) return;
+    if(noentedit()) return;
     entcopygrid = sel.grid;
     entcopybuf.shrink(0);
     addimplicit({
@@ -1149,7 +1150,7 @@ void entcopy()
 
 void entpaste()
 {
-    if(nonodeedit() || entcopybuf.empty()) return;
+    if(noentedit() || entcopybuf.empty()) return;
     entcancel();
     float m = float(sel.grid)/float(entcopygrid);
     loopv(entcopybuf)
@@ -1169,7 +1170,7 @@ void entpaste()
 
 void entreplace()
 {
-    if(nonodeedit() || entcopybuf.empty()) return;
+    if(noentedit() || entcopybuf.empty()) return;
     const entity &c = entcopybuf[0];
     if(entgroup.length() || enthover >= 0)
     {
@@ -1197,7 +1198,7 @@ COMMAND(entreplace, "");
 
 void entset(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
 {
-    if(nonodeedit()) return;
+    if(noentedit()) return;
     int type = findtype(what);
     if(type != ET_EMPTY)
         groupedit(e.type=type;
@@ -1225,42 +1226,32 @@ void printent(extentity &e, char *buf, int len)
 
 void nearestent()
 {
-    //if(nonodeedit()) return;
+    if(noentedit()) return;
     int closest = -1;
     float closedist = 1e16f;
-	return;
-	vector<node *> nodes;
-	worldeditor::geteditablenodes(nodes);
-    loopv(nodes)
+    vector<extentity *> &ents = entities::getents();
+    loopv(ents)
     {
-		node *e = nodes[i];
-        if(!e) continue;
-        float dist = e->o.dist(player->o);
+        extentity &e = *ents[i];
+        if(e.type == ET_EMPTY) continue;
+        float dist = e.o.dist(player->o);
         if(dist < closedist)
         {
             closest = i;
             closedist = dist;
         }
     }
-    if(closest >= 0) entadd(closest);
+    if(closest >= 0 && entgroup.find(closest) < 0) entadd(closest);
 }
 
-//#define nodefocusv(i,f, v) { node *e = worldeditor::getnfocus(); f; } }
-
-#define addimplicitnode(f) { if(!worldeditor::nodehaveselection() && worldeditor::gethovernode()) { worldeditor::nodeselectionadd(); /*undonext = (enthover != oldhover);*/ f; /*curworld->nodeselect.drop(); */} else f; }
-//#define addgroupnodes(exp) { vector<node *> nodes = worldeditor::geteditablenodes(); loopv(nodes) nodefocusv( i, if (exp) worldeditor::nodeselectionadd(i) , nodes); }
-#define groupnodeloop(e, s) ;
-//#define nodefocus (n, f) entfocusv(i, f, curworld->curscene->getnodes())
-
-ICOMMAND(enthavesel, "", (), { worldeditor::nodehaveselection(); }); //addimplicit(intret(curworld->nodeselect.length())));
-ICOMMAND(entselect, "e", (uint *body), { worldeditor::nodeselectionadd(); });
-ICOMMAND(entloop, "e", (uint *body), if (!nonodeedit()) addimplicitnode(groupnodeloop(((void)e, execute(body)))););
-ICOMMAND(insel, "", (), entfocus(efocus, intret(pointinsel(sel, e.o))));
-ICOMMAND(entget, "", (), entfocus(efocus, cubestr s; printent(e, s, sizeof(s)); result(s)));
-ICOMMAND(entindex, "", (), intret(worldeditor::getnfocusid()));
+ICOMMAND(enthavesel,"",  (), addimplicit(intret(entgroup.length())));
+ICOMMAND(entselect, "e", (uint *body), if(!noentedit()) addgroup(e.type != ET_EMPTY && entgroup.find(n)<0 && executebool(body)));
+ICOMMAND(entloop,   "e", (uint *body), if(!noentedit()) { addimplicit(groupeditloop(((void)e, execute(body)))); commitchanges(); });
+ICOMMAND(insel,     "",  (), entfocus(efocus, intret(pointinsel(sel, e.o))));
+ICOMMAND(entget,    "",  (), entfocus(efocus, cubestr s; printent(e, s, sizeof(s)); result(s)));
+ICOMMAND(entindex,  "",  (), intret(efocus));
 COMMAND(entset, "siiiii");
 COMMAND(nearestent, "");
-
 
 void enttype(char *type, int *numargs)
 {
@@ -1272,7 +1263,7 @@ void enttype(char *type, int *numargs)
     else entfocus(efocus,
     {
         result(entities::entname(e.type));
-	});
+    })
 }
 
 void entattr(int *attr, int *val, int *numargs)
@@ -1377,7 +1368,6 @@ void findplayerspawn(dynent *d, int forceent, int tag) // place at random spawn
         d->o.z += 1;
         entinmap(d);
     }
-    if(d == player) ovr::reset();
 }
 
 void splitocta(cube *c, int size)
@@ -1390,33 +1380,35 @@ void splitocta(cube *c, int size)
     }
 }
 
+void resetmap()
+{
+    clearoverrides();
+    clearmapsounds();
+    resetblendmap();
+    clearlights();
+    clearpvs();
+    clearslots();
+    clearparticles();
+    clearstains();
+    cleardamagescreen();
+    clearsleep();
+    cancelsel();
+    pruneundos();
+    clearmapcrc();
 
-//void resetmap()
-//{
-//    clearoverrides();
-//    clearmapsounds();
-//    resetblendmap();
-//    clearlights();
-//    clearpvs();
-//    clearslots();
-//    clearparticles();
-//    clearstains();
-//    clearsleep();
-//    cancelsel();
-//    pruneundos();
-//    clearmapcrc();
-//    entities::clearents();
-//	curworld->clearworld();
-//	PHYSrebuildLevel();
-//    outsideents.setsize(0);
-//    spotlights = 0;
-//    volumetriclights = 0;
-//}
+    entities::clearents();
+    outsideents.setsize(0);
+    numoctaents = 0;
+    spotlights = 0;
+    volumetriclights = 0;
+    nospeclights = 0;
+    smalphalights = 0;
+    volumetricsmalphalights = 0;
+}
 
 void startmap(const char *name)
 {
     game::startmap(name);
-    ovr::reset();
 }
 
 bool emptymap(int scale, bool force, const char *mname, bool usecfg)    // main empty world creation routine
@@ -1427,18 +1419,18 @@ bool emptymap(int scale, bool force, const char *mname, bool usecfg)    // main 
         return false;
     }
 
-    
+    resetmap();
 
     setvar("mapscale", scale<10 ? 10 : (scale>16 ? 16 : scale), true, false);
     setvar("mapsize", 1<<worldscale, true, false);
     setvar("emptymap", 1, true, false);
 
     texmru.shrink(0);
-    freeocta(worldeditor::editroot);
-    worldeditor::editroot = newcubes(F_EMPTY);
-    loopi(4) solidfaces(worldeditor::editroot[i]);
+    freeocta(cuberoot);
+    cuberoot = newcubes(F_EMPTY);
+    loopi(4) solidfaces(cuberoot[i]);
 
-    if(worldsize > 0x1000) splitocta(worldeditor::editroot, worldsize>>1);
+    if(worldsize > 0x1000) splitocta(cuberoot, worldsize>>1);
 
     clearmainmenu();
 
@@ -1449,8 +1441,7 @@ bool emptymap(int scale, bool force, const char *mname, bool usecfg)    // main 
         identflags &= ~IDF_OVERRIDDEN;
     }
 
-    initlights();
-    allchanged(usecfg);
+    allchanged(true);
 
     startmap(mname);
 
@@ -1471,11 +1462,11 @@ bool enlargemap(bool force)
     worldscale++;
     worldsize *= 2;
     cube *c = newcubes(F_EMPTY);
-    c[0].children = worldeditor::editroot;
+    c[0].children = cuberoot;
     loopi(3) solidfaces(c[i+1]);
-    worldeditor::editroot = c;
+    cuberoot = c;
 
-    if(worldsize > 0x1000) splitocta(worldeditor::editroot, worldsize>>1);
+    if(worldsize > 0x1000) splitocta(cuberoot, worldsize>>1);
 
     enlargeblendmap();
 
@@ -1498,7 +1489,7 @@ void shrinkmap()
     if(worldsize <= 1<<10) return;
 
     int octant = -1;
-    loopi(8) if(!isallempty(worldeditor::editroot[i]))
+    loopi(8) if(!isallempty(cuberoot[i]))
     {
         if(octant >= 0) return;
         octant = i;
@@ -1507,15 +1498,15 @@ void shrinkmap()
 
     while(outsideents.length()) removeentity(outsideents.pop());
 
-    if(!worldeditor::editroot[octant].children) subdividecube(worldeditor::editroot[octant], false, false);
-    cube *root = worldeditor::editroot[octant].children;
-    worldeditor::editroot[octant].children = NULL;
-    freeocta(worldeditor::editroot);
-    worldeditor::editroot = root;
+    if(!cuberoot[octant].children) subdividecube(cuberoot[octant], false, false);
+    cube *root = cuberoot[octant].children;
+    cuberoot[octant].children = NULL;
+    freeocta(cuberoot);
+    cuberoot = root;
     worldscale--;
     worldsize /= 2;
 
-    ivec offset(octant, octaoffset, worldsize);
+    ivec offset(octant, ivec(0, 0, 0), worldsize);
     vector<extentity *> &ents = entities::getents();
     loopv(ents) ents[i]->o.sub(vec(offset));
 
@@ -1574,20 +1565,20 @@ int getmapversion() { return mapversion; }
 bool haveselnode() { return worldeditor::nodehaveselection(); }
 	void nodeselcancel() { worldeditor::nodecancelselect(); }
 	//void nodeseladd(int id) { worldeditor::nodeselectionadd(id); }//undonext = true; } add undo later
-	vec getselpos()
-	{
-		vector<node *> nds;
-		worldeditor::getselnodes(nds);
-		node *n = worldeditor::getnfocus();
-		if (nds.length()) if (n) return n->o; else if (nds[0]) return nds[0]->o;
-		n = worldeditor::gethovernode();
-		if (n) return n->o;
-		return vec(sel.o);
-	}
+	//vec getselpos()
+	//{
+	//	vector<node *> nds;
+	//	worldeditor::getselnodes(nds);
+	//	node *n = worldeditor::getnfocus();
+	//	if (nds.length()) if (n) return n->o; else if (nds[0]) return nds[0]->o;
+	//	n = worldeditor::gethovernode();
+	//	if (n) return n->o;
+	//	return vec(sel.o);
+	//}
 
 	void rendernodeselection(const vec &o, const vec &ray, bool moving)
 	{
-		if (nonodeedit())return;
+		if (noentedit())return;
 		vec eo, es;
 		vector<node *> nodes;
 		worldeditor::geteditablenodes(nodes);
@@ -1836,7 +1827,7 @@ void worldeditor::nodedrag(const vec &ray)
 		if (!editmoveplane(nodes[i]->o, ray, d, nodes[i]->o[d] + (dc ? nodes[i]->radius[d] : 0), handle, dest, worldeditor::nodemoving == 1))
 			return;
 
-		ivec g = dest;
+		ivec g = ivec(dest);
 		int z = g[d] & (~(sel.grid - 1));
 		g.add(sel.grid / 2).mask(~(sel.grid - 1));
 		g[d] = z;
@@ -2338,7 +2329,7 @@ void worldroot::seteditoct(uint id)
 {
 	octroot *or = m_world->getoctreefromid(id);
 	if (!or ) { conoutf("ERROR retriving octree - this id will be removed from the worldroot"); uint ind = rootsid.find(id); if (ind > -1) rootsid.remove(id); } //search and destroy an malformed root (this means something deleted it withough letting the world root know, this is bad coding and should be fix if this happens
-	worldeditor::editroot = or->getroot();
+	//worldeditor::editroot = or->getroot();
 }
 
 void worldroot::setposition(vec pos)
@@ -2370,7 +2361,7 @@ worldroot::worldroot(world * w, int worldsize, ushort id, matrix4 worldmatrix, v
 	if (rootsid.length() > 0) { r = m_world->getoctreefromid(rootsid[0]); }
 	else { r = m_world->newoctree(worldsize); rootsid.add(r->getoctid()); }
 	if (!r)return;
-	worldeditor::editroot = r->getroot();
+	//worldeditor::editroot = r->getroot();
 }
 
 void worldroot::addnode(uint id) //should be called by world only because they add the worlds to existance;

@@ -348,7 +348,7 @@ bool canjump(physent *pl){
 	pl->physstate = PHYS_FALL;
 	return false;
 }
-VAR(floatspeed, 1, 100, 10000);
+//VAR(floatspeed, 1, 100, 10000);
 VARF(Gravity, -1000.f, 32, 100.f);
 VAR(timeinair, 0, 10, 1000);
 VAR(pspeed, 0, 350, 5000);
@@ -611,7 +611,7 @@ void PHYSStep() {
 		//	
 		//}
 		
-		game::updatebulletmovables(vec(1), vec(1), 1);
+		//game::updatebulletmovables(vec(1), vec(1), 1);
 		//m_dynamicsWorld->stepSimulation(ms / 1000000.f);
 		//optional but useful: debug drawing
 		//m_physicsSetup.m_dynamicsWorld->debugDrawWorld();

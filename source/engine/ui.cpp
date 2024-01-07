@@ -785,6 +785,7 @@ namespace UI
                 if(!children.inrange(i)) break;
                 if(children[i] != w) i--;
             });
+            resetstate();
         }
 
         bool show(Window *w)
@@ -838,8 +839,6 @@ namespace UI
             if(children.empty()) return;
 
             loopwindows(w, w->draw());
-
-            gle::disable();
         }
 
         float abovehud()
@@ -1489,13 +1488,17 @@ namespace UI
             gle::end();
         }
 
+        void bindtex()
+        {
+            changedraw();
+            if(lasttex != tex) { if(lasttex) gle::end(); lasttex = tex; glBindTexture(GL_TEXTURE_2D, tex->id); }
+        }
+
         void draw(float sx, float sy)
         {
             if(tex != notexture)
             {
-                changedraw();
-                if(lasttex != tex) { if(lasttex) gle::end(); lasttex = tex; glBindTexture(GL_TEXTURE_2D, tex->id); }
-
+                bindtex();
                 quads(sx, sy, w, h);
             }
 
@@ -1530,9 +1533,7 @@ namespace UI
         {
             if(tex == notexture) { Object::draw(sx, sy); return; }
 
-            changedraw();
-            if(lasttex != tex) { if(lasttex) gle::end(); lasttex = tex; glBindTexture(GL_TEXTURE_2D, tex->id); }
-
+            bindtex();
             quads(sx, sy, w, h, cropx, cropy, cropw, croph);
 
             Object::draw(sx, sy);
@@ -1565,8 +1566,7 @@ namespace UI
         {
             if(tex == notexture) { Object::draw(sx, sy); return; }
 
-            changedraw();
-            if(lasttex != tex) { if(lasttex) gle::end(); lasttex = tex; glBindTexture(GL_TEXTURE_2D, tex->id); }
+            bindtex();
 
             float splitw = (minw ? min(minw, w) : w) / 2,
                   splith = (minh ? min(minh, h) : h) / 2,
@@ -1637,8 +1637,7 @@ namespace UI
         {
             if(tex == notexture) { Object::draw(sx, sy); return; }
 
-            changedraw();
-            if(lasttex != tex) { if(lasttex) gle::end(); lasttex = tex; glBindTexture(GL_TEXTURE_2D, tex->id); }
+            bindtex();
 
             float vy = sy, ty = 0;
             loopi(3)
@@ -1697,8 +1696,7 @@ namespace UI
         {
             if(tex == notexture) { Object::draw(sx, sy); return; }
 
-            changedraw();
-            if(lasttex != tex) { if(lasttex) gle::end(); lasttex = tex; glBindTexture(GL_TEXTURE_2D, tex->id); }
+            bindtex();
 
             if(tex->clamp)
             {
@@ -1900,7 +1898,7 @@ namespace UI
         }
     };
 
-	struct TextString : Text
+    struct TextString : Text
     {
         char *str;
 
@@ -2058,10 +2056,7 @@ namespace UI
             changedraw(CHANGE_SHADER | CHANGE_COLOR);
 
             float k = drawscale();
-            pushhudmatrix();
-            hudmatrix.translate(sx, sy, 0);
-            hudmatrix.scale(k, k, 1);
-            flushhudmatrix();
+            pushhudtranslate(sx, sy, k);
             renderfullconsole(w/k, h/k);
             pophudmatrix();
         }
@@ -2632,10 +2627,7 @@ namespace UI
             edit->rendered = true;
 
             float k = drawscale();
-            pushhudmatrix();
-            hudmatrix.translate(sx, sy, 0);
-            hudmatrix.scale(k, k, 1);
-            flushhudmatrix();
+            pushhudtranslate(sx, sy, k);
 
             edit->draw(FONTW/2, 0, 0xFFFFFF, isfocus());
 
@@ -2849,7 +2841,6 @@ namespace UI
         void startdraw()
         {
             glDisable(GL_BLEND);
-            gle::disable();
 
             if(clipstack.length()) glDisable(GL_SCISSOR_TEST);
         }
@@ -3041,14 +3032,16 @@ namespace UI
             int xoff = vslot.offset.x, yoff = vslot.offset.y;
             if(vslot.rotation)
             {
-                if((vslot.rotation&5) == 1) { swap(xoff, yoff); loopk(4) swap(tc[k].x, tc[k].y); }
-                if(vslot.rotation >= 2 && vslot.rotation <= 4) { xoff *= -1; loopk(4) tc[k].x *= -1; }
-                if(vslot.rotation <= 2 || vslot.rotation == 5) { yoff *= -1; loopk(4) tc[k].y *= -1; }
+                const texrotation &r = texrotations[vslot.rotation];
+                if(r.swapxy) { swap(xoff, yoff); loopk(4) swap(tc[k].x, tc[k].y); }
+                if(r.flipx) { xoff *= -1; loopk(4) tc[k].x *= -1; }
+                if(r.flipy) { yoff *= -1; loopk(4) tc[k].y *= -1; }
             }
             float xt = min(1.0f, t->xs/float(t->ys)), yt = min(1.0f, t->ys/float(t->xs));
             loopk(4) { tc[k].x = tc[k].x/xt - float(xoff)/t->xs; tc[k].y = tc[k].y/yt - float(yoff)/t->ys; }
             glBindTexture(GL_TEXTURE_2D, t->id);
             if(slot.loaded) gle::color(vslot.colorscale);
+            else gle::colorf(1, 1, 1);
             quad(x, y, w, h, tc);
             if(detailtex)
             {
@@ -3097,7 +3090,7 @@ namespace UI
     ICOMMAND(newui, "ssss", (char *name, char *contents, char *onshow, char *onhide),
     {
         Window *window = windows.find(name, NULL);
-        if(window) { world->hide(window); windows.remove(name); delete window; }
+        if(window) { if (window == UI::window) return; world->hide(window); windows.remove(name); delete window; }
         windows[name] = new Window(name, contents, onshow, onhide);
     });
 

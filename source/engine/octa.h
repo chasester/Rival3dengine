@@ -131,12 +131,13 @@ struct vtxarray
     ushort minvert, maxvert; // DRE info
     elementset *texelems, *decalelems;   // List of element indices sets (range) per texture
     materialsurface *matbuf; // buffer of material surfaces
-    int verts, tris, texs, blendtris, blends, alphabacktris, alphaback, alphafronttris, alphafront, refracttris, refract, texmask, sky, matsurfs, matmask, distance, rdistance, dyntexs, decaltris, decaltexs;
+    int verts, tris, texs, blendtris, blends, alphabacktris, alphaback, alphafronttris, alphafront, refracttris, refract, alphatris, texmask, sky, matsurfs, matmask, distance, rdistance, dyntexs, dynalphatexs, decaltris, decaltexs;
     ivec o;
     int size;                // location and size of cube.
     ivec geommin, geommax;   // BB of geom
     ivec alphamin, alphamax; // BB of alpha geom
     ivec refractmin, refractmax; // BB of refract geom
+    ivec skymin, skymax;     // BB of any sky geom
     ivec lavamin, lavamax;   // BB of any lava
     ivec watermin, watermax; // BB of any water
     ivec glassmin, glassmax; // BB of any glass
@@ -147,7 +148,7 @@ struct vtxarray
     vector<octaentities *> mapmodels, decals;
     vector<grasstri> grasstris;
     int hasmerges, mergelevel;
-    int shadowmask;
+    int shadowmask, shadowtransparent;
 };
 
 struct cube;
@@ -238,7 +239,7 @@ struct undoblock // undo header, all data sits in payload
     undoent *ents() { return (undoent *)(this + 1); }
 };
 
-// cube *worldeditor::editroot;             // the world data. only a ptr to 8 cubes (ie: like cube.children above)
+extern cube *cuberoot;             // the world data. only a ptr to 8 cubes (ie: like cube.children above)
 extern int wtris, wverts, vtris, vverts, glde, gbatches, rplanes;
 extern int allocnodes, allocva, selchildcount, selchildmat;
 
