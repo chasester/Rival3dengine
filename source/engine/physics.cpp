@@ -1868,6 +1868,7 @@ void physicsframe()          // optimally schedule physics frames inside the gra
         lastphysframe += physsteps * physframetime;
     }
     cleardynentcache();
+    //PHYSStep();
 }
 
 VAR(physinterp, 0, 1, 1);

@@ -1928,7 +1928,7 @@ void world::serializedworld()
 }
 void world::updateworld() {   if (!touched) { doAwake();  touched = true;  return; }	 loopv(worldroots) worldroots[i]->doupdate(); }
 void world::restartworld(bool force) { if (touched || force) loopv(worldroots)worldroots[i]->restartworld(); touched = false; }
-void world::clearmap()
+void world::clearWorld()
 {
 	clearoverrides();
 	clearmapsounds();
@@ -2498,7 +2498,7 @@ void worldroot::saveworld(stream * f)
 }
 void worldroot::loadworld(stream *f)
 {
-	//clearworld();
+	//clearWorld();
 	touched = false; //make sure we dont kill these ids when we restart the world;
 	return;
 	worldsize = f->getlil<int>();

@@ -365,7 +365,7 @@ namespace game
         else if(!f && (player1->state==CS_ALIVE || (player1->state==CS_EDITING && third) || (player1->state==CS_DEAD && !hidedead)))
             renderplayer(player1, 1, third ? 0 : MDL_ONLYSHADOW);
 	
-        //curworld->dorender();
+        curworld->dorender();
         renderbouncers();
         renderprojectiles();
         if(cmode) cmode->rendergame();

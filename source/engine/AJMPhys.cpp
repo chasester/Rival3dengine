@@ -33,7 +33,7 @@ btVector3 worldMin(-1000,-1000,-1000);
 btVector3 worldMax(1000,1000,1000);
 int lastphysicframe = 0;
 
-VAR(PHYSDebugDraw, 0, 0, 1);
+VAR(PHYSDebugDraw, 0, 1, 1);
 
 #define SCALING 0.058825
 int matnumber = 0;
@@ -355,7 +355,7 @@ VAR(pspeed, 0, 350, 5000);
 VAR(pjump, 0, 550, 70000);
 VAR(pweight, 1, 100, 100000);
 void btmoveplayer(physent *pl, int curenttime){
-	printf("Moving player, current time: %d\n", curenttime);
+
 	int material = lookupmaterial(vec(pl->o.x, pl->o.y, pl->o.z + (3 * pl->aboveeye - pl->eyeheight) / 4));
 	bool water = isliquid(material&MATF_VOLUME);
 	bool floating = pl->type == ENT_PLAYER && (pl->state == CS_EDITING || pl->state == CS_SPECTATOR);

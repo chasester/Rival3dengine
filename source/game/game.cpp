@@ -230,7 +230,12 @@ namespace game
         updateweapons(curtime);
         otherplayers(curtime);
         ai::update();
-        moveragdolls();
+        if (!curworld->ispaused())
+        {
+            curworld->updateworld();
+            PHYSStep();  
+            moveragdolls();
+        }
         gets2c();
         if(connected)
         {
@@ -538,15 +543,15 @@ namespace game
     void startgame()
     {
       //angelo sauer ents
-       // clearmovables();      
+       // clearmovables();     
       //angelo sauer ents
 	//angelo phys bullet
-	//PHYSInit();
+	   PHYSInit();
 	//angelo phys bullet 
-	//buildLevelTriCol();
+	   buildLevelTriCol();
 	//angelo phys bullet
 	//angelo phys bullet
-	//curworld->clearworld();
+	  curworld->clearWorld();
 	// clearbulletmovables();
 	//angelo phys bullet
         clearprojectiles();

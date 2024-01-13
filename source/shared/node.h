@@ -155,7 +155,7 @@ enum SCENE_FLAGS
 //	//	void pausescene(short force = -1){ paused = force == -1 ? !paused : bool(force); }
 //	bool ispaused(){ return false; }
 //	void addobject(node *gn) { if (!gn) return; nodes.add(gn); }
-//	void clearworld()
+//	void clearWorld()
 //	{
 //		nodes.deletecontents();
 //		//add in the load from file here
@@ -367,7 +367,7 @@ public:
 	void serializedworld();
 	void updateworld();
 	void restartworld(bool force = false);
-	void clearmap();
+	void clearWorld();
 	void saveworld(stream *f);
 	void loadworld(stream *f);
 

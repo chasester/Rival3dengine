@@ -446,9 +446,12 @@ ScriptManager::ScriptControler *ScriptManager::getctrlscript(const str &script, 
 
 	}
 		
+		//Convert to Dictionary
 		//if we allready made the module then lets try  and find it	
-		if (checkctrl) loopv(ctrls)
-		if (ctrls[i]->module == script) return ctrls[i];
+		if (checkctrl) 
+			loopv(ctrls)
+				if (ctrls[i]->module == script) 
+					return ctrls[i];
 
 		//no controller created yet, ok see if we loaded it before but could not initialize it
 		if (asEngine->GetModule(script.c_str(), asGM_ONLY_IF_EXISTS)){ print("Module already had an error"); return NULL; }
