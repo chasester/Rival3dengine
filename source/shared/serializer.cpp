@@ -85,9 +85,9 @@ struct DataHold
 	void print()
 	{
 		conoutf("%s%s %s %d",\
-			namespaces[VECTOROVERLOADCHECK(namespaces, namespaceID)] == "" ? "" : (namespaces[VECTOROVERLOADCHECK(namespaces, namespaceID)] + "::").c_str(),\
-			typeID > asTYPEID_STRING ? types[VECTOROVERLOADCHECK(types, typeID - (asTYPEID_STRING+1))].c_str() : typeID == asTYPEID_STRING ? "string" : asScript->getprimitivename(typeID).c_str(),\
-			names[VECTOROVERLOADCHECK(names, nameID)].c_str(), children);
+			namespaces[VECTOROVERLOADCHECK(namespaces,signed(namespaceID))] == "" ? "" : (namespaces[VECTOROVERLOADCHECK(namespaces, signed(namespaceID))] + "::").c_str(),\
+			typeID > asTYPEID_STRING ? types[VECTOROVERLOADCHECK(types, signed(typeID - (asTYPEID_STRING+1)))].c_str() : typeID == asTYPEID_STRING ? "string" : asScript->getprimitivename(typeID).c_str(),\
+			names[VECTOROVERLOADCHECK(names, signed(nameID))].c_str(), children);
 	}
 	void write(stream *f)
 	{
@@ -137,7 +137,7 @@ struct DataHold
 		start++;
 		loopi(children)
 		{
-			if (!VECTOROVERLOADCHECK(saveddata, start)) return start;
+			if (VECTOROVERLOADCHECK(saveddata, signed(start)) != 0) return start;
 			start = saveddata[start]->count(start);
 		}
 		return start;
@@ -276,9 +276,9 @@ void CSerializedValue::load()
 	}
 	//now we have our tree skeloton so now we take the data from savedata and add it to the objects starting with the childen and working up the tree
 	m_isInit = true;
-	m_name = names[VECTOROVERLOADCHECK(names, sd.nameID)];
-	m_typeName = types[VECTOROVERLOADCHECK(types, sd.typeID - (asTYPEID_STRING + 1))];
-	m_nameSpace = namespaces[VECTOROVERLOADCHECK(namespaces, sd.namespaceID)];
+	m_name = names[VECTOROVERLOADCHECK(names, signed(sd.nameID))];
+	m_typeName = types[VECTOROVERLOADCHECK(types, signed(sd.typeID - (asTYPEID_STRING + 1)))];
+	m_nameSpace = namespaces[VECTOROVERLOADCHECK(namespaces, signed(sd.namespaceID))];
 
 	if (sd.typeID == asTYPEID_VOID || sd.typeID == asTYPEID_STRING + 1)  return;
 	
@@ -1004,7 +1004,7 @@ void CSerialnode::Create(CSerializedValue *val)
 		{
 			bool flag = false;
 			asIScriptObject *c = (asIScriptObject *) val->m_children[k + 3]->m_restorePtr;
-			if (c) for (int i = 0; i < c->GetPropertyCount(); i++)
+			if (c) for (asUINT i = 0; i < c->GetPropertyCount(); i++)
 			{
 				if (str(c->GetPropertyName(i)) == str("self"))
 				{

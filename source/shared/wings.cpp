@@ -149,7 +149,7 @@ int addfunction(const char *declaration, const asSFuncPtr &funcPointer, asDWORD 
 }
 #define SETUPMATHFUNC(type) {	asCOMMAND(type, min, (type, type)) asCOMMAND(type, max, (type, type)) asCOMMAND(type, clamp, (type, type, type));\
 						 asCOMMAND(type, cos, (type)); asCOMMAND(type, sin, (type));}
-void addvarible(const char *declaration, void *pointer){ int r = ASEngine->RegisterGlobalProperty(declaration, pointer);  }
+void addvarible(const char* declaration, void* pointer) { int r = ASEngine->RegisterGlobalProperty(declaration, pointer); r; }
 
 //#define BASECONSTUCTOR(type) static void BaseConstructor##type(asIScriptGeneric * gen){  }
 //#define COPYCONSTUCTOR(type) static void CopyConstructor##type(asIScriptGeneric * gen){ new (gen->GetObject()) type (*static_cast<type *>(gen->GetArgObject(0))); }
@@ -612,7 +612,9 @@ str ScriptManager::getprimitivename(int id)
 		case asTYPEID_DOUBLE:
 			return "double";
 		}
+		return "undefined";
 	}
+
 
 asIScriptObject *ScriptManager::CreateController(const str &script, node *gameObj)
 	{
@@ -621,7 +623,7 @@ asIScriptObject *ScriptManager::CreateController(const str &script, node *gameOb
 		 ScriptControler*ctrl = getctrlscript(script);
 		if (!ctrl || !ctrl->type)return 0;
 		instance = (asIScriptObject *) (asScript->asEngine->CreateUninitializedScriptObject(ctrl->type));
-		for (int i = 0; i < instance->GetPropertyCount(); i++)
+		for (asUINT i = 0; i < instance->GetPropertyCount(); i++)
 		{
 			if (str(instance->GetPropertyName(i)) == "self")
 			{

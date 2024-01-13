@@ -674,8 +674,10 @@ ICOMMAND(setangleimpulse, "fff", (float *x, float *y, float *z), { impulsevec = 
 VAR(btMass, 0, 1, 100);
 btRigidBody *setcbfrommodel(vec &o, const char *mdl, vec dir, int weight)//set collision box
 {
-	if (m_dynamicsWorld)
+	if (!m_dynamicsWorld)
 	{
+		conoutf(CON_ERROR, "Physics incorrectly set up and is not being used."); return NULL;
+	} 
 
 		model *m = loadmodel(mdl);
 		if (!m) return NULL;
@@ -740,7 +742,7 @@ btRigidBody *setcbfrommodel(vec &o, const char *mdl, vec dir, int weight)//set c
 		body->setUserIndex(-1);
 		m_dynamicsWorld->addRigidBody(body);
 		return body;
-	}
+	
 }
 //void setcbfrommodel(dynent *d, const char *mdl)//set collision box
 //{

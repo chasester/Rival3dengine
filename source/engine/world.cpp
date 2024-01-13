@@ -1836,7 +1836,7 @@ void worldeditor::nodedrag(const vec &ray)
 		c = (nodeselsnap ? g[C[d]] : dest[C[d]]) - nodes[i]->o[C[d]];
 	}
 
-	if (worldeditor::nodemoving == 1);
+    //if (worldeditor::nodemoving == 1)
 	if (nodes.length() < 1)nodes.add(curworld->getnodefromid(worldeditor::nfocus));
 	//makeundonode();
 	loopv(nodes)
@@ -1860,11 +1860,11 @@ bool worldeditor::hoveringonnode(uint node, int orient)
 
 bool worldeditor::nodetoggleselect(uint id)
 {
-	node *n;
+	//node *n;
 	int find = nodeselect.find(id);
 	if (find > -1) nodeselect.remove(find);
 	else nodeselect.add(id);
-	return !find > -1;
+	return !(find > -1);
 }
 
 float worldeditor::getnearestnode(const vec & o, const vec & ray, float radius, int mode, int & hitnode)
@@ -2409,7 +2409,7 @@ void worldroot::doawake()
 	m_world->getoctreefromid(rootsid,roots);
 	vector<node *> nodes;
 	m_world->getnodefromid(nodeid,nodes);
-	bool flag = false;
+	//bool flag = false;
 	loopv(roots)
 	{
 		//if (roots[i]->flags&OCTROOT_ACTIVE && roots[i]->flags&OCTROOT_PHYSICS && roots[i]->flags &OCTROOT_CHANGED)

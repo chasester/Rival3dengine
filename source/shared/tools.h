@@ -1568,7 +1568,7 @@ template<class T> struct idoctmgr_REPLACE
 		cube *c = newcubes(F_SOLID); //change later to only fill half with solid half with empty like default map type;
 		octroot * or = new octroot(worldsize, c, flags);
 		uint opid = getnextopenid();
-		if (opid >= oroots.length())
+		if (opid >= unsigned(oroots.length()))
 		{
 			opid = oroots.length();
 			oroots.add(or );
@@ -1635,7 +1635,7 @@ template<class T> struct poolidmgr
 		n->id = indx + 1;
 		return 	n;
 	}
-	T getnodefromid(uint id) { id--;	return id < objects.length() ? objects[id] : nullptr; }
+	T getnodefromid(uint id) { id--;	return id < unsigned(objects.length()) ? objects[id] : nullptr; }
 
 	bool removenode(T n)
 	{
@@ -1646,7 +1646,7 @@ template<class T> struct poolidmgr
 	bool removenode(uint id)
 	{
 		id--;
-		if (id >= objects.length() || objects[id] == nullptr) { conoutf("removeal overread" ); return false; }
+		if (id >= unsigned(objects.length()) || objects[id] == nullptr) { conoutf("removeal overread" ); return false; }
 		T n = objects[id];
 		objects[id] = nullptr;
 		delete n;
@@ -1698,7 +1698,7 @@ private:
 	uint getnextopenid() { if (openids.length()) return openids.pop(); else { objects.pad(1); return objects.length() - 1; } } //look in openids before adding a new one to the end
 	void allocatenodes(ushort amt)
 	{
-		uint len = objpool.length();
+		//uint len = objpool.length();
 		//nodepool.advance(amt;)
 		loopi(amt) objpool.add(new node());
 	}

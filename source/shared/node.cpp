@@ -58,12 +58,12 @@ bool scriptinterface::restore()
 
 void scriptinterface::setData(str name, void *val, size_t size)
 {
-	asIScriptObject *prop;
+	//asIScriptObject *prop;
 	loopi(object->GetPropertyCount())
 	{
 		if (object->GetPropertyName(i) == name)
 		{
-			int typeID = object->GetPropertyTypeId(i);
+			//int typeID = object->GetPropertyTypeId(i);
 			memcpy(object->GetAddressOfProperty(i), val, size);
 		}
 	}

@@ -46,7 +46,7 @@ namespace game
                 else vel = vec(0, 0, dir*maxspeed);
             }
 
-            const char *mdlname = mapmodelname(e.attr2);
+            //const char *mdlname = mapmodelname(e.attr2);
             //if(mdlname) setmbbfrommodel(this, mdlname);
         }
        
