@@ -8,11 +8,7 @@
 //   kino - ok
 
 #include "engine.h"
-#ifdef __APPLE__
-  #include "SDL2_mixer/SDL_mixer.h"
-#else
-  #include "SDL_mixer.h"
-#endif
+#include "SDL_mixer.h"
 
 VAR(dbgmovie, 0, 0, 1);
 
@@ -93,13 +89,13 @@ struct aviwriter
 
     void endchunk()
     {
-        assert(chunkdepth >= 0);
+        ASSERT(chunkdepth >= 0);
         --chunkdepth;
     }
 
     void endlistchunk()
     {
-        assert(chunkdepth >= 0);
+        ASSERT(chunkdepth >= 0);
         int size = int(totalsize - chunkoffsets[chunkdepth]);
         f->seek(-4 - size, SEEK_CUR);
         f->putlil(size);
@@ -388,7 +384,7 @@ struct aviwriter
         endlistchunk(); // LIST odml
 
         listchunk("LIST", "INFO");
-        const char *software = "Tesseract";
+        const char *software = "Rival";
         writechunk("ISFT", software, strlen(software)+1);
         endlistchunk(); // LIST INFO
 

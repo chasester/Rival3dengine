@@ -56,12 +56,12 @@ namespace sphere
         }
 
         if(!vbuf) glGenBuffers_(1, &vbuf);
-        glBindBuffer_(GL_ARRAY_BUFFER, vbuf);
+        gle::bindvbo(vbuf);
         glBufferData_(GL_ARRAY_BUFFER, numverts*sizeof(vert), verts, GL_STATIC_DRAW);
         DELETEA(verts);
 
         if(!ebuf) glGenBuffers_(1, &ebuf);
-        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, ebuf);
+        gle::bindebo(ebuf);
         glBufferData_(GL_ELEMENT_ARRAY_BUFFER, numindices*sizeof(GLushort), indices, GL_STATIC_DRAW);
         DELETEA(indices);
     }
@@ -76,8 +76,8 @@ namespace sphere
     {
         if(!vbuf) init(12, 6);
 
-        glBindBuffer_(GL_ARRAY_BUFFER, vbuf);
-        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, ebuf);
+        gle::bindvbo(vbuf);
+        gle::bindebo(ebuf);
 
         gle::vertexpointer(sizeof(vert), &verts->pos);
         gle::texcoord0pointer(sizeof(vert), &verts->s, GL_UNSIGNED_SHORT, 2, GL_TRUE);
@@ -97,8 +97,8 @@ namespace sphere
         gle::disablevertex();
         gle::disabletexcoord0();
 
-        glBindBuffer_(GL_ARRAY_BUFFER, 0);
-        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, 0);
+        gle::clearvbo();
+        gle::clearebo();
     }
 }
 
@@ -143,16 +143,15 @@ struct fireballrenderer : listrenderer
         if(isfoggedsphere(psize*WOBBLE, p->o)) return;
 
         vec dir = vec(o).sub(camera1->o), s, t;
-        float dist = dir.magnitude();
+        float dist = dir.magnitude(), mag2 = dir.magnitude2();
         bool inside = dist <= psize*WOBBLE;
-        if(inside)
+        if(inside || mag2 <= 0.0f)
         {
             s = camright;
             t = camup;
         }
         else
         {
-            float mag2 = dir.magnitude2();
             dir.x /= mag2;
             dir.y /= mag2;
             dir.z /= dist;

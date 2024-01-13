@@ -37,8 +37,8 @@ enum
     EF_OCTA       = 1<<5,
     EF_RENDER     = 1<<6,
     EF_SOUND      = 1<<7,
-    EF_SPAWNED    = 1<<8
-
+    EF_SPAWNED    = 1<<8,
+    EF_NOPICKUP   = 1<<9
 };
 
 struct extentity : entity                       // part of the entity that doesn't get saved to disk
@@ -52,11 +52,15 @@ struct extentity : entity                       // part of the entity that doesn
     void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }
     void setspawned() { flags |= EF_SPAWNED; }
     void clearspawned() { flags &= ~EF_SPAWNED; }
+
+    bool nopickup() const { return (flags&EF_NOPICKUP) != 0; }
+    void setnopickup(bool val) { if(val) flags |= EF_NOPICKUP; else flags &= ~EF_NOPICKUP; }
+    void setnopickup() { flags |= EF_NOPICKUP; }
+    void clearnopickup() { flags &= ~EF_NOPICKUP; }
 };
 
 //define physics stucts to interface with physics
-
-#define MAXENTS 100000
+#define MAXENTS 10000
 
 //extern vector<extentity *> ents;                // map entities
 
@@ -79,15 +83,16 @@ struct physent                                  // base entity type, can be affe
     vec deltapos, newpos;                       // movement interpolation
     float yaw, pitch, roll;
     float maxspeed;                             // cubes per second, 100 for player
-    int timeinair;
+    //int timeinair;
     float radius, eyeheight, maxheight, aboveeye; // bounding box size
     //float xradius, yradius, zmargin;
     float xradius, yradius, zradius, zmargin;//angelo sauer ents//zradius give movables better bbox
     vec floor;                                  // the normal of floor the dynent is on
 
-    int inwater;
+    ushort timeinair;
+    uchar inwater;
     bool jumping;
-    char move, strafe, crouching;
+    schar move, strafe, crouching;
 
     uchar physstate;                            // one of PHYS_* above
     uchar state, editstate;                     // one of CS_* above
@@ -102,14 +107,7 @@ struct physent                                  // base entity type, can be affe
                collidetype(COLLIDE_ELLIPSE),
                blocked(false)
                { reset(); }
-	/*physent(camera *c) : o(c->o), deltapos(0,0,0), newpos(0,0,0),yaw(c->yaw), pitch(c->pitch), roll(c->roll), maxspeed(100), 
-		radius(4.1f), eyeheight(18), maxheight(18),aboveeye(2),xradius(4.1f), yradius(4.1f), zmargin(0),
-		state(CS_ALIVE), editstate(CS_ALIVE), type(ENT_CAMERA),
-		collidetype(COLLIDE_ELLIPSE),
-		blocked(false)
-	{
-		reset();
-	}*/
+
     void resetinterp()
     {
         newpos = o;
@@ -168,6 +166,7 @@ struct animinfo // description of a character's animation
     int anim, frame, range, basetime;
     float speed;
     uint varseed;
+
     animinfo() : anim(0), frame(0), range(0), basetime(0), speed(100.0f), varseed(0) { }
 
     bool operator==(const animinfo &o) const { return frame==o.frame && range==o.range && (anim&(ANIM_SETTIME|ANIM_DIR))==(o.anim&(ANIM_SETTIME|ANIM_DIR)) && (anim&ANIM_SETTIME || basetime==o.basetime) && speed==o.speed; }

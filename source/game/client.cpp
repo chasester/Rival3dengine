@@ -152,7 +152,6 @@ namespace game
     {
         conoutf("your name is: %s", colorname(player1));
     }
-	
     ICOMMAND(name, "sN", (char *s, int *numargs),
     {
         if(*numargs > 0) switchname(s);
@@ -234,8 +233,19 @@ namespace game
         genprivkey(secret, privkey, pubkey);
         conoutf("private key: %s", privkey.getbuf());
         conoutf("public key: %s", pubkey.getbuf());
+        result(privkey.getbuf());
     }
     COMMAND(genauthkey, "s");
+
+    void getpubkey(const char *desc)
+    {
+        authkey *k = findauthkey(desc);
+        if(!k) { if(desc[0]) conoutf(CON_ERROR, "no authkey found: %s", desc); else conoutf(CON_ERROR, "no global authkey found"); return; }
+        vector<char> pubkey;
+        if(!calcpubkey(k->key, pubkey)) { conoutf(CON_ERROR, "failed calculating pubkey"); return; }
+        result(pubkey.getbuf());
+    }
+    COMMAND(getpubkey, "s");
 
     void saveauthkeys()
     {
@@ -397,6 +407,7 @@ namespace game
     }
     ICOMMAND(isai, "ii", (int *cn, int *type), intret(isai(*cn, *type) ? 1 : 0));
 
+    VARP(playersearch, 0, 3, 10);
     int parseplayer(const char *arg)
     {
         char *end;
@@ -416,7 +427,23 @@ namespace game
         loopv(players)
         {
             gameent *o = players[i];
-            if(!strcasecmp(arg, o->name)) return o->clientnum;
+            if(cubecaseequal(o->name, arg)) return o->clientnum;
+        }
+        int len = strlen(arg);
+        if(playersearch && len >= playersearch)
+        {
+            // try case insensitive prefix
+            loopv(players)
+            {
+                gameent *o = players[i];
+                if(cubecaseequal(o->name, arg, len)) return o->clientnum;
+            }
+            // try case insensitive substring
+            loopv(players)
+            {
+                gameent *o = players[i];
+                if(cubecasefind(o->name, arg)) return o->clientnum;
+            }
         }
         return -1;
     }
@@ -547,6 +574,9 @@ namespace game
     ICOMMAND(sauth, "", (), if(servauth[0]) tryauth(servauth));
     ICOMMAND(dauth, "s", (char *desc), if(desc[0]) tryauth(desc));
 
+    ICOMMAND(getservdesc, "", (), result(servdesc));
+    ICOMMAND(getservauth, "", (), result(servauth));
+
     void togglespectator(int val, const char *who)
     {
         int i = who[0] ? parseplayer(who) : player1->clientnum;
@@ -597,7 +627,7 @@ namespace game
     ICOMMAND(getmodeprettyname, "i", (int *mode), result(server::modeprettyname(*mode, "")));
     ICOMMAND(timeremaining, "i", (int *formatted),
     {
-        int val = max(maplimit - lastmillis, 0)/1000;
+        int val = max(maplimit - lastmillis + 999, 0)/1000;
         if(*formatted) result(tempformatstring("%d:%02d", val/60, val%60));
         else intret(val);
     });
@@ -779,14 +809,14 @@ namespace game
                     formatstring(str, "0x%.6X (%d, %d, %d)", val, (val>>16)&0xFF, (val>>8)&0xFF, val&0xFF);
                 else
                     formatstring(str, id->flags&IDF_HEX ? "0x%X" : "%d", val);
-                conoutf("%s set map var \"%s\" to %s", colorname(d), id->name, str);
+                conoutf(CON_INFO, id->index, "%s set map var \"%s\" to %s", colorname(d), id->name, str);
                 break;
             }
             case ID_FVAR:
-                conoutf("%s set map var \"%s\" to %s", colorname(d), id->name, floatstr(*id->storage.f));
+                conoutf(CON_INFO, id->index, "%s set map var \"%s\" to %s", colorname(d), id->name, floatstr(*id->storage.f));
                 break;
             case ID_SVAR:
-                conoutf("%s set map var \"%s\" to \"%s\"", colorname(d), id->name, *id->storage.s);
+                conoutf(CON_INFO, id->index, "%s set map var \"%s\" to \"%s\"", colorname(d), id->name, *id->storage.s);
                 break;
         }
     }
@@ -935,6 +965,8 @@ namespace game
         ignores.setsize(0);
         connected = remote = false;
         player1->clientnum = -1;
+        servdesc[0] = '\0';
+        servauth[0] = '\0';
         if(editmode) toggleedit();
         sessionid = 0;
         mastermode = MM_OPEN;
@@ -957,10 +989,13 @@ namespace game
         }
     }
 
-    void toserver(char *text) { conoutf(CON_CHAT, "%s:%s %s", colorname(player1), teamtextcode[0], text); addmsg(N_TEXT, "rcs", player1, text); }
+    VARP(teamcolorchat, 0, 1, 1);
+    const char *chatcolorname(gameent *d) { return teamcolorchat ? teamcolorname(d, NULL) : colorname(d); }
+
+    void toserver(char *text) { conoutf(CON_CHAT, "%s:%s %s", chatcolorname(player1), teamtextcode[0], text); addmsg(N_TEXT, "rcs", player1, text); }
     COMMANDN(say, toserver, "C");
 
-    void sayteam(char *text) { if(!m_teammode || !validteam(player1->team)) return; conoutf(CON_TEAMCHAT, "%s:%s %s", colorname(player1), teamtextcode[player1->team], text); addmsg(N_SAYTEAM, "rcs", player1, text); }
+    void sayteam(char *text) { if(!m_teammode || !validteam(player1->team)) return; conoutf(CON_TEAMCHAT, "%s:%s %s", chatcolorname(player1), teamtextcode[player1->team], text); addmsg(N_SAYTEAM, "rcs", player1, text); }
     COMMAND(sayteam, "C");
 
     ICOMMAND(servcmd, "C", (char *cmd), addmsg(N_SERVCMD, "rs", cmd));
@@ -1163,7 +1198,7 @@ namespace game
                 float yaw, pitch, roll;
                 loopk(3)
                 {
-                    int n = p.get(); n |= p.get()<<8; if(flags&(1<<k)) { n |= p.get()<<16; if(n&0x800000) n |= -1<<24; }
+                    int n = p.get(); n |= p.get()<<8; if(flags&(1<<k)) { n |= p.get()<<16; if(n&0x800000) n |= ~0U<<24; }
                     o[k] = n/DMF;
                 }
                 int dir = p.get(); dir |= p.get()<<8;
@@ -1199,11 +1234,11 @@ namespace game
                 vec oldpos(d->o);
                 if(allowmove(d))
                 {
-                    d->o = o;
-                    d->o.z += d->eyeheight;
-                    d->vel = vel;
-                    d->falling = falling;
-                    d->physstate = physstate&7;
+                d->o = o;
+                d->o.z += d->eyeheight;
+                d->vel = vel;
+                d->falling = falling;
+                d->physstate = physstate&7;
                 }
                 updatephysstate(d);
                 updatepos(d);
@@ -1364,7 +1399,7 @@ namespace game
                 if(isignored(d->clientnum)) break;
                 if(d->state!=CS_DEAD && d->state!=CS_SPECTATOR)
                     particle_textcopy(d->abovehead(), text, PART_TEXT, 2000, 0x32FF64, 4.0f, -8);
-                conoutf(CON_CHAT, "%s:%s %s", colorname(d), teamtextcode[0], text);
+                conoutf(CON_CHAT, "%s:%s %s", chatcolorname(d), teamtextcode[0], text);
                 break;
             }
 
@@ -1378,12 +1413,14 @@ namespace game
                 int team = validteam(t->team) ? t->team : 0;
                 if(t->state!=CS_DEAD && t->state!=CS_SPECTATOR)
                     particle_textcopy(t->abovehead(), text, PART_TEXT, 2000, teamtextcolor[team], 4.0f, -8);
-                conoutf(CON_TEAMCHAT, "%s:%s %s", colorname(t), teamtextcode[team], text);
+                conoutf(CON_TEAMCHAT, "%s:%s %s", chatcolorname(t), teamtextcode[team], text);
                 break;
             }
 
             case N_MAPCHANGE:
                 getstring(text, p);
+                filtertext(text, text, false);
+                fixmapname(text);
                 changemapserv(text, getint(p));
                 mapchanged = true;
                 if(getint(p)) entities::spawnitems();
@@ -1590,7 +1627,8 @@ namespace game
                 actor->frags = frags;
                 if(m_teammode) setteaminfo(actor->team, tfrags);
 #if 0
-                if(actor!=player1 && (!cmode || !cmode->hidefrags()))
+                extern int hidefrags;
+                if(actor!=player1 && (!cmode || !cmode->hidefrags() || !hidefrags))
                     particle_textcopy(actor->abovehead(), tempformatstring("%d", actor->frags), PART_TEXT, 2000, 0x32FF64, 4.0f, -8);
 #endif
                 if(!victim) break;
@@ -1654,8 +1692,12 @@ namespace game
             case N_ITEMACC:            // server acknowledges that I picked up this item
             {
                 int i = getint(p), cn = getint(p);
-                gameent *d = getclient(cn);
-                entities::pickupeffects(i, d);
+                if(cn >= 0)
+                {
+                    gameent *d = getclient(cn);
+                    entities::pickupeffects(i, d);
+                }
+                else entities::setspawn(i, true);
                 break;
             }
 
@@ -1951,10 +1993,9 @@ namespace game
                 authkey *a = findauthkey(text);
                 uint id = (uint)getint(p);
                 getstring(text, p);
-                if(a && a->lastauth && lastmillis - a->lastauth < 60*1000)
+                vector<char> buf;
+                if(a && a->lastauth && lastmillis - a->lastauth < 60*1000 && answerchallenge(a->key, text, buf))
                 {
-                    vector<char> buf;
-                    answerchallenge(a->key, text, buf);
                     //conoutf(CON_DEBUG, "answering %u, challenge %s with %s", id, text, buf.getbuf());
                     packetbuf p(MAXTRANS, ENET_PACKET_FLAG_RELIABLE);
                     putint(p, N_AUTHANS);
@@ -1988,6 +2029,15 @@ namespace game
         }
     }
 
+    struct demoreq
+    {
+        int tag;
+        cubestr name;
+    };
+    vector<demoreq> demoreqs;
+    enum { MAXDEMOREQS = 7 };
+    static int lastdemoreq = 0;
+
     void receivefile(packetbuf &p)
     {
         int type;
@@ -1996,8 +2046,26 @@ namespace game
             case N_DEMOPACKET: return;
             case N_SENDDEMO:
             {
-                defformatstring(fname, "%d.dmo", lastmillis);
-                stream *demo = openrawfile(fname, "wb");
+                cubestr fname;
+                fname[0] = '\0';
+                int tag = getint(p);
+                loopv(demoreqs) if(demoreqs[i].tag == tag)
+                {
+                    copystring(fname, demoreqs[i].name);
+                    demoreqs.remove(i);
+                    break;
+                }
+                if(!fname[0])
+                {
+                    time_t t = time(NULL);
+                    size_t len = strftime(fname, sizeof(fname), "%Y-%m-%d_%H.%M.%S", localtime(&t));
+                    fname[min(len, sizeof(fname)-1)] = '\0';
+                }
+                int len = strlen(fname);
+                if(len < 4 || strcasecmp(&fname[len-4], ".dmo")) concatstring(fname, ".dmo");
+                stream *demo = NULL;
+                if(const char *buf = server::getdemofile(fname, true)) demo = openrawfile(buf, "wb");
+                if(!demo) demo = openrawfile(fname, "wb");
                 if(!demo) return;
                 conoutf("received demo \"%s\"", fname);
                 ucharbuf b = p.subbuf(p.remaining());
@@ -2079,13 +2147,24 @@ namespace game
     }
     ICOMMAND(cleardemos, "i", (int *val), cleardemos(*val));
 
-    void getdemo(int i)
+    void getdemo(char *val, char *name)
     {
+        int i = 0;
+        if(isdigit(val[0]) || name[0]) i = parseint(val);
+        else name = val;
         if(i<=0) conoutf("getting demo...");
         else conoutf("getting demo %d...", i);
-        addmsg(N_GETDEMO, "ri", i);
+        ++lastdemoreq;
+        if(name[0])
+        {
+            if(demoreqs.length() >= MAXDEMOREQS) demoreqs.remove(0);
+            demoreq &r = demoreqs.add();
+            r.tag = lastdemoreq;
+            copystring(r.name, name);
+        }
+        addmsg(N_GETDEMO, "rii", i, lastdemoreq);
     }
-    ICOMMAND(getdemo, "i", (int *val), getdemo(*val));
+    ICOMMAND(getdemo, "ss", (char *val, char *name), getdemo(val, name));
 
     void listdemos()
     {

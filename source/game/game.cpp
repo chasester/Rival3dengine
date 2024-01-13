@@ -17,15 +17,14 @@ namespace game
         else if(following < 0) nextfollow();
     });
 
-    gameent *followingplayer()
+    gameent *followingplayer(gameent *fallback)
     {
-        if(player1->state!=CS_SPECTATOR || following<0) return NULL;
+        if(player1->state!=CS_SPECTATOR || following<0) return fallback;
         gameent *target = getclient(following);
         if(target && target->state!=CS_SPECTATOR) return target;
-        return NULL;
+        return fallback;
     }
 
-	ICOMMAND(editpause, "i", (int *i), { if (*i == 0) !curworld->paused; else curworld->paused = *i > 0 ? true : false; })
     ICOMMAND(getfollow, "", (),
     {
         gameent *f = followingplayer();
@@ -55,7 +54,7 @@ namespace game
     void nextfollow(int dir)
     {
         if(player1->state!=CS_SPECTATOR) return;
-        int cur = following >= 0 ? following : (dir < 0 ? clients.length() - 1 : 0);
+        int cur = following >= 0 ? following : (dir > 0 ? clients.length() - 1 : 0);
         loopv(clients)
         {
             cur = (cur + dir + clients.length()) % clients.length();
@@ -90,20 +89,6 @@ namespace game
 
     void resetgamestate()
     {
-      //angelo sauer ents
-	clearmovables();
-	//clearmonsters();                 // all monsters back at their spawns for editing
-	//scene->resetworld();
-	entities::resettriggers();      
-      //angelo sauer enrs
-
-	//angelo phys bullet
-	PHYSrebuildLevel();
-	//clearGameobject();
-	curworld->restartworld(true);
-	clearbulletmovables();
-	//angelo phys bullet
-	
         clearprojectiles();
         clearbouncers();
     }
@@ -140,9 +125,8 @@ namespace game
 
     gameent *hudplayer()
     {
-        if(thirdperson || specmode > 1) return player1;
-        gameent *target = followingplayer();
-        return target ? target : player1;
+        if((thirdperson && allowthirdperson()) || specmode > 1) return player1;
+        return followingplayer(player1);
     }
 
     void setupcamera()
@@ -156,6 +140,12 @@ namespace game
             player1->resetinterp();
         }
     }
+
+    bool allowthirdperson(bool msg)
+    {
+        return player1->state==CS_SPECTATOR || player1->state==CS_EDITING || m_edit || !multiplayer(msg);
+    }
+    ICOMMAND(allowthirdperson, "b", (int *msg), intret(allowthirdperson(*msg!=0) ? 1 : 0));
 
     bool detachcamera()
     {
@@ -235,55 +225,38 @@ namespace game
         if(!maptime) { maptime = lastmillis; maprealtime = totalmillis; return; }
         if(!curtime) { gets2c(); if(player1->clientnum>=0) c2sinfo(); return; }
 
-		physicsframe();
-		if (player1->state == CS_EDITING)
-		{
-
-			vec d(0, 0, 0);
-			player1->vel = vec(0);
-			vecfromyawpitch(player1->yaw, player1->pitch, player1->move, player1->strafe, d);
-			d.mul(1);
-			player1->o.add(d);
-		}
-
-		if (!curworld->ispaused())
-		{
-			PHYSStep();
-			curworld->updateworld();
-			moveragdolls();
-		}
+        physicsframe();
         ai::navigate();
-		updateweapons(curtime);
+        updateweapons(curtime);
         otherplayers(curtime);
         ai::update();
-        gets2c();
-	//angelo sauer ents
-       // updatemovables(curtime);	
-        //angelo sauer ents
-	//angelo phys bullet
-	//updatebulletmovables(curtime);
-	//angelo phys bullet
-
-	if(player1->state == CS_DEAD)
+        if (!curworld->ispaused())
         {
-            if(player1->ragdoll) moveragdoll(player1);
-            else if(lastmillis-player1->lastpain<2000)
-            {
-                player1->move = player1->strafe = 0;
-                moveplayer(player1, 10, true);
-            }
+            curworld->updateworld();
+            PHYSStep();  
+            moveragdolls();
         }
-        else if(!intermission)
+        gets2c();
+        if(connected)
         {
-            if(player1->ragdoll) cleanragdoll(player1);
-            crouchplayer(player1, 10, true);
-            moveplayer(player1, 10, true);
-            swayhudgun(curtime);
-            entities::checkitems(player1);
-	    //angelo sauer ents
-	    entities::checktriggers();
-	    //angelo sauer ents
-            if(cmode) cmode->checkitems(player1);
+            if(player1->state == CS_DEAD)
+            {
+                if(player1->ragdoll) moveragdoll(player1);
+                else if(lastmillis-player1->lastpain<2000)
+                {
+                    player1->move = player1->strafe = 0;
+                    moveplayer(player1, 10, true);
+                }
+            }
+            else if(!intermission)
+            {
+                if(player1->ragdoll) cleanragdoll(player1);
+                crouchplayer(player1, 10, true);
+                moveplayer(player1, 10, true);
+                swayhudgun(curtime);
+                entities::checkitems(player1);
+                if(cmode) cmode->checkitems(player1);
+            }
         }
         if(player1->clientnum>=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
@@ -320,27 +293,34 @@ namespace game
             respawnself();
         }
     }
+    COMMAND(respawn, "");
 
     // inputs
 
+    VARP(attackspawn, 0, 1, 1);
+
     void doaction(int act)
     {
-        if(intermission) return;
-        if((player1->attacking = act)) respawn();
+        if(!connected || intermission) return;
+        if((player1->attacking = act) && attackspawn) respawn();
     }
 
     ICOMMAND(shoot, "D", (int *down), doaction(*down ? ACT_SHOOT : ACT_IDLE));
     ICOMMAND(melee, "D", (int *down), doaction(*down ? ACT_MELEE : ACT_IDLE));
 
+    VARP(jumpspawn, 0, 1, 1);
+
     bool canjump()
     {
-        if(!intermission) respawn();
-        return player1->state!=CS_DEAD && !intermission;
+        if(!connected || intermission) return false;
+        if(jumpspawn) respawn();
+        return player1->state!=CS_DEAD;
     }
 
     bool cancrouch()
     {
-        return player1->state!=CS_DEAD && !intermission;
+        if(!connected || intermission) return false;
+        return player1->state!=CS_DEAD;
     }
 
     bool allowmove(physent *d)
@@ -429,8 +409,7 @@ namespace game
         }
         else if((d->state!=CS_ALIVE && d->state != CS_LAGGED && d->state != CS_SPAWNING) || intermission) return;
 
-        gameent *h = followingplayer();
-        if(!h) h = player1;
+        gameent *h = followingplayer(player1);
         int contype = d==h || actor==h ? CON_FRAG_SELF : CON_FRAG_OTHER;
         const char *dname = "", *aname = "";
         if(m_teammode && teamcolorfrags)
@@ -463,6 +442,7 @@ namespace game
 
     void timeupdate(int secs)
     {
+        server::timeupdate(secs);
         if(secs > 0)
         {
             maplimit = lastmillis + secs*1000;
@@ -544,7 +524,6 @@ namespace game
             if(specmode) nextfollow();
             else stopfollowing();
         }
-
     }
 
     void clearclients(bool notify)
@@ -564,16 +543,16 @@ namespace game
     void startgame()
     {
       //angelo sauer ents
-        clearmovables();      
+       // clearmovables();     
       //angelo sauer ents
 	//angelo phys bullet
-	PHYSInit();
+	   PHYSInit();
 	//angelo phys bullet 
-	buildLevelTriCol();
+	   buildLevelTriCol();
 	//angelo phys bullet
 	//angelo phys bullet
-	//curworld->clearworld();
-	clearbulletmovables();
+	  curworld->clearWorld();
+	// clearbulletmovables();
 	//angelo phys bullet
         clearprojectiles();
         clearbouncers();
@@ -608,7 +587,6 @@ namespace game
         lasthit = 0;
 
         execident("mapstart");
-
     }
 
     void startmap(const char *name)   // called just after a map load
@@ -622,7 +600,6 @@ namespace game
         copystring(clientmap, name ? name : "");
 
         sendmapinfo();
-
     }
 
     const char *getmapinfo()
@@ -642,21 +619,11 @@ namespace game
         if     (floorlevel>0) { if(d==player1 || d->type!=ENT_PLAYER || ((gameent *)d)->ai) msgsound(S_JUMP, d); }
         else if(floorlevel<0) { if(d==player1 || d->type!=ENT_PLAYER || ((gameent *)d)->ai) msgsound(S_LAND, d); }
     }
-/*
+
     void dynentcollide(physent *d, physent *o, const vec &dir)
     {
     }
-*/
-//angelo sauer ents
-    void dynentcollide(physent *d, physent *o, const vec &dir)
-    {
-        switch(d->type)
-        {
-            //case ENT_AI: if(dir.z > 0) stackmonster((monster *)d, o); break;
-            case ENT_INANIMATE: if(dir.z > 0) stackmovable((movable *)d, o); break;
-        }
-    }
-//angelo sauer ents
+
     void msgsound(int n, physent *d)
     {
         if(!d || d==player1)
@@ -672,26 +639,11 @@ namespace game
         }
     }
 
-    //int numdynents() { return players.length(); }
-    //angelo sauer ents
-    int numdynents() { return players.length()+movables.length()+bulletmovables.length(); } 
-    //int numdynents() { return players.length()+movables.length(); }
-    //angelo sauer ents
+    int numdynents() { return players.length(); }
 
     dynent *iterdynents(int i)
     {
         if(i<players.length()) return players[i];
-	//angelo sauer ents
-        i -= players.length();//dont forget this for mon mons
-        //if(i<monsters.length()) return (dynent *)monsters[i];
-        //i -= monsters.length();	
-        if(i<movables.length()) return (dynent *)movables[i];
-	//angelo sauer ents
-	//angelo bullet physics
-	i -= movables.length();//AHHH HAA !!! need this for each dynent above :)
-	if(i<bulletmovables.length()) return (dynent *)bulletmovables[i];
-	//angelo bullet physics
-
         return NULL;
     }
 
@@ -719,7 +671,7 @@ namespace game
 
     const char *teamcolorname(gameent *d, const char *alt)
     {
-        if(!teamcolortext || !m_teammode || !validteam(d->team)) return colorname(d, NULL, alt);
+        if(!teamcolortext || !m_teammode || !validteam(d->team) || d->state == CS_SPECTATOR) return colorname(d, NULL, alt);
         return colorname(d, NULL, alt, teamtextcode[d->team]);
     }
 
@@ -727,6 +679,18 @@ namespace game
     {
         if(!teamcolortext || !m_teammode || !validteam(team)) return alt;
         return tempformatstring("\fs%s%s%s%s\fr", teamtextcode[team], prefix, teamnames[team], suffix);
+    }
+
+    VARP(teamsounds, 0, 1, 1);
+
+    void teamsound(bool sameteam, int n, const vec *loc)
+    {
+        playsound(n, loc, NULL, teamsounds ? (m_teammode && sameteam ? SND_USE_ALT : SND_NO_ALT) : 0);
+    }
+
+    void teamsound(gameent *d, int n, const vec *loc)
+    {
+        teamsound(isteam(d->team, player1->team), n, loc);
     }
 
     void suicide(physent *d)
@@ -776,9 +740,7 @@ namespace game
     void drawhudicons(gameent *d)
     {
 #if 0
-        pushhudmatrix();
-        hudmatrix.scale(2, 2, 1);
-        flushhudmatrix();
+        pushhudscale(2);
 
         draw_textf("%d", (HICON_X + HICON_SIZE + HICON_SPACE)/2, HICON_TEXTY/2, d->state==CS_DEAD ? 0 : d->health);
         if(d->state!=CS_DEAD)
@@ -799,9 +761,7 @@ namespace game
 
     void gameplayhud(int w, int h)
     {
-        pushhudmatrix();
-        hudmatrix.scale(h/1800.0f, h/1800.0f, 1);
-        flushhudmatrix();
+        pushhudscale(h/1800.0f);
 
         if(player1->state==CS_SPECTATOR)
         {
@@ -884,6 +844,21 @@ namespace game
 #endif
         if(d->gunwait) col.mul(0.5f);
         return crosshair;
+    }
+
+    int maxsoundradius(int n)
+    {
+        switch(n)
+        {
+            case S_JUMP:
+            case S_LAND:
+            case S_WEAPLOAD:
+            case S_ITEMSPAWN:
+            case S_NOAMMO:
+                return 340;
+            default:
+                return 500;
+        }
     }
 
     const char *mastermodecolor(int n, const char *unknown)

@@ -16,15 +16,13 @@ namespace entities
     extern bool printent(extentity &e, char *buf, int len);
     extern extentity *newentity();
     extern void deleteentity(extentity *e);
-	extern void clearents();
+    extern void clearents();
 	extern void clearscene();
     extern vector<extentity *> &getents();
     extern const char *entmodel(const entity &e);
-	extern void animatemapmodel(const extentity &e, int &anim, int &basetime);
+    extern void animatemapmodel(const extentity &e, int &anim, int &basetime);
 	struct world;
 }
-
-
 
 namespace game
 {
@@ -87,11 +85,13 @@ namespace game
     extern const char *defaultcrosshair(int index);
     extern int selectcrosshair(vec &col);
     extern void setupcamera();
+    extern bool allowthirdperson(bool msg = false);
     extern bool detachcamera();
     extern bool collidecamera();
     extern void adddynlights();
     extern void particletrack(physent *owner, vec &o, vec &d);
     extern void dynlighttrack(physent *owner, vec &o, vec &hud);
+    extern int maxsoundradius(int n);
     extern bool needminimap();
 }
 

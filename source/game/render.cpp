@@ -48,15 +48,15 @@ namespace game
 
     static const int playercolors[] =
     {
-        0xAC2C2A,
-        0xAD6932,
-        0xBFAA56,
-        0x4C7A3D,
+        0xA12020,
+        0xA15B28,
+        0xB39D52,
+        0x3E752F,
         0x3F748C,
-        0x27508A,
-        0xB8658C,
-        0x5A3B80,
-        0xB8B1A5
+        0x214C85,
+        0xB3668C,
+        0x523678,
+        0xB3ADA3
     };
 
     static const int playercolorsazul[] =
@@ -335,6 +335,16 @@ namespace game
             gameent *d = players[i];
             if(d == player1 || d->state==CS_SPECTATOR || d->state==CS_SPAWNING || d->lifesequence < 0 || d == exclude || (d->state==CS_DEAD && hidedead)) continue;
             renderplayer(d);
+
+            vec dir = vec(d->o).sub(camera1->o);
+            float dist = dir.magnitude();
+            dir.div(dist);
+            if(d->state!=CS_EDITING && raycube(camera1->o, dir, dist, 0) < dist)
+            {
+                d->info[0] = '\0';
+                continue;
+            }
+
             copystring(d->info, colorname(d));
             if(d->state!=CS_DEAD)
             {
@@ -354,12 +364,7 @@ namespace game
             renderplayer(exclude, 1, MDL_ONLYSHADOW);
         else if(!f && (player1->state==CS_ALIVE || (player1->state==CS_EDITING && third) || (player1->state==CS_DEAD && !hidedead)))
             renderplayer(player1, 1, third ? 0 : MDL_ONLYSHADOW);
-	//angelo sauer ents
-        rendermovables();	
-	//angelo sauer ents
-	//angelo phys bullet
-		renderbulletmovables();
-	//angelo phys bullet
+	
         curworld->dorender();
         renderbouncers();
         renderprojectiles();

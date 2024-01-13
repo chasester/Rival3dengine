@@ -9,14 +9,12 @@
 #include "octa.h"
 #include "light.h"
 #include "texture.h"
-#include "bih.h"	
+#include "bih.h"
 #include "model.h"
 
-
 extern dynent *player;
-extern camera *camera1;                // special ent that acts as camera, same object as player1 in FPS mode
+//extern physent *camera1;                // special ent that acts as camera, same object as player1 in FPS mode
 
-extern ivec octaoffset;
 extern int worldscale, worldsize;
 extern int mapversion;
 extern char *maptitle;
@@ -29,9 +27,8 @@ extern const uchar fvmasks[64];
 extern const uchar faceedgesidx[6][4];
 extern bool inbetweenframes, renderedframe;
 
-
 extern SDL_Window *screen;
-extern int screenw, screenh, renderw, renderh, hudx, hudy, hudw, hudh;
+extern int screenw, screenh, renderw, renderh, hudw, hudh;
 
 extern vector<int> entgroup;
 
@@ -116,8 +113,6 @@ extern void setviewcell(const vec &p);
 extern void savepvs(stream *f);
 extern void loadpvs(stream *f, int numpvs);
 extern int getnumviewcells();
-extern bool iscalcpvs;
-extern void checkpvs();
 
 static inline bool pvsoccluded(const ivec &bborigin, int size)
 {
@@ -125,13 +120,13 @@ static inline bool pvsoccluded(const ivec &bborigin, int size)
 }
 
 // rendergl
-extern bool hasVAO, hasTR, hasTSW, hasFBO, hasAFBO, hasDS, hasTF, hasCBF, hasS3TC, hasFXT1, hasLATC, hasRGTC, hasAF, hasFBB, hasFBMS, hasTMS, hasMSS, hasFBMSBS, hasUBO, hasMBR, hasDB2, hasDBB, hasTG, hasTQ, hasPF, hasTRG, hasTI, hasHFV, hasHFP, hasDBT, hasDC, hasDBGO, hasEGPU4, hasGPU4, hasGPU5, hasBFE, hasEAL, hasCR, hasOQ2, hasCB, hasCI;
-extern int glversion, glslversion;
+extern bool hasVAO, hasTR, hasTSW, hasPBO, hasFBO, hasAFBO, hasDS, hasTF, hasCBF, hasS3TC, hasFXT1, hasLATC, hasRGTC, hasAF, hasFBB, hasFBMS, hasTMS, hasMSS, hasFBMSBS, hasUBO, hasMBR, hasDB2, hasDBB, hasTG, hasTQ, hasPF, hasTRG, hasTI, hasHFV, hasHFP, hasDBT, hasDC, hasDBGO, hasEGPU4, hasGPU4, hasGPU5, hasBFE, hasEAL, hasCR, hasOQ2, hasES2, hasES3, hasCB, hasCI, hasTS;
+extern int glversion, glslversion, glcompat;
 extern int maxdrawbufs, maxdualdrawbufs;
 
 enum { DRAWTEX_NONE = 0, DRAWTEX_ENVMAP, DRAWTEX_MINIMAP, DRAWTEX_MODELPREVIEW };
 
-extern int vieww, viewh, viewidx;
+extern int vieww, viewh;
 extern int fov;
 extern float curfov, fovy, aspect, forceaspect;
 extern float nearplane;
@@ -161,7 +156,7 @@ extern void gl_setupframe(bool force = false);
 extern void gl_drawframe();
 extern void cleanupgl();
 extern void drawminimap();
-extern void enablepolygonoffset(GLenum type);
+extern void enablepolygonoffset(GLenum type, float scale = 1.0f);
 extern void disablepolygonoffset(GLenum type);
 extern bool calcspherescissor(const vec &center, float size, float &sx1, float &sy1, float &sx2, float &sy2, float &sz1, float &sz2);
 extern bool calcbbscissor(const ivec &bbmin, const ivec &bbmax, float &sx1, float &sy1, float &sx2, float &sy2);
@@ -184,8 +179,6 @@ extern float calcfogcull();
 extern void writecrosshairs(stream *f);
 extern void renderavatar();
 
-
-
 namespace modelpreview
 {
     extern void start(int x, int y, int w, int h, bool background = true, bool scissor = false);
@@ -195,30 +188,6 @@ namespace modelpreview
 struct timer;
 extern timer *begintimer(const char *name, bool gpu = true);
 extern void endtimer(timer *t);
-
-namespace ovr
-{
-    extern int enabled;
-    extern int lensw, lensh;
-    extern GLuint lensfbo[2], lenstex[2];
-    extern float viewoffset, distortoffset, distortscale, fov;
-    extern float yaw, pitch, roll;
-
-    extern void init();
-    extern void destroy();
-    extern bool enable();
-    extern void disable();
-    extern void setup();
-    extern void cleanup();
-    extern void update();
-    extern void warp();
-    extern void ortho(matrix4 &m, float dist = 0, float fov = 0);
-
-    static inline float modifyroll(float r) { return ovr::enabled ? r + roll : r; }
-}
-
-
-
 
 // renderextras
 extern void render3dbox(vec &o, float tofloor, float toceil, float xradius, float yradius = 0);
@@ -257,11 +226,12 @@ extern bool collapsedface(const cube &c, int orient);
 extern bool touchingface(const cube &c, int orient);
 extern bool flataxisface(const cube &c, int orient);
 extern bool collideface(const cube &c, int orient);
+extern void genclipbounds(const cube &c, const ivec &co, int size, clipplanes &p);
 extern int genclipplane(const cube &c, int i, vec *v, plane *clip);
-extern void genclipplanes(const cube &c, const ivec &co, int size, clipplanes &p, bool collide = true);
+extern void genclipplanes(const cube &c, const ivec &co, int size, clipplanes &p, bool collide = true, bool noclip = false);
 extern bool visibleface(const cube &c, int orient, const ivec &co, int size, ushort mat = MAT_AIR, ushort nmat = MAT_AIR, ushort matmask = MATF_VOLUME);
 extern int classifyface(const cube &c, int orient, const ivec &co, int size);
-extern int visibletris(const cube &c, int orient, const ivec &co, int size, ushort nmat = MAT_ALPHA, ushort matmask = MAT_ALPHA);
+extern int visibletris(const cube &c, int orient, const ivec &co, int size, ushort vmat = MAT_AIR, ushort nmat = MAT_ALPHA, ushort matmask = MAT_ALPHA);
 extern int visibleorient(const cube &c, int orient);
 extern void genfaceverts(const cube &c, int orient, ivec v[4]);
 extern int calcmergedsize(int orient, const ivec &co, int size, const vertinfo *verts, int numverts);
@@ -283,16 +253,17 @@ static inline cubeext &ext(cube &c)
 
 extern int lighttilealignw, lighttilealignh, lighttilevieww, lighttileviewh, lighttilew, lighttileh;
 
-static inline void calctilebounds(float sx1, float sy1, float sx2, float sy2, int &bx1, int &by1, int &bx2, int &by2)
+template<class T>
+static inline void calctilebounds(float sx1, float sy1, float sx2, float sy2, T &bx1, T &by1, T &bx2, T &by2)
 {
     int tx1 = max(int(floor(((sx1 + 1)*0.5f*vieww)/lighttilealignw)), 0),
         ty1 = max(int(floor(((sy1 + 1)*0.5f*viewh)/lighttilealignh)), 0),
         tx2 = min(int(ceil(((sx2 + 1)*0.5f*vieww)/lighttilealignw)), lighttilevieww),
         ty2 = min(int(ceil(((sy2 + 1)*0.5f*viewh)/lighttilealignh)), lighttileviewh);
-    bx1 = ((tx1 + 1) * lighttilew - 1) / lighttilevieww;
-    by1 = ((ty1 + 1) * lighttileh - 1) / lighttileviewh;
-    bx2 = (tx2 * lighttilew + lighttilevieww - 1) / lighttilevieww;
-    by2 = (ty2 * lighttileh + lighttileviewh - 1) / lighttileviewh;
+    bx1 = T((tx1 * lighttilew) / lighttilevieww);
+    by1 = T((ty1 * lighttileh) / lighttileviewh);
+    bx2 = T((tx2 * lighttilew + lighttilevieww - 1) / lighttilevieww);
+    by2 = T((ty2 * lighttileh + lighttileviewh - 1) / lighttileviewh);
 }
 
 static inline void masktiles(uint *tiles, float sx1, float sy1, float sx2, float sy2)
@@ -315,7 +286,7 @@ extern int shadowmapping;
 
 extern vec shadoworigin, shadowdir;
 extern float shadowradius, shadowbias;
-extern int shadowside, shadowspot;
+extern int shadowside, shadowspot, shadowtransparent;
 extern matrix4 shadowmatrix;
 
 extern void loaddeferredlightshaders();
@@ -325,10 +296,11 @@ extern void clearshadowcache();
 extern void rendervolumetric();
 extern void cleanupvolumetric();
 
-extern void findshadowvas();
+extern void findshadowvas(bool transparent = false);
 extern void findshadowmms();
 
 extern int calcshadowinfo(const extentity &e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias);
+extern int dynamicshadowvas();
 extern int dynamicshadowvabounds(int mask, vec &bbmin, vec &bbmax);
 extern void rendershadowmapworld();
 extern void batchshadowmapmodels(bool skipmesh = false);
@@ -363,9 +335,11 @@ static inline bool bbinsidespot(const vec &origin, const vec &dir, int spot, con
 
 extern matrix4 worldmatrix, screenmatrix;
 
+extern int transparentlayer;
+
 extern int gw, gh, gdepthformat, ghasstencil;
 extern GLuint gdepthtex, gcolortex, gnormaltex, gglowtex, gdepthrb, gstencilrb;
-extern int msaasamples;
+extern int msaasamples, msaalight;
 extern GLuint msdepthtex, mscolortex, msnormaltex, msglowtex, msdepthrb, msstencilrb;
 extern vector<vec2> msaapositions;
 enum { AA_UNUSED = 0, AA_LUMA, AA_MASKED, AA_SPLIT, AA_SPLIT_LUMA, AA_SPLIT_MASKED };
@@ -437,6 +411,7 @@ extern void cleanupprefabs();
 // octarender
 extern ivec worldmin, worldmax, nogimin, nogimax;
 extern vector<tjoint> tjoints;
+extern vector<vtxarray *> varoot, valist;
 
 extern ushort encodenormal(const vec &n);
 extern vec decodenormal(ushort norm);
@@ -455,6 +430,7 @@ extern void updatevabbs(bool force = false);
 extern int oqfrags;
 extern float alphafrontsx1, alphafrontsx2, alphafrontsy1, alphafrontsy2, alphabacksx1, alphabacksx2, alphabacksy1, alphabacksy2, alpharefractsx1, alpharefractsx2, alpharefractsy1, alpharefractsy2;
 extern uint alphatiles[LIGHTTILE_MAXH];
+extern vtxarray *visibleva;
 
 extern void visiblecubes(bool cull = true);
 extern void setvfcP(const vec &bbmin = vec(-1, -1, -1), const vec &bbmax = vec(1, 1, 1));
@@ -464,26 +440,27 @@ extern void rendergeom();
 extern int findalphavas();
 extern void renderrefractmask();
 extern void renderalphageom(int side);
+extern void renderalphashadow(bool cullside = false);
 extern void rendermapmodels();
 extern void renderoutline();
 extern void cleanupva();
 
 extern bool isfoggedsphere(float rad, const vec &cv);
 extern int isvisiblesphere(float rad, const vec &cv);
+extern int isvisiblebb(const ivec &bo, const ivec &br);
 extern bool bboccluded(const ivec &bo, const ivec &br);
 
 extern int deferquery;
 extern void flipqueries();
 extern occludequery *newquery(void *owner);
+extern void startquery(occludequery *query);
+extern void endquery(occludequery *query);
 extern bool checkquery(occludequery *query, bool nowait = false);
 extern void resetqueries();
 extern int getnumqueries();
 extern void startbb(bool mask = true);
 extern void endbb(bool mask = true);
 extern void drawbb(const ivec &bo, const ivec &br);
-
-#define startquery(query) do { glBeginQuery_(GL_SAMPLES_PASSED, ((occludequery *)(query))->id); } while(0)
-#define endquery(query) do { glEndQuery_(GL_SAMPLES_PASSED); } while(0)
 
 extern void renderdecals();
 
@@ -506,7 +483,7 @@ extern float matsolidsx1, matsolidsy1, matsolidsx2, matsolidsy2;
 extern float matrefractsx1, matrefractsy1, matrefractsx2, matrefractsy2;
 extern uint matliquidtiles[LIGHTTILE_MAXH], matsolidtiles[LIGHTTILE_MAXH];
 extern vector<materialsurface> editsurfs, glasssurfs[4], watersurfs[4], waterfallsurfs[4], lavasurfs[4], lavafallsurfs[4];
-extern const vec matnormals[6];
+extern const bvec4 matnormals[6];
 
 extern int showmat;
 
@@ -611,7 +588,7 @@ extern void clearsleep(bool clearoverrides = true);
 // console
 extern float conscale;
 
-extern void processkey(int code, bool isdown);
+extern void processkey(int code, bool isdown, int modstate = 0);
 extern void processtextinput(const char *str, int len);
 extern float rendercommand(float x, float y, float w);
 extern float renderfullconsole(float w, float h);
@@ -629,6 +606,7 @@ extern void writecompletions(stream *f);
 //angel
 extern void asEngineShutdown();
 extern void asConfigureEngine();
+
 // main
 enum
 {
@@ -649,7 +627,6 @@ extern bool initwarning(const char *desc, int level = INIT_RESET, int type = CHA
 
 extern bool grabinput, minimized;
 
-extern void pushevent(const SDL_Event &e);
 extern bool interceptkey(int sym);
 
 extern float loadprogress;
@@ -672,11 +649,10 @@ extern void textinput(bool on, int mask = ~0);
 // physics
 extern void modifyorient(float yaw, float pitch);
 extern void mousemove(int dx, int dy);
-extern bool pointincube(const clipplanes &p, const vec &v);
+//extern bool pointincube(const clipplanes &p, const vec &v);
 extern bool overlapsdynent(const vec &o, float radius);
 extern void rotatebb(vec &center, vec &radius, int yaw, int pitch, int roll = 0);
-extern float shadowray(const vec &o, const vec &ray, float radius, int mode, extentity *t = NULL);
-
+//extern float shadowray(const vec &o, const vec &ray, float radius, int mode, extentity *t = NULL);
 
 // world
 
@@ -690,6 +666,7 @@ extern void attachentities();
 extern void freeoctaentities(cube &c);
 extern bool pointinsel(const selinfo &sel, const vec &o);
 
+extern void resetmap();
 extern void startmap(const char *name);
 
 // rendermodel
@@ -709,7 +686,7 @@ extern void shadowmaskbatchedmodels(bool dynshadow = true);
 extern void rendermapmodelbatches();
 extern void rendermodelbatches();
 extern void rendertransparentmodelbatches(int stencil = 0);
-//extern void rendermapmodel(int idx, int anim, const vec &o, float yaw = 0, float pitch = 0, float roll = 0, int flags = MDL_CULL_VFC | MDL_CULL_DIST, int basetime = 0, float size = 1);
+extern void rendermapmodel(int idx, int anim, const vec &o, float yaw, float pitch, float roll, int flags, int basetime, float size);
 extern void clearbatchedmapmodels();
 extern void preloadusedmapmodels(bool msg = false, bool bih = false);
 extern int batcheddynamicmodels();
@@ -834,6 +811,7 @@ extern void clearblendtextures();
 extern void cleanupblendmap();
 
 // recorder
+
 namespace recorder
 {
     extern void stop();

@@ -73,7 +73,7 @@ void fatal(const char *fmt, ...)
     defvformatstring(msg,fmt,fmt);
     if(logfile) logoutf("%s", msg);
 #ifdef WIN32
-    MessageBox(NULL, msg, "Tesseract fatal error", MB_OK|MB_SYSTEMMODAL);
+    MessageBox(NULL, msg, "Rival fatal error", MB_OK|MB_SYSTEMMODAL);
 #else
     fprintf(stderr, "server error: %s\n", msg);
 #endif
@@ -84,22 +84,6 @@ void fatal(const char *fmt, ...)
 void conoutfv(int type, const char *fmt, va_list args)
 {
     logoutfv(fmt, args);
-}
-
-void conoutf(const char *fmt, ...)
-{
-    va_list args;
-    va_start(args, fmt);
-    conoutfv(CON_INFO, fmt, args);
-    va_end(args);
-}
-
-void conoutf(int type, const char *fmt, ...)
-{
-    va_list args;
-    va_start(args, fmt);
-    conoutfv(type, fmt, args);
-    va_end(args);
 }
 #endif
 
@@ -198,7 +182,7 @@ void sendpacket(int n, int chan, ENetPacket *packet, int exclude)
         loopv(clients) if(i!=exclude && server::allowbroadcast(i)) sendpacket(i, chan, packet);
         return;
     }
-    switch(clients[n]->type)
+    if(clients.inrange(n)) switch(clients[n]->type)
     {
         case ST_TCPIP:
         {
@@ -451,7 +435,7 @@ void processmasterinput()
     char *input = &masterin[masterinpos], *end = (char *)memchr(input, '\n', masterin.length() - masterinpos);
     while(end)
     {
-        *end++ = '\0';
+        *end = '\0';
 
         const char *args = input;
         while(args < end && !iscubespace(*args)) args++;
@@ -464,6 +448,7 @@ void processmasterinput()
             conoutf("master server registration succeeded");
         else server::processmasterinput(input, cmdlen, args);
 
+        end++;
         masterinpos = end - masterin.getbuf();
         input = end;
         end = (char *)memchr(input, '\n', masterin.length() - masterinpos);
@@ -731,6 +716,7 @@ void localdisconnect(bool cleanup)
 
 void localconnect()
 {
+    if(initing) return;
     client &c = addclient(ST_LOCAL);
     copystring(c.hostname, "local");
     game::gameconnect(false);
@@ -1081,7 +1067,7 @@ void initserver(bool listen, bool dedicated)
     if(dedicated)
     {
 #ifdef WIN32
-        setupwindow("Tesseract server");
+        setupwindow("Rival server");
 #endif
     }
 

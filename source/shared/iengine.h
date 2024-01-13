@@ -41,9 +41,9 @@ enum // cube empty-space materials
 #define isdeadly(mat) ((mat)==MAT_LAVA)
 
 extern void lightent(extentity &e, float height = 8.0f);
-extern void lightreaching(const vec &target, vec &color, vec &dir, bool fast = false, extentity *e = 0, float minambient = 0.4f);
+// Check This //extern void lightreaching(const vec &target, vec &color, vec &dir, bool fast = false, extentity *e = 0, float minambient = 0.4f);
 
-enum { RAY_BB = 1, RAY_POLY = 3, RAY_ALPHAPOLY = 7, RAY_ENTS = 9, RAY_CLIPMAT = 16, RAY_SKIPFIRST = 32, RAY_EDITMAT = 64, RAY_SHADOW = 128, RAY_PASS = 256, RAY_SKIPSKY = 512 };
+enum { RAY_BB = 1, RAY_POLY = 3, RAY_ALPHAPOLY = 7, RAY_ENTS = 9, RAY_CLIPMAT = 16, RAY_SKIPFIRST = 32, RAY_EDITMAT = 64, RAY_PASS = 128 };
 
 extern float raycube   (const vec &o, const vec &ray,     float radius = 0, int mode = RAY_CLIPMAT, int size = 0, extentity *t = 0);
 extern float raycubepos(const vec &o, const vec &ray, vec &hit, float radius = 0, int mode = RAY_CLIPMAT, int size = 0);
@@ -133,6 +133,7 @@ extern ident *newident(const char *name, int flags = 0);
 extern ident *readident(const char *name);
 extern ident *writeident(const char *name, int flags = 0);
 extern bool addcommand(const char *name, identfun fun, const char *narg, int type = ID_COMMAND);
+template<class F> static inline bool addcommand(const char *name, F *fun, const char *narg, int type = ID_COMMAND) { return ::addcommand(name, (identfun)fun, narg, type); }
 extern uint *compilecode(const char *p);
 extern void keepcode(uint *p);
 extern void freecode(uint *p);
@@ -174,9 +175,10 @@ extern int clampvar(ident *id, int i, int minval, int maxval);
 extern float clampfvar(ident *id, float f, float minval, float maxval);
 extern void loopiter(ident *id, identstack &stack, const tagval &v);
 extern void loopend(ident *id, identstack &stack);
+/* Check This
 extern void edithmap(int dir, int mode, bool force =false);
 extern void sethor(vec o); 
-
+*/
 
 #define loopstart(id, stack) if((id)->type != ID_ALIAS) return; identstack stack;
 static inline void loopiter(ident *id, identstack &stack, int i) { tagval v; v.setint(i); loopiter(id, stack, v); }
@@ -192,11 +194,16 @@ enum
     CON_ERROR = 1<<2,
     CON_DEBUG = 1<<3,
     CON_INIT  = 1<<4,
-    CON_ECHO  = 1<<5
+    CON_ECHO  = 1<<5,
+
+    CON_FLAGS = 0xFFFF,
+    CON_TAG_SHIFT = 16,
+    CON_TAG_MASK = (0x7FFF << CON_TAG_SHIFT)
 };
 
 extern void conoutf(const char *s, ...) PRINTFARGS(1, 2);
 extern void conoutf(int type, const char *s, ...) PRINTFARGS(2, 3);
+extern void conoutf(int type, int tag, const char *s, ...) PRINTFARGS(3, 4);
 extern void conoutfv(int type, const char *fmt, va_list args);
 
 extern FILE *getlogfile();
@@ -229,8 +236,10 @@ extern void mpeditent(int i, const vec &o, int type, int attr1, int attr2, int a
 extern vec getselpos();
 extern int getworldsize();
 extern int getmapversion();
+/* Check This
 extern void renderentbox(const vec &eo, vec es);
 extern void addextraverts(int a);
+*/
 extern void renderentcone(const extentity &e, const vec &dir, float radius, float angle);
 extern void renderentarrow(const extentity &e, const vec &dir, float radius);
 extern void renderentattachment(const extentity &e);
@@ -282,7 +291,7 @@ extern void packvslot(vector<uchar> &buf, const VSlot *vs);
 
 // renderlights
 
-enum { L_NOSHADOW = 1<<0, L_NODYNSHADOW = 1<<1, L_VOLUMETRIC = 1<<2 };
+enum { L_NOSHADOW = 1<<0, L_NODYNSHADOW = 1<<1, L_VOLUMETRIC = 1<<2, L_NOSPEC = 1<<3, L_SMALPHA = 1<<4 };
 
 // dynlight
 enum
@@ -293,33 +302,11 @@ enum
 };
 
 extern void adddynlight(const vec &o, float radius, const vec &color, int fade = 0, int peak = 0, int flags = 0, float initradius = 0, const vec &initcolor = vec(0, 0, 0), physent *owner = NULL, const vec &dir = vec(0, 0, 0), int spot = 0);
-extern void dynlightreaching(const vec &target, vec &color, vec &dir, bool hud = false);
+// Check This //extern void dynlightreaching(const vec &target, vec &color, vec &dir, bool hud = false);
 extern void removetrackeddynlights(physent *owner = NULL);
 
 // rendergl
-struct camera
-{
-	float fov;
-	float yaw, pitch, roll;
-	vec o, camup, camright;
-	bool ismaincamera;
-	camera() : o(0), yaw(1), pitch(1), roll(0), camup(vec(0, 0, 1)), camright(vec(0, 0, -1)) {}
-	camera(vec _o, float _yaw, float _pitch, float _roll, float _fov = 100.f, vec _camup = vec(0, 0, 1), vec _camright = vec(0, 0, -1)) :
-		o(_o), yaw(_yaw), pitch(_pitch), roll(_roll), fov(_fov), camup(_camup), camright(_camright)
-	{
-		//recomputeCamera(); //idk if this is nessary
-	}
-//	void recomputeCamera() { recomputecamera(); }
-	void set(physent *p)
-	{
-		o = vec(p->o);
-		if(p->yaw < 360 && p->yaw > -1) yaw = float(p->yaw);
-		if (p->pitch < 90 && p->pitch > -90) pitch = float(p->pitch);
-		if (p->roll < 360 && p->roll > -1)roll = float(p->roll);
-
-	}
-};
-extern camera *camera1;
+extern physent *camera1;
 extern vec worldpos, camdir, camright, camup;
 extern float curfov, fovy, aspect;
 
@@ -330,6 +317,7 @@ extern vec calcmodelpreviewpos(const vec &radius, float &yaw);
 
 extern void damageblend(int n);
 extern void damagecompass(int n, const vec &loc);
+extern void cleardamagescreen();
 
 extern vec minimapcenter, minimapradius, minimapscale;
 extern void bindminimap();
@@ -339,6 +327,8 @@ extern void resethudmatrix();
 extern void pushhudmatrix();
 extern void flushhudmatrix(bool flushparams = true);
 extern void pophudmatrix(bool flush = true, bool flushparams = true);
+extern void pushhudscale(float sx, float sy = 0);
+extern void pushhudtranslate(float tx, float ty, float sx = 0, float sy = 0);
 extern void resethudshader();
 
 // renderparticles
@@ -396,19 +386,20 @@ static inline void addstain(int type, const vec &center, const vec &surface, flo
 // worldio
 extern bool load_world(const char *mname, const char *cname = NULL);
 extern bool save_world(const char *mname, bool nolms = false);
+extern void fixmapname(char *name);
 extern uint getmapcrc();
 extern void clearmapcrc();
 extern bool loadents(const char *fname, vector<entity> &ents, uint *crc = NULL);
 
 // physics
 extern vec collidewall;
-extern bool collideinside;
+extern int collideinside;
 extern physent *collideplayer;
 
 extern void moveplayer(physent *pl, int moveres, bool local);
 extern bool moveplayer(physent *pl, int moveres, bool local, int curtime);
 extern void crouchplayer(physent *pl, int moveres, bool local);
-extern bool collide(physent *d, const vec &dir = vec(0, 0, 0), float cutoff = 0.0f, bool playercol = true);
+extern bool collide(physent *d, const vec &dir = vec(0, 0, 0), float cutoff = 0.0f, bool playercol = true, bool insideplayercol = false);
 extern bool bounce(physent *d, float secs, float elasticity, float waterfric, float grav);
 extern bool bounce(physent *d, float elasticity, float waterfric, float grav);
 extern void avoidcollision(physent *d, const vec &dir, physent *obstacle, float space);
@@ -420,9 +411,11 @@ extern bool droptofloor(vec &o, float radius, float height);
 
 extern void vecfromyawpitch(float yaw, float pitch, int move, int strafe, vec &m);
 extern void vectoyawpitch(const vec &v, float &yaw, float &pitch);
+/* Check This
 //angelo sauer ents
 extern bool moveplatform(physent *p, const vec &dir);
 //angelo sauer ents
+*/
 extern void updatephysstate(physent *d);
 extern void cleardynentcache();
 extern void updatedynentcache(physent *d);
@@ -432,7 +425,9 @@ extern void findplayerspawn(dynent *d, int forceent = -1, int tag = 0);
 // sound
 enum
 {
-    SND_MAP = 1<<0
+    SND_MAP     = 1<<0,
+    SND_NO_ALT  = 1<<1,
+    SND_USE_ALT = 1<<2
 };
 
 extern int playsound(int n, const vec *loc = NULL, extentity *ent = NULL, int flags = 0, int loops = 0, int fade = 0, int chanid = -1, int radius = 0, int expire = -1);
@@ -444,8 +439,9 @@ extern void stopsounds();
 extern void initsound();
 
 // rendermodel
-enum { MDL_CULL_VFC = 1<<0, MDL_CULL_DIST = 1<<1, MDL_CULL_OCCLUDED = 1<<2, MDL_CULL_QUERY = 1<<3, MDL_FULLBRIGHT = 1<<4, MDL_NORENDER = 1<<5, MDL_MAPMODEL = 1<<6, MDL_NOBATCH = 1<<7, MDL_ONLYSHADOW = 1<<8, MDL_CENTER_ALIGNED = 1<<9 };
+//enum { MDL_CULL_VFC = 1<<0, _CULL_DIST = 1<<1, MDL_CULL_OCCLUDED = 1<<2, MDL_CULL_QUERY = 1<<3, MDL_FULLBRIGHT = 1<<4, MDL_NORENDER = 1<<5, MDL_MAPMODEL = 1<<6, MDL_NOBATCH = 1<<7, MDL_ONLYSHADOW = 1<<8, MDL_CENTER_ALIGNED = 1<<9 };
 //added mdl_cener_aligned, if object is center aligned fix it to be aligned to be the bottom of the object before rendering
+enum { MDL_CULL_VFC = 1<<0, MDL_CULL_DIST = 1<<1, MDL_CULL_OCCLUDED = 1<<2, MDL_CULL_QUERY = 1<<3, MDL_FULLBRIGHT = 1<<4, MDL_NORENDER = 1<<5, MDL_MAPMODEL = 1<<6, MDL_NOBATCH = 1<<7, MDL_ONLYSHADOW = 1<<8, MDL_NOSHADOW = 1<<9, MDL_FORCESHADOW = 1<<10, MDL_FORCETRANSPARENT = 1<<11,  MDL_CENTER_ALIGNED = 1<<12  };
 
 struct model;
 struct modelattach
@@ -467,9 +463,11 @@ extern void abovemodel(vec &o, const char *mdl);
 extern void renderclient(dynent *d, const char *mdlname, modelattach *attachments, int hold, int attack, int attackdelay, int lastaction, int lastpain, float scale = 1, bool ragdoll = false, float trans = 1);
 extern void interpolateorientation(dynent *d, float &interpyaw, float &interppitch);
 extern void setbbfrommodel(dynent *d, const char *mdl);
+/* Check This
 //angelo sauer ents
 extern void setmbbfrommodel(dynent *d, const char *mdl);
 //angelo sauer ents
+*/
 extern const char *mapmodelname(int i);
 extern model *loadmodel(const char *name, int i = -1, bool msg = false);
 extern void preloadmodel(const char *name);
@@ -559,17 +557,12 @@ extern void notifywelcome();
 
 // crypto
 extern void genprivkey(const char *seed, vector<char> &privstr, vector<char> &pubstr);
+extern bool calcpubkey(const char *privstr, vector<char> &pubstr);
 extern bool hashstring(const char *str, char *result, int maxlen);
-extern void answerchallenge(const char *privstr, const char *challenge, vector<char> &answerstr);
+extern bool answerchallenge(const char *privstr, const char *challenge, vector<char> &answerstr);
 extern void *parsepubkey(const char *pubstr);
 extern void freepubkey(void *pubkey);
 extern void *genchallenge(void *pubkey, const void *seed, int seedlen, vector<char> &challengestr);
 extern void freechallenge(void *answer);
 extern bool checkchallenge(const char *answerstr, void *correct);
-
-// ovr
-namespace ovr
-{
-    extern void reset();
-}
 

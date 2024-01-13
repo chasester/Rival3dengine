@@ -194,7 +194,7 @@ struct Shader
 
     bool isdynamic() const { return (type&SHADER_DYNAMIC)!=0; }
 
-    static inline bool isnull(const Shader *s) { return !s; }
+    static bool isnull(const Shader *s);
 
     bool isnull() const { return isnull(this); }
 
@@ -582,12 +582,7 @@ struct Texture
     uchar *alphamask;
 
     Texture() : alphamask(NULL) {}
-
-    int swizzle() const { extern bool hasTRG, hasTSW; return hasTRG && !hasTSW ? (bpp==1 ? 0 : (bpp==2 ? 1 : -1)) : -1; }
 };
-
-#define SETSWIZZLE(name, tex) SETVARIANT(name, (tex) ? (tex)->swizzle() : -1, 0)
-#define SETVARIANTSWIZZLE(name, tex, row) SETVARIANT(name, ((row) > 0 ? 1 : 0) + ((tex) ? (tex)->swizzle() : -1), row)
 
 enum
 {
@@ -599,6 +594,7 @@ enum
 
     TEX_SPEC,
     TEX_DEPTH,
+    TEX_ALPHA,
     TEX_UNKNOWN,
 
     TEX_DETAIL = TEX_SPEC
@@ -705,6 +701,7 @@ struct Slot
     virtual VSlot &emptyvslot();
 
     virtual int cancombine(int type) const;
+    virtual bool shouldpremul(int type) const { return false; }
 
     int findtextype(int type, int last = -1) const;
 
@@ -793,6 +790,7 @@ struct DecalSlot : Slot, VSlot
     VSlot &emptyvslot() { return *this; }
 
     int cancombine(int type) const;
+    bool shouldpremul(int type) const;
 
     void reset()
     {
@@ -809,6 +807,11 @@ struct DecalSlot : Slot, VSlot
     }
 };
 
+struct texrotation
+{
+    bool flipx, flipy, swapxy;
+};
+
 struct cubemapside
 {
     GLenum target;
@@ -816,6 +819,7 @@ struct cubemapside
     bool flipx, flipy, swapxy;
 };
 
+extern const texrotation texrotations[8];
 extern const cubemapside cubemapsides[6];
 extern Texture *notexture;
 extern Shader *nullshader, *hudshader, *hudtextshader, *hudnotextureshader, *nocolorshader, *foggedshader, *foggednotextureshader, *ldrshader, *ldrnotextureshader, *stdworldshader;
@@ -857,6 +861,7 @@ extern bool unpackvslot(ucharbuf &buf, VSlot &dst, bool delta);
 
 extern Slot dummyslot;
 extern VSlot dummyvslot;
+extern DecalSlot dummydecalslot;
 extern vector<Slot *> slots;
 extern vector<VSlot *> vslots;
 

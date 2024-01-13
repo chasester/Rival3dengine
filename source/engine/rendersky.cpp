@@ -139,8 +139,6 @@ void drawenvbox(Texture **sky = NULL, float z1clip = 0.0f, float z2clip = 1.0f, 
                        1.0f, 0.0f, -w,  w, w,
                        0.0f, 0.0f, -w, -w, w,
                        0.0f, 1.0f,  w, -w, w, sky[5]);
-
-    gle::disable();
 }
 
 void drawenvoverlay(Texture *overlay = NULL, float tx = 0, float ty = 0)
@@ -172,13 +170,12 @@ void drawenvoverlay(Texture *overlay = NULL, float tx = 0, float ty = 0)
         p.rotate_around_z((-2.0f*M_PI*i)/cloudsubdiv);
         gle::attribf(p.x*psz, p.y*psz, z);
             gle::attribf(tx - p.x*tsz, ty + p.y*tsz);
-            gle::attribf(color.r, color.g, color.b, cloudalpha);
+            gle::attrib(color, cloudalpha);
         gle::attribf(p.x*w, p.y*w, z);
             gle::attribf(tx - p.x*tsz2, ty + p.y*tsz2);
-            gle::attribf(color.r, color.g, color.b, 0);
+            gle::attrib(color, 0.0f);
     }
     xtraverts += gle::end();
-    gle::disable();
 }
 
 FVARR(fogdomeheight, -1, -0.5f, 1);
@@ -188,6 +185,7 @@ VARR(fogdomecap, 0, 1, 1);
 FVARR(fogdomeclip, 0, 1, 1);
 CVARR(fogdomecolour, 0);
 VARR(fogdomeclouds, 0, 1, 1);
+VARR(fogdomesquare, 0, 0, 1);
 
 namespace fogdome
 {
@@ -297,12 +295,12 @@ namespace fogdome
         }
 
         if(!vbuf) glGenBuffers_(1, &vbuf);
-        glBindBuffer_(GL_ARRAY_BUFFER, vbuf);
+        gle::bindvbo(vbuf);
         glBufferData_(GL_ARRAY_BUFFER, numverts*sizeof(vert), verts, GL_STATIC_DRAW);
         DELETEA(verts);
 
         if(!ebuf) glGenBuffers_(1, &ebuf);
-        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, ebuf);
+        gle::bindebo(ebuf);
         glBufferData_(GL_ELEMENT_ARRAY_BUFFER, (numindices + capindices)*sizeof(GLushort), indices, GL_STATIC_DRAW);
         DELETEA(indices);
     }
@@ -328,8 +326,8 @@ namespace fogdome
             lastclipz = fogdomeclip;
         }
 
-        glBindBuffer_(GL_ARRAY_BUFFER, vbuf);
-        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, ebuf);
+        gle::bindvbo(vbuf);
+        gle::bindebo(ebuf);
 
         gle::vertexpointer(sizeof(vert), &verts->pos);
         gle::colorpointer(sizeof(vert), &verts->color);
@@ -343,14 +341,14 @@ namespace fogdome
         gle::disablevertex();
         gle::disablecolor();
 
-        glBindBuffer_(GL_ARRAY_BUFFER, 0);
-        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, 0);
+        gle::clearvbo();
+        gle::clearebo();
     }
 }
 
 static void drawfogdome()
 {
-    SETSHADER(skyfog);
+    SETVARIANT(skyfog, fogdomesquare ? 0 : -1, 0);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -372,18 +370,18 @@ void cleanupsky()
 }
 
 VARR(atmo, 0, 0, 1);
-FVARR(atmoplanetsize, 1e-3f, 8, 1e3f);
+FVARR(atmoplanetsize, 1e-3f, 1, 1e3f);
 FVARR(atmoheight, 1e-3f, 1, 1e3f);
-FVARR(atmobright, 0, 4, 16);
+FVARR(atmobright, 0, 1, 16);
 CVAR1R(atmosunlight, 0);
 FVARR(atmosunlightscale, 0, 1, 16);
-FVARR(atmosundisksize, 0, 1, 10);
+CVAR1R(atmosundisk, 0);
+FVARR(atmosundisksize, 0, 12, 90);
+FVARR(atmosundiskcorona, 0, 0.4f, 1);
 FVARR(atmosundiskbright, 0, 1, 16);
-FVARR(atmohaze, 0, 0.03f, 1);
-CVAR0R(atmohazefade, 0xAEACA9);
-FVARR(atmohazefadescale, 0, 1, 1);
-FVARR(atmoclarity, 0, 0.2f, 10);
-FVARR(atmodensity, 1e-3f, 0.99f, 10);
+FVARR(atmohaze, 0, 0.1f, 16);
+FVARR(atmodensity, 0, 1, 16);
+FVARR(atmoozone, 0, 1, 16);
 FVARR(atmoalpha, 0, 1, 1);
 
 static void drawatmosphere()
@@ -395,34 +393,57 @@ static void drawatmosphere()
     sunmatrix.mul(invprojmatrix);
     LOCALPARAM(sunmatrix, sunmatrix);
 
-    LOCALPARAM(sunlight, (!atmosunlight.iszero() ? atmosunlight.tocolor().mul(atmosunlightscale) : sunlight.tocolor().mul(sunlightscale)).mul(atmobright*ldrscale));
+    // optical depth scales for 3 different shells of atmosphere - air, haze, ozone
+    const float earthradius = 6371e3f, earthairheight = 8.4e3f, earthhazeheight = 1.25e3f, earthozoneheight = 50e3f;
+    float planetradius = earthradius*atmoplanetsize;
+    vec atmoshells = vec(earthairheight, earthhazeheight, earthozoneheight).mul(atmoheight).add(planetradius).square().sub(planetradius*planetradius);
+    LOCALPARAM(opticaldepthparams, vec4(atmoshells, planetradius));
+
+    // Henyey-Greenstein approximation, 1/(4pi) * (1 - g^2)/(1 + g^2 - 2gcos)]^1.5
+    // Hoffman-Preetham variation uses (1-g)^2 instead of 1-g^2 which avoids excessive glare
+    // clamp values near 0 angle to avoid spotlight artifact inside sundisk
+    float gm = max(0.95f - 0.2f*atmohaze, 0.65f), miescale = pow((1-gm)*(1-gm)/(4*M_PI), -2.0f/3.0f);
+    LOCALPARAMF(mieparams, miescale*(1 + gm*gm), miescale*-2*gm, 1 - (1 - cosf(0.5f*atmosundisksize*(1 - atmosundiskcorona)*RAD)));
+
+    static const vec lambda(680e-9f, 550e-9f, 450e-9f),
+                     k(0.686f, 0.678f, 0.666f),
+                     ozone(3.426f, 8.298f, 0.356f);
+    vec betar = vec(lambda).square().square().recip().mul(1.241e-30f/M_LN2 * atmodensity),
+        betam = vec(lambda).recip().square().mul(k).mul(9.072e-17f/M_LN2 * atmohaze),
+        betao = vec(ozone).mul(1.5e-7f/M_LN2 * atmoozone);
+    LOCALPARAM(betarayleigh, betar);
+    LOCALPARAM(betamie, betam);
+    LOCALPARAM(betaozone, betao);
+
+    // extinction in direction of sun
+    float sunoffset = sunlightdir.z*planetradius;
+    vec sundepth = vec(atmoshells).add(sunoffset*sunoffset).sqrt().sub(sunoffset);
+    vec sunweight = vec(betar).mul(sundepth.x).madd(betam, sundepth.y).madd(betao, sundepth.z - sundepth.x);
+    vec sunextinction = vec(sunweight).neg().exp2();
+    vec suncolor = !atmosunlight.iszero() ? atmosunlight.tocolor().mul(atmosunlightscale) : sunlight.tocolor().mul(sunlightscale);
+    // assume sunlight color is gamma encoded, so decode to linear light, then apply extinction
+    extern float hdrgamma;
+    vec sunscale = vec(suncolor).mul(ldrscale).pow(hdrgamma).mul(atmobright * 16).mul(sunextinction);
+    float maxsunweight = max(max(sunweight.x, sunweight.y), sunweight.z);
+    if(maxsunweight > 127) sunweight.mul(127/maxsunweight);
+    sunweight.add(1e-4f);
+    LOCALPARAM(sunweight, sunweight);
+    LOCALPARAM(sunlight, vec4(sunscale, atmoalpha));
     LOCALPARAM(sundir, sunlightdir);
 
-    vec sundiskparams;
-    sundiskparams.y = -(1 - 0.0075f * atmosundisksize);
-    sundiskparams.x = 1/(1 + sundiskparams.y);
-    sundiskparams.y *= sundiskparams.x;
-    sundiskparams.z = atmosundiskbright;
-    LOCALPARAM(sundiskparams, sundiskparams);
+    // invert extinction at zenith to get an approximation of how bright the sun disk should be
+    vec zenithdepth = vec(atmoshells).add(planetradius*planetradius).sqrt().sub(planetradius);
+    vec zenithweight = vec(betar).mul(zenithdepth.x).madd(betam, zenithdepth.y).madd(betao, zenithdepth.z - zenithdepth.x);
+    vec zenithextinction = vec(zenithweight).sub(sunweight).exp2();
+    vec diskcolor = (!atmosundisk.iszero() ? atmosundisk.tocolor() : suncolor).mul(ldrscale).pow(hdrgamma).mul(zenithextinction).mul(atmosundiskbright * 4);
+    LOCALPARAM(sundiskcolor, diskcolor);
 
-    const float earthradius = 6.371e6f, earthatmoheight = 0.1e6f;
-    float planetradius = earthradius*atmoplanetsize, atmoradius = planetradius + earthatmoheight*atmoheight;
-    LOCALPARAMF(atmoradius, planetradius, atmoradius*atmoradius, atmoradius*atmoradius - planetradius*planetradius);
-
-    float gm = (1 - atmohaze)*0.2f + 0.75f;
-    LOCALPARAMF(gm, gm);
-
-    vec lambda(680e-9f, 550e-9f, 450e-9f),
-        betar = vec(lambda).square().square().recip().mul(1.86e-31f / atmodensity),
-        betam = vec(lambda).recip().mul(2*M_PI).square().mul(atmohazefade.tocolor().mul(atmohazefadescale)).mul(1.36e-19f * max(atmohaze, 1e-3f)),
-        betarm = vec(betar).div(1+atmoclarity).add(betam);
-    betar.div(betarm).mul(3/(16*M_PI));
-    betam.div(betarm).mul((1-gm)*(1-gm)/(4*M_PI));
-    LOCALPARAM(betar, betar);
-    LOCALPARAM(betam, betam);
-    LOCALPARAM(betarm, betarm.div(M_LN2));
-
-    LOCALPARAMF(atmoalpha, atmoalpha);
+    // convert from view cosine into mu^2 for limb darkening, where mu = sqrt(1 - sin^2) and sin^2 = 1 - cos^2, thus mu^2 = 1 - (1 - cos^2*scale)
+    // convert corona offset into scale for mu^2, where sin = (1-corona) and thus mu^2 = 1 - (1-corona^2)
+    float sundiskscale = sinf(0.5f*atmosundisksize*RAD);
+    float coronamu = 1 - (1-atmosundiskcorona)*(1-atmosundiskcorona);
+    if(sundiskscale > 0) LOCALPARAMF(sundiskparams, 1.0f/(sundiskscale*sundiskscale), 1.0f/max(coronamu, 1e-3f));
+    else LOCALPARAMF(sundiskparams, 0, 0);
 
     gle::defvertex();
     gle::begin(GL_TRIANGLE_STRIP);
@@ -431,7 +452,6 @@ static void drawatmosphere()
     gle::attribf(-1, -1, 1);
     gle::attribf(1, -1, 1);
     xtraverts += gle::end();
-    gle::disable();
 }
 
 VAR(showsky, 0, 1, 1);
@@ -443,12 +463,23 @@ int explicitsky = 0;
 
 bool limitsky()
 {
-    return explicitsky && (useskytexture || editmode);
+    return explicitsky && (useskytexture || (editmode && showsky));
 }
 
 void drawskybox(bool clear)
 {
-    if(limitsky())
+    bool limited = false;
+    if(limitsky()) for(vtxarray *va = visibleva; va; va = va->next)
+    {
+        if(va->sky && va->occluded < OCCLUDE_BB &&
+           ((va->skymax.x >= 0 && isvisiblebb(va->skymin, ivec(va->skymax).sub(va->skymin)) != VFC_NOT_VISIBLE) ||
+            !insideworld(camera1->o)))
+        {
+            limited = true;
+            break;
+        }
+    }
+    if(limited)
     {
         glDisable(GL_DEPTH_TEST);
     }
@@ -471,10 +502,10 @@ void drawskybox(bool clear)
     {
         if(ldrscale < 1 && (skyboxoverbrightmin != 1 || (skyboxoverbright > 1 && skyboxoverbrightthreshold < 1)))
         {
-            SETSWIZZLE(skyboxoverbright, sky[0]);
+            SETSHADER(skyboxoverbright);
             LOCALPARAMF(overbrightparams, skyboxoverbrightmin, max(skyboxoverbright, skyboxoverbrightmin), skyboxoverbrightthreshold);
         }
-        else SETSWIZZLE(skybox, sky[0]);
+        else SETSHADER(skybox);
 
         gle::color(skyboxcolour);
 
@@ -507,7 +538,7 @@ void drawskybox(bool clear)
 
     if(cloudbox[0])
     {
-        SETSWIZZLE(skybox, clouds[0]);
+        SETSHADER(skybox);
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -527,7 +558,7 @@ void drawskybox(bool clear)
 
     if(cloudlayer[0] && cloudheight)
     {
-        SETSWIZZLE(skybox, cloudoverlay);
+        SETSHADER(skybox);
 
         glDisable(GL_CULL_FACE);
 
@@ -554,7 +585,7 @@ void drawskybox(bool clear)
 
     if(clampsky) glDepthRange(0, 1);
 
-    if(limitsky())
+    if(limited)
     {
         glEnable(GL_DEPTH_TEST);
     }

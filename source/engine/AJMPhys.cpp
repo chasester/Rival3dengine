@@ -7,6 +7,7 @@
 #include "LinearMath/btMatrix3x3.h"
 #include "BulletCollision/CollisionDispatch/btGhostObject.h"
 #include "BulletDynamics/Character/btKinematicCharacterController.h"
+#include <fstream>
 /////includes for bullet are in cube.h
 /////disabled new and delete to resolve conflict with cpp new and delete included with bullet/////
 //////////////////////////bullet//////////////////////////////////////////////////////
@@ -32,7 +33,7 @@ btVector3 worldMin(-1000,-1000,-1000);
 btVector3 worldMax(1000,1000,1000);
 int lastphysicframe = 0;
 
-VAR(PHYSDebugDraw, 0, 0, 1);
+VAR(PHYSDebugDraw, 0, 1, 1);
 
 #define SCALING 0.058825
 int matnumber = 0;
@@ -347,13 +348,14 @@ bool canjump(physent *pl){
 	pl->physstate = PHYS_FALL;
 	return false;
 }
-VAR(floatspeed, 1, 100, 10000);
+//VAR(floatspeed, 1, 100, 10000);
 VARF(Gravity, -1000.f, 32, 100.f);
 VAR(timeinair, 0, 10, 1000);
 VAR(pspeed, 0, 350, 5000);
 VAR(pjump, 0, 550, 70000);
 VAR(pweight, 1, 100, 100000);
 void btmoveplayer(physent *pl, int curenttime){
+
 	int material = lookupmaterial(vec(pl->o.x, pl->o.y, pl->o.z + (3 * pl->aboveeye - pl->eyeheight) / 4));
 	bool water = isliquid(material&MATF_VOLUME);
 	bool floating = pl->type == ENT_PLAYER && (pl->state == CS_EDITING || pl->state == CS_SPECTATOR);
@@ -422,7 +424,8 @@ void btmoveplayer(physent *pl, int curenttime){
 	}
 
 }
-void PHYSInit() {
+void PHYSInit() 
+{
 	m_collisionConfiguration = new btDefaultCollisionConfiguration();
 	m_dispatcher = new	btCollisionDispatcher(m_collisionConfiguration);
 
@@ -444,7 +447,7 @@ void PHYSInit() {
 	////////temp borrow
 	m_debugDrawer = new SauerDebugDrawer();
 	m_debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe|btIDebugDraw::DBG_DrawAabb|btIDebugDraw::DBG_DrawContactPoints);
-        m_dynamicsWorld->setDebugDrawer(m_debugDrawer);
+    m_dynamicsWorld->setDebugDrawer(m_debugDrawer);
 	////////temp borrow^^^^^
 	
 	m_indexVertexArrays = NULL;
@@ -527,14 +530,61 @@ COMMAND(PHYSKill, "s");//for testing purposes
 //}
 
 
-void PHYSStep(){
-	///step the simulation
-	if (m_dynamicsWorld)
-	{
-		if (lastphysicframe == 0){ lastphysicframe = lastmillis; return; }
+void PHYSStep() {
+	static std::ofstream logFile("physics_debug_log.txt", std::ios::app); // Open in append mode
+
+	if (m_dynamicsWorld) {
+		int numCollisionObjects = m_dynamicsWorld->getNumCollisionObjects();
+		logFile << "Number of collision objects: " << numCollisionObjects << std::endl;
+
+		for (int i = 0; i < numCollisionObjects; ++i) {
+			btCollisionObject* obj = m_dynamicsWorld->getCollisionObjectArray()[i];
+			logFile << "Object " << i << ": " << std::endl;
+
+			// Log collision object type
+			if (obj) {
+				logFile << " - Activation State: " << obj->getActivationState() << std::endl;
+				logFile << " - Collision Flags: " << obj->getCollisionFlags() << std::endl;
+
+				if (obj->getCollisionShape()) {
+					btCollisionShape* shape = obj->getCollisionShape();
+					logFile << " - Collision shape type: " << shape->getShapeType() << std::endl;
+				}
+			}
+
+			// Log rigid body specific details
+			if (btRigidBody* body = btRigidBody::upcast(obj)) {
+				logFile << " - Is btRigidBody" << std::endl;
+
+				if (body->getMotionState()) {
+					btTransform trans;
+					body->getMotionState()->getWorldTransform(trans);
+					logFile << " - Position: " << trans.getOrigin().getX() << ", " << trans.getOrigin().getY() << ", " << trans.getOrigin().getZ() << std::endl;
+
+					// Check for NaN values in transformation
+					if (std::isnan(trans.getOrigin().getX()) || std::isnan(trans.getOrigin().getY()) || std::isnan(trans.getOrigin().getZ())) {
+						logFile << " - Warning: NaN values in object transformation." << std::endl;
+					}
+				}
+				else {
+					logFile << " - btRigidBody without a motion state" << std::endl;
+				}
+			}
+			else {
+				logFile << " - Is not a btRigidBody" << std::endl;
+			}
+		}
+
+		logFile << "Starting physics simulation step" << std::endl;
+		if (lastphysicframe == 0) {
+			lastphysicframe = lastmillis;
+			logFile << "Exiting PHYSStep early: lastphysicframe is 0" << std::endl;
+			return;
+		}
+
 		m_dynamicsWorld->stepSimulation((lastmillis - lastphysicframe) / 1000.f, 30);
-		//btTransform trans;
-		//if(!curtime) return;
+		logFile << "Completed physics simulation step" << std::endl;
+
 		btmoveplayer(player, curtime);
 		//print positions of all objects
 		//for (int j=m_dynamicsWorld->getNumCollisionObjects()-1; j < 0 ;j--)
@@ -562,7 +612,7 @@ void PHYSStep(){
 		//	
 		//}
 		
-		game::updatebulletmovables(vec(1), vec(1), 1);
+		//game::updatebulletmovables(vec(1), vec(1), 1);
 		//m_dynamicsWorld->stepSimulation(ms / 1000000.f);
 		//optional but useful: debug drawing
 		//m_physicsSetup.m_dynamicsWorld->debugDrawWorld();
@@ -590,6 +640,7 @@ void PHYSStep(){
 		lastphysicframe = lastmillis;
 	}  
 }
+
 COMMAND(PHYSStep, "s");//for testing purposes
 void PHYSrebuildLevel(){
 	if (m_dynamicsWorld)

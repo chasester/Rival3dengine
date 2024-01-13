@@ -111,6 +111,44 @@ static inline void cleancode(ident &id)
     }
 }
 
+static struct lockstr* lockedstrings = NULL;
+
+struct lockstr
+{
+    const char *s;
+    lockstr* next;
+    bool deleted;
+
+    lockstr(const char *s) : s(s), next(lockedstrings), deleted(false)
+    {
+        lockedstrings = this;
+    }
+
+    ~lockstr();
+};
+
+static inline void freeidentstr(const char *s)
+{
+    for(lockstr *cur = lockedstrings; cur; cur = cur->next) if(cur->s == s)
+    {
+        cur->deleted = true;
+        return;
+    }
+    delete[] s;
+}
+
+inline lockstr::~lockstr()
+{
+    lockedstrings = next;
+    if(deleted) freeidentstr(s);
+}
+
+inline void ident::forcenull()
+{
+    if(valtype==VAL_STR) freeidentstr(val.s);
+    valtype = VAL_NULL;
+}
+
 struct nullval : tagval
 {
     nullval() { setnull(); }
@@ -139,7 +177,7 @@ void clearoverride(ident &i)
             if(i.valtype==VAL_STR)
             {
                 if(!i.val.s[0]) break;
-                delete[] i.val.s;
+                freeidentstr(i.val.s);
             }
             cleancode(i);
             i.valtype = VAL_STR;
@@ -154,7 +192,7 @@ void clearoverride(ident &i)
             i.changed();
             break;
         case ID_SVAR:
-            delete[] *i.storage.s;
+            freeidentstr(*i.storage.s);
             *i.storage.s = i.overrideval.s;
             i.changed();
             break;
@@ -301,7 +339,7 @@ static inline void poparg(ident &id)
 {
     if(!id.stack) return;
     identstack *stack = id.stack;
-    if(id.valtype == VAL_STR) delete[] id.val.s;
+    if(id.valtype == VAL_STR) freeidentstr(id.val.s);
     id.setval(*stack);
     cleancode(id);
     id.stack = stack->next;
@@ -318,13 +356,28 @@ static inline void undoarg(ident &id, identstack &stack)
     cleancode(id);
 }
 
+#define UNDOFLAG (1<<MAXARGS)
 #define UNDOARGS \
     identstack argstack[MAXARGS]; \
-    for(int argmask = aliasstack->usedargs, i = 0; argmask; argmask >>= 1, i++) if(argmask&1) \
-        undoarg(*identmap[i], argstack[i]); \
-    identlink *prevstack = aliasstack->next; \
-    identlink aliaslink = { aliasstack->id, aliasstack, prevstack->usedargs, prevstack->argstack }; \
-    aliasstack = &aliaslink;
+    identlink *prevstack = aliasstack; \
+    identlink aliaslink; \
+    for(int undos = 0; prevstack != &noalias; prevstack = prevstack->next) \
+    { \
+        if(prevstack->usedargs & UNDOFLAG) ++undos; \
+        else if(undos > 0) --undos; \
+        else \
+        { \
+            prevstack = prevstack->next; \
+            for(int argmask = aliasstack->usedargs & ~UNDOFLAG, i = 0; argmask; argmask >>= 1, i++) if(argmask&1) \
+                undoarg(*identmap[i], argstack[i]); \
+            aliaslink.id = aliasstack->id; \
+            aliaslink.next = aliasstack; \
+            aliaslink.usedargs = UNDOFLAG | prevstack->usedargs; \
+            aliaslink.argstack = prevstack->argstack; \
+            aliasstack = &aliaslink; \
+            break; \
+        } \
+    } \
 
 static inline void redoarg(ident &id, const identstack &stack)
 {
@@ -337,10 +390,13 @@ static inline void redoarg(ident &id, const identstack &stack)
 }
 
 #define REDOARGS \
-    prevstack->usedargs = aliaslink.usedargs; \
-    aliasstack = aliaslink.next; \
-    for(int argmask = aliasstack->usedargs, i = 0; argmask; argmask >>= 1, i++) if(argmask&1) \
-        redoarg(*identmap[i], argstack[i]);
+    if(aliasstack == &aliaslink) \
+    { \
+        prevstack->usedargs |= aliaslink.usedargs & ~UNDOFLAG; \
+        aliasstack = aliaslink.next; \
+        for(int argmask = aliasstack->usedargs & ~UNDOFLAG, i = 0; argmask; argmask >>= 1, i++) if(argmask&1) \
+            redoarg(*identmap[i], argstack[i]); \
+    }
 
 ICOMMAND(push, "rTe", (ident *id, tagval *v, uint *code),
 {
@@ -458,7 +514,7 @@ static inline void setarg(ident &id, tagval &v)
 {
     if(aliasstack->usedargs&(1<<id.index))
     {
-        if(id.valtype == VAL_STR) delete[] id.val.s;
+        if(id.valtype == VAL_STR) freeidentstr(id.val.s);
         id.setval(v);
         cleancode(id);
     }
@@ -471,7 +527,7 @@ static inline void setarg(ident &id, tagval &v)
 
 static inline void setalias(ident &id, tagval &v)
 {
-    if(id.valtype == VAL_STR) delete[] id.val.s;
+    if(id.valtype == VAL_STR) freeidentstr(id.val.s);
     id.setval(v);
     cleancode(id);
     id.flags = (id.flags & identflags) | identflags;
@@ -535,19 +591,19 @@ ICOMMAND(alias, "sT", (const char *name, tagval *v),
 
 int variable(const char *name, int min, int cur, int max, int *storage, identfun fun, int flags)
 {
-    addident(ident(ID_VAR, name, min, max, storage, (void *)fun, flags));
+    addident(ident(ID_VAR, name, min, max, storage, fun, flags));
     return cur;
 }
 
 float fvariable(const char *name, float min, float cur, float max, float *storage, identfun fun, int flags)
 {
-    addident(ident(ID_FVAR, name, min, max, storage, (void *)fun, flags));
+    addident(ident(ID_FVAR, name, min, max, storage, fun, flags));
     return cur;
 }
 
 char *svariable(const char *name, const char *cur, char **storage, identfun fun, int flags)
 {
-    addident(ident(ID_SVAR, name, storage, (void *)fun, flags));
+    addident(ident(ID_SVAR, name, storage, fun, flags));
     return newstring(cur);
 }
 
@@ -580,18 +636,18 @@ hashnameset<defvar> defvars;
         name = newstring(name); \
         defvar &def = defvars[name]; \
         def.name = name; \
-        def.onchange = onchange[0] ? compilecode(onchange) : NULL; \
         body; \
+        def.onchange = onchange[0] ? compilecode(onchange) : NULL; \
     });
 #define DEFIVAR(cmdname, flags) \
     DEFVAR(cmdname, "siiis", (char *name, int *min, int *cur, int *max, char *onchange), \
-        def.i = variable(name, *min, *cur, *max, &def.i, def.onchange ? defvar::changed : NULL, flags))
+        def.i = variable(name, *min, *cur, *max, &def.i, defvar::changed, flags))
 #define DEFFVAR(cmdname, flags) \
     DEFVAR(cmdname, "sfffs", (char *name, float *min, float *cur, float *max, char *onchange), \
-        def.f = fvariable(name, *min, *cur, *max, &def.f, def.onchange ? defvar::changed : NULL, flags))
+        def.f = fvariable(name, *min, *cur, *max, &def.f, defvar::changed, flags))
 #define DEFSVAR(cmdname, flags) \
     DEFVAR(cmdname, "sss", (char *name, char *cur, char *onchange), \
-        def.s = svariable(name, cur, &def.s, def.onchange ? defvar::changed : NULL, flags))
+        def.s = svariable(name, cur, &def.s, defvar::changed, flags))
 
 DEFIVAR(defvar, 0);
 DEFIVAR(defvarp, IDF_PERSIST);
@@ -640,7 +696,7 @@ void setfvar(const char *name, float f, bool dofunc, bool doclamp)
 void setsvar(const char *name, const char *str, bool dofunc)
 {
     _GETVAR(id, ID_SVAR, name, );
-    OVERRIDEVAR(return, id->overrideval.s = *id->storage.s, delete[] id->overrideval.s, delete[] *id->storage.s);
+    OVERRIDEVAR(return, id->overrideval.s = *id->storage.s, freeidentstr(id->overrideval.s), freeidentstr(*id->storage.s));
     *id->storage.s = newstring(str);
     if(dofunc) id->changed();
 }
@@ -658,6 +714,11 @@ int getvarmax(const char *name)
 {
     GETVAR(id, name, 0);
     return id->maxval;
+}
+float getfvar(const char *name)
+{
+    _GETVAR(id, ID_FVAR, name, 0);
+    return *id->storage.f;
 }
 float getfvarmin(const char *name)
 {
@@ -780,7 +841,7 @@ void setsvarchecked(ident *id, const char *val)
     else
 #endif
     {
-        OVERRIDEVAR(return, id->overrideval.s = *id->storage.s, delete[] id->overrideval.s, delete[] *id->storage.s);
+        OVERRIDEVAR(return, id->overrideval.s = *id->storage.s, freeidentstr(id->overrideval.s), freeidentstr(*id->storage.s));
         *id->storage.s = newstring(val);
         id->changed();
 #ifndef STANDALONE
@@ -789,21 +850,53 @@ void setsvarchecked(ident *id, const char *val)
     }
 }
 
+ICOMMAND(set, "rT", (ident *id, tagval *v),
+{
+    switch(id->type)
+    {
+        case ID_ALIAS:
+            if(id->index < MAXARGS) setarg(*id, *v); else setalias(*id, *v);
+            v->type = VAL_NULL;
+            break;
+        case ID_VAR:
+            setvarchecked(id, forceint(*v));
+            break;
+        case ID_FVAR:
+            setfvarchecked(id, forcefloat(*v));
+            break;
+        case ID_SVAR:
+            setsvarchecked(id, forcestr(*v));
+            break;
+        case ID_COMMAND:
+            if(id->flags&IDF_EMUVAR)
+            {
+                execute(id, v, 1);
+                v->type = VAL_NULL;
+                break;
+            }
+            // fall through
+        default:
+            debugcode("cannot redefine builtin %s with an alias", id->name);
+            break;
+    }
+});
+
 bool addcommand(const char *name, identfun fun, const char *args, int type)
 {
     uint argmask = 0;
-    int numargs = 0;
+    int numargs = 0, flags = 0;
     bool limit = true;
     if(args) for(const char *fmt = args; *fmt; fmt++) switch(*fmt)
     {
         case 'i': case 'b': case 'f': case 'F': case 't': case 'T': case 'E': case 'N': case 'D': if(numargs < MAXARGS) numargs++; break;
-        case 'S': case 's': case 'e': case 'r': case '$': if(numargs < MAXARGS) { argmask |= 1<<numargs; numargs++; } break;
+        case '$': flags |= IDF_EMUVAR; // fall through
+        case 'S': case 's': case 'e': case 'r': if(numargs < MAXARGS) { argmask |= 1<<numargs; numargs++; } break;
         case '1': case '2': case '3': case '4': if(numargs < MAXARGS) fmt -= *fmt-'0'+1; break;
         case 'C': case 'V': limit = false; break;
         default: fatal("builtin %s declared with illegal type: %s", name, args); break;
     }
     if(limit && numargs > MAXCOMARGS) fatal("builtin %s declared with too many args: %d", name, numargs);
-    addident(ident(type, name, args, argmask, numargs, (void *)fun));
+    addident(ident(type, name, args, argmask, numargs, fun, flags));
     return false;
 }
 
@@ -1363,7 +1456,16 @@ static bool compileblockstr(vector<uint> &code, const char *str, const char *end
                 break;
             }
             case '/':
-                if(str[1] == '/') str += strcspn(str, "\n\0");
+                if(str[1] == '/')
+                {
+                    size_t comment = strcspn(str, "\n\0");
+                    if (iscubepunct(str[2]))
+                    {
+                        memcpy(&buf[len], str, comment);
+                        len += comment;
+                    }
+                    str += comment;
+                }
                 else buf[len++] = *str++;
                 break;
             case '@':
@@ -1673,6 +1775,9 @@ static void compilestatements(vector<uint> &code, const char *&p, int rettype, i
                             if(!(more = compilearg(code, p, VAL_CSTR, prevargs))) compilestr(code);
                             code.add(CODE_SVAR1|(id->index<<8));
                             goto endstatement;
+                        case ID_COMMAND:
+                            if(id->flags&IDF_EMUVAR) goto compilecommand;
+                            break;
                     }
                     compilestr(code, idname, true);
                 }
@@ -1680,6 +1785,7 @@ static void compilestatements(vector<uint> &code, const char *&p, int rettype, i
                 code.add(CODE_ALIASU);
                 goto endstatement;
         }
+    compilecommand:
         numargs = 0;
         if(!idname.str)
         {
@@ -1755,7 +1861,15 @@ static void compilestatements(vector<uint> &code, const char *&p, int rettype, i
 #endif
                     case 'C': comtype = CODE_COMC; if(more) while(numargs < MAXARGS && (more = compilearg(code, p, VAL_CANY, prevargs+numargs))) numargs++; goto compilecomv;
                     case 'V': comtype = CODE_COMV; if(more) while(numargs < MAXARGS && (more = compilearg(code, p, VAL_CANY, prevargs+numargs))) numargs++; goto compilecomv;
-                    case '1': case '2': case '3': case '4': if(more) { fmt -= *fmt-'0'+1; rep = true; } break;
+                    case '1': case '2': case '3': case '4':
+                        if(more && numargs < MAXARGS)
+                        { 
+                            int numrep = *fmt-'0'+1;
+                            fmt -= numrep;
+                            rep = true;
+                        }
+                        else for(; numargs > MAXARGS; numargs--) code.add(CODE_POP);
+                        break;
                     }
                     code.add(comtype|retcodeany(rettype)|(id->index<<8));
                     break;
@@ -2009,21 +2123,32 @@ void freecode(uint *code)
 
 void printvar(ident *id, int i)
 {
-    if(i < 0) conoutf("%s = %d", id->name, i);
+    if(i < 0) conoutf(CON_INFO, id->index, "%s = %d", id->name, i);
     else if(id->flags&IDF_HEX && id->maxval==0xFFFFFF)
-        conoutf("%s = 0x%.6X (%d, %d, %d)", id->name, i, (i>>16)&0xFF, (i>>8)&0xFF, i&0xFF);
+        conoutf(CON_INFO, id->index, "%s = 0x%.6X (%d, %d, %d)", id->name, i, (i>>16)&0xFF, (i>>8)&0xFF, i&0xFF);
     else
-        conoutf(id->flags&IDF_HEX ? "%s = 0x%X" : "%s = %d", id->name, i);
+        conoutf(CON_INFO, id->index, id->flags&IDF_HEX ? "%s = 0x%X" : "%s = %d", id->name, i);
 }
 
 void printfvar(ident *id, float f)
 {
-    conoutf("%s = %s", id->name, floatstr(f));
+    conoutf(CON_INFO, id->index, "%s = %s", id->name, floatstr(f));
 }
 
 void printsvar(ident *id, const char *s)
 {
-    conoutf(strchr(s, '"') ? "%s = [%s]" : "%s = \"%s\"", id->name, s);
+    conoutf(CON_INFO, id->index, strchr(s, '"') ? "%s = [%s]" : "%s = \"%s\"", id->name, s);
+}
+
+template <class V>
+static void printvar(ident *id, int type, V &val)
+{
+    switch(type)
+    {
+        case VAL_INT: printvar(id, val.getint()); break;
+        case VAL_FLOAT: printfvar(id, val.getfloat()); break;
+        default: printsvar(id, val.getstr()); break;
+    }
 }
 
 void printvar(ident *id)
@@ -2033,8 +2158,19 @@ void printvar(ident *id)
         case ID_VAR: printvar(id, *id->storage.i); break;
         case ID_FVAR: printfvar(id, *id->storage.f); break;
         case ID_SVAR: printsvar(id, *id->storage.s); break;
+        case ID_ALIAS: printvar(id, id->valtype, *id); break;
+        case ID_COMMAND:
+            if(id->flags&IDF_EMUVAR)
+            {
+                tagval result;
+                executeret(id, NULL, 0, true, result);
+                printvar(id, result.type, result);
+                freearg(result);
+            }
+            break;
     }
 }
+ICOMMAND(printvar, "r", (ident *id), printvar(id));
 
 typedef void (__cdecl *comfun)();
 typedef void (__cdecl *comfun1)(void *);
@@ -2285,17 +2421,15 @@ static const uint *runcode(const uint *code, tagval &result)
             }
 
             case CODE_DOARGS|RET_NULL: case CODE_DOARGS|RET_STR: case CODE_DOARGS|RET_INT: case CODE_DOARGS|RET_FLOAT:
-                if(aliasstack != &noalias)
-                {
-                    UNDOARGS
-                    freearg(result);
-                    runcode(args[--numargs].code, result);
-                    freearg(args[numargs]);
-                    forcearg(result, op&CODE_RET_MASK);
-                    REDOARGS
-                    continue;
-                }
-                // fall-through
+            {
+                UNDOARGS
+                freearg(result);
+                runcode(args[--numargs].code, result);
+                freearg(args[numargs]);
+                forcearg(result, op&CODE_RET_MASK);
+                REDOARGS
+                continue;
+            }
 
             case CODE_DO|RET_NULL: case CODE_DO|RET_STR: case CODE_DO|RET_INT: case CODE_DO|RET_FLOAT:
                 freearg(result);
@@ -2702,7 +2836,7 @@ static const uint *runcode(const uint *code, tagval &result)
                     identflags = oldflags; \
                     for(int i = 0; i < callargs; i++) \
                         poparg(*identmap[i]); \
-                    for(int argmask = aliaslink.usedargs&(~0<<callargs), i = callargs; argmask; i++) \
+                    for(int argmask = aliaslink.usedargs&(~0U<<callargs), i = callargs; argmask; i++) \
                         if(argmask&(1<<i)) { poparg(*identmap[i]); argmask &= ~(1<<i); } \
                     forcearg(result, op&CODE_RET_MASK); \
                     _numargs = oldargs; \
@@ -2714,7 +2848,7 @@ static const uint *runcode(const uint *code, tagval &result)
                 if(id->flags&IDF_UNKNOWN)
                 {
 					//use this space to call angel script message handle system
-					debugcode("unknown command: %s", id->name);
+                    debugcode("unknown command: %s", id->name);
                     FORCERESULT;
                 }
                 CALLALIAS;
@@ -3119,6 +3253,15 @@ void writecfg(const char *name)
 COMMAND(writecfg, "s");
 #endif
 
+void changedvars()
+{
+    vector<ident *> ids;
+    enumerate(idents, ident, id, if(id.flags&IDF_OVERRIDDEN) ids.add(&id));
+    ids.sortname();
+    loopv(ids) printvar(ids[i]);
+}
+COMMAND(changedvars, "");
+
 // below the commands that implement a small imperative language. thanks to the semantics of
 // () and [] expressions, any control construct can be defined trivially.
 
@@ -3208,7 +3351,7 @@ void loopiter(ident *id, identstack &stack, const tagval &v)
     }
     else
     {
-        if(id->valtype == VAL_STR) delete[] id->val.s;
+        if(id->valtype == VAL_STR) freeidentstr(id->val.s);
         cleancode(*id);
         id->setval(v);
     }
@@ -3225,7 +3368,7 @@ static inline void setiter(ident &id, int i, identstack &stack)
     {
         if(id.valtype != VAL_INT)
         {
-            if(id.valtype == VAL_STR) delete[] id.val.s;
+            if(id.valtype == VAL_STR) freeidentstr(id.val.s);
             cleancode(id);
             id.valtype = VAL_INT;
         }
@@ -3315,6 +3458,18 @@ void concatword(tagval *v, int n)
     commandret->setstr(conc(v, n, false));
 }
 COMMAND(concatword, "V");
+
+void append(ident *id, tagval *v, bool space)
+{
+    if(id->type != ID_ALIAS || v->type == VAL_NULL) return;
+    tagval r;
+    const char *prefix = id->getstr();
+    if(prefix[0]) r.setstr(conc(v, 1, space, prefix));
+    else v->getval(r);
+    if(id->index < MAXARGS) setarg(*id, r); else setalias(*id, r);
+}
+ICOMMAND(append, "rt", (ident *id, tagval *v), append(id, v, true));
+ICOMMAND(appendword, "rt", (ident *id, tagval *v), append(id, v, false));
 
 void result(tagval &v)
 {
@@ -3463,6 +3618,31 @@ void substr(char *s, int *start, int *count, int *numargs)
 }
 COMMAND(substr, "siiN");
 
+void chopstr(char *s, int *lim, char *ellipsis)
+{
+    int len = strlen(s), maxlen = abs(*lim);
+    if(len > maxlen)
+    {
+        int elen = strlen(ellipsis);
+        maxlen = max(maxlen, elen);
+        char *chopped = newstring(maxlen);
+        if(*lim < 0)
+        {
+            memcpy(chopped, ellipsis, elen);
+            memcpy(&chopped[elen], &s[len - (maxlen - elen)], maxlen - elen);
+        }
+        else
+        {
+            memcpy(chopped, s, maxlen - elen);
+            memcpy(&chopped[maxlen - elen], ellipsis, elen);
+        }
+        chopped[maxlen] = '\0';
+        commandret->setstr(chopped);
+    }
+    else result(s);
+}
+COMMAND(chopstr, "sis");
+
 void sublist(const char *s, int *skip, int *count, int *numargs)
 {
     int offset = max(*skip, 0), len = *numargs >= 3 ? max(*count, 0) : -1;
@@ -3486,7 +3666,7 @@ static inline void setiter(ident &id, char *val, identstack &stack)
 {
     if(id.stack == &stack)
     {
-        if(id.valtype == VAL_STR) delete[] id.val.s;
+        if(id.valtype == VAL_STR) freeidentstr(id.val.s);
         else id.valtype = VAL_STR;
         cleancode(id);
         id.val.s = val;
@@ -3505,6 +3685,7 @@ void listfind(ident *id, const char *list, const uint *body)
     if(id->type!=ID_ALIAS) { intret(-1); return; }
     identstack stack;
     int n = -1;
+    lockstr locked(list);
     for(const char *s = list, *start, *end; parselist(s, start, end);)
     {
         ++n;
@@ -3522,6 +3703,7 @@ void listassoc(ident *id, const char *list, const uint *body)
     if(id->type!=ID_ALIAS) return;
     identstack stack;
     int n = -1;
+    lockstr locked(list);
     for(const char *s = list, *start, *end, *qstart; parselist(s, start, end);)
     {
         ++n;
@@ -3569,6 +3751,7 @@ void looplist(ident *id, const char *list, const uint *body)
     if(id->type!=ID_ALIAS) return;
     identstack stack;
     int n = 0;
+    lockstr locked(list);
     for(const char *s = list, *start, *end, *qstart; parselist(s, start, end, qstart); n++)
     {
         setiter(*id, listelem(start, end, qstart), stack);
@@ -3578,11 +3761,27 @@ void looplist(ident *id, const char *list, const uint *body)
 }
 COMMAND(looplist, "rse");
 
+void loopsublist(ident *id, const char *list, int *skip, int *count, const uint *body)
+{
+    if(id->type!=ID_ALIAS) return;
+    identstack stack;
+    int n = 0, offset = max(*skip, 0), len = *count < 0 ? INT_MAX : offset + *count;
+    lockstr locked(list);
+    for(const char *s = list, *start, *end, *qstart; parselist(s, start, end, qstart) && n < len; n++) if(n >= offset)
+    {
+        setiter(*id, listelem(start, end, qstart), stack);
+        execute(body);
+    }
+    if(n) poparg(*id);
+}
+COMMAND(loopsublist, "rsiie");
+
 void looplist2(ident *id, ident *id2, const char *list, const uint *body)
 {
     if(id->type!=ID_ALIAS || id2->type!=ID_ALIAS) return;
     identstack stack, stack2;
     int n = 0;
+    lockstr locked(list);
     for(const char *s = list, *start, *end, *qstart; parselist(s, start, end, qstart); n += 2)
     {
         setiter(*id, listelem(start, end, qstart), stack);
@@ -3598,6 +3797,7 @@ void looplist3(ident *id, ident *id2, ident *id3, const char *list, const uint *
     if(id->type!=ID_ALIAS || id2->type!=ID_ALIAS || id3->type!=ID_ALIAS) return;
     identstack stack, stack2, stack3;
     int n = 0;
+    lockstr locked(list);
     for(const char *s = list, *start, *end, *qstart; parselist(s, start, end, qstart); n += 3)
     {
         setiter(*id, listelem(start, end, qstart), stack);
@@ -3615,6 +3815,7 @@ void looplistconc(ident *id, const char *list, const uint *body, bool space)
     identstack stack;
     vector<char> r;
     int n = 0;
+    lockstr locked(list);
     for(const char *s = list, *start, *end, *qstart; parselist(s, start, end, qstart); n++)
     {
         char *val = listelem(start, end, qstart);
@@ -3642,6 +3843,7 @@ void listfilter(ident *id, const char *list, const uint *body)
     identstack stack;
     vector<char> r;
     int n = 0;
+    lockstr locked(list);
     for(const char *s = list, *start, *end, *qstart, *qend; parselist(s, start, end, qstart, qend); n++)
     {
         char *val = newstring(start, end-start);
@@ -3664,6 +3866,7 @@ void listcount(ident *id, const char *list, const uint *body)
     if(id->type!=ID_ALIAS) return;
     identstack stack;
     int n = 0, r = 0;
+    lockstr locked(list);
     for(const char *s = list, *start, *end; parselist(s, start, end); n++)
     {
         char *val = newstring(start, end-start);
@@ -3681,7 +3884,7 @@ void prettylist(const char *s, const char *conj)
     const char *start, *end, *qstart;
     for(int len = listlen(s), n = 0; parselist(s, start, end, qstart); n++)
     {
-        if(*qstart == '"') p.advance(unescapestring(p.reserve(end - start).buf, start, end));
+        if(*qstart == '"') p.advance(unescapestring(p.reserve(end - start + 1).buf, start, end));
         else p.put(start, end - start);
         if(n+1 < len)
         {
@@ -3837,6 +4040,7 @@ void sortlist(char *list, ident *x, ident *y, uint *body, uint *unique)
         return;
     }
 
+    lockstr locked(list);
     identstack xstack, ystack;
     pusharg(*x, nullval, xstack); x->flags &= ~IDF_UNKNOWN;
     pusharg(*y, nullval, ystack); y->flags &= ~IDF_UNKNOWN;
@@ -4088,6 +4292,22 @@ CASECOMMAND(casef, "f", float, args[0].getfloat(), args[i].type == VAL_NULL || a
 CASECOMMAND(cases, "s", const char *, args[0].getstr(), args[i].type == VAL_NULL || !strcmp(args[i].getstr(), val));
 
 ICOMMAND(rnd, "ii", (int *a, int *b), intret(*a - *b > 0 ? rnd(*a - *b) + *b : *b));
+ICOMMAND(rndstr, "i", (int *len),
+{
+    int n = clamp(*len, 0, 10000);
+    char *s = newstring(n);
+    for(int i = 0; i < n;)
+    {
+        uint r = randomMT();
+        for(int j = min(i + 4, n); i < j; i++)
+        {
+            s[i] = (r%255) + 1;
+            r /= 255;
+        }
+    }
+    s[n] = '\0';
+    cubestrret(s);
+});
 
 ICOMMAND(tohex, "ii", (int *n, int *p),
 {
@@ -4118,14 +4338,50 @@ CMPSCMD(>s, >);
 CMPSCMD(<=s, <=);
 CMPSCMD(>=s, >=);
 
-ICOMMAND(echo, "C", (char *s), conoutf("\f1%s", s));
+ICOMMAND(echo, "C", (char *s), conoutf(CON_ECHO, "\f1%s", s));
 ICOMMAND(error, "C", (char *s), conoutf(CON_ERROR, "%s", s));
 ICOMMAND(strstr, "ss", (char *a, char *b), { char *s = strstr(a, b); intret(s ? s-a : -1); });
+ICOMMAND(strrstr, "ss", (char *a, char *b),
+{
+    if(!b[0]) intret(strlen(a));
+    else
+    {
+        char *last = NULL;
+        for(char *cur = a; char *s = strstr(cur, b); last = s, cur = s+1);
+        intret(last ? last-a : -1);
+    }
+});
 ICOMMAND(strlen, "s", (char *s), intret(strlen(s)));
 ICOMMAND(strcode, "si", (char *s, int *i), intret(*i > 0 ? (memchr(s, 0, *i) ? 0 : uchar(s[*i])) : uchar(s[0])));
 ICOMMAND(codestr, "i", (int *i), { char *s = newstring(1); s[0] = char(*i); s[1] = '\0'; cubestrret(s); });
 ICOMMAND(struni, "si", (char *s, int *i), intret(*i > 0 ? (memchr(s, 0, *i) ? 0 : cube2uni(s[*i])) : cube2uni(s[0])));
 ICOMMAND(unistr, "i", (int *i), { char *s = newstring(1); s[0] = uni2cube(*i); s[1] = '\0'; cubestrret(s); });
+
+int naturalsort(const char *a, const char *b)
+{
+    for(;;)
+    {
+        int ac = *a, bc = *b;
+        if(!ac) return bc ? -1 : 0;
+        else if(!bc) return 1;
+        else if(isdigit(ac) && isdigit(bc))
+        {
+            while(*a == '0') a++;
+            while(*b == '0') b++;
+            const char *a0 = a, *b0 = b;
+            while(isdigit(*a)) a++;
+            while(isdigit(*b)) b++;
+            int alen = a - a0, blen = b - b0;
+            if(alen != blen) return alen - blen;
+            int n = memcmp(a0, b0, alen);
+            if(n < 0) return -1;
+            else if(n > 0) return 1;
+        }
+        else if(ac != bc) return ac - bc;
+        else { ++a; ++b; }
+    }
+}
+ICOMMAND(naturalsort, "ss", (char *a, char *b), intret(naturalsort(a,b)<=0));
 
 #define STRMAPCOMMAND(name, map) \
     ICOMMAND(name, "s", (char *s), \

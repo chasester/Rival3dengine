@@ -2,13 +2,14 @@
 
 #include "engine.h"
 
-bool hasVAO = false, hasTR = false, hasTSW = false, hasFBO = false, hasAFBO = false, hasDS = false, hasTF = false, hasCBF = false, hasS3TC = false, hasFXT1 = false, hasLATC = false, hasRGTC = false, hasAF = false, hasFBB = false, hasFBMS = false, hasTMS = false, hasMSS = false, hasFBMSBS = false, hasUBO = false, hasMBR = false, hasDB2 = false, hasDBB = false, hasTG = false, hasTQ = false, hasPF = false, hasTRG = false, hasTI = false, hasHFV = false, hasHFP = false, hasDBT = false, hasDC = false, hasDBGO = false, hasEGPU4 = false, hasGPU4 = false, hasGPU5 = false, hasBFE = false, hasEAL = false, hasCR = false, hasOQ2 = false, hasCB = false, hasCI = false;
+bool hasVAO = false, hasTR = false, hasTSW = false, hasPBO = false, hasFBO = false, hasAFBO = false, hasDS = false, hasTF = false, hasCBF = false, hasS3TC = false, hasFXT1 = false, hasLATC = false, hasRGTC = false, hasAF = false, hasFBB = false, hasFBMS = false, hasTMS = false, hasMSS = false, hasFBMSBS = false, hasUBO = false, hasMBR = false, hasDB2 = false, hasDBB = false, hasTG = false, hasTQ = false, hasPF = false, hasTRG = false, hasTI = false, hasHFV = false, hasHFP = false, hasDBT = false, hasDC = false, hasDBGO = false, hasEGPU4 = false, hasGPU4 = false, hasGPU5 = false, hasBFE = false, hasEAL = false, hasCR = false, hasOQ2 = false, hasES2 = false, hasES3 = false, hasCB = false, hasCI = false, hasTS = false;
 bool mesa = false, intel = false, amd = false, nvidia = false;
 
 int hasstencil = 0;
 
 VAR(glversion, 1, 0, 0);
 VAR(glslversion, 1, 0, 0);
+VAR(glcompat, 1, 0, 0);
 
 // GL_EXT_timer_query
 PFNGLGETQUERYOBJECTI64VEXTPROC glGetQueryObjecti64v_  = NULL;
@@ -24,7 +25,6 @@ PFNGLCHECKFRAMEBUFFERSTATUSPROC     glCheckFramebufferStatus_     = NULL;
 PFNGLBINDFRAMEBUFFERPROC            glBindFramebuffer_            = NULL;
 PFNGLDELETEFRAMEBUFFERSPROC         glDeleteFramebuffers_         = NULL;
 PFNGLGENFRAMEBUFFERSPROC            glGenFramebuffers_            = NULL;
-PFNGLFRAMEBUFFERTEXTURE1DPROC       glFramebufferTexture1D_       = NULL;
 PFNGLFRAMEBUFFERTEXTURE2DPROC       glFramebufferTexture2D_       = NULL;
 PFNGLFRAMEBUFFERTEXTURE3DPROC       glFramebufferTexture3D_       = NULL;
 PFNGLFRAMEBUFFERRENDERBUFFERPROC    glFramebufferRenderbuffer_    = NULL;
@@ -64,16 +64,14 @@ PFNGLCOPYTEXSUBIMAGE3DPROC glCopyTexSubImage3D_ = NULL;
 
 PFNGLCOMPRESSEDTEXIMAGE3DPROC    glCompressedTexImage3D_    = NULL;
 PFNGLCOMPRESSEDTEXIMAGE2DPROC    glCompressedTexImage2D_    = NULL;
-PFNGLCOMPRESSEDTEXIMAGE1DPROC    glCompressedTexImage1D_    = NULL;
 PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC glCompressedTexSubImage3D_ = NULL;
 PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC glCompressedTexSubImage2D_ = NULL;
-PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC glCompressedTexSubImage1D_ = NULL;
 PFNGLGETCOMPRESSEDTEXIMAGEPROC   glGetCompressedTexImage_   = NULL;
 
 PFNGLDRAWRANGEELEMENTSPROC glDrawRangeElements_ = NULL;
 #endif
 
-// OpenGL 2.1
+// OpenGL 2.0
 #ifndef __APPLE__
 PFNGLMULTIDRAWARRAYSPROC   glMultiDrawArrays_   = NULL;
 PFNGLMULTIDRAWELEMENTSPROC glMultiDrawElements_ = NULL;
@@ -168,13 +166,6 @@ PFNGLVERTEXATTRIB4NUIVPROC        glVertexAttrib4Nuiv_        = NULL;
 PFNGLVERTEXATTRIB4NUSVPROC        glVertexAttrib4Nusv_        = NULL;
 PFNGLVERTEXATTRIBPOINTERPROC      glVertexAttribPointer_      = NULL;
 
-PFNGLUNIFORMMATRIX2X3FVPROC       glUniformMatrix2x3fv_       = NULL;
-PFNGLUNIFORMMATRIX3X2FVPROC       glUniformMatrix3x2fv_       = NULL;
-PFNGLUNIFORMMATRIX2X4FVPROC       glUniformMatrix2x4fv_       = NULL;
-PFNGLUNIFORMMATRIX4X2FVPROC       glUniformMatrix4x2fv_       = NULL;
-PFNGLUNIFORMMATRIX3X4FVPROC       glUniformMatrix3x4fv_       = NULL;
-PFNGLUNIFORMMATRIX4X3FVPROC       glUniformMatrix4x3fv_       = NULL;
-
 PFNGLDRAWBUFFERSPROC glDrawBuffers_ = NULL;
 #endif
 
@@ -251,6 +242,9 @@ PFNGLBINDFRAGDATALOCATIONINDEXEDPROC glBindFragDataLocationIndexed_ = NULL;
 // GL_ARB_copy_image
 PFNGLCOPYIMAGESUBDATAPROC glCopyImageSubData_ = NULL;
 
+// GL_ARB_texture_storage
+PFNGLTEXSTORAGE2DPROC glTexStorage2D_ = NULL;
+
 void *getprocaddress(const char *name)
 {
     return SDL_GL_GetProcAddress(name);
@@ -279,6 +273,7 @@ VAR(amd_eal_bug, 0, 0, 1);
 VAR(mesa_texrectoffset_bug, 0, 0, 1);
 VAR(intel_texalpha_bug, 0, 0, 1);
 VAR(intel_mapbufferrange_bug, 0, 0, 1);
+VAR(mesa_swap_bug, 0, 0, 1);
 VAR(useubo, 1, 0, 0);
 VAR(usetexgather, 1, 0, 0);
 VAR(usetexcompress, 1, 0, 0);
@@ -351,7 +346,7 @@ bool checkdepthtexstencilrb()
 
     GLuint depthtex = 0;
     glGenTextures(1, &depthtex);
-    createtexture(depthtex, w, h, NULL, 3, 0, GL_DEPTH_COMPONENT, GL_TEXTURE_RECTANGLE);
+    createtexture(depthtex, w, h, NULL, 3, 0, GL_DEPTH_COMPONENT24, GL_TEXTURE_RECTANGLE);
     glBindTexture(GL_TEXTURE_RECTANGLE, 0);
     glFramebufferTexture2D_(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_RECTANGLE, depthtex, 0);
 
@@ -401,7 +396,7 @@ void gl_checkextensions()
     if(sscanf(version, " %u.%u", &glmajorversion, &glminorversion) != 2) glversion = 100;
     else glversion = glmajorversion*100 + glminorversion*10;
 
-    if(glversion < 210) fatal("OpenGL 2.1 or greater is required!");
+    if(glversion < 200) fatal("OpenGL 2.0 or greater is required!");
 
 #ifdef WIN32
     glActiveTexture_ =            (PFNGLACTIVETEXTUREPROC)            getprocaddress("glActiveTexture");
@@ -415,10 +410,8 @@ void gl_checkextensions()
 
     glCompressedTexImage3D_ =     (PFNGLCOMPRESSEDTEXIMAGE3DPROC)     getprocaddress("glCompressedTexImage3D");
     glCompressedTexImage2D_ =     (PFNGLCOMPRESSEDTEXIMAGE2DPROC)     getprocaddress("glCompressedTexImage2D");
-    glCompressedTexImage1D_ =     (PFNGLCOMPRESSEDTEXIMAGE1DPROC)     getprocaddress("glCompressedTexImage1D");
     glCompressedTexSubImage3D_ =  (PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)  getprocaddress("glCompressedTexSubImage3D");
     glCompressedTexSubImage2D_ =  (PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)  getprocaddress("glCompressedTexSubImage2D");
-    glCompressedTexSubImage1D_ =  (PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)  getprocaddress("glCompressedTexSubImage1D");
     glGetCompressedTexImage_ =    (PFNGLGETCOMPRESSEDTEXIMAGEPROC)    getprocaddress("glGetCompressedTexImage");
 
     glDrawRangeElements_ =        (PFNGLDRAWRANGEELEMENTSPROC)        getprocaddress("glDrawRangeElements");
@@ -518,13 +511,6 @@ void gl_checkextensions()
     glVertexAttrib4Nusv_ =        (PFNGLVERTEXATTRIB4NUSVPROC)        getprocaddress("glVertexAttrib4Nusv");
     glVertexAttribPointer_ =      (PFNGLVERTEXATTRIBPOINTERPROC)      getprocaddress("glVertexAttribPointer");
 
-    glUniformMatrix2x3fv_ =       (PFNGLUNIFORMMATRIX2X3FVPROC)       getprocaddress("glUniformMatrix2x3fv");
-    glUniformMatrix3x2fv_ =       (PFNGLUNIFORMMATRIX3X2FVPROC)       getprocaddress("glUniformMatrix3x2fv");
-    glUniformMatrix2x4fv_ =       (PFNGLUNIFORMMATRIX2X4FVPROC)       getprocaddress("glUniformMatrix2x4fv");
-    glUniformMatrix4x2fv_ =       (PFNGLUNIFORMMATRIX4X2FVPROC)       getprocaddress("glUniformMatrix4x2fv");
-    glUniformMatrix3x4fv_ =       (PFNGLUNIFORMMATRIX3X4FVPROC)       getprocaddress("glUniformMatrix3x4fv");
-    glUniformMatrix4x3fv_ =       (PFNGLUNIFORMMATRIX4X3FVPROC)       getprocaddress("glUniformMatrix4x3fv");
-
     glDrawBuffers_ =              (PFNGLDRAWBUFFERSPROC)              getprocaddress("glDrawBuffers");
 #endif
 
@@ -543,7 +529,7 @@ void gl_checkextensions()
 
     parseglexts();
 
-    GLint texsize = 0, texunits = 0, vtexunits = 0, cubetexsize = 0, oqbits = 0, drawbufs = 0;
+    GLint texsize = 0, texunits = 0, vtexunits = 0, cubetexsize = 0, drawbufs = 0;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &texsize);
     hwtexsize = texsize;
     if(hwtexsize < 2048)
@@ -561,14 +547,13 @@ void gl_checkextensions()
     glGetIntegerv(GL_MAX_DRAW_BUFFERS, &drawbufs);
     maxdrawbufs = drawbufs;
     if(maxdrawbufs < 4) fatal("Hardware does not support at least 4 draw buffers.");
-    glGetQueryiv_(GL_SAMPLES_PASSED, GL_QUERY_COUNTER_BITS, &oqbits);
-    if(!oqbits)
+
+    if(glversion >= 210 || hasext("GL_ARB_pixel_buffer_object") || hasext("GL_EXT_pixel_buffer_object"))
     {
-        conoutf(CON_WARN, "WARNING: No occlusion query support!");
-        extern int vacubesize, oqfrags;
-        vacubesize = 64;
-        oqfrags = 0;
+        hasPBO = true;
+        if(glversion < 210 && dbgexts) conoutf(CON_INIT, "Using GL_ARB_pixel_buffer_object extension.");
     }
+    else fatal("Pixel buffer object support is required!");
 
     if(glversion >= 300 || hasext("GL_ARB_vertex_array_object"))
     {
@@ -733,7 +718,6 @@ void gl_checkextensions()
         glBindFramebuffer_                = (PFNGLBINDFRAMEBUFFERPROC)               getprocaddress("glBindFramebuffer");
         glDeleteFramebuffers_             = (PFNGLDELETEFRAMEBUFFERSPROC)            getprocaddress("glDeleteFramebuffers");
         glGenFramebuffers_                = (PFNGLGENFRAMEBUFFERSPROC)               getprocaddress("glGenFramebuffers");
-        glFramebufferTexture1D_           = (PFNGLFRAMEBUFFERTEXTURE1DPROC)          getprocaddress("glFramebufferTexture1D");
         glFramebufferTexture2D_           = (PFNGLFRAMEBUFFERTEXTURE2DPROC)          getprocaddress("glFramebufferTexture2D");
         glFramebufferTexture3D_           = (PFNGLFRAMEBUFFERTEXTURE3DPROC)          getprocaddress("glFramebufferTexture3D");
         glFramebufferRenderbuffer_        = (PFNGLFRAMEBUFFERRENDERBUFFERPROC)       getprocaddress("glFramebufferRenderbuffer");
@@ -755,7 +739,6 @@ void gl_checkextensions()
         glBindFramebuffer_            = (PFNGLBINDFRAMEBUFFERPROC)           getprocaddress("glBindFramebufferEXT");
         glDeleteFramebuffers_         = (PFNGLDELETEFRAMEBUFFERSPROC)        getprocaddress("glDeleteFramebuffersEXT");
         glGenFramebuffers_            = (PFNGLGENFRAMEBUFFERSPROC)           getprocaddress("glGenFramebuffersEXT");
-        glFramebufferTexture1D_       = (PFNGLFRAMEBUFFERTEXTURE1DPROC)      getprocaddress("glFramebufferTexture1DEXT");
         glFramebufferTexture2D_       = (PFNGLFRAMEBUFFERTEXTURE2DPROC)      getprocaddress("glFramebufferTexture2DEXT");
         glFramebufferTexture3D_       = (PFNGLFRAMEBUFFERTEXTURE3DPROC)      getprocaddress("glFramebufferTexture3DEXT");
         glFramebufferRenderbuffer_    = (PFNGLFRAMEBUFFERRENDERBUFFERPROC)   getprocaddress("glFramebufferRenderbufferEXT");
@@ -931,9 +914,12 @@ void gl_checkextensions()
     {
         glBindFragDataLocationIndexed_ = (PFNGLBINDFRAGDATALOCATIONINDEXEDPROC)getprocaddress("glBindFragDataLocationIndexed");
 
-        GLint dualbufs = 0;
-        glGetIntegerv(GL_MAX_DUAL_SOURCE_DRAW_BUFFERS, &dualbufs);
-        maxdualdrawbufs = dualbufs;
+        if(hasGPU4)
+        {
+            GLint dualbufs = 0;
+            glGetIntegerv(GL_MAX_DUAL_SOURCE_DRAW_BUFFERS, &dualbufs);
+            maxdualdrawbufs = dualbufs;
+        }
 
         hasBFE = true;
         if(glversion < 330 && dbgexts) conoutf(CON_INIT, "Using GL_ARB_blend_func_extended extension.");
@@ -982,6 +968,18 @@ void gl_checkextensions()
     }
     if(hasTG) usetexgather = hasGPU5 && !intel && !nvidia ? 2 : 1;
 
+    if(glversion >= 410 || hasext("GL_ARB_ES2_compatibility"))
+    {
+        hasES2 = true;
+        if(glversion < 410 && dbgexts) conoutf(CON_INIT, "Using GL_ARB_ES2_compatibility extension.");
+    }
+
+    if(glversion >= 430 || hasext("GL_ARB_ES3_compatibility"))
+    {
+        hasES3 = true;
+        if(glversion < 430 && dbgexts) conoutf(CON_INIT, "Using GL_ARB_ES3_compatibility extension.");
+    }
+
     if(glversion >= 430)
     {
         glDebugMessageControl_ =  (PFNGLDEBUGMESSAGECONTROLPROC) getprocaddress("glDebugMessageControl");
@@ -1018,29 +1016,46 @@ void gl_checkextensions()
         if(dbgexts) conoutf(CON_INIT, "Using GL_NV_copy_image extension.");
     }
 
+    if(glversion >= 420 || hasext("GL_ARB_texture_storage"))
+    {
+        glTexStorage2D_ = (PFNGLTEXSTORAGE2DPROC)getprocaddress("glTexStorage2D");
+        hasTS = true;
+        if(glversion < 420 && dbgexts) conoutf(CON_INIT, "Using GL_ARB_texture_storage extension.");
+    }
+    else if(hasext("GL_EXT_texture_storage"))
+    {
+        glTexStorage2D_ = (PFNGLTEXSTORAGE2DPROC)getprocaddress("glTexStorage2DEXT");
+        hasTS = true;
+        if(dbgexts) conoutf(CON_INIT, "Using GL_EXT_texture_storage extension.");
+    }
+
     extern int gdepthstencil, gstencil, glineardepth, msaadepthstencil, msaalineardepth, batchsunlight, smgather, rhrect, tqaaresolvegather;
     if(amd)
     {
         msaalineardepth = glineardepth = 1; // reading back from depth-stencil still buggy on newer cards, and requires stencil for MSAA
         msaadepthstencil = gdepthstencil = 1; // some older AMD GPUs do not support reading from depth-stencil textures, so only use depth-stencil renderbuffer for now
         if(checkseries(renderer, "Radeon HD", 4000, 5199)) amd_pf_bug = 1;
-        if(glversion <= 330) amd_eal_bug = 1; // explicit_attrib_location broken when used with blend_func_extended on legacy Catalyst
-        rhrect = 1; // bad cpu stalls on Catalyst 13.x when trying to use 3D textures previously bound to FBOs
+        if(glversion < 400)
+        {
+            amd_eal_bug = 1; // explicit_attrib_location broken when used with blend_func_extended on legacy Catalyst
+            rhrect = 1; // bad cpu stalls on Catalyst 13.x when trying to use 3D textures previously bound to FBOs
+        }
     }
     else if(nvidia)
     {
     }
     else if(intel)
     {
-        smgather = 1; // native shadow filter is slow
         if(mesa)
         {
             batchsunlight = 0; // causes massive slowdown in linux driver
             if(!checkmesaversion(version, 10, 0, 3))
                 mesa_texrectoffset_bug = 1; // mesa i965 driver has buggy textureOffset with texture rectangles
+            msaalineardepth = 1; // MSAA depth texture access is buggy and resolves are slow
         }
         else
         {
+            smgather = 1; // native shadow filter is slow
             // causes massive slowdown in windows driver if reading depth-stencil texture
             if(checkdepthtexstencilrb())
             {
@@ -1053,6 +1068,7 @@ void gl_checkextensions()
             if(glversion <= 310) intel_mapbufferrange_bug = 1;
         }
     }
+    if(mesa) mesa_swap_bug = 1;
     if(hasGPU5 && hasTG) tqaaresolvegather = 1;
 }
 
@@ -1098,7 +1114,7 @@ timer *findtimer(const char *name, bool gpu)
 
 timer *begintimer(const char *name, bool gpu)
 {
-    if(!usetimers || viewidx || inbetweenframes || (gpu && (!hasTQ || deferquery))) return NULL;
+    if(!usetimers || inbetweenframes || (gpu && (!hasTQ || deferquery))) return NULL;
     timer *t = findtimer(name, gpu);
     if(t->gpu)
     {
@@ -1220,7 +1236,7 @@ VAR(wireframe, 0, 0, 1);
 
 ICOMMAND(getcamyaw, "", (), floatret(camera1->yaw));
 ICOMMAND(getcampitch, "", (), floatret(camera1->pitch));
-ICOMMAND(getcamroll, "", (), floatret(ovr::modifyroll(camera1->roll)));
+ICOMMAND(getcamroll, "", (), floatret(camera1->roll));
 ICOMMAND(getcampos, "", (),
 {
     defformatstring(pos, "%s %s %s", floatstr(camera1->o.x), floatstr(camera1->o.y), floatstr(camera1->o.z));
@@ -1229,17 +1245,14 @@ ICOMMAND(getcampos, "", (),
 
 vec worldpos, camdir, camright, camup;
 
-void setcammatrix(camera *cm)
+void setcammatrix()
 {
     // move from RH to Z-up LH quake style worldspace
     cammatrix = viewmatrix;
-    cammatrix.rotate_around_y((!drawtex ? ovr::modifyroll(cm->roll) : cm->roll)*RAD);
-    cammatrix.rotate_around_x(cm->pitch*-RAD);
-    cammatrix.rotate_around_z(cm->yaw*-RAD);
-    cammatrix.translate(vec(cm->o).neg());
-
-    if(!drawtex && ovr::enabled)
-        cammatrix.jitter((viewidx ? -1 : 1) * ovr::viewoffset, 0);
+    cammatrix.rotate_around_y(camera1->roll*RAD);
+    cammatrix.rotate_around_x(camera1->pitch*-RAD);
+    cammatrix.rotate_around_z(camera1->yaw*-RAD);
+    cammatrix.translate(vec(camera1->o).neg());
 
     cammatrix.transposedtransformnormal(vec(viewmatrix.b), camdir);
     cammatrix.transposedtransformnormal(vec(viewmatrix.a).neg(), camright);
@@ -1247,19 +1260,16 @@ void setcammatrix(camera *cm)
 
     if(!drawtex)
     {
-        if(raycubepos(cm->o, camdir, worldpos, 0, RAY_CLIPMAT|RAY_SKIPFIRST) == -1)
-            worldpos = vec(camdir).mul(2*worldsize).add(cm->o); //otherwise 3dgui won't work when outside of map
+        if(raycubepos(camera1->o, camdir, worldpos, 0, RAY_CLIPMAT|RAY_SKIPFIRST) == -1)
+            worldpos = vec(camdir).mul(2*worldsize).add(camera1->o); // if nothing is hit, just far away in the view direction
     }
 }
 
-void setcamprojmatrix(camera *cm, bool init = true, bool flush = false)
+void setcamprojmatrix(bool init = true, bool flush = false)
 {
     if(init)
     {
-        setcammatrix(cm);
-
-        if(ovr::enabled && !drawtex)
-            projmatrix.jitter((viewidx ? -1 : 1) * ovr::distortoffset, 0);
+        setcammatrix();
     }
 
     jitteraa();
@@ -1285,7 +1295,6 @@ int hudmatrixpos = 0;
 void resethudmatrix()
 {
     hudmatrixpos = 0;
-    if(ovr::enabled) ovr::ortho(hudmatrix);
     GLOBALPARAM(hudmatrix, hudmatrix);
 }
 
@@ -1311,7 +1320,24 @@ void pophudmatrix(bool flush, bool flushparams)
     }
 }
 
-int vieww = -1, viewh = -1, viewidx = 0;
+void pushhudscale(float sx, float sy)
+{
+    if(!sy) sy = sx;
+    pushhudmatrix();
+    hudmatrix.scale(sx, sy, 1);
+    flushhudmatrix();
+}
+
+void pushhudtranslate(float tx, float ty, float sx, float sy)
+{
+    if(!sy) sy = sx;
+    pushhudmatrix();
+    hudmatrix.translate(tx, ty, 0);
+    if(sy) hudmatrix.scale(sx, sy, 1);
+    flushhudmatrix();
+}
+
+int vieww = -1, viewh = -1;
 float curfov, curavatarfov, fovy, aspect;
 int farplane;
 VARP(zoominvel, 0, 40, 500);
@@ -1357,10 +1383,9 @@ VAR(thirdperson, 0, 0, 2);
 FVAR(thirdpersondistance, 0, 30, 50);
 FVAR(thirdpersonup, -25, 0, 25);
 FVAR(thirdpersonside, -25, 0, 25);
-
-camera *camera1 = new camera;
+physent *camera1 = NULL;
 bool detachedcamera = false;
-bool isthirdperson() { return false; }
+bool isthirdperson() { return player!=camera1 || detachedcamera; }
 
 void fixcamerarange()
 {
@@ -1376,7 +1401,7 @@ void modifyorient(float yaw, float pitch)
     camera1->yaw += yaw;
     camera1->pitch += pitch;
     fixcamerarange();
-    if(false && !detachedcamera)
+    if(camera1!=player && !detachedcamera)
     {
         player->yaw = camera1->yaw;
         player->pitch = camera1->pitch;
@@ -1407,27 +1432,19 @@ void mousemove(int dx, int dy)
 
 void recomputecamera()
 {
-	//game::setupcamera();
-	computezoom();
-	//camera1->set((physent *)(player));
-	camera1->o = player->o;
-	player->yaw = camera1->yaw;
-	player->pitch = camera1->pitch;
-	player->roll = camera1->roll;
-	setviewcell(camera1->o);
-	return;
-  //  game::setupcamera();
-   
+    game::setupcamera();
+    computezoom();
 
-    //bool shoulddetach = thirdperson > 1 || game::detachcamera();
-    //if(!thirdperson && !shoulddetach)
-    //{
-		
-    //detachedcamera = false;
-    //}
-   // else
-    //{
-        /*static physent tempcamera;
+    bool allowthirdperson = game::allowthirdperson();
+    bool shoulddetach = (allowthirdperson && thirdperson > 1) || game::detachcamera();
+    if((!allowthirdperson || !thirdperson) && !shoulddetach)
+    {
+        camera1 = player;
+        detachedcamera = false;
+    }
+    else
+    {
+        static physent tempcamera;
         camera1 = &tempcamera;
         if(detachedcamera && shoulddetach) camera1->o = player->o;
         else
@@ -1444,10 +1461,10 @@ void recomputecamera()
         orient.identity();
         orient.rotate_around_z(camera1->yaw*RAD);
         orient.rotate_around_x(camera1->pitch*RAD);
-        orient.rotate_around_y(ovr::modifyroll(camera1->roll)*-RAD);
+        orient.rotate_around_y(camera1->roll*-RAD);
         vec dir = vec(orient.b).neg(), side = vec(orient.a).neg(), up = orient.c;
-*/
-        /*if(game::collidecamera())
+
+        if(game::collidecamera())
         {
             movecamera(camera1, dir, thirdpersondistance, 1);
             movecamera(camera1, dir, clamp(thirdpersondistance - camera1->o.dist(player->o), 0.0f, 1.0f), 0.1f);
@@ -1468,14 +1485,15 @@ void recomputecamera()
                 movecamera(camera1, side, clamp(dist - camera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
             }
         }
-        else*/
-    //    {
-    //        //camera1->o.add(vec(dir).mul(thirdpersondistance));
-    //        //if(thirdpersonup) camera1->o.add(vec(up).mul(thirdpersonup));
-    //        //if(thirdpersonside) camera1->o.add(vec(side).mul(thirdpersonside));
-    //    }
-    //}
-    
+        else
+        {
+            camera1->o.add(vec(dir).mul(thirdpersondistance));
+            if(thirdpersonup) camera1->o.add(vec(up).mul(thirdpersonup));
+            if(thirdpersonside) camera1->o.add(vec(side).mul(thirdpersonside));
+        }
+    }
+
+    setviewcell(camera1->o);
 }
 
 float calcfrustumboundsphere(float nearplane, float farplane,  const vec &pos, const vec &view, vec &center)
@@ -1527,18 +1545,16 @@ void renderavatar()
     if(isthirdperson()) return;
 
     matrix4 oldprojmatrix = nojittermatrix;
-    float avatarfovy = curavatarfov;
-    if(ovr::enabled && ovr::fov) avatarfovy *= ovr::fov/fov;
-    projmatrix.perspective(avatarfovy, aspect, nearplane, farplane);
+    projmatrix.perspective(curavatarfov, aspect, nearplane, farplane);
     projmatrix.scalez(avatardepth);
-    setcamprojmatrix(camera1, false);
+    setcamprojmatrix(false);
 
     enableavatarmask();
     game::renderavatar();
     disableavatarmask();
 
     projmatrix = oldprojmatrix;
-    setcamprojmatrix(camera1, false);
+    setcamprojmatrix(false);
 }
 
 FVAR(polygonoffsetfactor, -1e4f, -3.0f, 1e4f);
@@ -1547,19 +1563,19 @@ FVAR(depthoffset, -1e4f, 0.01f, 1e4f);
 
 matrix4 nooffsetmatrix;
 
-void enablepolygonoffset(GLenum type)
+void enablepolygonoffset(GLenum type, float scale)
 {
     if(!depthoffset)
     {
-        glPolygonOffset(polygonoffsetfactor, polygonoffsetunits);
+        glPolygonOffset(polygonoffsetfactor * scale, polygonoffsetunits * scale);
         glEnable(type);
         return;
     }
 
     projmatrix = nojittermatrix;
     nooffsetmatrix = projmatrix;
-    projmatrix.d.z += depthoffset * projmatrix.c.z;
-    setcamprojmatrix(camera1, false, true);
+    projmatrix.d.z += depthoffset * scale * projmatrix.c.z;
+    setcamprojmatrix(false, true);
 }
 
 void disablepolygonoffset(GLenum type)
@@ -1571,7 +1587,7 @@ void disablepolygonoffset(GLenum type)
     }
 
     projmatrix = nooffsetmatrix;
-    setcamprojmatrix(camera1, false, true);
+    setcamprojmatrix(false, true);
 }
 
 bool calcspherescissor(const vec &center, float size, float &sx1, float &sy1, float &sx2, float &sy2, float &sz1, float &sz2)
@@ -1615,12 +1631,6 @@ bool calcspherescissor(const vec &center, float size, float &sx1, float &sy1, fl
         float cz = e.x/e.z, drt = sqrtf(dx)/size;
         CHECKPLANE(x, -, focaldist/aspect, sx1, sx2);
         CHECKPLANE(x, +, focaldist/aspect, sx1, sx2);
-        if(ovr::enabled)
-        {
-            float offset = (viewidx ? -1 : 1) * ovr::distortoffset;
-            if(sx1 > -1) sx1 += offset;
-            if(sx2 < 1) sx2 += offset;
-        }
     }
     if(dy > 0)
     {
@@ -1769,10 +1779,10 @@ static void setupscreenquad()
     if(!screenquadvbo)
     {
         glGenBuffers_(1, &screenquadvbo);
-        glBindBuffer_(GL_ARRAY_BUFFER, screenquadvbo);
+        gle::bindvbo(screenquadvbo);
         vec2 verts[4] = { vec2(1, -1), vec2(-1, -1), vec2(1, 1), vec2(-1, 1) };
         glBufferData_(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
-        glBindBuffer_(GL_ARRAY_BUFFER, 0);
+        gle::clearvbo();
     }
 }
 
@@ -1784,12 +1794,12 @@ static void cleanupscreenquad()
 void screenquad()
 {
     setupscreenquad();
-    glBindBuffer_(GL_ARRAY_BUFFER, screenquadvbo);
+    gle::bindvbo(screenquadvbo);
     gle::enablevertex();
     gle::vertexpointer(sizeof(vec2), (const vec2 *)0, GL_FLOAT, 2);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     gle::disablevertex();
-    glBindBuffer_(GL_ARRAY_BUFFER, 0);
+    gle::clearvbo();
 }
 
 static LocalShaderParam screentexcoord[2] = { LocalShaderParam("screentexcoord0"), LocalShaderParam("screentexcoord1") };
@@ -1840,7 +1850,6 @@ void screenquadoffset(float x, float y, float w, float h, float x2, float y2, fl
     gle::attribf(x2, y2); gle::attribf(sx2, sy2); \
     gle::attribf(x1, y2); gle::attribf(sx1, sy2); \
     gle::end(); \
-    gle::disable(); \
 }
 
 void hudquad(float x, float y, float w, float h, float tx, float ty, float tw, float th)
@@ -2025,7 +2034,7 @@ void bindminimap()
     glBindTexture(GL_TEXTURE_2D, minimaptex);
 }
 
-void clipminimap(ivec &bbmin, ivec &bbmax, cube *c = worldeditor::editroot, const ivec &co = octaoffset, int size = worldsize>>1)
+void clipminimap(ivec &bbmin, ivec &bbmax, cube *c = cuberoot, const ivec &co = ivec(0, 0, 0), int size = worldsize>>1)
 {
     loopi(8)
     {
@@ -2041,8 +2050,7 @@ void clipminimap(ivec &bbmin, ivec &bbmax, cube *c = worldeditor::editroot, cons
 
 void drawminimap()
 {
-	//return;
-    //if(!game::needminimap()) { clearminimap(); return; }
+    if(!game::needminimap()) { clearminimap(); return; }
 
     if(!showminimap)
     {
@@ -2063,7 +2071,6 @@ void drawminimap()
     while(size > sizelimit) size /= 2;
     if(!minimaptex) glGenTextures(1, &minimaptex);
 
-    extern vector<vtxarray *> valist;
     ivec bbmin(worldsize, worldsize, worldsize), bbmax(0, 0, 0);
     loopv(valist)
     {
@@ -2088,13 +2095,16 @@ void drawminimap()
     minimapradius.x = minimapradius.y = max(minimapradius.x, minimapradius.y);
     minimapscale = vec((0.5f - 1.0f/size)/minimapradius.x, (0.5f - 1.0f/size)/minimapradius.y, 1.0f);
 
-	//camera oldcamera(*camera1);
-	camera *cmcamera = new camera();
-   // cmcamera = *player;
-   cmcamera->o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
-   cmcamera->yaw = 0;
-   cmcamera->pitch = -90;
-   cmcamera->roll = 0;
+    physent *oldcamera = camera1;
+    static physent cmcamera;
+    cmcamera = *player;
+    cmcamera.reset();
+    cmcamera.type = ENT_CAMERA;
+    cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
+    cmcamera.yaw = 0;
+    cmcamera.pitch = -90;
+    cmcamera.roll = 0;
+    camera1 = &cmcamera;
     setviewcell(vec(-1, -1, -1));
 
     float oldldrscale = ldrscale, oldldrscaleb = ldrscaleb;
@@ -2105,7 +2115,7 @@ void drawminimap()
     float zscale = max(float(minimapheight), minimapcenter.z + minimapradius.z + 1) + 1;
 
     projmatrix.ortho(-minimapradius.x, minimapradius.x, -minimapradius.y, minimapradius.y, 0, 2*zscale);
-    setcamprojmatrix(cmcamera);
+    setcamprojmatrix();
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -2119,22 +2129,16 @@ void drawminimap()
     visiblecubes(false);
 
     rendergbuffer();
-	
-	renderradiancehints();
-	GLERROR;
-    rendershadowatlas();
-	GLERROR;
 
-	shadegbuffer();
-	GLERROR;
+    rendershadowatlas();
 
     shademinimap(minimapcolour.tocolor().mul(ldrscale));
 
     if(minimapheight > 0 && minimapheight < minimapcenter.z + minimapradius.z)
     {
-        cmcamera->o.z = minimapcenter.z + minimapradius.z + 1;
+        camera1->o.z = minimapcenter.z + minimapradius.z + 1;
         projmatrix.ortho(-minimapradius.x, minimapradius.x, -minimapradius.y, minimapradius.y, -zscale, zscale);
-        setcamprojmatrix(cmcamera);
+        setcamprojmatrix();
         rendergbuffer(false);
         shademinimap();
     }
@@ -2148,9 +2152,10 @@ void drawminimap()
     ldrscale = oldldrscale;
     ldrscaleb = oldldrscaleb;
 
+    camera1 = oldcamera;
     drawtex = 0;
 
-    createtexture(minimaptex, size, size, NULL, 3, 1, GL_RGB5, GL_TEXTURE_2D);
+    createtexture(minimaptex, size, size, NULL, 3, 1, hasES2 ? GL_RGB565 : GL_RGB5, GL_TEXTURE_2D);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     GLfloat border[4] = { minimapcolour.x/255.0f, minimapcolour.y/255.0f, minimapcolour.z/255.0f, 1.0f };
@@ -2170,29 +2175,29 @@ void drawminimap()
 
 void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapside &side, bool onlysky)
 {
-	//return;
     drawtex = DRAWTEX_ENVMAP;
 
-    camera *cmcamera;
-	cmcamera = new camera(*camera1);
-    //cmcamera.reset();
-    //cmcamera.type = ENT_CAMERA;
-    cmcamera->o = o;
-    cmcamera->yaw = yaw;
-    cmcamera->pitch = pitch;
-    cmcamera->roll = 0;
-    //camera1 = &cmcamera;
+    physent *oldcamera = camera1;
+    static physent cmcamera;
+    cmcamera = *player;
+    cmcamera.reset();
+    cmcamera.type = ENT_CAMERA;
+    cmcamera.o = o;
+    cmcamera.yaw = yaw;
+    cmcamera.pitch = pitch;
+    cmcamera.roll = 0;
+    camera1 = &cmcamera;
     setviewcell(camera1->o);
 
     float fogmargin = 1 + WATER_AMPLITUDE + nearplane;
-    int fogmat = lookupmaterial(vec(cmcamera->o.x, cmcamera->o.y, cmcamera->o.z - fogmargin))&(MATF_VOLUME|MATF_INDEX), abovemat = MAT_AIR;
+    int fogmat = lookupmaterial(vec(camera1->o.x, camera1->o.y, camera1->o.z - fogmargin))&(MATF_VOLUME|MATF_INDEX), abovemat = MAT_AIR;
     float fogbelow = 0;
     if(isliquid(fogmat&MATF_VOLUME))
     {
-        float z = findsurface(fogmat, vec(cmcamera->o.x, cmcamera->o.y, cmcamera->o.z - fogmargin), abovemat) - WATER_OFFSET;
-        if(cmcamera->o.z < z + fogmargin)
+        float z = findsurface(fogmat, vec(camera1->o.x, camera1->o.y, camera1->o.z - fogmargin), abovemat) - WATER_OFFSET;
+        if(camera1->o.z < z + fogmargin)
         {
-            fogbelow = z - cmcamera->o.z;
+            fogbelow = z - camera1->o.z;
         }
         else fogmat = abovemat;
     }
@@ -2206,7 +2211,7 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     farplane = worldsize*2;
     vieww = viewh = size;
     projmatrix.perspective(fovy, aspect, nearplane, farplane);
-    setcamprojmatrix(cmcamera);
+    setcamprojmatrix();
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -2217,7 +2222,7 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     ldrscale = 1;
     ldrscaleb = ldrscale/255;
 
-    visiblecubes(onlysky);
+    visiblecubes();
 
     if(onlysky)
     {
@@ -2266,7 +2271,7 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     ldrscale = oldldrscale;
     ldrscaleb = oldldrscaleb;
 
-   // camera1=&oldcamera;
+    camera1 = oldcamera;
     drawtex = 0;
 }
 
@@ -2275,18 +2280,18 @@ VAR(modelpreviewpitch, -90, -15, 90);
 
 namespace modelpreview
 {
-	camera oldcamera;
-    camera cameram;
+    physent *oldcamera;
+    physent camera;
 
     float oldaspect, oldfovy, oldfov, oldldrscale, oldldrscaleb;
     int oldfarplane, oldvieww, oldviewh;
+    matrix4 oldprojmatrix;
 
     int x, y, w, h;
     bool background, scissor;
 
     void start(int x, int y, int w, int h, bool background, bool scissor)
     {
-		//return;
         modelpreview::x = x;
         modelpreview::y = y;
         modelpreview::w = w;
@@ -2299,15 +2304,16 @@ namespace modelpreview
         useshaderbyname("modelpreview");
 
         drawtex = DRAWTEX_MODELPREVIEW;
-        oldcamera = *camera1;
-        cameram = *camera1;
-       // cameram.reset();
-       // cameram.type = ENT_CAMERA;
-        cameram.o = vec(0, 0, 0);
-        cameram.yaw = 0;
-        cameram.pitch = modelpreviewpitch;
-        cameram.roll = 0;
-        camera1 = &cameram;
+
+        oldcamera = camera1;
+        camera = *camera1;
+        camera.reset();
+        camera.type = ENT_CAMERA;
+        camera.o = vec(0, 0, 0);
+        camera.yaw = 0;
+        camera.pitch = modelpreviewpitch;
+        camera.roll = 0;
+        camera1 = &camera;
 
         oldaspect = aspect;
         oldfovy = fovy;
@@ -2317,6 +2323,7 @@ namespace modelpreview
         oldfarplane = farplane;
         oldvieww = vieww;
         oldviewh = viewh;
+        oldprojmatrix = projmatrix;
 
         aspect = w/float(h);
         fovy = modelpreviewfov;
@@ -2328,7 +2335,7 @@ namespace modelpreview
         ldrscaleb = ldrscale/255;
 
         projmatrix.perspective(fovy, aspect, nearplane, farplane);
-        setcamprojmatrix(camera1);
+        setcamprojmatrix();
 
         glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
@@ -2354,8 +2361,11 @@ namespace modelpreview
         ldrscale = oldldrscale;
         ldrscaleb = oldldrscaleb;
 
-        camera1 = &oldcamera;
+        camera1 = oldcamera;
         drawtex = 0;
+
+        projmatrix = oldprojmatrix;
+        setcamprojmatrix();
     }
 }
 
@@ -2370,7 +2380,6 @@ int xtraverts, xtravertsva;
 
 void gl_drawview()
 {
-	drawminimap();
     GLuint scalefbo = shouldscale();
     if(scalefbo) { vieww = gw; viewh = gh; }
 
@@ -2393,7 +2402,7 @@ void gl_drawview()
     farplane = worldsize*2;
 
     projmatrix.perspective(fovy, aspect, nearplane, farplane);
-    setcamprojmatrix(camera1);
+    setcamprojmatrix();
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -2407,8 +2416,9 @@ void gl_drawview()
 
     rendergbuffer();
 
+    extern int showsky;
     if(wireframe && editmode) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    else if(limitsky() && editmode) renderexplicitsky(true);
+    else if(limitsky() && editmode && showsky) renderexplicitsky(true);
 
     renderao();
     GLERROR;
@@ -2475,20 +2485,13 @@ void gl_drawview()
 
     if(fogoverlay && fogmat != MAT_AIR) drawfogoverlay(fogmat, fogbelow, clamp(fogbelow, 0.0f, 1.0f), abovemat);
 
-    GLuint outfbo = scalefbo ? scalefbo : ovr::lensfbo[viewidx];
-    doaa(setuppostfx(vieww, viewh, outfbo), processhdr);
-    renderpostfx(outfbo);
-    if(scalefbo) doscale(ovr::lensfbo[viewidx]);
+    doaa(setuppostfx(vieww, viewh, scalefbo), processhdr);
+    renderpostfx(scalefbo);
+    if(scalefbo) doscale();
 }
 
 void gl_drawmainmenu()
 {
-    if(ovr::enabled)
-    {
-        glBindFramebuffer_(GL_FRAMEBUFFER, ovr::lensfbo[viewidx]);
-        glViewport(0, 0, hudw, hudh);
-        glClear(GL_COLOR_BUFFER_BIT);
-    }
     renderbackground(NULL, NULL, NULL, NULL, true);
 }
 
@@ -2503,7 +2506,7 @@ float damagedirs[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 void damagecompass(int n, const vec &loc)
 {
-    if(!usedamagecompass) return;
+    if(!usedamagecompass || minimized) return;
     vec delta(loc);
     delta.sub(camera1->o);
     float yaw = 0, pitch;
@@ -2568,7 +2571,7 @@ VARP(damagescreenmax, 1, 100, 1000);
 
 void damageblend(int n)
 {
-    if(!damagescreen) return;
+    if(!damagescreen || minimized) return;
     if(lastmillis > damageblendmillis) damageblendmillis = lastmillis;
     damageblendmillis += clamp(n, damagescreenmin, damagescreenmax)*damagescreenfactor;
 }
@@ -2590,6 +2593,12 @@ void drawdamagescreen(int w, int h)
     gle::colorf(fade, fade, fade, fade);
 
     hudquad(0, 0, w, h);
+}
+
+void cleardamagescreen()
+{
+    damageblendmillis = 0;
+    loopi(8) damagedirs[i] = 0;
 }
 
 VAR(hidestats, 0, 0, 1);
@@ -2730,9 +2739,7 @@ void gl_drawhud()
     {
         if(!hidestats)
         {
-            pushhudmatrix();
-            hudmatrix.scale(conscale, conscale, 1);
-            flushhudmatrix();
+            pushhudscale(conscale);
 
             int roffset = 0;
             if(showfps)
@@ -2788,16 +2795,12 @@ void gl_drawhud()
 
     abovehud = min(abovehud, conh*UI::abovehud());
 
-    pushhudmatrix();
-    hudmatrix.scale(conscale, conscale, 1);
-    flushhudmatrix();
+    pushhudscale(conscale);
     abovehud -= rendercommand(FONTH/2, abovehud - FONTH/2, conw-FONTH);
     if(!hidehud && !UI::uivisible("fullconsole")) renderconsole(conw, conh, abovehud - FONTH/2);
     pophudmatrix();
 
     drawcrosshair(w, h);
-
-    gle::disable();
 
     glDisable(GL_BLEND);
 
@@ -2810,7 +2813,7 @@ void gl_drawhud()
     }
 }
 
-int renderw = 0, renderh = 0, hudx = 0, hudy = 0, hudw = 0, hudh = 0;
+int renderw = 0, renderh = 0, hudw = 0, hudh = 0;
 
 void gl_setupframe(bool force)
 {
@@ -2819,7 +2822,6 @@ void gl_setupframe(bool force)
     renderh = min(scr_h, screenh);
     hudw = screenw;
     hudh = screenh;
-    ovr::setup();
     if(!force) return;
     setuplights();
 }
@@ -2830,24 +2832,13 @@ void gl_drawframe()
     xtravertsva = xtraverts = glde = gbatches = vtris = vverts = 0;
     flipqueries();
     aspect = forceaspect ? forceaspect : hudw/float(hudh);
-    float fovx = curfov;
-    if(ovr::enabled && ovr::fov) fovx *= ovr::fov/fov;
-    fovy = 2*atan2(tan(fovx/2*RAD), aspect)/RAD;
+    fovy = 2*atan2(tan(curfov/2*RAD), aspect)/RAD;
     vieww = hudw;
     viewh = hudh;
-    loopi(2)
-    {
-        if(mainmenu) gl_drawmainmenu();
-        else gl_drawview();
-        UI::render();
-        gl_drawhud();
-        if(!ovr::enabled) break;
-        ovr::warp();
-        ++viewidx;
-        hudx += hudw;
-    }
-    viewidx = 0;
-    hudx = 0;
+    if(mainmenu) gl_drawmainmenu();
+    else gl_drawview();
+    UI::render();
+    gl_drawhud();
 }
 
 void cleanupgl()
@@ -2856,8 +2847,5 @@ void cleanupgl()
     cleanuptimers();
     cleanupscreenquad();
     gle::cleanup();
-    ovr::cleanup();
 }
-//angelo ODE dbug stuff
-
 

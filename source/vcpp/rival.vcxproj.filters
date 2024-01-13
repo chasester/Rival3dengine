@@ -1,0 +1,407 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\game\ai.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\aa.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\AJMmovable.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\AJMPhys.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\bih.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\blend.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\client.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\client.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\command.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\console.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\crypto.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\dynlight.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\entities.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\game.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\geom.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\glemu.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\grass.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\light.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\main.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\menus.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\material.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\movie.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\normal.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\octa.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\octaedit.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\octarender.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\ovr.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\pvs.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\physics.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\render.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\rendergl.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\renderlights.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\rendermodel.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\renderparticles.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\rendersky.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\rendertext.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\renderva.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\shader.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\sound.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\texture.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\water.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\zip.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\movable.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\scoreboard.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\server.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\server.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\serverbrowser.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\stream.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\waypoint.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\weapon.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\world.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\worldio.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\pch.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\pch.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\pch.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\stain.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\tools.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\engine\ui.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\serializer.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\weakref.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\wings.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\node.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\scriptarray.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\scriptbuilder.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\scripthandle.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\scripthelper.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\scriptstdstring.cpp">
+      <Filter>as</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\game\ai.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\aiman.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\AJMPhys.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\animmodel.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\bih.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\command.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\ctf.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\cube.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\engine.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\ents.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\extinfo.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\explosion.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\game.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\geom.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\glemu.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\glexts.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\iengine.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\igame.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\hitzone.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\iqm.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\lensflare.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\light.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\lightning.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\md2.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\md3.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\md5.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\mpr.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\obj.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\octa.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\skelmodel.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\smd.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\vertmodel.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\model.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\ragdoll.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\scale.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\world.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\tools.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\textedit.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\texture.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\angelscript.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine\halo.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\serializer.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\weakref.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\node.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\scriptarray.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\scriptbuilder.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\scripthandle.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\scripthelper.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\scriptstdstring.h">
+      <Filter>as</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\notexture.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="..\engine\TreadMgr.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="engine">
+      <UniqueIdentifier>{7eeca7fc-640f-4ad0-9afc-f376405b9866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game">
+      <UniqueIdentifier>{78e07287-9c0c-4791-b7a8-cc83b2b8e29e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shared">
+      <UniqueIdentifier>{2902633c-b098-48dd-9862-fbbe2fa4422c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="as">
+      <UniqueIdentifier>{919f711b-2616-4584-bbe4-41403d7b3da2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="as\script">
+      <UniqueIdentifier>{b4974164-ab79-451d-baf3-39eb254c345a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="rival.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\Downloads\rival_logo-04-noback.png" />
+    <Image Include="rival.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\projects\default\halo\backforthmover.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\blank.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\light.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\model.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\object.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\spawner.halo">
+      <Filter>as\script</Filter>
+    </None>
+    <None Include="..\..\projects\default\halo\timespawner.halo">
+      <Filter>as\script</Filter>
+    </None>
+  </ItemGroup>
+</Project>

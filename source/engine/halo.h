@@ -182,6 +182,6 @@ private:
 };
 extern ScriptManager *asScript;
 
-#include "node.h"
+
 
 #endif

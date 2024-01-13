@@ -1,11 +1,13 @@
+Setting log file: config\debug\log.txt
+Using home directory: ..\MyProject\
 init: sdl
 init: net
-init: Angel
+init: summoning angels
 init: game
 init: video
 init: gl
-Renderer: GeForce GTX 550 Ti/PCIe/SSE2 (NVIDIA Corporation)
-Driver: 4.0.0 NVIDIA 344.48
+Renderer: NVIDIA GeForce GTX 1080 Ti/PCIe/SSE2 (NVIDIA Corporation)
+Driver: 4.0.0 NVIDIA 546.17
 GLSL: 4.00 NVIDIA via Cg compiler
 init: console
 init: world
@@ -13,3 +15,6 @@ init: sound
 init: cfg
 init: render
 init: mainloop
+game mode is Edit
+Cooperative Editing:
+Edit maps with multiple players simultaneously.

@@ -26,7 +26,8 @@ namespace gle
     ucharbuf attribbuf;
     static uchar *attribdata;
     static attribinfo attribdefs[MAXATTRIBS], lastattribs[MAXATTRIBS];
-    static int enabled = 0, numattribs = 0, attribmask = 0, numlastattribs = 0, lastattribmask = 0, vertexsize = 0, lastvertexsize = 0;
+    int enabled = 0;
+    static int numattribs = 0, attribmask = 0, numlastattribs = 0, lastattribmask = 0, vertexsize = 0, lastvertexsize = 0;
     static GLenum primtype = GL_TRIANGLES;
     static uchar *lastbuf = NULL;
     static bool changedattribs = false;
@@ -46,6 +47,8 @@ namespace gle
     void enablequads()
     {
         quadsenabled = true;
+
+        if(glversion < 300) return;
 
         if(quadindexes)
         {
@@ -71,14 +74,21 @@ namespace gle
 
     void disablequads()
     {
-        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, 0);
-
         quadsenabled = false;
+
+        if(glversion < 300) return;
+
+        glBindBuffer_(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
     void drawquads(int offset, int count)
     {
         if(count <= 0) return;
+        if(glversion < 300)
+        {
+            glDrawArrays(GL_QUADS, offset*4, count*4);
+            return;
+        }
         if(offset + count > MAXQUADS)
         {
             if(offset >= MAXQUADS) return;
@@ -284,7 +294,15 @@ namespace gle
         if(primtype == GL_QUADS)
         {
             if(!quadsenabled) enablequads();
-            drawquads(start/4, numvertexes/4);
+            for(int quads = numvertexes/4;;)
+            {
+                int count = min(quads, MAXQUADS);
+                drawquads(start/4, count);
+                quads -= count;
+                if(quads <= 0) break;
+                setattribs(buf + 4*count*vertexsize);
+                start = 0;
+            }
         }
         else
         {
@@ -302,9 +320,8 @@ namespace gle
         return numvertexes;
     }
 
-    void disable()
+    void forcedisable()
     {
-        if(!enabled) return;
         for(int i = 0; enabled; i++) if(enabled&(1<<i)) { glDisableVertexAttribArray_(i); enabled &= ~(1<<i); }
         numlastattribs = lastattribmask = lastvertexsize = 0;
         lastbuf = NULL;
@@ -325,6 +342,8 @@ namespace gle
 
     void cleanup()
     {
+        disable();
+
         if(quadindexes) { glDeleteBuffers_(1, &quadindexes); quadindexes = 0; }
 
         if(vbo) { glDeleteBuffers_(1, &vbo); vbo = 0; }

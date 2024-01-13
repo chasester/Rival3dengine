@@ -63,8 +63,8 @@ namespace mpr
             orient.setyaw(ent->yaw*RAD);
 	    orient.setpitch(ent->pitch*RAD);
 	    orient.setroll(ent->roll*RAD);
-	}
-        
+        }
+
         //angelo sauer ents
         vec center() const { return vec(ent->o.x, ent->o.y, ent->o.z); }// - zmargin); }//  + (ent->aboveeye - ent->eyeheight - zmargin)); }///2); }
         //angelo sauer ents
@@ -236,7 +236,7 @@ namespace mpr
     {
         ModelOBB(const vec &ent, const vec &center, const vec &radius, int yaw, int pitch, int roll) :
             Model(ent, center, radius, yaw, pitch, roll)
-        {	}
+        {}
 
         vec contactface(const vec &wn, const vec &wdir) const
         {
@@ -270,7 +270,7 @@ namespace mpr
     {
         ModelEllipse(const vec &ent, const vec &center, const vec &radius, int yaw, int pitch, int roll) :
             Model(ent, center, radius, yaw, pitch, roll)
-        {	}
+        {}
 
         vec contactface(const vec &wn, const vec &wdir) const
         {

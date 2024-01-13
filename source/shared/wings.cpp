@@ -346,8 +346,8 @@ void config(asIScriptEngine *asEngine){
 	//add math funcitons
 	SETUPMATHFUNC(float);
 	//SETUPMATHFUNC(double);
-	asEngine->RegisterGlobalProperty("const float PI", &float(pi));
-	asEngine->RegisterGlobalProperty("const float RAD", &float(rad));
+	asEngine->RegisterGlobalProperty("const float PI", const_cast<void*>(static_cast<const void*>(&pi)));
+	asEngine->RegisterGlobalProperty("const float RAD", const_cast<void*>(static_cast<const void*>(&rad)));
 	asEngine->RegisterGlobalProperty("const int lastmillis", &int(lastmillis));
 
 	RegisterVec3(asEngine);
@@ -413,7 +413,12 @@ void config(asIScriptEngine *asEngine){
 	//r = asEngine->RegisterObjectMethod("node", "void seteditbox(const vec &in)", asMETHOD(node, seteditbox), asCALL_THISCALL); assert(r >= 0);
 	r = asEngine->RegisterObjectMethod("node", "void seteditbox(int i)", asMETHOD(node, seteditbox), asCALL_THISCALL); assert(r >= 0);
 	//rigid body and physics
-	r = asEngine->RegisterObjectType("ridgidbody", sizeof(ridgidbody), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK); assert(r >= 0);
+	r = asEngine->RegisterObjectType("ridgidbody", sizeof(ridgidbody), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK);
+	if (r < 0) {
+		// Handle error, perhaps print it to a log or console
+		printf("RegisterObjectType failed with error code: %d\n", r);
+	}
+
 	r = asEngine->RegisterObjectBehaviour("ridgidbody", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(BaseConstructor<ridgidbody>), asCALL_GENERIC); assert(r >= 0);
 	r = asEngine->RegisterObjectBehaviour("ridgidbody", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DeConstructor<ridgidbody>), asCALL_GENERIC); assert(r >= 0);
 	r = asEngine->RegisterObjectMethod("ridgidbody", "void aabbfrommodel(int index)", asMETHOD(ridgidbody, aabbfrommodel), asCALL_THISCALL); assert(r >= 0);
@@ -423,7 +428,7 @@ void config(asIScriptEngine *asEngine){
 }
 END_AS_NAMESPACE
 
-void asEngineShutdown(){ ASEngine->ShutDownAndRelease(); } //shutdown asEngine called in main::shutdown
+void asEngineShutdown(){if(ASEngine) ASEngine->ShutDownAndRelease(); } //shutdown asEngine called in main::shutdown
 
 void asConfigureEngine() {
 	ASEngine = asCreateScriptEngine(ANGELSCRIPT_VERSION); if (ASEngine) config(ASEngine); else conoutf("asengine didnt build");
@@ -433,9 +438,20 @@ void asConfigureEngine() {
 ScriptManager::ScriptManager() : asEngine(NULL), serializer(NULL){ }
 
 ScriptManager::ScriptControler *ScriptManager::getctrlscript(const str &script, bool checkctrl){
+	if (!asEngine)
+	{
+		print("Angel script was not porperly set up, this will remove its functionality.");
+			ASSERT("Engine is not initalized");
+		return NULL;
+
+	}
+		
+		//Convert to Dictionary
 		//if we allready made the module then lets try  and find it	
-		if (checkctrl) loopv(ctrls)
-		if (ctrls[i]->module == script) return ctrls[i];
+		if (checkctrl) 
+			loopv(ctrls)
+				if (ctrls[i]->module == script) 
+					return ctrls[i];
 
 		//no controller created yet, ok see if we loaded it before but could not initialize it
 		if (asEngine->GetModule(script.c_str(), asGM_ONLY_IF_EXISTS)){ print("Module already had an error"); return NULL; }
