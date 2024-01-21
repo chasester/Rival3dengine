@@ -1306,13 +1306,13 @@ namespace game
         if(resume && d==player1)
         {
             getint(p);
-            loopi(NUMGUNS) getint(p);
+            loopi(NUMAMMOTYPES) getint(p);
         }
         else
         {
             int gun = getint(p);
             d->gunselect = clamp(gun, 0, NUMGUNS-1);
-            loopi(NUMGUNS) d->ammo[i] = getint(p);
+            loopi(NUMAMMOTYPES) d->ammo[i] = getint(p);
         }
     }
 
@@ -1575,7 +1575,7 @@ namespace game
                 if(!s || !validatk(atk)) break;
                 int gun = attacks[atk].gun;
                 s->gunselect = gun;
-                s->ammo[gun] -= attacks[atk].use;
+                s->ammo[ATKAMMOTYPE(atk)] -= attacks[atk].use;
                 s->gunwait = attacks[atk].attackdelay;
                 int prevaction = s->lastaction;
                 s->lastaction = lastmillis;

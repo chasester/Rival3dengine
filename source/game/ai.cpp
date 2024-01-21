@@ -84,13 +84,15 @@ namespace ai
     bool canshoot(gameent *d, int atk, gameent *e)
     {
         if(attackrange(d, atk, e->o.squaredist(d->o)) && targetable(d, e))
-            return d->ammo[attacks[atk].gun] > 0 && lastmillis - d->lastaction >= d->gunwait;
+            /*return d->ammo[attacks[atk].gun] > 0 && lastmillis - d->lastaction >= d->gunwait;*/
+            return d->ammo[ATKAMMOTYPE(atk)] > 0 && lastmillis - d->lastaction >= d->gunwait;
         return false;
     }
 
     bool canshoot(gameent *d, int atk)
     {
-        return !d->ai->becareful && d->ammo[attacks[atk].gun] > 0 && lastmillis - d->lastaction >= d->gunwait;
+        /*return !d->ai->becareful && d->ammo[attacks[atk].gun] > 0 && lastmillis - d->lastaction >= d->gunwait;*/
+        return !d->ai->becareful && (d->ammo[ATKAMMOTYPE(atk)] - attacks[atk].use > 0) && lastmillis - d->lastaction >= d->gunwait;
     }
 
     bool hastarget(gameent *d, int atk, aistate &b, gameent *e, float yaw, float pitch, float dist)
@@ -109,7 +111,7 @@ namespace ai
     vec getaimpos(gameent *d, int atk, gameent *e)
     {
         vec o = e->o;
-        if(atk == ATK_PULSE_SHOOT) o.z += (e->aboveeye*0.2f)-(0.8f*d->eyeheight);
+        if(atk == ATK_M4_SECONDARY) o.z += (e->aboveeye*0.2f)-(0.8f*d->eyeheight);
         else o.z += (e->aboveeye-e->eyeheight)*0.5f;
         if(d->skill <= 100)
         {
@@ -118,9 +120,15 @@ namespace ai
                 int aiskew = 1;
                 switch(atk)
                 {
-                    case ATK_RAIL_SHOOT: aiskew = 5; break;
-                    case ATK_PULSE_SHOOT: aiskew = 20; break;
-                    default: break;
+                    case ATK_SHOTGUN_PRIMARY:
+                    case ATK_SHOTGUN_SECONDARY:
+                    case ATK_M4_PRIMARY:
+                    case ATK_357_PRIMARY:
+                        aiskew = 5; break;
+                    case ATK_M4_SECONDARY:
+                    case ATK_357_SECONDARY:
+                        aiskew = 20; break;
+                    default: aiskew=5; break;
                 }
                 #define rndaioffset(r) ((rnd(int(r*aiskew*2)+1)-(r*aiskew))*(1.f/float(max(d->skill, 1))))
                 loopk(3) d->ai->aimrnd[k] = rndaioffset(e->radius);
@@ -280,7 +288,7 @@ namespace ai
         gameent *t = NULL;
         vec dp = d->headpos();
         float mindist = guard*guard, bestdist = 1e16f;
-        int atk = guns[d->gunselect].attacks[ACT_SHOOT];
+        int atk = guns[d->gunselect].attacks[ACT_PRIMARY];
         loopv(players)
         {
             gameent *e = players[i];
@@ -365,7 +373,7 @@ namespace ai
         {
             float dist = 1e16f;
             gameent *t = NULL;
-            int atk = guns[d->gunselect].attacks[ACT_SHOOT];
+            int atk = guns[d->gunselect].attacks[ACT_PRIMARY];
             loopv(players)
             {
                 gameent *e = players[i];
@@ -388,13 +396,16 @@ namespace ai
         return false;
     }
 
-    int isgoodammo(int gun) { return gun == GUN_PULSE || gun == GUN_RAIL; }
+    int isgoodammo(int gun) { return gun == GUN_SHOTGUN || gun == GUN_M4 || gun == GUN_357; }
 
     bool hasgoodammo(gameent *d)
     {
-        static const int goodguns[] = { GUN_PULSE, GUN_RAIL };
+#if 0
+        static const int goodguns[] = { GUN_M4, GUN_SHOTGUN, GUN_PULSE, GUN_RAIL, GUN_357 };
         loopi(sizeof(goodguns)/sizeof(goodguns[0])) if(d->hasammo(goodguns[0])) return true;
         return false;
+#endif
+        return true;
     }
 
     void assist(gameent *d, aistate &b, vector<interest> &interests, bool all, bool force)
@@ -707,7 +718,7 @@ namespace ai
                     gameent *e = getclient(b.target);
                     if(e && e->state == CS_ALIVE)
                     {
-                        int atk = guns[d->gunselect].attacks[ACT_SHOOT];
+                        int atk = guns[d->gunselect].attacks[ACT_PRIMARY];
                         float guard = SIGHTMIN, wander = attacks[atk].range;
                         return patrol(d, b, e->feetpos(), guard, wander) ? 1 : 0;
                     }
@@ -953,7 +964,7 @@ namespace ai
 
     bool lockon(gameent *d, int atk, gameent *e, float maxdist)
     {
-        if(attacks[atk].action == ACT_MELEE && !d->blocked && !d->timeinair)
+        if(attacks[atk].action == ACT_SECONDARY && !d->blocked && !d->timeinair)
         {
             vec dir = vec(e->o).sub(d->o);
             float xydist = dir.x*dir.x+dir.y*dir.y, zdist = dir.z*dir.z, mdist = maxdist*maxdist, ddist = d->radius*d->radius+e->radius*e->radius;
@@ -1009,7 +1020,7 @@ namespace ai
         }
         if(enemyok)
         {
-            int atk = guns[d->gunselect].attacks[ACT_SHOOT];
+            int atk = guns[d->gunselect].attacks[ACT_PRIMARY];
             vec ep = getaimpos(d, atk, e);
             float yaw, pitch;
             getyawpitch(dp, ep, yaw, pitch);
@@ -1106,7 +1117,7 @@ namespace ai
         if(!e) return true;
         if(targetable(d, e))
         {
-            int atk = guns[weap].attacks[ACT_SHOOT];
+            int atk = guns[weap].attacks[ACT_PRIMARY];
             vec ep = getaimpos(d, atk, e);
             float dist = ep.squaredist(d->headpos());
             if(attackrange(d, atk, dist)) return true;
@@ -1119,7 +1130,7 @@ namespace ai
         gameent *e = getclient(d->ai->enemy);
         if(!d->hasammo(d->gunselect) || !hasrange(d, e, d->gunselect) || (d->gunselect != d->ai->weappref && (!isgoodammo(d->gunselect) || d->hasammo(d->ai->weappref))))
         {
-            static const int gunprefs[] = { GUN_PULSE, GUN_RAIL };
+            static const int gunprefs[] = { GUN_M4, GUN_SHOTGUN, GUN_357 };
             int gun = -1;
             if(d->hasammo(d->ai->weappref) && hasrange(d, e, d->ai->weappref)) gun = d->ai->weappref;
             else

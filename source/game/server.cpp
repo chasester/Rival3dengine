@@ -49,9 +49,10 @@ namespace server
 
     struct hitinfo
     {
-        int target;
-        int lifesequence;
-        int rays;
+        int target,
+            lifesequence,
+            rays,
+            headshots;
         float dist;
         vec dir;
     };
@@ -67,9 +68,9 @@ namespace server
 
     struct explodeevent : timedevent
     {
-        int id, atk;
+        int id, atk, headshots;
         vector<hitinfo> hits;
-
+        
         bool keepable() const { return true; }
 
         void process(clientinfo *ci);
@@ -140,7 +141,7 @@ namespace server
         void reset()
         {
             if(state!=CS_SPECTATOR) state = editstate = CS_DEAD;
-            maxhealth = 1;
+            maxhealth = 100;
             projs.reset();
 
             timeplayed = 0;
@@ -1738,7 +1739,7 @@ namespace server
         putint(p, gs.health);
         putint(p, gs.maxhealth);
         putint(p, gs.gunselect);
-        loopi(NUMGUNS) putint(p, gs.ammo[i]);
+        loopi(NUMAMMOTYPES) putint(p, gs.ammo[i]);
     }
 
     void spawnstate(clientinfo *ci)
@@ -2263,9 +2264,9 @@ namespace server
         servstate &gs = ci->state;
         switch(atk)
         {
-            case ATK_PULSE_SHOOT:
-                if(!gs.projs.remove(id)) return;
-                break;
+//            case ATK_PULSE_SHOOT:
+//                if(!gs.projs.remove(id)) return;
+//                break;
 
             default:
                 return;
@@ -2283,6 +2284,7 @@ namespace server
 
             float damage = attacks[atk].damage*(1-h.dist/EXP_DISTSCALE/attacks[atk].exprad);
             if(target==ci) damage /= EXP_SELFDAMDIV;
+            if(h.headshots) damage*=EXPLOSION_HEADSHOTMUL;
             if(damage > 0) dodamage(target, ci, max(int(damage), 1), atk, h.dir);
         }
     }
@@ -2295,10 +2297,10 @@ namespace server
            wait<gs.gunwait ||
            !validatk(atk))
             return;
-        int gun = attacks[atk].gun;
-        if(gs.ammo[gun]<=0 || (attacks[atk].range && from.dist(to) > attacks[atk].range + 1))
+        int ammotype = attacks[atk].ammotype;
+        if((gs.ammo[ammotype]-attacks[atk].use<0) || (attacks[atk].range && from.dist(to) > attacks[atk].range + 1))
             return;
-        gs.ammo[gun] -= attacks[atk].use;
+        gs.ammo[ammotype] -= attacks[atk].use;
         gs.lastshot = millis;
         gs.gunwait = attacks[atk].attackdelay;
         sendf(-1, 1, "rii9x", N_SHOTFX, ci->clientnum, atk, id,
@@ -2308,7 +2310,7 @@ namespace server
         gs.shotdamage += attacks[atk].damage*attacks[atk].rays;
         switch(atk)
         {
-            case ATK_PULSE_SHOOT: gs.projs.add(id); break;
+//            case ATK_PULSE_SHOOT: gs.projs.add(id); break;
             default:
             {
                 int totalrays = 0, maxrays = attacks[atk].rays;
@@ -2321,6 +2323,9 @@ namespace server
                     totalrays += h.rays;
                     if(totalrays>maxrays) continue;
                     int damage = h.rays*attacks[atk].damage;
+                    loopi(h.rays) {
+                         if(i<h.headshots)damage+=(attacks[atk].damage*(maxrays>1?SHOTGUN_HEADSHOTMUL-1:HITSCAN_HEADSHOTMUL-1));
+                    }
                     dodamage(target, ci, damage, atk, h.dir);
                 }
                 break;
@@ -3136,6 +3141,7 @@ namespace server
             case N_SHOOT:
             {
                 shotevent *shot = new shotevent;
+                int headshots=getint(p);
                 shot->id = getint(p);
                 shot->millis = cq ? cq->geteventmillis(gamemillis, shot->id) : 0;
                 shot->atk = getint(p);
@@ -3146,6 +3152,7 @@ namespace server
                 {
                     if(p.overread()) break;
                     hitinfo &hit = shot->hits.add();
+                    hit.headshots=headshots;
                     hit.target = getint(p);
                     hit.lifesequence = getint(p);
                     hit.dist = getint(p)/DMF;
@@ -3164,6 +3171,7 @@ namespace server
             case N_EXPLODE:
             {
                 explodeevent *exp = new explodeevent;
+                int headshots=getint(p);
                 int cmillis = getint(p);
                 exp->millis = cq ? cq->geteventmillis(gamemillis, cmillis) : 0;
                 exp->atk = getint(p);
@@ -3173,6 +3181,7 @@ namespace server
                 {
                     if(p.overread()) break;
                     hitinfo &hit = exp->hits.add();
+                    hit.headshots=headshots;
                     hit.target = getint(p);
                     hit.lifesequence = getint(p);
                     hit.dist = getint(p)/DMF;

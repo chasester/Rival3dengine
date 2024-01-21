@@ -466,13 +466,13 @@ namespace game
         if(!previewent)
         {
             previewent = new gameent;
-            loopi(NUMGUNS) previewent->ammo[i] = 1;
+            loopi(NUMAMMOTYPES) previewent->ammo[i] = 1;
         }
         float height = previewent->eyeheight + previewent->aboveeye,
               zrad = height/2;
         vec2 xyrad = vec2(previewent->xradius, previewent->yradius).max(height/4);
         previewent->o = calcmodelpreviewpos(vec(xyrad, zrad), previewent->yaw).addz(previewent->eyeheight - zrad);
-        previewent->gunselect = validgun(weap) ? weap : GUN_RAIL;
+        previewent->gunselect = validgun(weap) ? weap : GUN_SHOTGUN;
         const playermodelinfo *mdlinfo = getplayermodelinfo(model);
         if(!mdlinfo) return;
         renderplayer(previewent, *mdlinfo, getplayercolor(team, color), team, 1, 0, false);
@@ -506,7 +506,7 @@ namespace game
     void preloadweapons()
     {
         const playermodelinfo &mdl = getplayermodelinfo(player1);
-        loopi(NUMGUNS)
+        loopi(NUMAMMOTYPES)
         {
             const char *file = guns[i].file;
             if(!file) continue;

@@ -305,15 +305,13 @@ namespace game
         if((player1->attacking = act) && attackspawn) respawn();
     }
 
-    ICOMMAND(shoot, "D", (int *down), doaction(*down ? ACT_SHOOT : ACT_IDLE));
-    ICOMMAND(melee, "D", (int *down), doaction(*down ? ACT_MELEE : ACT_IDLE));
-
-    VARP(jumpspawn, 0, 1, 1);
+    ICOMMAND(shoot, "D", (int *down), doaction(*down ? ACT_PRIMARY : ACT_IDLE));
+    ICOMMAND(shoot2, "D", (int *down), doaction(*down ? ACT_SECONDARY : ACT_IDLE));
 
     bool canjump()
     {
         if(!connected || intermission) return false;
-        if(jumpspawn) respawn();
+        respawn();
         return player1->state!=CS_DEAD;
     }
 
@@ -321,6 +319,10 @@ namespace game
     {
         if(!connected || intermission) return false;
         return player1->state!=CS_DEAD;
+    }
+
+    bool cansprint() {
+        return canjump();
     }
 
     bool allowmove(physent *d)
@@ -355,7 +357,7 @@ namespace game
         }
         if(d==h)
         {
-            damageblend(damage);
+            damageblend(damage/4);
             damagecompass(damage, actor->o);
         }
         damageeffect(damage, d, d!=h);
@@ -375,7 +377,7 @@ namespace game
         d->lastpain = lastmillis;
         if(!restore)
         {
-            gibeffect(max(-d->health, 0), d->vel, d);
+            //gibeffect(max(-d->health, 0), d->vel, d);
             d->deaths++;
         }
         if(d==player1)
@@ -409,8 +411,10 @@ namespace game
         }
         else if((d->state!=CS_ALIVE && d->state != CS_LAGGED && d->state != CS_SPAWNING) || intermission) return;
 
-        gameent *h = followingplayer(player1);
-        int contype = d==h || actor==h ? CON_FRAG_SELF : CON_FRAG_OTHER;
+        gameent *h = followingplayer();
+        if(!h) h = player1;
+        //int contype = d==h || actor==h ? CON_FRAG_SELF : CON_FRAG_OTHER;
+        int contype = CON_GAMEINFO;
         const char *dname = "", *aname = "";
         if(m_teammode && teamcolorfrags)
         {
@@ -424,7 +428,7 @@ namespace game
         }
         if(d==actor)
             conoutf(contype, "\f2%s suicided%s", dname, d==player1 ? "!" : "");
-        else if(isteam(d->team, actor->team))
+        /*else if(isteam(d->team, actor->team))
         {
             contype |= CON_TEAMKILL;
             if(actor==player1) conoutf(contype, "\f6%s fragged a teammate (%s)", aname, dname);
@@ -432,10 +436,11 @@ namespace game
             else conoutf(contype, "\f2%s fragged a teammate (%s)", aname, dname);
         }
         else
-        {
-            if(d==player1) conoutf(contype, "\f2%s got fragged by %s", dname, aname);
-            else conoutf(contype, "\f2%s fragged %s", aname, dname);
-        }
+        {*/
+            //if(d==player1) conoutf(contype, "\f2%s got fragged by %s%s", dname, aname, actor->headshots?" with a headshot":"");
+        else conoutf(contype, "\f2%s %s %s%s", aname, guns[actor->gunselect].name, dname, actor->headshots?" with a headshot":"");
+        //}
+
         deathstate(d);
         ai::killed(d, actor);
     }
@@ -739,24 +744,29 @@ namespace game
 
     void drawhudicons(gameent *d)
     {
-#if 0
+        /*
         pushhudscale(2);
-
-        draw_textf("%d", (HICON_X + HICON_SIZE + HICON_SPACE)/2, HICON_TEXTY/2, d->state==CS_DEAD ? 0 : d->health);
+        draw_textf("%s%d", (HICON_X + HICON_SIZE + HICON_SPACE)/2, HICON_TEXTY/2, d->health>51?"":(d->health>26?"\f2":"\f3"), d->state==CS_DEAD ? 0 : d->health);
         if(d->state!=CS_DEAD)
         {
-            draw_textf("%d", (HICON_X + 2*HICON_STEP + HICON_SIZE + HICON_SPACE)/2, HICON_TEXTY/2, d->ammo[d->gunselect]);
-        }
+            draw_textf("%s", (HICON_X + 2*HICON_STEP + HICON_SIZE + HICON_SPACE)/2, HICON_TEXTY/2, guns[d->gunselect].name);
 
+            char hudstr[20];
+            loopi(ARRSIZE(guns[d->gunselect].attacks)) {
+                concformatstring(hudstr, "%d%s", d->ammo[ATKAMMOTYPE(guns[d->gunselect].attacks[i])], i<ARRSIZE(guns[d->gunselect].attacks-1) ? "|" : "");
+            }
+            concatstring(hudstr, "\0");
+            draw_textf("%s", (HICON_X + 4*HICON_STEP + HICON_SIZE + HICON_SPACE)/2, HICON_TEXTY/2, hudstr);
+        }
+        
         pophudmatrix();
         resethudshader();
-
-        drawicon(HICON_HEALTH, HICON_X, HICON_Y);
+        */
+        /*drawicon(HICON_HEALTH, HICON_X, HICON_Y);
         if(d->state!=CS_DEAD)
         {
             drawicon(HICON_MELEE+d->gunselect, HICON_X + 2*HICON_STEP, HICON_Y);
-        }
-#endif
+        }*/
     }
 
     void gameplayhud(int w, int h)

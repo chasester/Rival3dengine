@@ -170,6 +170,8 @@ const float pi = PI;
 #define RAD (PI / 180.0f)
 const float rad = RAD;
 
+#define ARRSIZE(x)  (sizeof(x) / sizeof((x)[0]))
+
 #ifdef WIN32
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
