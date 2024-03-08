@@ -744,7 +744,6 @@ namespace game
 
     void drawhudicons(gameent *d)
     {
-        /*
         pushhudscale(2);
         draw_textf("%s%d", (HICON_X + HICON_SIZE + HICON_SPACE)/2, HICON_TEXTY/2, d->health>51?"":(d->health>26?"\f2":"\f3"), d->state==CS_DEAD ? 0 : d->health);
         if(d->state!=CS_DEAD)
@@ -761,7 +760,6 @@ namespace game
         
         pophudmatrix();
         resethudshader();
-        */
         /*drawicon(HICON_HEALTH, HICON_X, HICON_Y);
         if(d->state!=CS_DEAD)
         {
